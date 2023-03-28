@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Helmet } from 'react-helmet-async';
+import { Link } from "react-router-dom";
 import '../css/signup-page-main-style.css';
 
 const Register = () => {
@@ -7,13 +8,17 @@ const Register = () => {
     const descriptionLawyer = "به وکیل پرس خوش اومدی! اینجا میتونی به سوالات حقوقی بقیه جواب بدی و امتیاز بگیری! همینطور میتونی پرونده های مختلف رو ببینی و انتخاب کنی!"
     const roleTitleUser = "من کاربر هستم";
     const roleTitleLawyer = "من وکیل هستم";
-    const [role, setRole] = useState("user"); 
+    const roleUser = "کاربر";
+    const roleLawyer = "وکیل";
+    const [role, setRole] = useState("user");
+    const [roleName, setRoleName] = useState(roleUser);
     const [roleTitle, setRoleTitle] = useState(roleTitleLawyer);
     const [description, setDescription] = useState(descriptionUser);
 
     const handleRoleChanger = () => {
         role === "user" ? setDescription(descriptionLawyer) : setDescription(descriptionUser);
         role === "user" ? setRoleTitle(roleTitleUser) : setRoleTitle(roleTitleLawyer);
+        role === "user" ? setRoleName(roleLawyer) : setRoleName(roleUser);
         role === "user" ? setRole("lawyer") : setRole("user");
     }   
 
@@ -34,9 +39,15 @@ const Register = () => {
                 <div className="form-left-last">
                     <input type="submit" onClick={handleRoleChanger} name="account" className="account" value={roleTitle}/>
                 </div>
+                <label className="container">
+                    <p className="text-1">
+                    قبلا ثبت نام کردی؟
+                        <Link to="/Login" style={{color: 'var(--bs-link-color)'}}>وارد شو!</Link>
+                    </p>
+                </label>
             </div>
             <form className="form-detail" action="#" method="post" id="myform">
-                <h2>ثبت نام</h2>
+                <h2>ثبت نام {roleName}</h2>
                 <div className="form-group">
                     <div className="form-row form-row-1">
                         <label htmlFor="full_name">نام و نام خانوادگی</label>
@@ -49,7 +60,7 @@ const Register = () => {
                 </div>
                 <div className="form-row">
                     <label htmlFor="your_email">ایمیل</label>
-                    <input type="text" name="your_email" id="your_email" className="input-text" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}"/>
+                    <input type="text" name="your_email" id="your_email" className="input-text" pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}"/>
                 </div>
                 <div className="form-group">
                     <div className="form-row form-row-1 ">
