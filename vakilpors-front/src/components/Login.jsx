@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import './css/main.css';
-import './css/util.css';
+import '../css/login-page-main-style.css';
+import '../css/login-page-util-style.css';
 
 
 

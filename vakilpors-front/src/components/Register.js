@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { Helmet } from 'react-helmet-async';
-import '../css/fonts.css';
-import '../css/line-awesome.css';
 import '../css/signup-page-main-style.css';
 
 const Register = () => {
@@ -14,9 +12,9 @@ const Register = () => {
     const [description, setDescription] = useState(descriptionUser);
 
     const handleRoleChanger = () => {
-        role == "user" ? setDescription(descriptionLawyer) : setDescription(descriptionUser);
-        role == "user" ? setRoleTitle(roleTitleUser) : setRoleTitle(roleTitleLawyer);
-        role == "user" ? setRole("lawyer") : setRole("user");
+        role === "user" ? setDescription(descriptionLawyer) : setDescription(descriptionUser);
+        role === "user" ? setRoleTitle(roleTitleUser) : setRoleTitle(roleTitleLawyer);
+        role === "user" ? setRole("lawyer") : setRole("user");
     }   
 
     document.getElementsByTagName('body')[0].classList.add("form-v4");  
