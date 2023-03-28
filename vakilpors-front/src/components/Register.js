@@ -4,7 +4,7 @@ import '../css/fonts.css';
 import '../css/line-awesome.css';
 import '../css/signup-page-main-style.css';
 
-function Register(){
+const Register = () => {
     const descriptionUser = "به وکیل پرس خوش اومدی! اینجا میتونی هر سوال حقوقی که داشتی رو بپرسی! همینطور میتونی پرونده هات رو بزاری تا وکیلی که میخوای برات حلش کنه!";
     const descriptionLawyer = "به وکیل پرس خوش اومدی! اینجا میتونی به سوالات حقوقی بقیه جواب بدی و امتیاز بگیری! همینطور میتونی پرونده های مختلف رو ببینی و انتخاب کنی!"
     const roleTitleUser = "من کاربر هستم";
