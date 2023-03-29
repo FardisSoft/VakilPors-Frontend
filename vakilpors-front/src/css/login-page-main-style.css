@@ -133,6 +133,21 @@ iframe {
   line-height: 1.5;
 }
 
+
+.txt1-bold {
+  font-family: 'shabnam', 'yekan';
+  font-size: 18px;
+  color: #666666;
+  line-height: 1.5;
+}
+
+.txt2-bold {
+  font-family: 'shabnam', 'yekan';
+  font-size: 18px;
+  color: #333333;
+  line-height: 1.5;
+}
+
 /*//////////////////////////////////////////////////////////////////
 [ login ]*/
 
@@ -232,7 +247,7 @@ iframe {
   left: 0;
   width: 0;
   height: 2px;
-
+  
   -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
   -moz-transition: all 0.4s;

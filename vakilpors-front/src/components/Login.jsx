@@ -52,26 +52,30 @@ return (
                     </span>
 
                     <div class="wrap-input100 validate-input" data-validate="">
+                        <h5 class = "txt2-bold">شماره موبایل</h5>
                         <input
                             class="input100"
                             type="text"
                             name="phoneNumber"
                             value={getUser.phoneNumber}
                             onChange={setUserInfo} />
-                        <span class="focus-input100" data-placeholder="شماره همراه"></span>
+                        
+                        <label class="focus-input100"></label>
                     </div>
 
                     <div class="wrap-input100 validate-input" data-validate="Enter password">
                         <span class="btn-show-pass">
                             <i class="zmdi zmdi-eye"></i>
                         </span>
+                        <h5 class = "txt2-bold">رمز عبور</h5>
                         <input
                             class="input100"
                             type="password"
                             name="password"
                             value={getUser.password}
                             onChange={setUserInfo} />
-                        <span class="focus-input100" data-placeholder="رمز عبور"></span>
+                        
+                        <span class="focus-input100"></span>
                     </div>
 
                     <div class="container-login100-form-btn text-center" >
