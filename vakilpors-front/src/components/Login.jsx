@@ -19,18 +19,22 @@ const Login = () => {
 
     const createUser = async (event) => {
         event.preventDefault();
-        try {
-            const { status } = await LoginUser(getUser);
-
-            if (status === 201) {
-                setUser({});
-                navigate("/contacts");
-            }
-        } catch (err) {
-            console.log(err.message);
+        if (!getUser.phoneNumber || !getUser.password) {
+           alert("لطفا شماره موبایل یا رمز عبور را وارد کنید.");
+           return;
         }
-    };
-
+        try {
+           const { status } = await LoginUser(getUser);
+     
+           if (status === 201) {
+              setUser({});
+              navigate("/contacts");
+           }
+        } catch (err) {
+           console.log(err.message);
+        }
+     };
+     
     const setUserInfo = (event) => {
         setUser({
             ...getUser,
