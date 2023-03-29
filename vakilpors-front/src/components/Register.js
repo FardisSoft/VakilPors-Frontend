@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Helmet } from 'react-helmet-async';
 import { Link } from "react-router-dom";
 import axios from 'axios';
+import { BASE_API_ROUTE } from '../Constants';
 import '../css/signup-page-main-style.css';
 
 const Register = () => {
@@ -12,6 +13,7 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [policyChecked, setPolicyChecked] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [errorColor, setErrorColor] = useState("red");
 
     const descriptionUser = "به وکیل پرس خوش اومدی! اینجا میتونی هر سوال حقوقی که داشتی رو بپرسی! همینطور میتونی پرونده هات رو بزاری تا وکیلی که میخوای برات حلش کنه!";
     const descriptionLawyer = "به وکیل پرس خوش اومدی! اینجا میتونی به سوالات حقوقی بقیه جواب بدی و امتیاز بگیری! همینطور میتونی پرونده های مختلف رو ببینی و انتخاب کنی!"
@@ -31,16 +33,6 @@ const Register = () => {
         role === "user" ? setRole("lawyer") : setRole("user");
     }   
 
-    const props = {
-        role: role,
-        name: name,
-        phone: phone,
-        email: email,
-        password: password,
-        confirmPassword: confirmPassword,
-        policyChecked: policyChecked,
-    };
-
     const handleSubmit = (event) => {
         event.preventDefault()
         if( validateForm() )
@@ -52,16 +44,38 @@ const Register = () => {
     }
 
     const SignupApi = () => {
-        axios.post('/api/signup', props)
-        .then((response) => response.json())
-        .then((data) => {
-            // Handle response from API
-            setErrorMessage("success");
-            console.log(data);
+        const data = JSON.stringify({
+        "phoneNumber": phone,
+        "password": password,
+        "name": name
+        });
+
+        let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: BASE_API_ROUTE + 'Auth/register',
+        headers: { 
+            'Content-Type': 'application/json'
+        },
+        data : data
+        };
+
+        axios.request(config)
+        .then((response) => {
+            setErrorColor("green");
+            setErrorMessage("ثبت نام با موفقیت انجام شد!");
+            // go to homepage
+            console.log(JSON.stringify(response.data));
         })
-        .catch(error => {
-            setErrorMessage("Error signing up. Please try again.");
-            console.error(error);
+        .catch((error) => {
+            const responseData = error.response.data;
+            if ( responseData.hasOwnProperty('DuplicateUserName') ){
+                setErrorMessage("شما قبلا ثبت نام کرده اید! لطفا روی وارد شو کلیک کرده و وارد حساب کاربری خود شوید. ");
+            }
+            else {
+                setErrorMessage("ثبت نام با خطا مواجه شد. لطفا دوباره تلاش کنید.");
+            }
+            console.log(error.response.data);
         });
     }
     
@@ -123,6 +137,7 @@ const Register = () => {
                 </div>
                 <div className="form-row-last">
                     <input type="submit" onClick={handleSubmit} name="register" className="register" value="بریم!"/>
+                    <label className="container"><p className="text" style={{color:errorColor}}>{errorMessage}</p></label>
                 </div>
             </form>
         </div>
