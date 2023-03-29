@@ -5,11 +5,13 @@ import '../css/login-page-main-style.css';
 import '../css/login-page-util-style.css';
 import {
     LoginUser,
-  } from "../services/userService";
+} from "../services/userService";
 
 
 const Login = () => {
 
+    const [errorMessage, setErrorMessage] = useState("");
+    const [errorColor, setErrorColor] = useState("red");
     const [getUser, setUser] = useState({
         phoneNumber: "",
         password: ""
@@ -20,21 +22,28 @@ const Login = () => {
     const createUser = async (event) => {
         event.preventDefault();
         if (!getUser.phoneNumber || !getUser.password) {
-           alert("لطفا شماره موبایل یا رمز عبور را وارد کنید.");
-           return;
+            setErrorMessage("لطفا شماره موبایل یا رمز عبور را وارد کنید.");
+            return;
         }
-        try {
-           const { status } = await LoginUser(getUser);
-     
-           if (status === 201) {
-              setUser({});
-              navigate("/contacts");
-           }
-        } catch (err) {
-           console.log(err.message);
+        else {
+            setErrorMessage(" ");
+            try {
+                const { status } = await LoginUser(getUser);
+                console.log(status);
+                if (status === 200) {
+                    setErrorColor("green");
+                    setErrorMessage("وارد شدید! :)");
+                    await delay(1000);
+                    navigate("/");
+                    setUser({});
+
+                }
+            } catch (err) {
+                setErrorMessage("ورود با خطا مواجه شد :(");
+            }
         }
-     };
-     
+    };
+
     const setUserInfo = (event) => {
         setUser({
             ...getUser,
@@ -42,67 +51,70 @@ const Login = () => {
         });
     };
 
+    const delay = ms => new Promise(
+        resolve => setTimeout(resolve, ms)
+      );
 
-return (
-    <div class="limiter">
-        <div class="container-login100">
-            <div class="wrap-login100">
-                <form class="login100-form validate-form" onSubmit={createUser}>
-                    <span class="login100-form-title p-b-26">
-                        به وکیل پرس خوش آمدی!
-                    </span>
-                    <span class="login100-form-title p-b-48">
-                        <i class="zmdi zmdi-font"></i>
-                    </span>
-
-                    <div class="wrap-input100 validate-input" data-validate="">
-                        <h5 class = "txt2-bold">شماره موبایل</h5>
-                        <input
-                            class="input100"
-                            type="text"
-                            name="phoneNumber"
-                            value={getUser.phoneNumber}
-                            onChange={setUserInfo} />
-                        
-                        <label class="focus-input100"></label>
-                    </div>
-
-                    <div class="wrap-input100 validate-input" data-validate="Enter password">
-                        <span class="btn-show-pass">
-                            <i class="zmdi zmdi-eye"></i>
+    return (
+        <div class="limiter">
+            <div class="container-login100">
+                <div class="wrap-login100">
+                    <form class="login100-form validate-form" onSubmit={createUser}>
+                        <span class="login100-form-title p-b-26">
+                            به وکیل پرس خوش آمدی!
                         </span>
-                        <h5 class = "txt2-bold">رمز عبور</h5>
-                        <input
-                            class="input100"
-                            type="password"
-                            name="password"
-                            value={getUser.password}
-                            onChange={setUserInfo} />
-                        
-                        <span class="focus-input100"></span>
-                    </div>
+                        <span class="login100-form-title p-b-48">
+                            <i class="zmdi zmdi-font"></i>
+                        </span>
 
-                    <div class="container-login100-form-btn text-center" >
-                        <div class="wrap-login100-form-btn" >
-                            <div class="login100-form-bgbtn"></div>
-                            <button  type="submit">
+                        <div class="wrap-input100 validate-input" data-validate="">
+                            <h5 class="txt2-bold">شماره موبایل</h5>
+                            <input
+                                class="input100"
+                                type="text"
+                                name="phoneNumber"
+                                value={getUser.phoneNumber}
+                                onChange={setUserInfo} />
 
-                                <p style={{ color: "white" }}>ورود</p>
-                            </button>
+                            <label class="focus-input100"></label>
                         </div>
-                    </div>
 
-                    <div class="text-center p-t-46 p-b-20">
-                        <span class="txt2">
-                            اکانت نداری؟ <Link to="/Register">ثبت نام</Link> کن!
-                        </span>
-                    </div>
-                </form>
+                        <div class="wrap-input100 validate-input" data-validate="Enter password">
+                            <span class="btn-show-pass">
+                                <i class="zmdi zmdi-eye"></i>
+                            </span>
+                            <h5 class="txt2-bold">رمز عبور</h5>
+                            <input
+                                class="input100"
+                                type="password"
+                                name="password"
+                                value={getUser.password}
+                                onChange={setUserInfo} />
+
+                            <span class="focus-input100"></span>
+                        </div>
+
+                        <div class="container-login100-form-btn text-center" >
+                            <div class="wrap-login100-form-btn" >
+                                <div class="login100-form-bgbtn"></div>
+                                <button type="submit">
+
+                                    <p style={{ color: "white" }}>ورود</p>
+                                </button>
+                            </div>
+                        </div>
+                        <label className="container"><p className="text" style={{ color: errorColor }}>{errorMessage}</p></label>
+                        <div class="text-center p-t-46 p-b-20">
+                            <span class="txt2">
+                                اکانت نداری؟ <Link to="/Register">ثبت نام</Link> کن!
+                            </span>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 
-);
+    );
 }
 
 export default Login;
