@@ -40,6 +40,35 @@ const Register = () => {
     }
 
     const validateForm = () => {
+        if(name === ""){
+            setErrorMessage("نام و نام خانوادگی خود را وارد کنید");
+            return false;
+        }
+        if(phone === ""){
+            setErrorMessage("شماره موبایل خود را وارد کنید");
+            return false;
+        }
+        if(!/^\d+$/.test(phone)){ // only digit
+            setErrorMessage("شماره موبایل خود را به صورت صحیح وارد کنید");
+            return false;
+        }
+        if(password === ""){
+            setErrorMessage("رمز خود را وارد کنید");
+            return false;
+        }
+        // password reqirements: length between 6 and 30, only digit and letter, at least one uppercase and one lowercase
+        if(!(password.length < 31 && password.length > 5 && /^[A-Za-z0-9]*$/.test(password) &&  /[A-Z]/.test(password) && /[a-z]/.test(password))){ 
+            setErrorMessage("رمز خود را به صورت صحیح وارد کنید ( رمز شما باید بین 6 تا 30 کاراکتر باشد، فقط از اعداد و حروف انگلیسی تشکیل شده باشد و حداقل شامل یک حرف بزرگ و حداقل یک حرف کوچک باشد)");
+            return false;
+        }
+        if(password != confirmPassword){
+            setErrorMessage("رمز با تکرار رمز مطابقت ندارد");
+            return false;
+        }
+        if(!policyChecked){
+            setErrorMessage("برای ثبت نام موافقت با شرایط سایت الزامی است");
+            return false;
+        }
         return true;
     }
 
