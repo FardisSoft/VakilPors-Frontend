@@ -10,7 +10,7 @@ const App = () => {
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent" style{{backgroundColor:"008B8B"}}>
         <form class="form-inline my-2 my-lg-0">
           <Link to="/Login" class="mx-3">ورود</Link>
           <Link to="/Register"class="mx-2">ثبت نام</Link>
