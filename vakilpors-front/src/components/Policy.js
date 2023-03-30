@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 const Policy = () => {
   return (
@@ -16,6 +17,7 @@ const Policy = () => {
       <p>
       کاربر تعهد میدهد، برای حقوق وکیل احترام قائل باشد. و در صورت استفاده از مطلب وکیل حتما نام وکیل را قید نماید.
       </p>
+      <Link to="/Register">بازگشت</Link>
     </div>
   );
 };

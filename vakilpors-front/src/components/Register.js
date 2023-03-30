@@ -52,6 +52,12 @@ const Register = () => {
             setErrorMessage("شماره موبایل خود را به صورت صحیح وارد کنید");
             return false;
         }
+        if(email != ""){
+            if(!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)){
+                setErrorMessage("ایمیل خود را به صورت صحیح وارد کنید");
+                return false;
+            }
+        }
         if(password === ""){
             setErrorMessage("رمز خود را وارد کنید");
             return false;
@@ -76,7 +82,9 @@ const Register = () => {
         const data = JSON.stringify({
         "phoneNumber": phone,
         "password": password,
-        "name": name
+        "name": name,
+        "email": email,
+        "isVakil": role === "user" ? false : true
         });
 
         let config = {
@@ -97,7 +105,7 @@ const Register = () => {
             console.log(JSON.stringify(response.data));
         })
         .catch((error) => {
-            const responseData = error.response.data;
+            const responseData = error.response.data.data;
             if ( responseData.hasOwnProperty('DuplicateUserName') ){
                 setErrorMessage("شما قبلا ثبت نام کرده اید! لطفا روی وارد شو کلیک کرده و وارد حساب کاربری خود شوید. ");
             }
@@ -159,7 +167,7 @@ const Register = () => {
                     </div>
                 </div>
                 <div className="form-checkbox">
-                    <label className="container"><p>با <a href="#" className="text">شرایط </a> سایت موافقم</p>
+                    <label className="container"><p>با <Link to="/Policy" className="text">شرایط</Link> سایت موافقم</p>
                         <input type="checkbox" name="checkbox" checked={policyChecked} onChange={(e) => setPolicyChecked(e.target.checked)}/>
                         <span className="checkmark"></span>
                     </label>

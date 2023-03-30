@@ -6,6 +6,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from './components/Login';
 import Register from './components/Register';
+import Policy from './components/Policy';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,6 +17,7 @@ root.render(
           <Route path="/" element={<App />} />
             <Route path="/Login" element={<Login/>}/>
             <Route path="/Register" element={<Register/>}/>
+            <Route path="/Policy" element={<Policy/>}/>
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
