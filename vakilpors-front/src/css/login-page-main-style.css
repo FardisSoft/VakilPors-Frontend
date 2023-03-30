@@ -309,9 +309,9 @@ iframe {
   align-items: center;
   position: absolute;
   height: 100%;
-  top: 0;
+  top: 10%;
   right: 0;
-  padding-right: 5px;
+  padding-right: 160px;
   cursor: pointer;
   -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
@@ -482,6 +482,8 @@ iframe {
     opacity: 1;
   }
 }
+
+
 
 
 

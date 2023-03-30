@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import '../css/login-page-main-style.css';
 import '../css/login-page-util-style.css';
+import { FaEye } from 'react-icons/fa';
+import showPwdImg from '../show-password.svg';
+import hidePwdImg from '../hide-password.svg';
+
 import {
     LoginUser,
 } from "../services/userService";
@@ -12,10 +16,12 @@ const Login = () => {
 
     const [errorMessage, setErrorMessage] = useState("");
     const [errorColor, setErrorColor] = useState("red");
+    const [isRevealPwd, setIsRevealPwd] = useState(false);
     const [getUser, setUser] = useState({
         phoneNumber: "",
         password: ""
     });
+  
 
     const navigate = useNavigate();
 
@@ -53,7 +59,7 @@ const Login = () => {
 
     const delay = ms => new Promise(
         resolve => setTimeout(resolve, ms)
-      );
+    );
 
     return (
         <div class="limiter">
@@ -80,17 +86,20 @@ const Login = () => {
                         </div>
 
                         <div class="wrap-input100 validate-input" data-validate="Enter password">
-                            <span class="btn-show-pass">
-                                <i class="zmdi zmdi-eye"></i>
-                            </span>
+
                             <h5 class="txt2-bold">رمز عبور</h5>
                             <input
                                 class="input100"
-                                type="password"
+                                type={isRevealPwd ? "text" : "password"}
                                 name="password"
                                 value={getUser.password}
-                                onChange={setUserInfo} />
-
+                                onChange={setUserInfo}
+                            />
+                            <span class="btn-show-pass mx-5 my-2">
+                                <i class="zmdi zmdi-eye mx-5" title={isRevealPwd ? "Hide password" : "Show password"}
+                                    src={isRevealPwd ? hidePwdImg : showPwdImg}
+                                    onClick={() => setIsRevealPwd(prevState => !prevState)}><FaEye /></i>
+                            </span>
                             <span class="focus-input100"></span>
                         </div>
 
@@ -111,8 +120,8 @@ const Login = () => {
                         </div>
                     </form>
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
 
     );
 }
