@@ -72,7 +72,7 @@ const Login = () => {
                 <div className="wrap-login100">
                     <form className="login100-form validate-form" onSubmit={createUser}>
                         <span className="login100-form-title p-b-26">
-                            به وکیل پرس خوش آمدی!
+                            به وکیل پرس خوش آمدید!
                         </span>
                         <span className="login100-form-title p-b-48">
                             <i className="zmdi zmdi-font"></i>
@@ -120,7 +120,7 @@ const Login = () => {
                         <label className="container"><p className="text" style={{ color: errorColor }}>{errorMessage}</p></label>
                         <div className="text-center p-t-46 p-b-20">
                             <span className="txt2">
-                                اکانت نداری؟ <Link to="/Register">ثبت نام</Link> کن!
+                                اکانت ندارید؟ <Link to="/Register">ثبت نام</Link> کنید!
                             </span>
                         </div>
                     </form>

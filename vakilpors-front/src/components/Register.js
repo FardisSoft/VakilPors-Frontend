@@ -18,8 +18,8 @@ const Register = () => {
     const [errorColor, setErrorColor] = useState("red");
     const [isRevealPwd, setIsRevealPwd] = useState(false);
 
-    const descriptionUser = "به وکیل پرس خوش اومدی! اینجا میتونی هر سوال حقوقی که داشتی رو بپرسی! همینطور میتونی پرونده هات رو بزاری تا وکیلی که میخوای برات حلش کنه!";
-    const descriptionLawyer = "به وکیل پرس خوش اومدی! اینجا میتونی به سوالات حقوقی بقیه جواب بدی و امتیاز بگیری! همینطور میتونی پرونده های مختلف رو ببینی و انتخاب کنی!"
+    const descriptionUser = "به وکیل پرس خوش آمدید! اینجا می‌توانید هر سوال حقوقی که دارید را بپرسید! همینطور می‌توانید پرونده‌هایتان را قرار دهید تا وکیلی که می‌خواهید وکالت پرونده شما را قبول کند !";
+    const descriptionLawyer = "به وکیل پرس خوش آمدید! اینجا میتوانید به سوالات حقوقی بقیه جواب دهید و امتیاز بگیرید! همچنین میتوانید پرونده های مختلف رو مشاهده کنید و وکالت پرونده دلخواه را قبول کنید!"
     const roleTitleUser = "من کاربر هستم";
     const roleTitleLawyer = "من وکیل هستم";
     const roleUser = "کاربر";
@@ -161,8 +161,8 @@ const Register = () => {
                 </div>
                 <label className="container">
                     <p className="text-1">
-                    قبلا ثبت نام کردی؟
-                        <Link to="/Login" style={{color: 'var(--bs-link-color)'}}>وارد شو!</Link>
+                    قبلا ثبت نام کردید؟
+                        <Link to="/Login" style={{color: 'var(--bs-link-color)'}}>وارد شوید!</Link>
                     </p>
                 </label>
             </div>
