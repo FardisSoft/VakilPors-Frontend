@@ -310,3 +310,25 @@ body {
 		padding:  0;
 	}
 }
+.show-password-btn {
+	position: absolute;
+	display: inline;
+	left: 3.7vw;
+	top: 42px;
+
+	font-size: 15px;
+  	color: #999999;
+	cursor: pointer;
+	-webkit-transition: all 0.4s;
+	-o-transition: all 0.4s;
+	-moz-transition: all 0.4s;
+	transition: all 0.4s;
+}
+.show-password-btn :hover{
+	cursor: pointer;
+	color: #6a7dfe;
+  	color: -webkit-linear-gradient(left, #21d4fd, #b721ff);
+  	color: -o-linear-gradient(left, #21d4fd, #b721ff);
+  	color: -moz-linear-gradient(left, #21d4fd, #b721ff);
+  	color: linear-gradient(left, #21d4fd, #b721ff);
+}

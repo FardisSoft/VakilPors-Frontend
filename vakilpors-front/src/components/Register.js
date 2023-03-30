@@ -5,6 +5,7 @@ import axios from 'axios';
 import { BASE_API_ROUTE } from '../Constants';
 import ApiRequestsTokenHandler from "../services/apiRequestsTokenHandler";
 import '../css/signup-page-main-style.css';
+import { FaEye } from 'react-icons/fa';
 
 const Register = () => {
     const [name, setName] = useState("");
@@ -15,6 +16,7 @@ const Register = () => {
     const [policyChecked, setPolicyChecked] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [errorColor, setErrorColor] = useState("red");
+    const [isRevealPwd, setIsRevealPwd] = useState(false);
 
     const descriptionUser = "به وکیل پرس خوش اومدی! اینجا میتونی هر سوال حقوقی که داشتی رو بپرسی! همینطور میتونی پرونده هات رو بزاری تا وکیلی که میخوای برات حلش کنه!";
     const descriptionLawyer = "به وکیل پرس خوش اومدی! اینجا میتونی به سوالات حقوقی بقیه جواب بدی و امتیاز بگیری! همینطور میتونی پرونده های مختلف رو ببینی و انتخاب کنی!"
@@ -183,11 +185,15 @@ const Register = () => {
                 <div className="form-group">
                     <div className="form-row form-row-1 ">
                         <label htmlFor="password">رمز</label>
-                        <input type="password" name="password" id="password" className="input-text" value={password} onChange={(e) => setPassword(e.target.value)} required/>
+                        <span className="show-password-btn">
+                            <i title={isRevealPwd ? "Hide password" : "Show password"}
+                                onClick={() => setIsRevealPwd(prevState => !prevState)}><FaEye /></i>
+                        </span>
+                        <input type={isRevealPwd ? "text" : "password"} name="password" id="password" className="input-text" value={password} onChange={(e) => setPassword(e.target.value)} required/>
                     </div>
                     <div className="form-row form-row-1">
                         <label htmlFor="confirm-password">تکرار رمز</label>
-                        <input type="password" name="confirm_password" id="confirm_password" className="input-text" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required/>
+                        <input type={isRevealPwd ? "text" : "password"} name="confirm_password" id="confirm_password" className="input-text" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required/>
                     </div>
                 </div>
                 <div className="form-checkbox">
