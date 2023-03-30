@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import { BASE_API_ROUTE } from '../Constants';
-import ApiRequestsTokenHandler from "../services/apiRequestsTokenHandler";
+import useApiRequestsTokenHandler from "../services/useApiRequestsTokenHandler";
 import '../css/signup-page-main-style.css';
 import { FaEye } from 'react-icons/fa';
 
@@ -37,29 +37,6 @@ const Register = () => {
     }   
 
     const handleSubmit = (event) => {
-        // const message = ApiRequestsTokenHandler();
-        // console.log(message);
-        // if (message === "request can send. token is valid" ){
-        //     console.log("ApiRequestsTokenHandler ok dad");
-        //     const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
-        //     let data = '';
-        //     let config = {
-        //     method: 'post',
-        //     maxBodyLength: Infinity,
-        //     url: 'https://api.fardissoft.ir/Test',
-        //     headers: {
-        //         'Authorization': `Bearer ${token}`
-        //         },
-        //     data : data
-        //     };
-        //     axios.request(config)
-        //     .then((response) => {
-        //     console.log(JSON.stringify(response.data));
-        //     })
-        //     .catch((error) => {
-        //     console.log(error);
-        //     });
-        // }
         event.preventDefault()
         if( validateForm() )
             SignupApi();

@@ -1,11 +1,13 @@
 import axios from "axios";
 import { useJwt } from "react-jwt";
 import { BASE_API_ROUTE } from "../Constants";
+import { useState } from "react";
 
-const ApiRequestsTokenHandler = () => {
+const useApiRequestsTokenHandler = () => {
 
+    const [isTokenValid, setIsTokenValid] = useState(false);
 
-    const IsCookieExists = (cookieName) => {
+    const isCookieExists = (cookieName) => {
         const cookie = document.cookie.split('; ').find(row => row.startsWith(`${cookieName}=`));
         if (cookie) {
             return true;
@@ -13,17 +15,10 @@ const ApiRequestsTokenHandler = () => {
         return false;
     }
 
-    const IsCookieExpired = (cookieName) => {
-        const cookie = document.cookie.split('; ').find(row => row.startsWith(`${cookieName}=`));
-        const cookieValue = cookie.split('=')[1];
-        const { decodedToken } = useJwt(cookieValue);
-        const expirationDate = new Date(decodedToken.exp * 1000);
-        return expirationDate < new Date();
-    };
-
     const tokenRefresher = () => {
         const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
         const refreshToken = document.cookie.split('; ').find(row => row.startsWith('refreshToken=')).split('=')[1];
+        // console.log("token : ", token,"refreshToken : ",refreshToken);
         const data = JSON.stringify({
         "token": token,
         "refreshToken": refreshToken
@@ -41,19 +36,21 @@ const ApiRequestsTokenHandler = () => {
 
         axios.request(config)
         .then((response) => {
-            console.log("response : ",response);
-            // console.log(JSON.stringify(response.data));
+            setIsTokenValid(true);
+            // console.log("response in refreshing token : ",response);
+            const days = 3;
+            const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
+            document.cookie = `token=${response.data.data.token}; path=/; expires=${expires}; Secure; SameSite=Strict`;
+            document.cookie = `refreshToken=${response.data.data.refreshToken}; path=/; expires=${expires}; Secure; SameSite=Strict`;
         })
         .catch((error) => {
+            setIsTokenValid(false);
             // const responseData = error.response.data.data;
-            console.log("error : ",error);
+            // console.log("error in refreshing token : ",error);
         });
     };
 
-    if( !IsCookieExists('token') ){
-        return "cant send request. login expired. user must login.";
-    }
-    if( IsCookieExpired('token') ){
+    if( !isCookieExists('token') ){
         return "cant send request. login expired. user must login.";
     }
     else{
@@ -70,13 +67,20 @@ const ApiRequestsTokenHandler = () => {
         };
         axios.request(config)
         .then((response) => {
-            return "request can send. token is valid";
+            // console.log("niazi be refresh nist");
+            setIsTokenValid(true);
         })
         .catch((error) => {
+            // console.log("mikhad bere refresh kone");
             tokenRefresher();
-            return "request can send. token is valid";
         });
+        if(isTokenValid){
+            return "request can send. token is valid";
+        }
+        else{
+            return "request cant send. error in refreshing token";
+        }
     }
 }
 
-export default ApiRequestsTokenHandler;
+export default useApiRequestsTokenHandler;
