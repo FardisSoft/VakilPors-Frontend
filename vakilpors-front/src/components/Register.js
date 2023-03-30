@@ -75,7 +75,6 @@ const Register = () => {
             setErrorMessage("برای ثبت نام موافقت با شرایط سایت الزامی است");
             return false;
         }
-        return true;
     }
 
     const SignupApi = () => {
