@@ -10,17 +10,30 @@ import Badge from '@mui/material/Badge';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import pic1 from './g1.jpg';
+import pic2 from '../css/lawyer.jpg';
 import { Box, Grid } from "@mui/material";
 import Container from '@mui/material/Container';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Chip from '@mui/material/Chip';
+import DoneIcon from '@mui/icons-material/Done';
+import FemaleIcon from '@mui/icons-material/Female';
+import MaleIcon from '@mui/icons-material/Male';
+import UpgradeIcon from '@mui/icons-material/Upgrade';
+import CardMembershipIcon from '@mui/icons-material/CardMembership';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import BusinessIcon from '@mui/icons-material/Business';
 
 
 const LawyerPage = () => {
 
     const [profilePicture, setProfilePicture] = useState();
+    const [profileBackgroundPicture, setProfileBackgroundPicture] = useState();
     const [online, setOnline] = useState(false);
     const [name, setName] = useState('');
     const [title, setTitle] = useState('');
@@ -42,6 +55,7 @@ const LawyerPage = () => {
 
     const handleInitializer = () => {
         setProfilePicture(pic1);
+        setProfileBackgroundPicture(pic2);
         setOnline(true);
         setName("فلان فلانی");
         setTitle("وکیل پایه یک مرکز وکلای قوه‌قضاییه");
@@ -97,63 +111,92 @@ const LawyerPage = () => {
         <title>Lawyer Page</title>
     </Helmet>
     <Stack spacing={5} maxWidth="100%">
-        <Stack>
-            <Box sx={{height: 30}}></Box>
-        </Stack>
-        <Grid container direction="row" alignItems="flex-start" justifyContent="flex-start" spacing={{ xs: 1, sm: 2, md: 3 }}>
-            <Grid>
-                <Box sx={{ width: 20 }}></Box>
+        <Grid container direction={{ xs: 'column', sm: 'row' }} alignItems="stretch">
+            <Grid sx={{backgroundImage:`url(${profileBackgroundPicture})`}} display="flex" alignItems="center" justifyContent="center" item component={Card} sm>
+                <CardContent>
+                    <StyledBadge invisible={!online} overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} variant="dot">
+                        <Avatar alt="Remy Sharp" sx={{ width: 60, height: 60 }} srcSet={profilePicture} />
+                    </StyledBadge>
+                </CardContent>
             </Grid>
-            <Grid>
-                <StyledBadge invisible={!online} overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} variant="dot">
-                    <Avatar alt="Remy Sharp" sx={{ width: 60, height: 60 }} srcSet={profilePicture} />
-                </StyledBadge>
+            <Grid sx={{ border: "none", boxShadow: "none" }} display="flex" alignItems="center" justifyContent="center" item component={Card} sm>
+                <CardContent>
+                    <Typography sx={{fontFamily:"shabnam"}}>{name}</Typography>
+                    <Typography sx={{fontFamily:"shabnam"}}>{title}</Typography>
+                    <Rating dir="ltr" name="lawyer rating" value={rate} precision={0.5} readOnly/>
+                    <Typography sx={{fontSize:"12px", fontFamily:"shabnam"}}> میانگین امتیاز {rate} بر اساس {numberOfRates} نظر </Typography>
+                </CardContent>
             </Grid>
-            <Grid>
-                <Box sx={{ width: 10 }}></Box>
-            </Grid>
-            <Grid>
-                <p>{name}</p>
-                <p>{title}</p>
-                <Rating dir="ltr" name="lawyer rating" value={rate} precision={0.5} readOnly/>
-                <span style={{display:"inline !important", fontSize:"12px", fontFamily:"shabnam", position:"relative", top:"-7px"}}> میانگین امتیاز {rate} بر اساس {numberOfRates} نظر </span>
-            </Grid>
-            <Grid item xs>
-            </Grid>
-            <Grid>
-                <Button variant="contained">درخواست چت آنلاین</Button>
-            </Grid>
-            <Grid>
-                <Box sx={{ width: 50 }}></Box>
+            <Grid sx={{ border: "none", boxShadow: "none" }} display="flex" alignItems="center" justifyContent="center" item component={Card} sm>
+                <CardContent>
+                    <Button variant="contained">درخواست چت آنلاین</Button>
+                </CardContent>
             </Grid>
         </Grid>
-        <Stack direction="row" alignItems="flex-start" justifyContent="flex-start" spacing={{ xs: 1, sm: 2, md: 3 }}>
-            <Stack direction="column"  alignItems="flex-start" justifyContent="flex-start" spacing={{ xs: 1, sm: 2, md: 3 }}>
-                <p>شهر : {city}</p>
-                <p>پایه {grade}</p>
-                <p>شماره پروانه : {licenseNumber}</p>
-                <p>عضو : {memberOf}</p>
-                <p>ادرس دفتر : {officeAddress}</p>
-            </Stack>
-            <Divider/>
-            <Stack direction="column"  alignItems="flex-start" justifyContent="flex-start" spacing={{ xs: 1, sm: 2, md: 3 }}>
-                <p>جنسیت : {gender}</p>
-                <p>سابقه کار : {yearsOfExperience} سال</p>
-                <p>تحصیلات : {education}</p>
-                <p>تخصص ها : </p>
-                <ul>
-                    {specialties.map((special) => <li>{special}</li>)}
-                </ul>
-            </Stack>
-            <Divider/>
-            <Stack direction="column"  alignItems="flex-start" justifyContent="flex-start" spacing={{ xs: 1, sm: 2, md: 3 }}>
-                <p>تعداد مشاوره ها : {numberOfConsultations}</p>
-                <p>تعداد پاسخ ها به سوالات : {numberOfAnswers}</p>
-                <p>تعداد لایک ها : {numberOfLikes}</p>
-                <p>تعداد پاسخ های تایید شده : {numberOfVerifies}</p>
-                <p>نسبت پاسخ های تایید شده به کل پاسخ ها : {numberOfVerifies/numberOfAnswers}</p>
-            </Stack>
-        </Stack>
+        <Grid container direction={{ xs: 'column', sm: 'row' }} alignItems="stretch">
+            <Grid item component={Card} sm>
+                <CardContent>
+                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam" }} color="text.secondary">
+                        {gender === "مرد" ? <MaleIcon color="primary" sx={{ml:1}}/> : <FemaleIcon color="primary" sx={{ml:1}}/>}
+                        جنسیت : {gender}
+                    </Typography>
+                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                        <UpgradeIcon color="primary" sx={{ml:1}}/>
+                        پایه : {grade}
+                    </Typography>
+                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                        <CardMembershipIcon color="primary" sx={{ml:1}}/>
+                        عضو : {memberOf}
+                    </Typography>
+                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                        <LocationOnIcon color="primary" sx={{ml:1}}/>
+                        شهر : {city}
+                    </Typography>
+                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                        <BusinessIcon color="primary" sx={{ml:1}}/>
+                        ادرس دفتر : {officeAddress}
+                    </Typography>
+                </CardContent>
+            </Grid>
+            <Grid item component={Card} sm>
+                <CardContent>
+                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam" }} color="text.secondary">
+                        شماره پروانه : {licenseNumber}
+                    </Typography>
+                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                        سابقه کار : {yearsOfExperience} سال
+                    </Typography>
+                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                        تحصیلات : {education}
+                    </Typography>
+                    <Typography sx={{ mb: 0.5, fontFamily:"shabnam"  }} color="text.secondary">
+                        تخصص ها  
+                    </Typography>
+                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary"> 
+                        {specialties.map((special) => <Chip dir="ltr" label={special} icon={<DoneIcon/>} color="info"/>)}
+                    </Typography>
+                </CardContent>
+            </Grid>
+            <Grid item component={Card} sm>
+                <CardContent>
+                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam" }} color="text.secondary">
+                        تعداد مشاوره ها : {numberOfConsultations}
+                    </Typography>
+                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                        تعداد پاسخ ها به سوالات : {numberOfAnswers}
+                    </Typography>
+                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                        تعداد لایک ها : {numberOfLikes}
+                    </Typography>
+                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                        تعداد پاسخ های تایید شده : {numberOfVerifies}
+                    </Typography>
+                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                        نسبت پاسخ های تایید شده به کل پاسخ ها : {(numberOfVerifies/numberOfAnswers).toFixed(2)}
+                    </Typography>
+                </CardContent>
+            </Grid>
+        </Grid>
         <Stack>
             <Button variant="contained" onClick={handleInitializer}>initialize parameters</Button>
         </Stack>
