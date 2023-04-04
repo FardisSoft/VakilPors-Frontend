@@ -23,6 +23,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Chip from '@mui/material/Chip';
+import LinkMUI from '@mui/material/Link';
 import DoneIcon from '@mui/icons-material/Done';
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
@@ -67,7 +68,7 @@ const LawyerPage = () => {
     const [numberOfVerifies, setNumberOfVerifies] = useState(0);
     const [aboutMe, setAboutMe] = useState('');
     const [callingCard, setCallingCard] = useState();
-    const [resume, setResume] = useState();
+    const [resumeLink, setResumeLink] = useState('');
 
 
     const handleInitializer = () => {
@@ -93,7 +94,7 @@ const LawyerPage = () => {
         setNumberOfVerifies(290);
         setAboutMe('سلام من فلان هستم و فلان و فلان جا درس خواندم و فلان جا کار کردم و رو دست من نیومده.')
         setCallingCard(pic3);
-        
+        setResumeLink("https://s29.picofile.com/file/8461773392/resume1.pdf.html");
     };
 
     const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -196,9 +197,7 @@ const LawyerPage = () => {
                         <GavelIcon color="primary" sx={{ml:1}}/>
                         تخصص ها  
                     </Typography>
-                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary"> 
-                        {specialties.map((special) => <Chip dir="ltr" label={special} icon={<DoneIcon/>} color="info"/>)}
-                    </Typography>
+                    {specialties.map((special,index) => <Chip key={index} dir="ltr" sx={{ m: 0.1, fontFamily:"shabnam"  }} label={special} icon={<DoneIcon/>} color="info"/>)}
                 </CardContent>
             </Grid>
             <Grid item component={Card} sm>
@@ -227,12 +226,13 @@ const LawyerPage = () => {
             </Grid>
         </Grid>
         <Grid container direction={{ xs: 'column', sm: 'row' }} alignItems="stretch">
-            <Grid item component={Card} sm>
+            <Grid container direction="column" sx={{ minWidth:215 }} display="flex" justifyContent="center" item component={Card} sm>
                 <CardContent>
-                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam" }} color="text.secondary">
-                        1
+                    <Typography sx={{ alignSelf:"flex-start", m:0, fontFamily:"shabnam", fontWeight:"bold" }} color="text.secondary">
+                        QR کد وکیل
                     </Typography>
                 </CardContent>
+                <CardMedia image={`https://api.qrserver.com/v1/create-qr-code/?data=${window.location}&size=200x200`} sx={{ alignSelf:"center", height: 215, width: 215 }} title="QR کد وکیل"/>
             </Grid>
             <Grid item component={Card} sm>
                 <CardContent>
@@ -244,17 +244,22 @@ const LawyerPage = () => {
                     </Typography>
                 </CardContent>
             </Grid>
-            <Grid direction="column" sx={{ minWidth:215 }} display="flex" justifyContent="center" item component={Card} sm>
+            <Grid container direction="column" display="flex" sx={{ minWidth:215 }} justifyContent="center" item component={Card} sm>
                 <CardContent >
                     <Typography sx={{ alignSelf:"flex-start", m: 0, fontFamily:"shabnam", fontWeight:"bold" }} color="text.secondary">
                         کارت ویزیت
                     </Typography>
                 </CardContent>
-                <CardMedia sx={{ alignSelf:"center", height: 120, width: 215 }} image={callingCard} title="کارت ویزیت"/>
+                <CardMedia image={callingCard} sx={{ alignSelf:"center", height: 120, width: 215 }} title="کارت ویزیت"/>
                 <CardContent >
-                    <Typography sx={{ alignSelf:"flex-start", m: 0, fontFamily:"shabnam", fontWeight:"bold" }} color="text.secondary">
-                        رزومه
-                    </Typography>
+                    <Grid container direction="row">
+                        <Typography sx={{ fontFamily:"shabnam", fontWeight:"bold" }} color="text.secondary">
+                            رزومه
+                        </Typography>
+                        <Typography sx={{ mr:4, fontFamily:"shabnam", fontWeight:"bold" }} color="text.secondary">
+                            <LinkMUI href={resumeLink}>دانلود رزومه</LinkMUI>
+                        </Typography>
+                    </Grid>
                 </CardContent>
             </Grid>
         </Grid>
