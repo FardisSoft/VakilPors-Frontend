@@ -11,6 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import pic1 from './g1.jpg';
 import pic2 from '../css/lawyer.jpg';
+import pic3 from './g2.jpg';
 import { Box, Grid } from "@mui/material";
 import Container from '@mui/material/Container';
 import Rating from '@mui/material/Rating';
@@ -20,14 +21,26 @@ import Divider from '@mui/material/Divider';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
 import Chip from '@mui/material/Chip';
 import DoneIcon from '@mui/icons-material/Done';
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
-import UpgradeIcon from '@mui/icons-material/Upgrade';
+import LooksOneIcon from '@mui/icons-material/LooksOne';
+import LooksTwoIcon from '@mui/icons-material/LooksTwo';
+import Looks3Icon from '@mui/icons-material/Looks3';
 import CardMembershipIcon from '@mui/icons-material/CardMembership';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import BusinessIcon from '@mui/icons-material/Business';
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
+import SchoolIcon from '@mui/icons-material/School';
+import GavelIcon from '@mui/icons-material/Gavel';
+import CoPresentIcon from '@mui/icons-material/CoPresent';
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import FactCheckIcon from '@mui/icons-material/FactCheck';
+import PercentIcon from '@mui/icons-material/Percent';
 
 
 const LawyerPage = () => {
@@ -52,6 +65,10 @@ const LawyerPage = () => {
     const [numberOfAnswers, setNumberOfAnswers] = useState(0);
     const [numberOfLikes, setNumberOfLikes] = useState(0);
     const [numberOfVerifies, setNumberOfVerifies] = useState(0);
+    const [aboutMe, setAboutMe] = useState('');
+    const [callingCard, setCallingCard] = useState();
+    const [resume, setResume] = useState();
+
 
     const handleInitializer = () => {
         setProfilePicture(pic1);
@@ -74,6 +91,9 @@ const LawyerPage = () => {
         setNumberOfAnswers(350);
         setNumberOfLikes(580);
         setNumberOfVerifies(290);
+        setAboutMe('سلام من فلان هستم و فلان و فلان جا درس خواندم و فلان جا کار کردم و رو دست من نیومده.')
+        setCallingCard(pic3);
+        
     };
 
     const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -141,7 +161,7 @@ const LawyerPage = () => {
                         جنسیت : {gender}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <UpgradeIcon color="primary" sx={{ml:1}}/>
+                        {grade === "یک" ? <LooksOneIcon color="primary" sx={{ml:1}}/> : grade === "دو" ? <LooksTwoIcon color="primary" sx={{ml:1}}/> : <Looks3Icon color="primary" sx={{ml:1}}/>}
                         پایه : {grade}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
@@ -161,15 +181,19 @@ const LawyerPage = () => {
             <Grid item component={Card} sm>
                 <CardContent>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam" }} color="text.secondary">
+                        <VerifiedUserIcon color="primary" sx={{ml:1}}/>
                         شماره پروانه : {licenseNumber}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                        <WorkHistoryIcon color="primary" sx={{ml:1}}/>
                         سابقه کار : {yearsOfExperience} سال
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                        <SchoolIcon color="primary" sx={{ml:1}}/>
                         تحصیلات : {education}
                     </Typography>
-                    <Typography sx={{ mb: 0.5, fontFamily:"shabnam"  }} color="text.secondary">
+                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                        <GavelIcon color="primary" sx={{ml:1}}/>
                         تخصص ها  
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary"> 
@@ -180,19 +204,56 @@ const LawyerPage = () => {
             <Grid item component={Card} sm>
                 <CardContent>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam" }} color="text.secondary">
+                        <CoPresentIcon color="primary" sx={{ml:1}}/>
                         تعداد مشاوره ها : {numberOfConsultations}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                        <QuestionAnswerIcon color="primary" sx={{ml:1}}/>
                         تعداد پاسخ ها به سوالات : {numberOfAnswers}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                        <ThumbUpAltIcon color="primary" sx={{ml:1}}/>
                         تعداد لایک ها : {numberOfLikes}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                        <FactCheckIcon color="primary" sx={{ml:1}}/>
                         تعداد پاسخ های تایید شده : {numberOfVerifies}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        نسبت پاسخ های تایید شده به کل پاسخ ها : {(numberOfVerifies/numberOfAnswers).toFixed(2)}
+                        <PercentIcon color="primary" sx={{ml:1}}/>
+                        درصد پاسخ های تایید شده : {((numberOfVerifies/numberOfAnswers).toFixed(2))*100} %
+                    </Typography>
+                </CardContent>
+            </Grid>
+        </Grid>
+        <Grid container direction={{ xs: 'column', sm: 'row' }} alignItems="stretch">
+            <Grid item component={Card} sm>
+                <CardContent>
+                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam" }} color="text.secondary">
+                        1
+                    </Typography>
+                </CardContent>
+            </Grid>
+            <Grid item component={Card} sm>
+                <CardContent>
+                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam", fontWeight:"bold" }} color="text.secondary">
+                        درباره من
+                    </Typography>
+                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam", fontSize:"15px" }} color="text.secondary">
+                        {aboutMe}
+                    </Typography>
+                </CardContent>
+            </Grid>
+            <Grid direction="column" sx={{ minWidth:215 }} display="flex" justifyContent="center" item component={Card} sm>
+                <CardContent >
+                    <Typography sx={{ alignSelf:"flex-start", m: 0, fontFamily:"shabnam", fontWeight:"bold" }} color="text.secondary">
+                        کارت ویزیت
+                    </Typography>
+                </CardContent>
+                <CardMedia sx={{ alignSelf:"center", height: 120, width: 215 }} image={callingCard} title="کارت ویزیت"/>
+                <CardContent >
+                    <Typography sx={{ alignSelf:"flex-start", m: 0, fontFamily:"shabnam", fontWeight:"bold" }} color="text.secondary">
+                        رزومه
                     </Typography>
                 </CardContent>
             </Grid>
