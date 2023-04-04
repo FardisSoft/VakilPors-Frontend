@@ -20,3 +20,8 @@ export const deleteUser = (Userid) => {
   const url = `${SERVER_URL}/${Userid}`;
   return axios.delete(url);
 };
+
+export const getlawyer = () => {
+  const url = `http://localhost:9000/Lawyer`;
+  return axios.get(url);
+};
