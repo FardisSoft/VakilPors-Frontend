@@ -4,45 +4,17 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 import { BASE_API_ROUTE } from '../Constants';
 import useApiRequestsTokenHandler from "../services/useApiRequestsTokenHandler";
-import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
-import Badge from '@mui/material/Badge';
-import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
+import { Button, Badge, styled, Avatar, Rating, Typography, Chip } from '@mui/material';
+import { Box, Stack, Grid, Container } from "@mui/material";
+import { Card, CardActions, CardContent, CardHeader, CardMedia } from "@mui/material";
+import LinkMUI from '@mui/material/Link';
+import {Done, Female, Male, LooksOne, LooksTwo, Looks3, CardMembership, LocationOn, 
+    Business, VerifiedUser, WorkHistory, School, Gavel, CoPresent, QuestionAnswer,
+    ThumbUpAlt, FactCheck, Percent } from '@mui/icons-material';
+
 import pic1 from './g1.jpg';
 import pic2 from '../css/lawyer.jpg';
 import pic3 from './g2.jpg';
-import { Box, Grid } from "@mui/material";
-import Container from '@mui/material/Container';
-import Rating from '@mui/material/Rating';
-import StarIcon from '@mui/icons-material/Star';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Chip from '@mui/material/Chip';
-import LinkMUI from '@mui/material/Link';
-import DoneIcon from '@mui/icons-material/Done';
-import FemaleIcon from '@mui/icons-material/Female';
-import MaleIcon from '@mui/icons-material/Male';
-import LooksOneIcon from '@mui/icons-material/LooksOne';
-import LooksTwoIcon from '@mui/icons-material/LooksTwo';
-import Looks3Icon from '@mui/icons-material/Looks3';
-import CardMembershipIcon from '@mui/icons-material/CardMembership';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import BusinessIcon from '@mui/icons-material/Business';
-import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
-import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
-import SchoolIcon from '@mui/icons-material/School';
-import GavelIcon from '@mui/icons-material/Gavel';
-import CoPresentIcon from '@mui/icons-material/CoPresent';
-import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
-import FactCheckIcon from '@mui/icons-material/FactCheck';
-import PercentIcon from '@mui/icons-material/Percent';
-
 
 const LawyerPage = () => {
 
@@ -158,23 +130,23 @@ const LawyerPage = () => {
             <Grid item component={Card} sm>
                 <CardContent>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam" }} color="text.secondary">
-                        {gender === "مرد" ? <MaleIcon color="primary" sx={{ml:1}}/> : <FemaleIcon color="primary" sx={{ml:1}}/>}
+                        {gender === "مرد" ? <Male color="primary" sx={{ml:1}}/> : <Female color="primary" sx={{ml:1}}/>}
                         جنسیت : {gender}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        {grade === "یک" ? <LooksOneIcon color="primary" sx={{ml:1}}/> : grade === "دو" ? <LooksTwoIcon color="primary" sx={{ml:1}}/> : <Looks3Icon color="primary" sx={{ml:1}}/>}
+                        {grade === "یک" ? <LooksOne color="primary" sx={{ml:1}}/> : grade === "دو" ? <LooksTwo color="primary" sx={{ml:1}}/> : <Looks3 color="primary" sx={{ml:1}}/>}
                         پایه : {grade}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <CardMembershipIcon color="primary" sx={{ml:1}}/>
+                        <CardMembership color="primary" sx={{ml:1}}/>
                         عضو : {memberOf}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <LocationOnIcon color="primary" sx={{ml:1}}/>
+                        <LocationOn color="primary" sx={{ml:1}}/>
                         شهر : {city}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <BusinessIcon color="primary" sx={{ml:1}}/>
+                        <Business color="primary" sx={{ml:1}}/>
                         ادرس دفتر : {officeAddress}
                     </Typography>
                 </CardContent>
@@ -182,44 +154,44 @@ const LawyerPage = () => {
             <Grid item component={Card} sm>
                 <CardContent>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam" }} color="text.secondary">
-                        <VerifiedUserIcon color="primary" sx={{ml:1}}/>
+                        <VerifiedUser color="primary" sx={{ml:1}}/>
                         شماره پروانه : {licenseNumber}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <WorkHistoryIcon color="primary" sx={{ml:1}}/>
+                        <WorkHistory color="primary" sx={{ml:1}}/>
                         سابقه کار : {yearsOfExperience} سال
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <SchoolIcon color="primary" sx={{ml:1}}/>
+                        <School color="primary" sx={{ml:1}}/>
                         تحصیلات : {education}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <GavelIcon color="primary" sx={{ml:1}}/>
+                        <Gavel color="primary" sx={{ml:1}}/>
                         تخصص ها  
                     </Typography>
-                    {specialties.map((special,index) => <Chip key={index} dir="ltr" sx={{ m: 0.1, fontFamily:"shabnam"  }} label={special} icon={<DoneIcon/>} color="info"/>)}
+                    {specialties.map((special,index) => <Chip key={index} dir="ltr" sx={{ m: 0.1, fontFamily:"shabnam"  }} label={special} icon={<Done/>} color="info"/>)}
                 </CardContent>
             </Grid>
             <Grid item component={Card} sm>
                 <CardContent>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam" }} color="text.secondary">
-                        <CoPresentIcon color="primary" sx={{ml:1}}/>
+                        <CoPresent color="primary" sx={{ml:1}}/>
                         تعداد مشاوره ها : {numberOfConsultations}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <QuestionAnswerIcon color="primary" sx={{ml:1}}/>
+                        <QuestionAnswer color="primary" sx={{ml:1}}/>
                         تعداد پاسخ ها به سوالات : {numberOfAnswers}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <ThumbUpAltIcon color="primary" sx={{ml:1}}/>
+                        <ThumbUpAlt color="primary" sx={{ml:1}}/>
                         تعداد لایک ها : {numberOfLikes}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <FactCheckIcon color="primary" sx={{ml:1}}/>
+                        <FactCheck color="primary" sx={{ml:1}}/>
                         تعداد پاسخ های تایید شده : {numberOfVerifies}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <PercentIcon color="primary" sx={{ml:1}}/>
+                        <Percent color="primary" sx={{ml:1}}/>
                         درصد پاسخ های تایید شده : {((numberOfVerifies/numberOfAnswers).toFixed(2))*100} %
                     </Typography>
                 </CardContent>
@@ -227,30 +199,20 @@ const LawyerPage = () => {
         </Grid>
         <Grid container direction={{ xs: 'column', sm: 'row' }} alignItems="stretch">
             <Grid container direction="column" sx={{ minWidth:215 }} display="flex" justifyContent="center" item component={Card} sm>
-                <CardContent>
-                    <Typography sx={{ alignSelf:"flex-start", m:0, fontFamily:"shabnam", fontWeight:"bold" }} color="text.secondary">
-                        QR کد وکیل
-                    </Typography>
-                </CardContent>
-                <CardMedia image={`https://api.qrserver.com/v1/create-qr-code/?data=${window.location}&size=200x200`} sx={{ alignSelf:"center", height: 215, width: 215 }} title="QR کد وکیل"/>
+                <CardHeader titleTypographyProps={{ m:0, fontFamily:"shabnam", fontWeight:"bold", fontSize:"16px", color:"grayText" }} title="QR کد وکیل"/>
+                <CardMedia image={`https://api.qrserver.com/v1/create-qr-code/?data=${window.location}&size=200x200`} sx={{ alignSelf:"center", height: 180, width: 180, mb:2 }} title="QR کد وکیل"/>
             </Grid>
             <Grid item component={Card} sm>
+                <CardHeader titleTypographyProps={{ m:0, fontFamily:"shabnam", fontWeight:"bold", fontSize:"16px", color:"grayText" }} title="درباره من"/>
                 <CardContent>
-                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam", fontWeight:"bold" }} color="text.secondary">
-                        درباره من
-                    </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam", fontSize:"15px" }} color="text.secondary">
                         {aboutMe}
                     </Typography>
                 </CardContent>
             </Grid>
             <Grid container direction="column" display="flex" sx={{ minWidth:215 }} justifyContent="center" item component={Card} sm>
-                <CardContent >
-                    <Typography sx={{ alignSelf:"flex-start", m: 0, fontFamily:"shabnam", fontWeight:"bold" }} color="text.secondary">
-                        کارت ویزیت
-                    </Typography>
-                </CardContent>
-                <CardMedia image={callingCard} sx={{ alignSelf:"center", height: 120, width: 215 }} title="کارت ویزیت"/>
+                <CardHeader titleTypographyProps={{ m:0, fontFamily:"shabnam", fontWeight:"bold", fontSize:"16px", color:"grayText" }} title="کارت ویزیت "/>
+                <CardMedia image={callingCard || "https://www.vuescript.com/wp-content/uploads/2018/11/Show-Loader-During-Image-Loading-vue-load-image.png"} sx={{ alignSelf:"center", height: 120, width: 215 }} title="کارت ویزیت"/>
                 <CardContent >
                     <Grid container direction="row">
                         <Typography sx={{ fontFamily:"shabnam", fontWeight:"bold" }} color="text.secondary">
