@@ -41,6 +41,7 @@ const LawyerPage = () => {
     const [aboutMe, setAboutMe] = useState('');
     const [callingCard, setCallingCard] = useState();
     const [resumeLink, setResumeLink] = useState('');
+    const [ratesList, setRatesList] = useState([]);
 
 
     const handleInitializer = () => {
@@ -67,6 +68,11 @@ const LawyerPage = () => {
         setAboutMe('سلام من فلان هستم و فلان و فلان جا درس خواندم و فلان جا کار کردم و رو دست من نیومده.')
         setCallingCard(pic3);
         setResumeLink("https://s29.picofile.com/file/8461773392/resume1.pdf.html");
+        setRatesList([
+            { profilePicture:pic1, name:"ممد", rate:0, comment:"اصلن به این یارو اعتماد نکنید فقط فکر خودشه" },
+            { profilePicture:pic2, name:"ali", rate:3.5, comment:"adame khoobi bood" },
+            { profilePicture:pic3, name:"رضا", rate:1, comment:"هیچی بلد نیست ولی اخلاقش خوبه" }
+        ]);
     };
 
     const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -108,7 +114,7 @@ const LawyerPage = () => {
             <Grid sx={{backgroundImage:`url(${profileBackgroundPicture})`}} display="flex" alignItems="center" justifyContent="center" item component={Card} sm>
                 <CardContent>
                     <StyledBadge invisible={!online} overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} variant="dot">
-                        <Avatar alt="Remy Sharp" sx={{ width: 60, height: 60 }} srcSet={profilePicture} />
+                        <Avatar alt="lawyer profile" sx={{ width: 60, height: 60 }} srcSet={profilePicture} />
                     </StyledBadge>
                 </CardContent>
             </Grid>
@@ -224,6 +230,27 @@ const LawyerPage = () => {
                     </Grid>
                 </CardContent>
             </Grid>
+        </Grid>
+        <Grid container direction='column'>
+            <Grid display="flex" alignItems="flex-start" justifyContent="flex-start" item component={Card}>
+                <CardHeader titleTypographyProps={{ m:0, fontFamily:"shabnam", fontWeight:"bold", fontSize:"16px", color:"grayText" }} title="نظرات کاربران"/>
+            </Grid>
+            {ratesList.map((ratei,index) => 
+                <Grid key={index} container direction={{ xs: 'column', sm: 'row' }}>
+                    <Grid display="flex" alignItems={{xs:'center',sm:"flex-start"}} justifyContent={{xs:'center',sm:"flex-start"}} item component={Card}>
+                        <CardContent>
+                            <Avatar alt="user profile" sx={{ width: 60, height: 60 }} srcSet={ratei.profilePicture} />
+                        </CardContent>
+                    </Grid>
+                    <Grid display="flex" alignItems="flex-start" justifyContent="flex-start" item component={Card} sm>
+                        <CardContent>
+                            <Typography sx={{fontFamily:"shabnam"}}>{ratei.name}</Typography>
+                            <Rating dir="ltr" name="user rating" value={ratei.rate} precision={0.5} readOnly/>
+                            <Typography sx={{fontFamily:"shabnam"}}>{ratei.comment}</Typography>
+                        </CardContent>
+                    </Grid>
+                </Grid>
+            )}
         </Grid>
         <Stack>
             <Button variant="contained" onClick={handleInitializer}>initialize parameters</Button>
