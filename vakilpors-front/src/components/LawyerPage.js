@@ -12,9 +12,9 @@ import {Done, Female, Male, LooksOne, LooksTwo, Looks3, CardMembership, Location
     Business, VerifiedUser, WorkHistory, School, Gavel, CoPresent, QuestionAnswer,
     ThumbUpAlt, FactCheck, Percent } from '@mui/icons-material';
 
-import pic1 from './g1.jpg';
-import pic2 from '../css/lawyer.jpg';
-import pic3 from './g2.jpg';
+import pic1 from '../assests/images/profileTest.jpg';
+import pic2 from '../assests/images/lawyer.jpg';
+import pic3 from '../assests/images/callingCardTest.jpg';
 
 const LawyerPage = () => {
 
