@@ -8,6 +8,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Policy from './components/Policy';
 import LawyerPage from './components/LawyerPage';
+import Sidebar from './components/Sidebar';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,11 +16,11 @@ root.render(
     <HelmetProvider>
     <BrowserRouter>
         <Routes>
-          <Route path="/" element={<App />} />
-            <Route path="/Login" element={<Login/>}/>
-            <Route path="/Register" element={<Register/>}/>
-            <Route path="/Policy" element={<Policy/>}/>
-            <Route path="/LawyerPage" element={<LawyerPage/>}/>
+          <Route path="/" element={<Sidebar component={App} userRole={'unknown'} pageName={"صفحه اصلی"} />} />
+            <Route path="/Login" element={<Sidebar component={Login} userRole={'unknown'} pageName={"ورود"} />}/>
+            <Route path="/Register" element={<Sidebar component={Register} userRole={'unknown'} pageName={"ثبت نام"} />}/>
+            <Route path="/Policy" element={<Sidebar component={Policy} userRole={'unknown'} pageName={"شرایط سایت"} />}/>
+            <Route path="/LawyerPage" element={<Sidebar component={LawyerPage} userRole={'user'} pageName={"پروفایل عمومی"} />}/>
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
