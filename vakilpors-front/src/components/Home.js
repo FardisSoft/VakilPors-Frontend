@@ -2,13 +2,24 @@ import React, { useState } from "react";
 
 
 const Home = () => {
-    const [thread, setThread] = useState("");
+	const [thread, setThread] = useState("");
+	const [threadList, setThreadList] = useState([]);
+	const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log({ thread });
-        setThread("");
-    };
+	useEffect(() => {
+		const checkUser = () => {
+			if (!localStorage.getItem("_id")) {
+				navigate("/");
+			} else {
+				fetch("http://localhost:3000/api/all/threads")
+					.then((res) => res.json())
+					.then((data) => setThreadList(data.threads))
+					.catch((err) => console.error(err));
+			}
+		};
+		checkUser();
+	}, [navigate]);
+
     return (
         <>
             <Nav />
