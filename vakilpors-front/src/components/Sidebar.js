@@ -1,33 +1,13 @@
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PersonSearchOutlinedIcon from '@mui/icons-material/PersonSearchOutlined';
-import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
-import PolicyOutlinedIcon from '@mui/icons-material/PolicyOutlined';
-import AppRegistrationOutlinedIcon from '@mui/icons-material/AppRegistrationOutlined';
-import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
-import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
-
+import { HomeOutlined, PersonSearchOutlined, ForumOutlined, PolicyOutlined, AppRegistrationOutlined,
+       LoginOutlined, LogoutOutlined, ManageAccountsOutlined, AccountCircleOutlined, CallOutlined,
+       Menu, ChevronRight } from "@mui/icons-material";
 import React, { useState } from 'react';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { Link } from "react-router-dom";
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
+import { Box, Divider, Grid, Drawer } from '@mui/material';
+import { Badge, Avatar, Typography, Toolbar } from '@mui/material';
 import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import { Badge, Avatar, Grid } from '@mui/material';
-
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItemIcon from '@mui/material/ListItemIcon';
+import { List, ListItem, ListItemButton, IconButton, ListItemIcon } from '@mui/material';
 
 import pic1 from '../assests/images/profileTest.jpg';
 
@@ -79,20 +59,55 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 const Sidebar = (props) => {
 
-  const links = [
-    {name:'صفحه اصلی', icon:HomeOutlinedIcon, url:'/'},
-    {name:'پروفایل شخصی', icon:ManageAccountsOutlinedIcon, url:'/'},
-    {name:'پروفایل عمومی', icon:AccountCircleOutlinedIcon, url:'/LawyerPage'},
-    {name:'جست و جوی وکیل', icon:PersonSearchOutlinedIcon, url:'/'},
-    {name:'فروم', icon:ForumOutlinedIcon, url:'/'},
-    {name:'شرایط سایت', icon:PolicyOutlinedIcon, url:'/Policy'},
-    {name:'تماس با ما', icon:CallOutlinedIcon, url:'/'},
-    {name:'ثبت نام', icon:AppRegistrationOutlinedIcon, url:'/Register'},
-    {name:'ورود', icon:LoginOutlinedIcon, url:'/Login'},
-    {name:'خروج از حساب', icon:LogoutOutlinedIcon, url:'/'}
-  ];
+  let tempLinks = [];
 
-  const theme = useTheme();
+  switch( props.userRole ){
+    
+    case "unknown":
+      tempLinks = [
+        {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
+        {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
+        {name:'تماس با ما', icon:CallOutlined, url:'/'},
+        {name:'ثبت نام', icon:AppRegistrationOutlined, url:'/Register'},
+        {name:'ورود', icon:LoginOutlined, url:'/Login'}
+      ];
+      break;
+    
+    case "user":
+      tempLinks = [
+        {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
+        {name:'پروفایل شخصی', icon:ManageAccountsOutlined, url:'/'},
+        {name:'جست و جوی وکیل', icon:PersonSearchOutlined, url:'/'},
+        {name:'پروفایل عمومی وکیل', icon:AccountCircleOutlined, url:'/LawyerPage'},
+        {name:'فروم', icon:ForumOutlined, url:'/'},
+        {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
+        {name:'تماس با ما', icon:CallOutlined, url:'/'},
+        {name:'ثبت نام', icon:AppRegistrationOutlined, url:'/Register'},
+        {name:'ورود', icon:LoginOutlined, url:'/Login'},
+        {name:'خروج از حساب', icon:LogoutOutlined, url:'/'}
+      ];
+      break;
+    
+    case "lawyer":
+      tempLinks = [
+        {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
+        {name:'پروفایل شخصی', icon:ManageAccountsOutlined, url:'/'},
+        {name:'پروفایل عمومی وکیل', icon:AccountCircleOutlined, url:'/LawyerPage'},
+        {name:'فروم', icon:ForumOutlined, url:'/'},
+        {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
+        {name:'تماس با ما', icon:CallOutlined, url:'/'},
+        {name:'ثبت نام', icon:AppRegistrationOutlined, url:'/Register'},
+        {name:'ورود', icon:LoginOutlined, url:'/Login'},
+        {name:'خروج از حساب', icon:LogoutOutlined, url:'/'}
+      ];
+      break;
+    
+    default:
+      console.log("wrong user role");
+  }
+
+  const links = tempLinks;
+
   const [open, setOpen] = useState(false);
   const [profilePicture, setProfilePicture] = useState(pic1);
   const [online, setOnline] = useState(true);
@@ -140,7 +155,7 @@ const Sidebar = (props) => {
       <AppBar position="fixed" open={open}>
         <Toolbar>
           <IconButton color="inherit" aria-label="open drawer" edge="end" onClick={handleDrawerOpen} sx={{ ...(open && { display: 'none' }) }}>
-            <MenuIcon/>
+            <Menu/>
           </IconButton>
           <Typography variant="h6" noWrap sx={{mr:5, fontFamily:"shabnam"}} component="div">
             وکیل پرس
@@ -151,26 +166,25 @@ const Sidebar = (props) => {
       <Drawer variant="persistent" anchor="right" open={open} sx={{ width: drawerWidth, flexShrink: 0, '& .MuiDrawer-paper': {width: drawerWidth,},}}>
         <DrawerHeader>
           <IconButton sx={{pr:23.5, borderRadius:2, backgroundColor:"rgb(25,118,210)", ":hover":{backgroundColor:"rgba(25,118,210,0.7)"}}} onClick={handleDrawerClose}>
-            {/* {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />} */}
-            <ChevronRightIcon sx={{color:"white"}} />
+            <ChevronRight sx={{color:"white"}} />
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <Grid container direction="column" display="flex" alignItems="center" justifyContent="center" sx={{mt:2,mb:2}}>
+        { props.userRole !== "unknown" && <Grid container direction="column" display="flex" alignItems="center" justifyContent="center" sx={{mt:2,mb:2}}>
           <StyledBadge invisible={!online} overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} variant="dot">
             <Avatar alt="profile picture" sx={{ width: 60, height: 60 }} srcSet={profilePicture} />
           </StyledBadge>
           <Typography sx={{fontFamily:"shabnam", mt:1}}>{name}</Typography>
-        </Grid>
+        </Grid>}
         <Divider />
         <List>
           {links.map((linki,index) => (
             <ListItem key={index} component={Link} to={linki.url} disablePadding>
-              <ListItemButton sx={props.pageName === linki.name && {backgroundColor:"rgb(25,118,210)", ":hover":{backgroundColor:"rgba(25,118,210,0.7)"}}}>
+              <ListItemButton sx={{ ...(props.pageName === linki.name && {backgroundColor:"rgb(25,118,210)", ":hover":{backgroundColor:"rgba(25,118,210,0.7)"}})}}>
                 <ListItemIcon>
-                  <linki.icon color="primary" sx={props.pageName === linki.name && {color:"white"}} />
+                  <linki.icon color="primary" sx={{ ...(props.pageName === linki.name && {color:"white"})}} />
                 </ListItemIcon>
-                <Typography fontFamily="shabnam" sx={props.pageName === linki.name && {color:"white"}} >{linki.name}</Typography>
+                <Typography fontFamily="shabnam" sx={{ ...(props.pageName === linki.name && {color:"white"})}} >{linki.name}</Typography>
               </ListItemButton>
             </ListItem>
           ))}

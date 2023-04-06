@@ -20,7 +20,7 @@ root.render(
             <Route path="/Login" element={<Sidebar component={Login} userRole={'unknown'} pageName={"ورود"} />}/>
             <Route path="/Register" element={<Sidebar component={Register} userRole={'unknown'} pageName={"ثبت نام"} />}/>
             <Route path="/Policy" element={<Sidebar component={Policy} userRole={'unknown'} pageName={"شرایط سایت"} />}/>
-            <Route path="/LawyerPage" element={<Sidebar component={LawyerPage} userRole={'user'} pageName={"پروفایل عمومی"} />}/>
+            <Route path="/LawyerPage" element={<Sidebar component={LawyerPage} userRole={'user'} pageName={"پروفایل عمومی وکیل"} />}/>
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
