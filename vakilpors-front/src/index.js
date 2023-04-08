@@ -8,8 +8,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Policy from './components/Policy';
 import Main from './components/Lawyer-search-page/Main';
-import Search from './components/Lawyer-search-page/Search';
-import Teacher_item from './components/Lawyer-search-page/Teacher_item';
+import ViewContact from './components/Lawyer-search-page/ViewLawyer';
 
 
 
@@ -24,8 +23,7 @@ root.render(
             <Route path="/Register" element={<Register/>}/>
             <Route path="/Policy" element={<Policy/>}/>
             <Route path="/Main" element={<Main/>}/>
-            <Route path="/Search" element={<Search/>}/>
-            <Route path="/Teacher" element={<Teacher_item/>}/>
+            <Route path="/Main/:LawyerId" element={<ViewContact/>}/>
         </Routes>
       </BrowserRouter>
     </HelmetProvider>

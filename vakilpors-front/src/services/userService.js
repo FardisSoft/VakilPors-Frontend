@@ -21,7 +21,12 @@ export const deleteUser = (Userid) => {
   return axios.delete(url);
 };
 
-export const getlawyer = () => {
-  const url = `http://localhost:9000/Lawyer`;
+export const getAlllawyer  = () => {
+  const url = `http://localhost:8000/Lawyer`;
+  return axios.get(url);
+};
+
+export const getlawyer = (LawyerId) => {
+  const url = `http://localhost:8000/Lawyer/${LawyerId}`;
   return axios.get(url);
 };
