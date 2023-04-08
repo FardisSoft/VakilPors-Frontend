@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 
 import { Link, useParams } from "react-router-dom";
 
-import { ContactContext } from "../../context/LawyerContext";
+
 import { getlawyer } from "../../services/userService";
 
 const ViewContact = () => {

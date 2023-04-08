@@ -37,13 +37,16 @@ const ShowLawyers = ({ Lawyer }) => {
                     <div className="col-md-1 col-sm-1 d-flex flex-column align-items-center">
                     </div>
                 </div>
-                <Link
-                    to={`/Main/${Lawyer.id}`}
-                    className="btn my-1"
-                    style={{ backgroundColor: "red" }}
-                >
-                    <i className="fa fa-eye" />
-                </Link>
+                <div className="col-md-1 col-sm-1 d-flex flex-column align-items-center">
+                    <Link
+                        to={`/Main/${Lawyer.id}`}
+                        className="btn my-1"
+                        style={{ backgroundColor: "green" }}
+                    >
+                        <i className="fa fa-eye" />
+                    </Link>
+
+                </div>
             </div>
         </div>
     );

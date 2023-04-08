@@ -1,12 +1,9 @@
 import '../css/Search.css';
-import { LawyerContext } from "../../context/LawyerContext";
-import { useContext } from 'react';
 
 
 
-const Search = () => {
 
-    const { LawyerQuery, LawyerSearch } = useContext(LawyerContext);
+const Search = ({LawyerSearch,LawyerQuery}) => {
 
     return (
         <div class="landing-layer home-page">
@@ -14,17 +11,20 @@ const Search = () => {
                 <div class="landing-content">
                     <div class="landing-search">
                         <form method="get" action="/courses">
-                        <input type="text" 
-                        name="Search"
-                        placeholder=" وکیلتو پیدا کن! " 
-                        class="autocomplete" 
-                        autocomplete="off" 
-                        onChange={LawyerSearch} 
-                        value={LawyerQuery.text}/>
-                        <button>
-                            <i class="zmdi zmdi-search"></i>
-                        </button>
-                    </form>
+                            <input
+                                dir="rtl"
+                                type="text"
+                                value={LawyerQuery.text}
+                                onChange={LawyerSearch}
+                                className="form-control"
+                                placeholder="وکیلتو پیدا کن!"
+                                aria-label="Search"
+                                aria-describedby="basic-addon1"
+                            />
+                            <button>
+                                <i class="zmdi zmdi-search"></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

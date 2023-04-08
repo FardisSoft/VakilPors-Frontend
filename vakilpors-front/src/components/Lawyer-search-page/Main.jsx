@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import Search from './Search';
 import { getAlllawyer } from "../../services/userService"
 import ShowLawyers from './ShowLawyers';
-import { LawyerContext } from '../../context/LawyerContext';
 import { Link } from 'react-router-dom';
 
 
@@ -27,7 +26,9 @@ const Main = () => {
         fetchData();
     }, []);
 
+
     const LawyerSearch = (event) => {
+        console.log("slm");
         setLawyerQuery({ ...LawyerQuery, text: event.target.value });
         const allLawyers = lawyerdetail.filter((Lawyer) => {
             return Lawyer.fullname
@@ -40,17 +41,7 @@ const Main = () => {
 
     return (
         <>
-            <LawyerContext.Provider
-                value={{
-
-                    setFilteredLawyers,
-                    LawyerQuery,
-                    filteredLawyers,
-                    LawyerSearch,
-                }}>
-
-            </LawyerContext.Provider>
-            <Search />
+            <Search LawyerSearch={LawyerSearch} LawyerQuery={LawyerQuery}/>
             <>
                 <section className="container">
                     <div className="row">
