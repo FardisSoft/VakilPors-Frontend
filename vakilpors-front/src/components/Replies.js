@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
 const Replies = () => {
 	const [replyList, setReplyList] = useState([]);
@@ -7,7 +8,7 @@ const Replies = () => {
 	const navigate = useNavigate();
 	const { id } = useParams();
 
-    const addReply = () => {
+	const addReply = () => {
 		fetch("http://localhost:3000/api/create/reply", {
 			method: "POST",
 			body: JSON.stringify({
@@ -19,12 +20,38 @@ const Replies = () => {
 				"Content-Type": "application/json",
 			},
 		})
-    }
-    const handleSubmitReply = (e) => {
-        e.preventDefault();
-        console.log({ reply });
-        setReply("");
-    };
+			.then((res) => res.json())
+			.then((data) => {
+				alert(data.message);
+				navigate("/dashboard");
+			})
+			.catch((err) => console.error(err));
+	};
+	const handleSubmitReply = (e) => {
+		e.preventDefault();
+		addReply();
+		setReply("");
+	};
+	useEffect(() => {
+		const fetchReplies = () => {
+			fetch("http://localhost:4000/api/thread/replies", {
+				method: "POST",
+				body: JSON.stringify({
+					id,
+				}),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			})
+				.then((res) => res.json())
+				.then((data) => {
+					setReplyList(data.replies);
+					setTitle(data.title);
+				})
+				.catch((err) => console.error(err));
+		};
+		fetchReplies();
+	}, [id]);
 
     return (
         <main className='replies'>
@@ -41,6 +68,16 @@ const Replies = () => {
 
                 <button className='modalBtn'>SEND</button>
             </form>
+            <div className='thread__container'>
+				{replyList.map((reply) => (
+					<div className='thread__item'>
+						<p>{reply.text}</p>
+						<div className='react__container'>
+							<p style={{ opacity: "0.5" }}>by {reply.name}</p>
+						</div>
+					</div>
+				))}
+			</div>
         </main>
     );
 };
