@@ -1,35 +1,179 @@
-
 import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import Avatar from '@material-ui/core/Avatar';
+import 'E:/University/tahlil/sprint_2/Lawyer Profile/gpt/VakilPors-Frontend-development/vakilpors_Frontend/src/components/profile/css/a.css';
+import { Helmet } from 'react-helmet-async';
 
-<link
-  rel="stylesheet"
-  href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-/>
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginTop: theme.spacing(4),
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  input: {
+    display: 'none',
+  },
+  avatar: {
+    width: theme.spacing(12),
+    height: theme.spacing(12),
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
+  submitButton: {
+    margin: theme.spacing(2),
+  },
+}));
+
+const ProfileEdit = ({initialUsername, initialEmail, initialJob, initialBio, initialImageURL, initialphoneNumber, onSave}) => {
+
+  const descriptionUser = "کاربر گرامی ! در این قسمت می توانید تمامی اطلاعات کاربری خود را بروزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";
+  const [description, setDescription] = useState(descriptionUser);
 
 
-const ProfileEdit = ({initialUsername, initialEmail, initialBio, initialImageURL, onSave}) => {
+
+
+
+
+
+
+
+
+
+  const classes = useStyles();
   const [username, setUsername] = useState(initialUsername);
+  const [job, setJob] = useState(initialJob);
   const [email, setEmail] = useState(initialEmail);
   const [bio, setBio] = useState(initialBio);
-  const [imageURL, setImageURL] = useState(initialImageURL);
+  const [phoneNumber, setphoneNumber] = useState(initialphoneNumber);
+  const [imageURL, setAvatarUrl] = useState(initialImageURL);
+
+  const handleAvatarChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setAvatarUrl(reader.result);
+      };
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave({username, email, bio, imageURL});
+    onSave({username, email,job, bio, imageURL, phoneNumber});
   };
 
+
+
   return (
-    <form className="profile-edit" onSubmit={handleSubmit}>
-      <div className="profile-edit-image">
-        <input type="url" value={imageURL} onChange={(e) => setImageURL(e.target.value)} required />
-      </div>
-      <div className="profile-edit-info">
-        <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
-        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <textarea placeholder="Bio" value={bio} onChange={(e) => setBio(e.target.value)}></textarea>
-      </div>
-      <button type="submit">Save</button>
-    </form>
+    <>
+    <Helmet>
+        <meta charSet="utf-8"/>
+        <title>Sign Up</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    </Helmet>
+    <div className="page-content" onSubmit={handleSubmit}>
+      <div className="form-v4-content">
+        <div className="form-left">
+                <h2>ویرایش اطلاعات کاربری</h2>
+                <p className="text-1">{description}</p>
+        </div>
+
+          <form className="form-detail" id="myform" onSubmit={handleSubmit}>
+          <h2>اطلاعات کاربری</h2>
+          
+          <div className="form-group">
+
+          <div className="form-row form-row-1">
+                    <TextField
+                      required
+                      label="نام و نام خانوادگی"
+                      value={username}
+                      onChange={(event) => setUsername(event.target.value)}
+                      margin="normal"
+                    />
+           </div>
+           <div className="form-row form-row-1">
+            <TextField
+                required
+                label="ایمیل"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                margin="normal"
+              />
+           </div>   
+           </div>  
+           <div className="form-group">
+              <div className="form-row form-row-1">
+                <TextField
+                required
+                label="شغل"
+                value={job}
+                onChange={(event) => setJob(event.target.value)}
+                margin="normal"
+              />
+              </div>
+              <div className="form-row form-row-1">
+                <TextField
+                required
+                label="شماره تلفن"
+                value={phoneNumber}
+                onChange={(event) => setphoneNumber(event.target.value)}
+                margin="normal"
+              />
+              </div>
+           </div>
+           <div className="form-group">
+              <div className="form-row form-row-1">
+             <TextField
+              label="بیوگرافی"
+              value={bio}
+              onChange={(event) => setBio(event.target.value)}
+              margin="normal"
+              multiline
+              rows={3}
+            />
+              </div>      
+              
+              <div className="form-row form-row-1">
+              <br></br> 
+              <br></br> 
+                <label htmlFor="avatar-input">
+                  <Button variant="contained" color="default" component="span" startIcon={<CloudUploadIcon />}>
+                    انتخاب عکس پروفایل
+                  </Button>
+                </label>
+                <input
+                id="avatar-input"
+                className={classes.input}
+                type="file"
+                onChange={handleAvatarChange}
+              />
+
+
+              </div>
+
+          </div>                              
+
+
+            <Button type="submit" variant="contained" color="primary" className={classes.submitButton}>
+              ثبت اطلاعات
+            </Button>
+            </form>
+    </div>
+    </div>
+    
+    
+    </>
   );
 };
 
