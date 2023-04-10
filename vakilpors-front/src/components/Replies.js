@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 const Replies = () => {
@@ -9,7 +9,7 @@ const Replies = () => {
 	const { id } = useParams();
 
 	const addReply = () => {
-		fetch("http://localhost:3000/api/create/reply", {
+		fetch("http://localhost:4000/api/create/reply", {
 			method: "POST",
 			body: JSON.stringify({
 				id,
@@ -32,6 +32,7 @@ const Replies = () => {
 		addReply();
 		setReply("");
 	};
+
 	useEffect(() => {
 		const fetchReplies = () => {
 			fetch("http://localhost:4000/api/thread/replies", {
@@ -53,22 +54,25 @@ const Replies = () => {
 		fetchReplies();
 	}, [id]);
 
-    return (
-        <main className='replies'>
-            <form className='modal__content' onSubmit={handleSubmitReply}>
-                <label htmlFor='reply'>Reply to the thread</label>
-                <textarea
-                    rows={5}
-                    value={reply}
-                    onChange={(e) => setReply(e.target.value)}
-                    type='text'
-                    name='reply'
-                    className='modalInput'
-                />
+	return (
+		<main className='replies'>
+			<h1 className='repliesTitle'>{title}</h1>
 
-                <button className='modalBtn'>SEND</button>
-            </form>
-            <div className='thread__container'>
+			<form className='modal__content' onSubmit={handleSubmitReply}>
+				<label htmlFor='reply'>Reply to the thread</label>
+				<textarea
+					rows={5}
+					value={reply}
+					onChange={(e) => setReply(e.target.value)}
+					type='text'
+					name='reply'
+					className='modalInput'
+				/>
+
+				<button className='modalBtn'>SEND</button>
+			</form>
+
+			<div className='thread__container'>
 				{replyList.map((reply) => (
 					<div className='thread__item'>
 						<p>{reply.text}</p>
@@ -78,8 +82,8 @@ const Replies = () => {
 					</div>
 				))}
 			</div>
-        </main>
-    );
+		</main>
+	);
 };
 
 export default Replies;
