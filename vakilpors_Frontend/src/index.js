@@ -7,7 +7,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from './components/Login';
 import Register from './components/Register';
 import Policy from './components/Policy';
-import Main from './components/profile/Main';
+import Display_Profile from './components/profile/Display_Profile';
+import Edit_user_profile from './components/profile/edit_user_profile'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -19,7 +20,10 @@ root.render(
             <Route path="/Login" element={<Login/>}/>
             <Route path="/Register" element={<Register/>}/>
             <Route path="/Policy" element={<Policy/>}/>
-            <Route path="/Main" element={<Main/>}/>
+            <Route path="/display-profile" element={<Display_Profile/>}/>
+            <Route path="/edit" element={<Edit_user_profile/>}/>
+                    
+              
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
