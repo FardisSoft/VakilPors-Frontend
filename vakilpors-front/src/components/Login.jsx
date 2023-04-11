@@ -7,10 +7,7 @@ import '../css/login-page-util-style.css';
 import { FaEye } from 'react-icons/fa';
 import showPwdImg from '../assests/images/show-password.svg';
 import hidePwdImg from '../assests/images/hide-password.svg';
-
-import {
-    LoginUser,
-} from "../services/userService";
+import { useAuth } from "../services/AuthProvider";
 
 
 const Login = () => {
@@ -22,6 +19,8 @@ const Login = () => {
         phoneNumber: "",
         password: ""
     });
+
+    const { login } = useAuth();
   
 
     const navigate = useNavigate();
@@ -34,20 +33,13 @@ const Login = () => {
         }
         else {
             setErrorMessage(" ");
-            try {
-                const { status } = await LoginUser(getUser);
-                console.log(status);
-                if (status === 200) {
-                    setErrorColor("green");
-                    setErrorMessage("وارد شدید! :)");
-                    await delay(1000);
-                    navigate("/");
-                    setUser({});
-
-                }
-            } catch (err) {
-                setErrorMessage("ورود با خطا مواجه شد :(");
-            }
+            login(getUser);
+            setErrorColor("green");
+            setErrorMessage("وارد شدید! :)");
+            await delay(1000);
+            console.log(localStorage.getItem('accessToken'),"\n refresh : ", localStorage.getItem('refreshToken'));
+            // navigate("/");
+            // setUser({});
         }
     };
 
