@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import '../css/forum.css';
 
 const Comments = ({ numberOfComments, threadId }) => {
 	const navigate = useNavigate();
