@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useEffect } from 'react';
+import useState from 'react-usestateref';
 import axios from 'axios';
 import { BASE_API_ROUTE } from "../Constants";
 import jwt from 'jwt-decode'
@@ -10,52 +11,46 @@ const useAuth = () => {
 };
 
 const AuthProvider = ({ children }) => {
-    const [userRole, setUserRole] = useState(null);
-    const [accessToken, setAccessToken] = useState(null);
-    const [refreshToken, setRefreshToken] = useState(null);
+    const [userRole, setUserRole, refUserRole] = useState(null);
+    const [accessToken, setAccessToken, refAccessToken] = useState(null);
+    const [refreshToken, setRefreshToken, refRefreshToken] = useState(null);
 
     useEffect(() => {
         const fetchTokens = async () => {
-            const accessToken = localStorage.getItem('accessToken');
-            const refreshToken = localStorage.getItem('refreshToken');
-            if(accessToken){
-                setAccessToken(accessToken);
+            const accesstoken = localStorage.getItem('accessToken');
+            const refreshtoken = localStorage.getItem('refreshToken');
+            if(accesstoken){
+                setAccessToken(accesstoken);
+                const tokenData = jwt(accesstoken);
+                setUserRole(tokenData['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']);
             }
-            if(refreshToken){
-                setRefreshToken(refreshToken);
+            if(refreshtoken){
+                setRefreshToken(refreshtoken);
             }
         };
         fetchTokens();
     }, []);
 
     const login = async (getUser) => {
-        let config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            url: BASE_API_ROUTE + 'Auth/login',
-            headers: { 
-                'Content-Type': 'application/json'
-            },
-            data : JSON.stringify({
-                    "phoneNumber": getUser.phoneNumber,
-                    "password": getUser.password
-                })
-        };
-
-        axios.request(config)
-        .then((response) => {
-            console.log(response);
+        const url = BASE_API_ROUTE + 'Auth/login';
+        const data = {
+            "phoneNumber": getUser.phoneNumber,
+            "password": getUser.password
+        }
+        try{
+            const response = await axios.post(url,data);
             const { token, refreshToken } = response.data.data;
-        
+            const tokenData = jwt(token);
             setAccessToken(token);
             setRefreshToken(refreshToken);
-            // setUserRole(userRole);
+            setUserRole(tokenData['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']);
             localStorage.setItem('accessToken', token);
             localStorage.setItem('refreshToken', refreshToken);
-        })
-        .catch((error) => {
+            return "success";
+        } catch (error) {
             console.log(error);
-        });
+            return "error";
+        }
     };
 
     const logout = () => {
@@ -71,35 +66,42 @@ const AuthProvider = ({ children }) => {
     };
 
     const getAccessToken = async () => {
-        if (!refreshToken) { // login required
+        if (!refAccessToken.current) { // login required
             return null; 
         }
 
-        if(!accessToken) { // refresh required
-            try {
-                const data = JSON.stringify({
-                    "token": "",
-                    "refreshToken": refreshToken
-                });
-                const url = BASE_API_ROUTE + 'Auth/refreshtoken';
-                
-                const response = await axios.post(url, data);
+        const tokenData = jwt(refAccessToken.current);
+        // 604500 = (7 days - 5 minutes) to seconds
+        if ( ( tokenData.exp + 604500 ) * 1000 <= Date.now() ) { // refresh token expired. login required.
+            return null;
+        }
 
-                const newAccessToken = response.data.data.token;
-                setAccessToken(newAccessToken);
-                localStorage.setItem('accessToken', newAccessToken);
-                return newAccessToken;
-
+        if(tokenData.exp * 1000 <= Date.now()) { // refresh required
+            const url = BASE_API_ROUTE + 'Auth/refreshtoken';
+            const data = {
+                "token": refAccessToken.current,
+                "refreshToken": refRefreshToken.current
+            }
+            try{
+                const response = await axios.post(url,data);
+                const { token, refreshToken } = response.data.data;
+                setAccessToken(token);
+                setRefreshToken(refreshToken);
+                localStorage.setItem('accessToken', token);
+                localStorage.setItem('refreshToken', refreshToken);
+                return token;
             } catch (error) { // error in refreshing token. login required.
+                console.log(error);
                 return null;
             }
         }
-
-        return accessToken;
+        else {
+            return refAccessToken.current;
+        }
     };
 
     const value = {
-        userRole,
+        refUserRole,
         sendPasswordResetSMS,
         login,
         logout,

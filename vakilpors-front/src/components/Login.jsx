@@ -20,7 +20,7 @@ const Login = () => {
         password: ""
     });
 
-    const { login } = useAuth();
+    const { login, refUserRole } = useAuth();
   
 
     const navigate = useNavigate();
@@ -33,13 +33,20 @@ const Login = () => {
         }
         else {
             setErrorMessage(" ");
-            login(getUser);
-            setErrorColor("green");
-            setErrorMessage("وارد شدید! :)");
-            await delay(1000);
-            console.log(localStorage.getItem('accessToken'),"\n refresh : ", localStorage.getItem('refreshToken'));
-            // navigate("/");
-            // setUser({});
+            const success = await login(getUser);
+            if(success === "success"){
+                setErrorColor("green");
+                setErrorMessage("وارد شدید! :)");
+                await delay(1000);
+                navigate("/");
+                setUser({});
+            }
+            else{
+                setErrorColor("red");
+                setErrorMessage("ورود با خطا مواجه شد.");
+            }
+            // console.log(localStorage.getItem('accessToken'),"\n refresh : ", localStorage.getItem('refreshToken'));
+            // console.log("main role : ", refUserRole.current);
         }
     };
 
