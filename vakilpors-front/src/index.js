@@ -18,11 +18,11 @@ root.render(
      <BrowserRouter>
         <AuthProvider>
           <Routes>
-            <Route path="/" element={<Sidebar component={App} userRole={'unknown'} pageName={"صفحه اصلی"} />} />
-              <Route path="/Login" element={<Sidebar component={Login} userRole={'unknown'} pageName={"ورود"} />}/>
-              <Route path="/Register" element={<Sidebar component={Register} userRole={'unknown'} pageName={"ثبت نام"} />}/>
-              <Route path="/Policy" element={<Sidebar component={Policy} userRole={'unknown'} pageName={"شرایط سایت"} />}/>
-              <Route path="/LawyerPage" element={<Sidebar component={LawyerPage} userRole={'user'} pageName={"پروفایل عمومی وکیل"} />}/>
+            <Route path="/" element={<Sidebar component={App} pageName={"صفحه اصلی"} />} />
+              <Route path="/Login" element={<Sidebar component={Login} pageName={"ورود"} />}/>
+              <Route path="/Register" element={<Sidebar component={Register} pageName={"ثبت نام"} />}/>
+              <Route path="/Policy" element={<Sidebar component={Policy} pageName={"شرایط سایت"} />}/>
+              <Route path="/LawyerPage" element={<Sidebar component={LawyerPage} pageName={"پروفایل عمومی وکیل"} />}/>
           </Routes>
         </AuthProvider>
       </BrowserRouter>

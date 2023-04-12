@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import { BASE_API_ROUTE } from '../Constants';
-import useApiRequestsTokenHandler from "../services/useApiRequestsTokenHandler";
 import '../css/signup-page-main-style.css';
 import { FaEye } from 'react-icons/fa';
 
@@ -55,7 +54,7 @@ const Register = () => {
             setErrorMessage("شماره موبایل خود را به صورت صحیح وارد کنید");
             return false;
         }
-        if(email != ""){
+        if(email !== ""){
             if(!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)){
                 setErrorMessage("ایمیل خود را به صورت صحیح وارد کنید");
                 return false;
@@ -70,7 +69,7 @@ const Register = () => {
             setErrorMessage("رمز خود را به صورت صحیح وارد کنید ( رمز شما باید بین 6 تا 30 کاراکتر باشد، فقط از اعداد و حروف انگلیسی تشکیل شده باشد و حداقل شامل یک حرف بزرگ و حداقل یک حرف کوچک باشد)");
             return false;
         }
-        if(password != confirmPassword){
+        if(password !== confirmPassword){
             setErrorMessage("رمز با تکرار رمز مطابقت ندارد");
             return false;
         }

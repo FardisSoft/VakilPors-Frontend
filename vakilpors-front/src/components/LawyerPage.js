@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import { BASE_API_ROUTE } from '../Constants';
-import useApiRequestsTokenHandler from "../services/useApiRequestsTokenHandler";
 import { Button, Badge, styled, Avatar, Rating, Typography, Chip } from '@mui/material';
 import { Box, Stack, Grid, Container } from "@mui/material";
 import { Card, CardActions, CardContent, CardHeader, CardMedia } from "@mui/material";

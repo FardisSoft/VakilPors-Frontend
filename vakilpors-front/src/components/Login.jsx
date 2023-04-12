@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from 'react-helmet-async';
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import '../css/login-page-main-style.css';
 import '../css/login-page-util-style.css';
 import { FaEye } from 'react-icons/fa';
@@ -20,7 +20,7 @@ const Login = () => {
         password: ""
     });
 
-    const { login, refUserRole } = useAuth();
+    const { login } = useAuth();
   
 
     const navigate = useNavigate();
