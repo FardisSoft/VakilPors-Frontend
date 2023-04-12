@@ -14,8 +14,7 @@ const App = () => {
         <form class="form-inline my-2 my-lg-0">
           <Link to="/Login" class="mx-3">ورود</Link>
           <Link to="/Register"class="mx-2">ثبت نام</Link>
-          <Link to="/dashboard" class="mx-3">داشبورد</Link>
-          <Link to="/:id/replies" class="mx-3">ریپلای‌ها</Link>
+          <Link to="/dashboard" class="mx-3">فروم</Link>
           {/**
            *  <button class="btn btn-primary my-3 mx-2 my-sm-0" type="submit">Login</button>
            */}
