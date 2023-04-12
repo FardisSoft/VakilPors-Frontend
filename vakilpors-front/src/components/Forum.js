@@ -1,9 +1,12 @@
-import React, { useEffect ,useState } from "react";
+import React, { useEffect, useState } from "react";
 import Likes from "../utils/Likes";
 import Comments from "../utils/Comments";
 import { useNavigate } from "react-router-dom";
+import Nav from "./Nav";
+import '../css/forum.css';
 
-const Home = () => {
+
+const Forum = () => {
 	const [thread, setThread] = useState("");
 	const [threadList, setThreadList] = useState([]);
 	const navigate = useNavigate();
@@ -49,23 +52,23 @@ const Home = () => {
 	return (
 		<>
 			<Nav />
-			<main className='home'>
-				<h2 className='homeTitle'>Create a Thread</h2>
-				<form className='homeForm' onSubmit={handleSubmit}>
-					<div className='home__container'>
-						<label htmlFor='thread'>Title / Description</label>
-						<input
-							type='text'
-							name='thread'
-							required
-							value={thread}
-							onChange={(e) => setThread(e.target.value)}
-						/>
-					</div>
-					<button className='homeBtn'>CREATE THREAD</button>
-				</form>
-
-				<div className='thread__container'>
+			<main className='home' style={{background:'#84a0a0'}}>
+					<h2 className='homeTitle' style={{fontFamily:'calibri'}}>یک موضوع جدید ایجاد کنید یا موضوع مورد نظر خود را انتخاب کنید</h2>
+					<form className='homeForm' onSubmit={handleSubmit}>
+						<div className='home__container' >
+							<label htmlFor='thread'style={{fontFamily:'calibri'}}>موضوع</label>
+							<input
+								type='text'
+								name='thread'
+								required
+								value={thread}
+								onChange={(e) => setThread(e.target.value)}
+							/>
+						</div>
+						<button className='homeBtn' style={{fontFamily:'calibri'}}>ساخت موضوع جدید</button>
+					</form>
+				
+				<div className='thread__container' style={{fontFamily:'calibri'}}>
 					{threadList.map((thread) => (
 						<div className='thread__item' key={thread.id}>
 							<p>{thread.title}</p>
@@ -88,4 +91,4 @@ const Home = () => {
 	);
 };
 
-export default Home;
+export default Forum;
