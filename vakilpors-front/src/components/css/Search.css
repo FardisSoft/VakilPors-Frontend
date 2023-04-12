@@ -152,13 +152,14 @@
   .landing-layer{
     width: 100%;
     position: relative;
-    background-color: #012780;
-    /*background: url('') no-repeat center center;*/
+
+    background: url("https://wallpapercave.com/wp/wp9723364.jpg") no-repeat center center;
+
     background-size: cover;
   }
   .landing-layer.home-page{
     /*background: url('') no-repeat center center;*/
-    background-color: #012780;
+    
     background-size: cover;
     padding: 25px 0
   }
@@ -520,9 +521,9 @@
   .landing-layer .landing-content .landing-search form{
     width: 100%;
     display: block;
-    border-radius: 50px;
-    -moz-border-radius: 50px;
-    -webkit-border-radius: 50px;
+    border-radius: 30px;
+    -moz-border-radius: 30px;
+    -webkit-border-radius: 30px;
     padding: 10px;
     background-color: rgba(255,255,255,0.1);
     position: relative;
@@ -531,9 +532,9 @@
   .landing-layer .landing-content .landing-search form input{
     width: 100%;
     display: block;
-    border-radius: 50px;
-    -moz-border-radius: 50px;
-    -webkit-border-radius: 50px;
+    border-radius: 20px;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
     line-height: 50px;
     height: 50px;
     padding: 0 20px;

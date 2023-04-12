@@ -1,55 +1,45 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import '../css/ShowLawyers.css';
 
 
 const ShowLawyers = ({ Lawyer }) => {
 
     return (
-        <div style={{ backgroundColor: "#012780" }} className="card my-2">
-            <div className="card-body">
-                <div className="row align-items-center d-flex justify-content-around">
-                    <div className="col-md-4 col-sm-4">
-                        <img
-                            src={Lawyer.photo}
-                            alt={Lawyer.fullname}
-                            style={{ border: `1px solid ` }}
-                            className="img-fluid rounded"
-                        />
+        <div className="col-lg-3 col-md-6 col-sm-12 col-xs-12">
+            <div class="teachers-list" >
+                <div class="row">
+                    <div class="teacher-item">
+                        <div class="box-shadow teacher-box-size"  >
+                            <a class="img-layer lazy" href="/masters/AdminUser">
+                                <img class="" src="https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Better_Call_Saul_season_6.jpg/220px-Better_Call_Saul_season_6.jpg" alt="ایمان مدائنی" style={{ display: "block" }} />
+                            </a>
+                            <h2 className="align-center"> 
+                            <p class="my-2">نام و نام خانوادگی : </p>
+                                <a title={Lawyer.fullname} href="/masters/AdminUser" >
+                                    <i class="zmdi zmdi-account ">
+                                    </i> {Lawyer.fullname} </a>
+                            </h2>
+                            <h2>
+                            <p class="my-2">شماره پروانه وکالت: </p>
+                                <a title={Lawyer.Pnumber} href="/masters/AdminUser" >
+                                    <i class="zmdi zmdi-account">
+                                    </i> {Lawyer.Pnumber} </a>
+                            </h2>
+                            <h2>
+                            <p class="my-2">میزان امتیاز کسب شده: </p>
+                                <a title={Lawyer.Score} href="/masters/AdminUser" >
+                                    <i class="zmdi zmdi-account " >
+                                    </i> {Lawyer.Score} </a>
+                            </h2>
+                
+                        </div>
                     </div>
-                    <div className="col-md-7 col-sm-7">
-                        <ul className="list-group">
-                            <li className="list-group-item list-group-item-dark">
-                                نام و نام خانوداگی :{"  "}
-                                <span className="fw-bold">{Lawyer.fullname}</span>
-                            </li>
-
-                            <li className="list-group-item list-group-item-dark">
-                                شماره موبایل :{"  "}
-                                <span className="fw-bold">{Lawyer.Pnumber}</span>
-                            </li>
-
-                            <li className="list-group-item list-group-item-dark">
-                                آدرس ایمیل :{"  "}
-                                <span className="fw-bold">{Lawyer.Score}</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="col-md-1 col-sm-1 d-flex flex-column align-items-center">
-                    </div>
-                </div>
-                <div className="col-md-1 col-sm-1 d-flex flex-column align-items-center">
-                    <Link
-                        to={`/Main/${Lawyer.id}`}
-                        className="btn my-1"
-                        style={{ backgroundColor: "green" }}
-                    >
-                        <i className="fa fa-eye" />
-                    </Link>
-
                 </div>
             </div>
         </div>
-    );
+    )
+
 };
 
 export default ShowLawyers;
