@@ -59,7 +59,7 @@ const Replies = () => {
 			<h1 className='repliesTitle'>{title}</h1>
 
 			<form className='modal__content' onSubmit={handleSubmitReply}>
-				<label htmlFor='reply'>Reply to the thread</label>
+				<label htmlFor='reply' style={{fontFamily:'calibri'}}>به این موضوع نظر بدهید</label>
 				<textarea
 					rows={5}
 					value={reply}
@@ -69,10 +69,10 @@ const Replies = () => {
 					className='modalInput'
 				/>
 
-				<button className='modalBtn'>SEND</button>
+				<button className='modalBtn' style={{fontFamily:'calibri'}}>ارسال</button>
 			</form>
 
-			<div className='thread__container'>
+			<div className='thread__container' style={{fontFamily:'calibri'}}>
 				{replyList.map((reply) => (
 					<div className='thread__item'>
 						<p>{reply.text}</p>
