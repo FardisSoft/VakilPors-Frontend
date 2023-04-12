@@ -10,6 +10,7 @@ import Register from './components/Register';
 import Policy from './components/Policy';
 import LawyerPage from './components/LawyerPage';
 import Sidebar from './components/Sidebar';
+import { Box } from '@mui/material';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -18,11 +19,11 @@ root.render(
      <BrowserRouter>
         <AuthProvider>
           <Routes>
-            <Route path="/" element={<Sidebar component={App} pageName={"صفحه اصلی"} />} />
-              <Route path="/Login" element={<Sidebar component={Login} pageName={"ورود"} />}/>
-              <Route path="/Register" element={<Sidebar component={Register} pageName={"ثبت نام"} />}/>
-              <Route path="/Policy" element={<Sidebar component={Policy} pageName={"شرایط سایت"} />}/>
-              <Route path="/LawyerPage" element={<Sidebar component={LawyerPage} pageName={"پروفایل عمومی وکیل"} />}/>
+            <Route path="/" element={<Sidebar component={App}/>} />
+              <Route path="/Login" element={<><Sidebar component={Box}/><Login/></>}/>
+              <Route path="/Register" element={<><Sidebar component={Box}/><Register/></>}/>
+              <Route path="/Policy" element={<Sidebar component={Policy}/>}/>
+              <Route path="/LawyerPage" element={<Sidebar component={LawyerPage}/>}/>
           </Routes>
         </AuthProvider>
       </BrowserRouter>

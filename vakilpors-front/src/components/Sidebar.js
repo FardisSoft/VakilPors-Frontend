@@ -1,13 +1,15 @@
 import { HomeOutlined, PersonSearchOutlined, ForumOutlined, PolicyOutlined, AppRegistrationOutlined,
        LoginOutlined, LogoutOutlined, ManageAccountsOutlined, AccountCircleOutlined, CallOutlined,
        Menu, ChevronRight } from "@mui/icons-material";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import useStateRef from 'react-usestateref';
 import { styled } from '@mui/material/styles';
 import { Link } from "react-router-dom";
 import { Box, Divider, Grid, Drawer } from '@mui/material';
 import { Badge, Avatar, Typography, Toolbar } from '@mui/material';
 import MuiAppBar from '@mui/material/AppBar';
 import { List, ListItem, ListItemButton, IconButton, ListItemIcon } from '@mui/material';
+import { useAuth } from "../services/AuthProvider";
 
 import pic1 from '../assests/images/profileTest.jpg';
 
@@ -59,11 +61,11 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 const Sidebar = (props) => {
 
+  const { refUserRole } = useAuth();
   let tempLinks = [];
-
-  switch( props.userRole ){
+  switch( refUserRole.current ){
     
-    case "unknown":
+    case null: // guest user
       tempLinks = [
         {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
@@ -73,12 +75,12 @@ const Sidebar = (props) => {
       ];
       break;
     
-    case "user":
+    case "User":
       tempLinks = [
         {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
         {name:'پروفایل شخصی', icon:ManageAccountsOutlined, url:'/'},
         {name:'جست و جوی وکیل', icon:PersonSearchOutlined, url:'/'},
-        {name:'پروفایل عمومی وکیل', icon:AccountCircleOutlined, url:'/LawyerPage'},
+        // {name:'پروفایل عمومی وکیل', icon:AccountCircleOutlined, url:'/LawyerPage'},
         {name:'فروم', icon:ForumOutlined, url:'/'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
         {name:'تماس با ما', icon:CallOutlined, url:'/'},
@@ -88,11 +90,11 @@ const Sidebar = (props) => {
       ];
       break;
     
-    case "lawyer":
+    case "Vakil":
       tempLinks = [
         {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
         {name:'پروفایل شخصی', icon:ManageAccountsOutlined, url:'/'},
-        {name:'پروفایل عمومی وکیل', icon:AccountCircleOutlined, url:'/LawyerPage'},
+        {name:'پروفایل عمومی', icon:AccountCircleOutlined, url:'/LawyerPage'},
         {name:'فروم', icon:ForumOutlined, url:'/'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
         {name:'تماس با ما', icon:CallOutlined, url:'/'},
@@ -112,6 +114,16 @@ const Sidebar = (props) => {
   const [profilePicture, setProfilePicture] = useState(pic1);
   const [online, setOnline] = useState(true);
   const [name, setName] = useState('فلان فلانی');
+  const [pageName, setPageName, refPageName] = useStateRef('');
+
+  useEffect(() => {
+    const getPageName = async () => {
+      let pname = window.location.href.split('/');
+      pname = '/' + pname[pname.length - 1];
+      setPageName(pname);
+    };
+    getPageName();
+  }, [window.location.href]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -180,18 +192,18 @@ const Sidebar = (props) => {
         <List>
           {links.map((linki,index) => (
             <ListItem key={index} component={Link} to={linki.url} disablePadding>
-              <ListItemButton sx={{ ...(props.pageName === linki.name && {backgroundColor:"rgb(25,118,210)", ":hover":{backgroundColor:"rgba(25,118,210,0.7)"}})}}>
+              <ListItemButton sx={{ ...(refPageName.current === linki.url && {backgroundColor:"rgb(25,118,210)", ":hover":{backgroundColor:"rgba(25,118,210,0.7)"}})}}>
                 <ListItemIcon>
-                  <linki.icon color="primary" sx={{ ...(props.pageName === linki.name && {color:"white"})}} />
+                  <linki.icon color="primary" sx={{ ...(refPageName.current === linki.url && {color:"white"})}} />
                 </ListItemIcon>
-                <Typography fontFamily="shabnam" sx={{ ...(props.pageName === linki.name && {color:"white"})}} >{linki.name}</Typography>
+                <Typography fontFamily="shabnam" sx={{ ...(refPageName.current === linki.url && {color:"white"})}} >{linki.name}</Typography>
               </ListItemButton>
             </ListItem>
           ))}
         </List>
       </Drawer>
 
-      <Main>
+      <Main sx={{padding:'0 !important'}}>
         <DrawerHeader/>
         <props.component/>
       </Main>

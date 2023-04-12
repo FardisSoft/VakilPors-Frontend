@@ -11,10 +11,10 @@ const Policy = () => {
      {/* <link rel="stylesheet" href="css/responsive.css" /> */}
      {/* <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"/> */}
     </Helmet>
-    <div className="header_section">
+    {/* <div className="header_section">
       <div className="container-fluid"></div>
-    </div>
-    <div className="about_section layout_padding margin_top90">
+    </div> */}
+    <div className="about_section layout_padding margin_top90" style={{margin:"16px"}}>
       <div className="container">
         <div className="row">
           <div className="col-md">

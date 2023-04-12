@@ -108,7 +108,7 @@ const LawyerPage = () => {
     <Helmet>
         <title>Lawyer Page</title>
     </Helmet>
-    <Stack spacing={5} maxWidth="100%">
+    <Stack spacing={5} maxWidth="100%" margin={2}>
         <Grid container direction={{ xs: 'column', sm: 'row' }} alignItems="stretch">
             <Grid sx={{backgroundImage:`url(${profileBackgroundPicture})`}} display="flex" alignItems="center" justifyContent="center" item component={Card} sm>
                 <CardContent>
