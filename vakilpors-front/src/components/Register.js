@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Helmet } from 'react-helmet-async';
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { BASE_API_ROUTE } from '../Constants';
 import '../css/signup-page-main-style.css';
 import { FaEye } from 'react-icons/fa';
+import { useAuth } from "../services/AuthProvider";
 
 const Register = () => {
     const [name, setName] = useState("");
@@ -27,6 +29,9 @@ const Register = () => {
     const [roleName, setRoleName] = useState(roleUser);
     const [roleTitle, setRoleTitle] = useState(roleTitleLawyer);
     const [description, setDescription] = useState(descriptionUser);
+
+    const { login } = useAuth();
+    const navigate = useNavigate();
 
     const handleRoleChanger = () => {
         role === "user" ? setDescription(descriptionLawyer) : setDescription(descriptionUser);
@@ -80,42 +85,46 @@ const Register = () => {
         return true;
     }
 
-    const SignupApi = () => {
-        const data = JSON.stringify({
-        "phoneNumber": phone,
-        "password": password,
-        "name": name,
-        "email": email,
-        "isVakil": role === "user" ? false : true
-        });
+    const delay = ms => new Promise(
+        resolve => setTimeout(resolve, ms)
+    );
 
-        let config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        url: BASE_API_ROUTE + 'Auth/register',
-        headers: { 
-            'Content-Type': 'application/json'
-        },
-        data : data
-        };
-
-        axios.request(config)
-        .then((response) => {
-            setErrorColor("green");
-            setErrorMessage("ثبت نام با موفقیت انجام شد!");
-            // go to homepage
-            console.log(JSON.stringify(response.data));
-        })
-        .catch((error) => {
-            const responseData = error.response.data.data;
-            if ( responseData.hasOwnProperty('DuplicateUserName') ){
-                setErrorMessage("شما قبلا ثبت نام کرده اید! لطفا روی وارد شو کلیک کرده و وارد حساب کاربری خود شوید. ");
+    const SignupApi = async () => {
+        const url = BASE_API_ROUTE + 'Auth/register';
+        const data = {
+            "phoneNumber": phone,
+            "password": password,
+            "name": name,
+            "email": email,
+            "isVakil": role === "user" ? false : true
+        }
+        try{
+            const response = await axios.post(url,data);
+            const success = await login({ "phoneNumber": phone, "password": password});
+            if(success === "success"){
+                setErrorColor("green");
+                setErrorMessage("ثبت نام با موفقیت انجام شد!");
+                await delay(1000);
+                navigate("/");
+            }
+            else{
+                setErrorColor("red");
+                setErrorMessage("ورود با خطا مواجه شد.");
+            }
+        } catch (error) {
+            const responseData = error.response.data;
+            if (responseData.hasOwnProperty('data')){
+                if ( responseData.data.hasOwnProperty('DuplicateUserName') ){
+                    setErrorMessage("شما قبلا ثبت نام کرده اید! لطفا روی وارد شو کلیک کرده و وارد حساب کاربری خود شوید. ");
+                }
+                else {
+                    setErrorMessage("ثبت نام با خطا مواجه شد. لطفا دوباره تلاش کنید.");
+                }
             }
             else {
                 setErrorMessage("ثبت نام با خطا مواجه شد. لطفا دوباره تلاش کنید.");
             }
-            console.log(error.response.data);
-        });
+        }
     }
     
     document.getElementsByTagName('body')[0].classList.add("form-v4");  

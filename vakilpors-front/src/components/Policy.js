@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import { Helmet } from 'react-helmet-async';
-import '../css/policy-page-main-style.css';
+// import '../css/policy-page-main-style.css';
 
 const Policy = () => {
   return (
@@ -17,11 +17,6 @@ const Policy = () => {
     <div className="about_section layout_padding margin_top90">
       <div className="container">
         <div className="row">
-          <div className="col-md">
-            <div className="about_img">
-              {/* <img src="images/about-img.png" alt="about" /> */}
-            </div>
-          </div>
           <div className="col-md">
             <div className="about_text_main">
               <h1 className="login100-form-title" style={{fontSize:40}}>قوانین وکیل پرس</h1>
