@@ -28,22 +28,23 @@ const Forum = () => {
 		checkUser();
 	}, [navigate]);
 
-    const createThread = async () => {
-		const url = BASE_API_ROUTE + 'Thread/CreateThread';
-		const token = getAccessToken();
-		console.log('token gerefte shode : ',token);
-		if(token){
-			try {
-				const response = await axios.post(url, {}, {headers: {Authorization: `Bearer ${token}`}});
-				console.log('ba token response : ',response);
-				setThreadList(response.data.threads);
-			} catch (error) {
-				console.log('ba token error : ',error);
-			}
-		}
-		else{
-			// go to login
-		}
+    const createThread = () => {
+		fetch("http://localhost:4000/api/create/thread", {
+			method: "POST",
+			body: JSON.stringify({
+				thread,
+				id: localStorage.getItem("_id"),
+			}),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				alert(data.message);
+				setThreadList(data.threads);
+			})
+			.catch((err) => console.error(err));
 	};
 	const handleSubmit = (e) => {
 		e.preventDefault();
