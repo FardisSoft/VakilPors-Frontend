@@ -82,7 +82,7 @@ const ProfileEdit = ({initialUsername, initialEmail, initialGender, initialEduca
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     </Helmet>
     <div className="page-content" onSubmit={handleSubmit}>
-      <div className="form-v4-content">
+      <div className="form-v4-content-ForEdit">
         <div className="form-left">
                 <h2>ویرایش اطلاعات کاربری</h2>
                 <p className="text-1">{description}</p>
