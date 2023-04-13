@@ -29,7 +29,7 @@ const Forum = () => {
 	}, [navigate]);
 
     const createThread = () => {
-		fetch("http://localhost:4000/api/create/thread", {
+		fetch("https://api.fardissoft.ir/Thread/CreateThread", {
 			method: "POST",
 			body: JSON.stringify({
 				thread,
