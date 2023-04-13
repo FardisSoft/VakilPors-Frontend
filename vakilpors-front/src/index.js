@@ -10,8 +10,9 @@ import Register from './components/Register';
 import Policy from './components/Policy';
 import LawyerPage from './components/LawyerPage';
 import Sidebar from './components/Sidebar';
-import { Box } from '@mui/material';
 import Forum from './components/Forum';
+import Lawyer_search_page from './components/Lawyer-search-page/Lawyer_search_page';
+import { Box } from '@mui/material';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -24,8 +25,9 @@ root.render(
               <Route path="/Login" element={<><Sidebar component={Box}/><Login/></>}/>
               <Route path="/Register" element={<><Sidebar component={Box}/><Register/></>}/>
               <Route path="/Policy" element={<Sidebar component={Policy}/>}/>
-              <Route path="/LawyerPage" element={<Sidebar component={LawyerPage}/>}/>
               <Route path="/dashboard" element={<Sidebar component={Forum}/>}/>
+              <Route path="/LawyerPage" element={<Sidebar component={LawyerPage}/>}/>
+              <Route path="/Lawyer-search-page" element={<Sidebar component={Lawyer_search_page}/>}/>
           </Routes>
         </AuthProvider>
       </BrowserRouter>

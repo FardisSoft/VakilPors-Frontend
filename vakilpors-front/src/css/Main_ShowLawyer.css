@@ -1,0 +1,12 @@
+.contain
+{
+background-color: #ABC0C0;
+
+border-right: 50px solid;
+border-color: #012780 ;
+border-top-left-radius: 40px;
+border-bottom-right-radius: 40px;
+border-top-right-radius: 2px;
+border-bottom-left-radius: 2px;
+margin-block: 100px;
+}
