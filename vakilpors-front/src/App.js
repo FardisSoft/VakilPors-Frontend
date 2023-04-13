@@ -16,6 +16,9 @@ const App = () => {
           <Link to="/LawyerPage"class="mx-2">صفحه مشاهده وکیل</Link>
           <Link to="/dashboard" class="mx-3">فروم</Link>
           <Link to="/Lawyer-search-page" class="mx-3">جست و جوی وکیل</Link>
+          <Link to="/edit_lawyer" class="mx-3">edit_lawyer</Link>
+          <Link to="/edit" class="mx-3">edit</Link>
+          <Link to="/display-profile" class="mx-3">display-profile</Link>
           {/**
            *  <button className="btn btn-primary my-3 mx-2 my-sm-0" type="submit">Login</button>
            */}
