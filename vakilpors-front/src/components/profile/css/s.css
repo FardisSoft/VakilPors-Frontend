@@ -164,7 +164,7 @@
   font-size: 18px;
 }
 
-button {
+.buttonForDisplay {
   border: none;
   outline: 0;
   display: inline-block;
@@ -177,12 +177,4 @@ button {
   font-size: 18px;
 }
 
-a {
-  text-decoration: none;
-  font-size: 22px;
-  color: black;
-}
 
-button:hover, a:hover {
-  opacity: 0.7;
-}
