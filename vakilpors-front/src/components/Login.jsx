@@ -5,8 +5,8 @@ import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import '../css/login-page-main-style.css';
 import '../css/login-page-util-style.css';
 import { FaEye } from 'react-icons/fa';
-import showPwdImg from '../show-password.svg';
-import hidePwdImg from '../hide-password.svg';
+import showPwdImg from '../assests/images/show-password.svg';
+import hidePwdImg from '../assests/images/hide-password.svg';
 
 import {
     LoginUser,
