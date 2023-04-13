@@ -11,6 +11,7 @@ import Policy from './components/Policy';
 import LawyerPage from './components/LawyerPage';
 import Sidebar from './components/Sidebar';
 import { Box } from '@mui/material';
+import Forum from './components/Forum';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -24,6 +25,7 @@ root.render(
               <Route path="/Register" element={<><Sidebar component={Box}/><Register/></>}/>
               <Route path="/Policy" element={<Sidebar component={Policy}/>}/>
               <Route path="/LawyerPage" element={<Sidebar component={LawyerPage}/>}/>
+              <Route path="/dashboard" element={<Sidebar component={Forum}/>}/>
           </Routes>
         </AuthProvider>
       </BrowserRouter>

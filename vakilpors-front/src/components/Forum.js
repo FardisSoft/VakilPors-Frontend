@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Likes from "../utils/Likes";
 import Comments from "../utils/Comments";
 import { useNavigate } from "react-router-dom";
-import Nav from "./Nav";
 import '../css/forum.css';
 
 
@@ -14,7 +13,7 @@ const Forum = () => {
 	useEffect(() => {
 		const checkUser = () => {
 			if (!localStorage.getItem("_id")) {
-				navigate("/");
+				// navigate("/");
 			} else {
 				fetch("https://api.fardissoft.ir/Thread/GetThreadList")
 					.then((res) => res.json())
@@ -51,7 +50,7 @@ const Forum = () => {
 
 	return (
 		<>
-			<Nav />
+			{/* <Nav /> */}
 			<main className='home' style={{background:'#84a0a0'}}>
 					<h2 className='homeTitle' style={{fontFamily:'calibri'}}>یک موضوع جدید ایجاد کنید یا موضوع مورد نظر خود را انتخاب کنید</h2>
 					<form className='homeForm' onSubmit={handleSubmit}>
