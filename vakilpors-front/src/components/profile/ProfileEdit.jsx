@@ -136,10 +136,9 @@ const ProfileEdit = ({initialUsername, initialEmail, initialJob, initialBio, ini
               </div>      
               
               <div className="form-row form-row-1">
-              <br></br> 
-              <br></br> 
+                <br></br>
                 <label htmlFor="avatar-input">
-                  <Button variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />}>
+                  <Button onChange={handleAvatarChange} variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />}>
                     انتخاب عکس پروفایل
                   </Button>
                 </label>
