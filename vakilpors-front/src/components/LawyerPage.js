@@ -73,7 +73,8 @@ const LawyerPage = () => {
             { profilePicture:pic3, name:"رضا", rate:1, comment:"عدم پاسخ گویی" }
         ]);
     };
-    const handleInitializer2 = (data) => {
+
+    const handleInitializerWithAPI = (data) => {
         setAboutMe(data.aboutMe);
         setCallingCard(data.callingCardImageUrl);
         setCity(data.city);
@@ -85,26 +86,20 @@ const LawyerPage = () => {
         setProfilePicture(data.profileImageUrl);
         setRate(data.rating);
         setResumeLink(data.resumeLink);
-        // setSpecialties(data.specialties);
+        setSpecialties(data.specialties ? data.specialties : []);
         setTitle(data.title);
         setYearsOfExperience(data.yearsOfExperience);
-        setOnline(data.user.isActive);
         setName(data.user.name);
+        setGender(data.gender);
+        setProfileBackgroundPicture(data.profileBackgroundPictureUrl);
+        setNumberOfRates(data.numberOfRates);
+        setNumberOfConsultations(data.numbereOfConsulations);
+        setNumberOfAnswers(data.numberOfAnswers);
+        setNumberOfLikes(data.numberOfLikes);
+        setNumberOfVerifies(data.numberOfVerifies);
+        setRatesList(data.ratesList);
 
-        setSpecialties(['خانواده', 'مواد مخدر', 'املاک']);
-
-        setProfileBackgroundPicture(pic2);
-        setNumberOfRates(100);
-        setGender('مرد');
-        setNumberOfConsultations(120);
-        setNumberOfAnswers(350);
-        setNumberOfLikes(580);
-        setNumberOfVerifies(290);
-        setRatesList([
-            { profilePicture:pic1, name:"محمد", rate:0, comment:"بسیار بد" },
-            { profilePicture:pic2, name:"ali", rate:3.5, comment:"khoob bood" },
-            { profilePicture:pic3, name:"رضا", rate:1, comment:"عدم پاسخ گویی" }
-        ]);
+        setOnline(data.user.isActive);
     };
 
     useEffect(() => {
@@ -113,7 +108,7 @@ const LawyerPage = () => {
             try {
                 const response = await axios.get(url);
                 console.log('response : ',response);
-                handleInitializer2(response.data.data);
+                handleInitializerWithAPI(response.data.data);
             } catch (error) {
                 console.log('error : ',error);
             }

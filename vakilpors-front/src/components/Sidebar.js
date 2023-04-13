@@ -10,6 +10,9 @@ import { Badge, Avatar, Typography, Toolbar } from '@mui/material';
 import MuiAppBar from '@mui/material/AppBar';
 import { List, ListItem, ListItemButton, IconButton, ListItemIcon } from '@mui/material';
 import { useAuth } from "../services/AuthProvider";
+import jwt from 'jwt-decode';
+import axios from 'axios';
+import { BASE_API_ROUTE } from '../Constants';
 
 import pic1 from '../assests/images/profileTest.jpg';
 
@@ -61,7 +64,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 const Sidebar = (props) => {
 
-  const { refUserRole } = useAuth();
+  const { refUserRole, getAccessToken } = useAuth();
   let tempLinks = [];
   switch( refUserRole.current ){
     
@@ -115,6 +118,37 @@ const Sidebar = (props) => {
   const [online, setOnline] = useState(true);
   const [name, setName] = useState('فلان فلانی');
   const [pageName, setPageName, refPageName] = useStateRef('');
+
+  useEffect(() => {
+    const sidebarApi = async () => {
+      console.log(refUserRole);
+      const token = await getAccessToken();
+      if(token){
+        const tokenData = jwt(token);
+        let url = "";
+        if(refUserRole.current === "User"){
+          url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
+        }
+        if(refUserRole.current === "Vakil"){
+          url = BASE_API_ROUTE + `Lawyer/GetLawyerById?lawyerId=${tokenData.uid}`;
+        }
+        try {
+          const response = await axios.get(url);
+          console.log('response : ',response);
+          handleAPI(response.data.data);
+        } catch (error) {
+            console.log('error : ',error);
+        }
+      }
+    };
+    sidebarApi();
+  }, []);
+
+  const handleAPI = (data) => {
+    setProfilePicture(data.profileImageUrl);
+    setOnline(true);
+    setName(refUserRole.current === "User" ? data.name : data.user.name);
+  };
 
   useEffect(() => {
     const getPageName = async () => {
