@@ -16,7 +16,7 @@ const Forum = () => {
 			if (!localStorage.getItem("_id")) {
 				navigate("/");
 			} else {
-				fetch("http://localhost:3000/api/all/threads")
+				fetch("https://api.fardissoft.ir/Thread/GetThreadList")
 					.then((res) => res.json())
 					.then((data) => setThreadList(data.threads))
 					.catch((err) => console.error(err));
@@ -26,7 +26,7 @@ const Forum = () => {
 	}, [navigate]);
 
     const createThread = () => {
-		fetch("http://localhost:4000/api/create/thread", {
+		fetch("https://api.fardissoft.ir/Thread/CreateThread", {
 			method: "POST",
 			body: JSON.stringify({
 				thread,

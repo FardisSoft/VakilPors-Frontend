@@ -9,7 +9,7 @@ const Replies = () => {
 	const { id } = useParams();
 
 	const addReply = () => {
-		fetch("http://localhost:4000/api/create/reply", {
+		fetch("https://api.fardissoft.ir/ThreadComment/CreateComment", {
 			method: "POST",
 			body: JSON.stringify({
 				id,
@@ -35,7 +35,7 @@ const Replies = () => {
 
 	useEffect(() => {
 		const fetchReplies = () => {
-			fetch("http://localhost:4000/api/thread/replies", {
+			fetch("https://api.fardissoft.ir/ThreadComment/GetCommentsForThread", {
 				method: "POST",
 				body: JSON.stringify({
 					id,
