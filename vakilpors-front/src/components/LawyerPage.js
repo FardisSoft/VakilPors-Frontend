@@ -47,7 +47,7 @@ const LawyerPage = () => {
         setProfilePicture(pic1);
         setProfileBackgroundPicture(pic2);
         setOnline(true);
-        setName("فلان فلانی");
+        setName("موسی صالحی");
         setTitle("وکیل پایه یک مرکز وکلای قوه‌قضاییه");
         setRate(4.5);
         setNumberOfRates(100);
@@ -64,13 +64,13 @@ const LawyerPage = () => {
         setNumberOfAnswers(350);
         setNumberOfLikes(580);
         setNumberOfVerifies(290);
-        setAboutMe('سلام من فلان هستم و فلان و فلان جا درس خواندم و فلان جا کار کردم و رو دست من نیومده.')
+        setAboutMe('سلام من فلانی هستم و فلان جا درس خواندم و فلان جا کار کردم.')
         setCallingCard(pic3);
         setResumeLink("https://s29.picofile.com/file/8461773392/resume1.pdf.html");
         setRatesList([
-            { profilePicture:pic1, name:"ممد", rate:0, comment:"اصلن به این یارو اعتماد نکنید فقط فکر خودشه" },
-            { profilePicture:pic2, name:"ali", rate:3.5, comment:"adame khoobi bood" },
-            { profilePicture:pic3, name:"رضا", rate:1, comment:"هیچی بلد نیست ولی اخلاقش خوبه" }
+            { profilePicture:pic1, name:"محمد", rate:0, comment:"بسیار بد" },
+            { profilePicture:pic2, name:"ali", rate:3.5, comment:"khoob bood" },
+            { profilePicture:pic3, name:"رضا", rate:1, comment:"عدم پاسخ گویی" }
         ]);
     };
 
