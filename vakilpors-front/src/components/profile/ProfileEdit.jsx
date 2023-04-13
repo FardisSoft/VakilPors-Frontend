@@ -39,14 +39,6 @@ const ProfileEdit = ({initialUsername, initialEmail, initialJob, initialBio, ini
 
 
 
-
-
-
-
-
-
-
-
   const classes = useStyles();
   const [username, setUsername] = useState(initialUsername);
   const [job, setJob] = useState(initialJob);
@@ -81,7 +73,7 @@ const ProfileEdit = ({initialUsername, initialEmail, initialJob, initialBio, ini
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     </Helmet>
     <div className="page-content" onSubmit={handleSubmit}>
-      <div className="form-v4-content">
+      <div className="form-v4-content-ForEdit">
         <div className="form-left">
                 <h2>ویرایش اطلاعات کاربری</h2>
                 <p className="text-1">{description}</p>
