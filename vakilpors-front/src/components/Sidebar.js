@@ -78,9 +78,9 @@ const Sidebar = (props) => {
     case "User":
       tempLinks = [
         {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
-        {name:'پروفایل شخصی', icon:ManageAccountsOutlined, url:'/'},
-        {name:'جست و جوی وکیل', icon:PersonSearchOutlined, url:'/'},
-        // {name:'پروفایل عمومی وکیل', icon:AccountCircleOutlined, url:'/LawyerPage'},
+        {name:'ویرایش پروفایل', icon:ManageAccountsOutlined, url:'/edit-user'},
+        {name:'مشاهده پروفایل', icon:ManageAccountsOutlined, url:'/user-display-profile'},        
+        {name:'جست و جوی وکیل', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
         {name:'فروم', icon:ForumOutlined, url:'/dashboard'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
         {name:'تماس با ما', icon:CallOutlined, url:'/'},
@@ -93,8 +93,8 @@ const Sidebar = (props) => {
     case "Vakil":
       tempLinks = [
         {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
-        {name:'پروفایل شخصی', icon:ManageAccountsOutlined, url:'/'},
-        {name:'پروفایل عمومی', icon:AccountCircleOutlined, url:'/LawyerPage'},
+        {name:'ویرایش پروفایل', icon:ManageAccountsOutlined, url:'/edit_lawyer'},
+        {name:'مشاهده پروفایل', icon:AccountCircleOutlined, url:'/LawyerPage'},
         {name:'فروم', icon:ForumOutlined, url:'/dashboard'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
         {name:'تماس با ما', icon:CallOutlined, url:'/'},

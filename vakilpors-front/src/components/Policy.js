@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from "react-router-dom";
 import { Helmet } from 'react-helmet-async';
 // import '../css/policy-page-main-style.css';
 
@@ -59,8 +58,6 @@ const Policy = () => {
               </p>
 
             </div>
-            <br/>
-            <Link to="/Register"> بازگشت به صفحه ثبت‌نام</Link>
             <br/>
             <br/>
 

@@ -33,9 +33,9 @@ root.render(
               <Route path="/dashboard" element={<Sidebar component={Forum}/>}/>
               <Route path="/LawyerPage" element={<Sidebar component={LawyerPage}/>}/>
               <Route path="/Lawyer-search-page" element={<Sidebar component={Lawyer_search_page}/>}/>
-              <Route path="/display-profile" element={<Display_Profile/>}/>
-              <Route path="/edit" element={<Edit_user_profile/>}/>
-              <Route path="/edit_lawyer" element={<Call_edit_lawyer/>}/>
+              <Route path="/user-display-profile" element={<Sidebar component={Display_Profile}/>}/>
+              <Route path="/edit-user" element={<Sidebar component={Edit_user_profile}/>}/>
+              <Route path="/edit_lawyer" element={<Sidebar component={Call_edit_lawyer}/>}/>
           </Routes>
         </AuthProvider>
       </BrowserRouter>
