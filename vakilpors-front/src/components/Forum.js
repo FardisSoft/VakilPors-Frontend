@@ -3,12 +3,16 @@ import Likes from "../utils/Likes";
 import Comments from "../utils/Comments";
 import { useNavigate } from "react-router-dom";
 import '../css/forum.css';
+import { useAuth } from "../services/AuthProvider";
+import axios from 'axios';
+import { BASE_API_ROUTE } from "../Constants";
 
 
 const Forum = () => {
 	const [thread, setThread] = useState("");
 	const [threadList, setThreadList] = useState([]);
 	const navigate = useNavigate();
+	const { getAccessToken } = useAuth();
 
 	useEffect(() => {
 		const checkUser = () => {
@@ -24,23 +28,22 @@ const Forum = () => {
 		checkUser();
 	}, [navigate]);
 
-    const createThread = () => {
-		fetch("https://api.fardissoft.ir/Thread/CreateThread", {
-			method: "POST",
-			body: JSON.stringify({
-				thread,
-				id: localStorage.getItem("_id"),
-			}),
-			headers: {
-				"Content-Type": "application/json",
-			},
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				alert(data.message);
-				setThreadList(data.threads);
-			})
-			.catch((err) => console.error(err));
+    const createThread = async () => {
+		const url = BASE_API_ROUTE + 'Thread/CreateThread';
+		const token = getAccessToken();
+		console.log('token gerefte shode : ',token);
+		if(token){
+			try {
+				const response = await axios.post(url, {}, {headers: {Authorization: `Bearer ${token}`}});
+				console.log('ba token response : ',response);
+				setThreadList(response.data.threads);
+			} catch (error) {
+				console.log('ba token error : ',error);
+			}
+		}
+		else{
+			// go to login
+		}
 	};
 	const handleSubmit = (e) => {
 		e.preventDefault();
