@@ -10,3 +10,8 @@ border-top-right-radius: 2px;
 border-bottom-left-radius: 2px;
 margin-block: 100px;
 }
+
+.Main_contain
+{
+    background-color: #EDEDED;
+}

@@ -11,26 +11,26 @@ const ShowLawyers = ({ Lawyer }) => {
                 <div class="teacher-item">
                     <div class="box-shadow teacher-box-size"  >
                         <a class="img-layer lazy">
-                            <img src={Lawyer.photo} alt={Lawyer.parvandeNo} style={{ display: "block" }} />
+                            <img src={Lawyer.user.profileImageUrl} alt={Lawyer.user.profileImageUrl} style={{ display: "block" }} />
                         </a>
                         <Link to={`${Lawyer.id}`}>
                             <h2 className="align-center">
                                 <p class="my-2">نام و نام خانوادگی : </p>
-                                <a title={Lawyer.parvandeNo} href="/Lawyer-search-page/:LawyerId" >
+                                <a title={Lawyer.user.name}  >
                                     <i class="zmdi zmdi-account ">
-                                    </i> {Lawyer.parvandeNo} </a>
+                                    </i> {Lawyer.user.name} </a>
                             </h2>
                             <h2>
                                 <p class="my-2">شماره پروانه وکالت: </p>
-                                <a title={Lawyer.Pnumber} href="/masters/AdminUser" >
+                                <a title={Lawyer.parvandeNo}  >
                                     <i class="zmdi zmdi-account">
-                                    </i> {Lawyer.Pnumber} </a>
+                                    </i> {Lawyer.parvandeNo} </a>
                             </h2>
                             <h2>
-                                <p class="my-2">میزان امتیاز کسب شده: </p>
-                                <a title={Lawyer.Score} href="/masters/AdminUser" >
+                                <p class="my-2">رتبه شخص: </p>
+                                <a title={Lawyer.rating}  >
                                     <i class="zmdi zmdi-account " >
-                                    </i> {Lawyer.Score} </a>
+                                    </i> {Lawyer.rating} </a>
                             </h2>
                         </Link>
                     </div>

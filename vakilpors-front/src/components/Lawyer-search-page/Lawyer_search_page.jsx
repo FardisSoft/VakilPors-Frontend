@@ -12,35 +12,23 @@ const Lawyer_search_page = () => {
     const [lawyerdetail, setlawyerdetail] = useState([]);
     const [filteredLawyers, setFilteredLawyers] = useState([]);
     const [LawyerQuery, setLawyerQuery] = useState({ text: "" });
-    const url = `https://api.fardissoft.ir/Lawyer/GetAll`;
 
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const response = await axios.get(url);
-                console.log('response : ',response);
-                response.sort((a, b) => b.Score - a.Score);
-                setlawyerdetail(response.data.data);
-                setFilteredLawyers(response.data.data);
-            } catch (err) {
-                console.log(err);
-            }
-
-
-    
-        
+            const response = await fetch("https://api.fardissoft.ir/Lawyer/GetAll")
+            const data = await response.json()
+            setlawyerdetail(data.data)
+            setFilteredLawyers(data.data)
         };
-
-
-        fetchData();
-    }, []);
+        fetchData()
+    }, [])
 
 
     const LawyerSearch = (event) => {
         setLawyerQuery({ ...LawyerQuery, text: event.target.value });
         const allLawyers = lawyerdetail.filter((Lawyer) => {
-            return Lawyer.fullname
+            return Lawyer.user.name
                 .toLowerCase()
                 .includes(event.target.value.toLowerCase());
         });
@@ -50,28 +38,29 @@ const Lawyer_search_page = () => {
 
     return (
         <>
-            <Search LawyerSearch={LawyerSearch} LawyerQuery={LawyerQuery} />
-            <section className="container">
-            <div  class="contain">
-                <div className="row">
-                    {filteredLawyers.length > 0 ? (
-                        filteredLawyers.map((Lawyer) => (
-                            <ShowLawyers
-                                Lawyer={Lawyer}
-                            />
-                        ))
-                    ) : (
-                        <div
-                            className="text-center py-5"
-       
-                        >
-                            
-                        </div>
-                    )}
-                    </div>
-                </div>
-            </section>
+            <div class="Main_contain">
+                <Search LawyerSearch={LawyerSearch} LawyerQuery={LawyerQuery} />
+                <section className="container" >
+                    <div class="contain">
+                        <div className="row">
+                            {filteredLawyers.length > 0 ? (
+                                filteredLawyers.map((Lawyer) => (
+                                    <ShowLawyers
+                                        Lawyer={Lawyer}
+                                    />
+                                ))
+                            ) : (
+                                <div
+                                    className="text-center py-5"
 
+                                >
+
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </section>
+            </div>
         </>
     );
 };
