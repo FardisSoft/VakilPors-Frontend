@@ -186,9 +186,13 @@ const ProfileEdit = ({initialUsername, initialEmail, initialGender, initialEduca
 
            <div className="form-group">
               <div className="form-row form-row-1">
-
+              <br></br>
+              <br></br>
               <Box>
                 <FormControl>
+                  
+                  <FormLabel htmlFor="resume-upload">آپلود رزومه (PDF):</FormLabel>
+
                   <FormLabel htmlFor="resume-upload"></FormLabel>
                   <Input sx={{height: '70px'}}
                     type="file"
