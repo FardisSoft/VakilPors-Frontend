@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import { BASE_API_ROUTE } from '../Constants';
-import useApiRequestsTokenHandler from "../services/useApiRequestsTokenHandler";
 import { Button, Badge, styled, Avatar, Rating, Typography, Chip } from '@mui/material';
 import { Box, Stack, Grid, Container } from "@mui/material";
 import { Card, CardActions, CardContent, CardHeader, CardMedia } from "@mui/material";
@@ -48,7 +47,7 @@ const LawyerPage = () => {
         setProfilePicture(pic1);
         setProfileBackgroundPicture(pic2);
         setOnline(true);
-        setName("فلان فلانی");
+        setName("موسی صالحی");
         setTitle("وکیل پایه یک مرکز وکلای قوه‌قضاییه");
         setRate(4.5);
         setNumberOfRates(100);
@@ -65,13 +64,13 @@ const LawyerPage = () => {
         setNumberOfAnswers(350);
         setNumberOfLikes(580);
         setNumberOfVerifies(290);
-        setAboutMe('سلام من فلان هستم و فلان و فلان جا درس خواندم و فلان جا کار کردم و رو دست من نیومده.')
+        setAboutMe('سلام من فلانی هستم و فلان جا درس خواندم و فلان جا کار کردم.')
         setCallingCard(pic3);
         setResumeLink("https://s29.picofile.com/file/8461773392/resume1.pdf.html");
         setRatesList([
-            { profilePicture:pic1, name:"ممد", rate:0, comment:"اصلن به این یارو اعتماد نکنید فقط فکر خودشه" },
-            { profilePicture:pic2, name:"ali", rate:3.5, comment:"adame khoobi bood" },
-            { profilePicture:pic3, name:"رضا", rate:1, comment:"هیچی بلد نیست ولی اخلاقش خوبه" }
+            { profilePicture:pic1, name:"محمد", rate:0, comment:"بسیار بد" },
+            { profilePicture:pic2, name:"ali", rate:3.5, comment:"khoob bood" },
+            { profilePicture:pic3, name:"رضا", rate:1, comment:"عدم پاسخ گویی" }
         ]);
     };
 
@@ -109,7 +108,7 @@ const LawyerPage = () => {
     <Helmet>
         <title>Lawyer Page</title>
     </Helmet>
-    <Stack spacing={5} maxWidth="100%">
+    <Stack spacing={5} maxWidth="100%" margin={2}>
         <Grid container direction={{ xs: 'column', sm: 'row' }} alignItems="stretch">
             <Grid sx={{backgroundImage:`url(${profileBackgroundPicture})`}} display="flex" alignItems="center" justifyContent="center" item component={Card} sm>
                 <CardContent>
