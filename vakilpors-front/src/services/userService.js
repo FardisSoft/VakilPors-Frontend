@@ -10,8 +10,8 @@ export const LoginUser = (User) => {
 };
 
 
-export const updateUser = (User, Userid) => {
-  const url = `https://api.fardissoft.ir/Customer/UpdateUser/${Userid}`;
+export const updateUser = (User) => {
+  const url = `https://api.fardissoft.ir/Customer/UpdateUser`;
   return axios.put(url, User);
 };
 

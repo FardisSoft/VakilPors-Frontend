@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import useStateRef from 'react-usestateref';
 import { styled } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -45,7 +46,7 @@ const Edit_User_Profile = ({ initialUsername, initialEmail, initialJob, initialB
 
   const classes = useStyles();
 
-  const [getdetail, setdetail] = useState([]);
+  const [getdetail, setdetail, refdetail] = useStateRef({});
   const [username, setUsername] = useState(initialUsername);
   const [job, setJob] = useState(initialJob);
   const [email, setEmail] = useState(initialEmail);
@@ -82,7 +83,7 @@ const Edit_User_Profile = ({ initialUsername, initialEmail, initialJob, initialB
         if (refUserRole.current === "Vakil") {
           url = `https://api.fardissoft.ir/Lawyer/GetLawyerById?lawyerId=${tokenData.uid}`;
         }
-        try {
+        try { 
           const response = await axios.get(url);
           console.log('response : ', response);
           setdetail(response.data.data);
@@ -97,11 +98,11 @@ const Edit_User_Profile = ({ initialUsername, initialEmail, initialJob, initialB
 
   const updateuser = async (event) => {
     event.preventDefault();
-    console.log(getdetail);
+    console.log(refdetail.current);
     const token = await getAccessToken()
     const tokenData = jwt(token);
     try {
-      const success = await updateUser(getdetail, tokenData.uid);
+      const success = await updateUser(refdetail.current);
   } catch (error) {
       console.log('error : ',error);
   }
@@ -136,7 +137,7 @@ const Edit_User_Profile = ({ initialUsername, initialEmail, initialJob, initialB
                 <input
                   className="input100"
                   type="text"
-                  name="email"
+                  name="name"
                   required
                   value={getdetail.name}
                   onChange={setUserInfo}
@@ -170,7 +171,7 @@ const Edit_User_Profile = ({ initialUsername, initialEmail, initialJob, initialB
                 <input
                   className="input100"
                   type="text"
-                  name="email"
+                  name="phoneNumber"
                   required
                   value={getdetail.phoneNumber}
                   onChange={setdetail.phoneNumber}
@@ -183,8 +184,8 @@ const Edit_User_Profile = ({ initialUsername, initialEmail, initialJob, initialB
                 <input
                   className="input100"
                   type="text"
-                  name="email"
-                  required
+                  name="bio"
+                  // required
                   value={getdetail.bio}
                   onChange={setUserInfo}
                   margin="normal" />
