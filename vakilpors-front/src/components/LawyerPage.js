@@ -53,8 +53,7 @@ const LawyerPage = () => {
         setLicenseNumber(data.parvandeNo);
         setMemberOf(data.memberOf);
         setOfficeAddress(data.officeAddress);
-        // setProfilePicture(data.user.profileImageUrl);
-        setProfilePicture();
+        setProfilePicture(data.user.profileImageUrl);
         setRate(data.rating);
         setResumeLink(data.resumeLink);
         setSpecialties(data.specialties ? data.specialties.split('/') : []);
