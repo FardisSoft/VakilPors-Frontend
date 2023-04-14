@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Edit_lawyer_profile from './Edit_lawyer_profile';
+import Edit_Lawyer_Profile from './Edit_Lawyer_Profile';
 
 
 
-const Call_edit_lawyer = () => {
+const Call_Edit_Lawyer_Profile = () => {
     const [username, setUsername] = useState('Hesam');
     const [email, setEmail] = useState('Hesam@example.com');
     const [job, setJob] = useState('lawyer')
@@ -21,11 +21,11 @@ const Call_edit_lawyer = () => {
 
     return (
         <div>
-          <Edit_lawyer_profile initialUsername={username} initialEmail={email} initialBio={bio} initialImageURL={imageURL} onSave={handleSave} /> 
+          <Edit_Lawyer_Profile initialUsername={username} initialEmail={email} initialBio={bio} initialImageURL={imageURL} onSave={handleSave} /> 
         </div>
       );
     };
     
     
     
-    export default Call_edit_lawyer;
+    export default Call_Edit_Lawyer_Profile;

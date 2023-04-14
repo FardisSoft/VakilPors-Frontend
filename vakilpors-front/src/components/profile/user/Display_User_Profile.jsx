@@ -1,9 +1,9 @@
 import React from 'react';
-import './css/s.css';
+import '../css/s.css';
 import { Link } from 'react-router-dom';
 
 
-const ProfileDisplay = ({username, email, job, bio, imageURL}) => {
+const Display_User_Profile = ({username, email, job, bio, imageURL}) => {
   return (
     <div className="container" lang="en" dir="ltr">
       <input type="checkbox" id="switch"></input>
@@ -38,4 +38,4 @@ const ProfileDisplay = ({username, email, job, bio, imageURL}) => {
   );
 };
 
-export default ProfileDisplay;
+export default Display_User_Profile;

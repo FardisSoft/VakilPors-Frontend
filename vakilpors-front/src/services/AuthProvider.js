@@ -91,6 +91,7 @@ const AuthProvider = ({ children }) => {
                 setRefreshToken(refreshToken);
                 localStorage.setItem('accessToken', token);
                 localStorage.setItem('refreshToken', refreshToken);
+                console.log('token expired but refreshed');
                 return token;
             } catch (error) { // error in refreshing token. login required.
                 console.log(error);
@@ -98,6 +99,7 @@ const AuthProvider = ({ children }) => {
             }
         }
         else {
+            console.log('token not expired');
             return refAccessToken.current;
         }
     };

@@ -3,14 +3,14 @@ import { styled } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import './css/a.css';
+import '../css/a.css';
 import { Helmet } from 'react-helmet-async';
 import { Box, FormControl, FormLabel, Input } from "@mui/material";
 import { InputLabel, Select, MenuItem } from '@mui/material';
 import jwt from 'jwt-decode';
 import axios from 'axios';
-import { useAuth } from "../../services/AuthProvider";
-import { updateLawyer } from '../../services/userService';
+import { useAuth } from "../../../services/AuthProvider";
+import { updateLawyer } from '../../../services/userService';
 
 
 const useStyles = styled((theme) => ({
@@ -39,7 +39,8 @@ const useStyles = styled((theme) => ({
   },
 }));
 
-const ProfileEdit = ({ initialUsername, initialEmail, initialGender, initialEducation, initialOfficeAddress, initialTitle, initialCity, initialGrade, initialLicencesNumber, initialMemberOf, initialYearsOfExperience, initialBio, initialImageURL, initialphoneNumber, onSave }) => {
+
+const Edit_Lawyer_Profile = () => {
 
   const descriptionUser = "کاربر گرامی ! در این قسمت می توانید تمامی اطلاعات کاربری خود را بروزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";
   const [description, setDescription] = useState(descriptionUser);
@@ -48,20 +49,20 @@ const ProfileEdit = ({ initialUsername, initialEmail, initialGender, initialEduc
   const [getdetail, setdetail] = useState([]);
   const { refUserRole, getAccessToken } = useAuth();
 
-  const [username, setUsername] = useState(initialUsername);
-  const [title, setTitle] = useState(initialTitle);
-  const [city, setCity] = useState(initialCity);
+  const [username, setUsername] = useState();
+  const [title, setTitle] = useState();
+  const [city, setCity] = useState();
   const [grade, setGrade] = useState('');
-  const [licencesNumber, setLicencesNumber] = useState(initialLicencesNumber);
-  const [MemberOf, setMemberOf] = useState(initialMemberOf);
-  const [YearsOfExperience, setYearsOfExperience] = useState(initialYearsOfExperience);
-  const [Gender, setGender] = useState(initialGender);
-  const [Education, setEducation] = useState(initialEducation);
-  const [OfficeAddress, setOfficeAddress] = useState(initialOfficeAddress);
-  const [email, setEmail] = useState(initialEmail);
-  const [bio, setBio] = useState(initialBio);
-  const [phoneNumber, setphoneNumber] = useState(initialphoneNumber);
-  const [imageURL, setAvatarUrl] = useState(initialImageURL);
+  const [licencesNumber, setLicencesNumber] = useState();
+  const [MemberOf, setMemberOf] = useState();
+  const [YearsOfExperience, setYearsOfExperience] = useState();
+  const [Gender, setGender] = useState();
+  const [Education, setEducation] = useState();
+  const [OfficeAddress, setOfficeAddress] = useState();
+  const [email, setEmail] = useState();
+  const [bio, setBio] = useState();
+  const [phoneNumber, setphoneNumber] = useState();
+  const [imageURL, setAvatarUrl] = useState();
 
 
   const handleAvatarChange = (event) => {
@@ -75,12 +76,7 @@ const ProfileEdit = ({ initialUsername, initialEmail, initialGender, initialEduc
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSave({ username, email, Gender, Education, OfficeAddress, title, city, grade, licencesNumber, MemberOf, YearsOfExperience, bio, imageURL, phoneNumber });
-    setGrade(e.target.value);
-    handleSubmit(e.target.files[0]);
-  };
+
 
 
   useEffect(() => {
@@ -338,4 +334,4 @@ const ProfileEdit = ({ initialUsername, initialEmail, initialGender, initialEduc
   );
 };
 
-export default ProfileEdit;
+export default Edit_Lawyer_Profile;

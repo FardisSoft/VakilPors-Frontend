@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from 'react-helmet-async';
-import { Link } from "react-router-dom";
 import axios from 'axios';
 import { BASE_API_ROUTE } from '../Constants';
 import { Button, Badge, styled, Avatar, Rating, Typography, Chip } from '@mui/material';
-import { Box, Stack, Grid, Container } from "@mui/material";
-import { Card, CardActions, CardContent, CardHeader, CardMedia } from "@mui/material";
+import { Stack, Grid } from "@mui/material";
+import { Card, CardContent, CardHeader, CardMedia } from "@mui/material";
 import LinkMUI from '@mui/material/Link';
 import {Done, Female, Male, LooksOne, LooksTwo, Looks3, CardMembership, LocationOn, 
     Business, VerifiedUser, WorkHistory, School, Gavel, CoPresent, QuestionAnswer,
     ThumbUpAlt, FactCheck, Percent } from '@mui/icons-material';
+import { useParams } from "react-router-dom";
 
 import pic1 from '../assests/images/profileTest.jpg';
 import pic2 from '../assests/images/lawyer.jpg';
@@ -42,37 +42,7 @@ const LawyerPage = () => {
     const [resumeLink, setResumeLink] = useState('');
     const [ratesList, setRatesList] = useState([]);
 
-
-    const handleInitializer = () => {
-        setProfilePicture(pic1);
-        setProfileBackgroundPicture(pic2);
-        setOnline(true);
-        setName("موسی صالحی");
-        setTitle("وکیل پایه یک مرکز وکلای قوه‌قضاییه");
-        setRate(4.5);
-        setNumberOfRates(100);
-        setCity('تهران - تهران');
-        setGrade('یک');
-        setLicenseNumber(12345);
-        setMemberOf('کانون وکلای قوه قضائیه');
-        setSpecialties(['خانواده', 'مواد مخدر', 'املاک']);
-        setYearsOfExperience(3);
-        setGender('مرد');
-        setEducation('کارشناسی حقوق');
-        setOfficeAddress('تهران - دانشگاه علم و صنعت - دانشکده کامپیوتر');
-        setNumberOfConsultations(120);
-        setNumberOfAnswers(350);
-        setNumberOfLikes(580);
-        setNumberOfVerifies(290);
-        setAboutMe('سلام من فلانی هستم و فلان جا درس خواندم و فلان جا کار کردم.')
-        setCallingCard(pic3);
-        setResumeLink("https://s29.picofile.com/file/8461773392/resume1.pdf.html");
-        setRatesList([
-            { profilePicture:pic1, name:"محمد", rate:0, comment:"بسیار بد" },
-            { profilePicture:pic2, name:"ali", rate:3.5, comment:"khoob bood" },
-            { profilePicture:pic3, name:"رضا", rate:1, comment:"عدم پاسخ گویی" }
-        ]);
-    };
+    const { LawyerId } = useParams();
 
     const handleInitializerWithAPI = (data) => {
         setAboutMe(data.aboutMe);
@@ -83,10 +53,11 @@ const LawyerPage = () => {
         setLicenseNumber(data.licenseNumber);
         setMemberOf(data.memberOf);
         setOfficeAddress(data.officeAddress);
-        setProfilePicture(data.profileImageUrl);
+        // setProfilePicture(data.user.profileImageUrl);
+        setProfilePicture();
         setRate(data.rating);
         setResumeLink(data.resumeLink);
-        setSpecialties(data.specialties ? data.specialties : []);
+        setSpecialties(data.specialties ? data.specialties.split('/') : []);
         setTitle(data.title);
         setYearsOfExperience(data.yearsOfExperience);
         setName(data.user.name);
@@ -98,13 +69,12 @@ const LawyerPage = () => {
         setNumberOfLikes(data.numberOfLikes);
         setNumberOfVerifies(data.numberOfVerifies);
         setRatesList(data.ratesList);
-
-        setOnline(data.user.isActive);
+        setOnline(!data.user.isActive); // not exactly the same
     };
 
     useEffect(() => {
         const fetchData = async () => {
-            const url = BASE_API_ROUTE + `Lawyer/GetLawyerById?lawyerId=${2}`;
+            const url = BASE_API_ROUTE + `Lawyer/GetLawyerById?lawyerId=${LawyerId}`;
             try {
                 const response = await axios.get(url);
                 console.log('response : ',response);
@@ -113,7 +83,6 @@ const LawyerPage = () => {
                 console.log('error : ',error);
             }
         };
-
         fetchData();
     }, []);
 
@@ -294,9 +263,6 @@ const LawyerPage = () => {
                 </Grid>
             )}
         </Grid>
-        <Stack>
-            <Button variant="contained" onClick={handleInitializer}>initialize parameters</Button>
-        </Stack>
     </Stack>
     </>
     );    

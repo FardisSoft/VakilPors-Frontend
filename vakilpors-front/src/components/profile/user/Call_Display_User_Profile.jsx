@@ -1,10 +1,9 @@
 
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
-import ProfileDisplay from './ProfileDisplay';
-import ProfileEdit from './ProfileEdit';
+import Display_User_Profile from './Display_User_Profile';
 
-const Display_Profile = () => {
+
+const Call_Display_User_Profile = () => {
   const [username, setUsername] = useState('Hesam');
   const [email, setEmail] = useState('Hesam@example.com');
   const [job, setJob] = useState('lawyer')
@@ -21,11 +20,11 @@ const Display_Profile = () => {
 
   return (
     <div>
-      <ProfileDisplay username={username} email={email} job={job} bio={bio} imageURL={imageURL} />
+      <Display_User_Profile username={username} email={email} job={job} bio={bio} imageURL={imageURL} />
     </div>
   );
 };
 
 
 
-export default Display_Profile;
+export default Call_Display_User_Profile;
