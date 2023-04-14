@@ -116,7 +116,7 @@ const Sidebar = (props) => {
       tempLinks = [
         {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
         {name:'ویرایش پروفایل', icon:ManageAccountsOutlined, url:'/edit-user'},
-        {name:'مشاهده پروفایل', icon:ManageAccountsOutlined, url:'/user-display-profile'},        
+        // {name:'مشاهده پروفایل', icon:ManageAccountsOutlined, url:'/user-display-profile'},        
         {name:'جست و جوی وکیل', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
         {name:'فروم', icon:ForumOutlined, url:'/dashboard'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
