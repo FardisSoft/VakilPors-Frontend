@@ -51,6 +51,7 @@ const Edit_Lawyer_Profile = () => {
 
   const [username, setUsername] = useState();
   const [title, setTitle] = useState();
+  const [specialTitle, setspecialTitle] = useState();
   const [city, setCity] = useState();
   const [grade, setGrade] = useState('');
   const [licencesNumber, setLicencesNumber] = useState();
@@ -62,8 +63,9 @@ const Edit_Lawyer_Profile = () => {
   const [email, setEmail] = useState();
   const [bio, setBio] = useState();
   const [phoneNumber, setphoneNumber] = useState();
-  const [imageURL, setAvatarUrl] = useState();
-
+  const [ProfileURL, setProfileUrl] = useState();
+  const [ProfileBackgroundURL, setProfileBackgroundurl] = useState();
+  const [CallingCardUrl, setCallingCardUrl] = useState();
 
   const handleAvatarChange = (event) => {
     const file = event.target.files[0];
@@ -71,10 +73,35 @@ const Edit_Lawyer_Profile = () => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = () => {
-        setAvatarUrl(reader.result);
+        setProfileUrl(reader.result);
       };
     }
   };
+
+  const handleBackGroundChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setProfileBackgroundurl(reader.result);
+      };
+    }
+  };
+
+  const handleCallingCardChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setCallingCardUrl(reader.result);
+      };
+    }
+  };
+
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -199,6 +226,35 @@ const Edit_Lawyer_Profile = () => {
 
             <div className="form-group">
               <div className="form-row form-row-1">
+              <label style={{ position: "relative", top: "5px" }}><p>تیتر</p></label>
+                <input
+                  className="input100"
+                  type="text"
+                  name="title"
+                  required
+                  value={getdetail.title}
+                  onChange={setUserInfo}
+                  margin="normal" />
+              </div>
+
+              <div className="form-row form-row-1">
+              <label style={{ position: "relative", top: "5px" }}><p>تخصص ها</p></label>
+                <input
+                  className="input100"
+                  type="text"
+                  name="specialTitle"
+                  required
+                  value={getdetail.specialTitle}
+                  onChange={setUserInfo}
+                  margin="normal" />
+              </div>
+            </div>
+
+
+
+
+            <div className="form-group">
+              <div className="form-row form-row-1">
               <label style={{ position: "relative", top: "5px" }}><p>جنسیت</p></label>
                 <input
                   className="input100"
@@ -252,8 +308,50 @@ const Edit_Lawyer_Profile = () => {
 
             <div className="form-group">
               <div className="form-row form-row-1">
-                <br></br>
-                <br></br>
+              <label htmlFor="avatar-input">
+                  <Button variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />}>
+                    انتخاب عکس پیش‌زمینه
+                  </Button>
+              </label>
+              <input
+                  id="avatar-input"
+                  className={classes.input}
+                  type="file"
+                  onChange={handleBackGroundChange}
+                />
+              </div>
+
+              <div className="form-row form-row-1">
+                <label htmlFor="avatar-input">
+                  <Button variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />}>
+                    انتخاب عکس پروفایل
+                  </Button>
+                </label>
+                <input
+                  id="avatar-input"
+                  className={classes.input}
+                  type="file"
+                  onChange={handleAvatarChange}
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+            <div className="form-row form-row-1">
+              <label htmlFor="avatar-input">
+                  <Button variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />}>
+                    انتخاب عکس کارت ویزیت
+                  </Button>
+              </label>
+              <input
+                  id="avatar-input"
+                  className={classes.input}
+                  type="file"
+                  onChange={handleCallingCardChange}
+                />
+              </div>
+
+              <div className="form-row form-row-1">
                 <Box>
                   <FormControl>
 
@@ -269,24 +367,13 @@ const Edit_Lawyer_Profile = () => {
                   </FormControl>
 
                 </Box>
-              </div>
 
-              <div className="form-row form-row-1">
-                <br></br>
-                <br></br>
-                <label htmlFor="avatar-input">
-                  <Button variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />}>
-                    انتخاب عکس پروفایل
-                  </Button>
-                </label>
-                <input
-                  id="avatar-input"
-                  className={classes.input}
-                  type="file"
-                  onChange={handleAvatarChange}
-                />
               </div>
             </div>
+
+
+
+
 
             <div className='form-row'>
 
@@ -304,6 +391,7 @@ const Edit_Lawyer_Profile = () => {
                   <MenuItem value="کانون مشاوران قوه قضائیه">کانون مشاوران قوه قضائیه</MenuItem>
                 </Select>
               </FormControl>
+              
 
 
 
@@ -318,7 +406,8 @@ const Edit_Lawyer_Profile = () => {
 
 
 
-
+            <br></br>
+            <br></br>
             <Button type="submit" variant="contained" color="primary" className={classes.submitButton} onClick={updateuser}>
               ثبت اطلاعات
             </Button>
