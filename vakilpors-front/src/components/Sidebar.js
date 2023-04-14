@@ -2,7 +2,6 @@ import { HomeOutlined, PersonSearchOutlined, ForumOutlined, PolicyOutlined, AppR
        LoginOutlined, LogoutOutlined, ManageAccountsOutlined, AccountCircleOutlined, CallOutlined,
        Menu, ChevronRight } from "@mui/icons-material";
 import React, { useState, useEffect } from 'react';
-import useStateRef from 'react-usestateref';
 import { styled } from '@mui/material/styles';
 import { Link } from "react-router-dom";
 import { Box, Divider, Grid, Drawer } from '@mui/material';
@@ -117,7 +116,6 @@ const Sidebar = (props) => {
   const [profilePicture, setProfilePicture] = useState(pic1);
   const [online, setOnline] = useState(true);
   const [name, setName] = useState('فلان فلانی');
-  const [pageName, setPageName, refPageName] = useStateRef('');
 
   useEffect(() => {
     const sidebarApi = async () => {
@@ -130,7 +128,7 @@ const Sidebar = (props) => {
           url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
         }
         if(refUserRole.current === "Vakil"){
-          url = BASE_API_ROUTE + `Lawyer/GetLawyerById?lawyerId=${tokenData.uid}`;
+          url = BASE_API_ROUTE + `Lawyer/GetLawyerByUserId?userId=${tokenData.uid}`;
         }
         try {
           const response = await axios.get(url);
@@ -149,15 +147,6 @@ const Sidebar = (props) => {
     setOnline(true);
     setName(refUserRole.current === "User" ? data.name : data.user.name);
   };
-
-  useEffect(() => {
-    const getPageName = async () => {
-      let pname = window.location.href.split('/');
-      pname = '/' + pname[pname.length - 1];
-      setPageName(pname);
-    };
-    getPageName();
-  }, [window.location.href]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -226,11 +215,11 @@ const Sidebar = (props) => {
         <List>
           {links.map((linki,index) => (
             <ListItem key={index} component={Link} to={linki.url} disablePadding>
-              <ListItemButton sx={{ ...(refPageName.current === linki.url && {backgroundColor:"rgb(25,118,210)", ":hover":{backgroundColor:"rgba(25,118,210,0.7)"}})}}>
+              <ListItemButton sx={{ ...( (linki.url == '/' && window.location.href == 'http://localhost:3000/' ? true : window.location.href.includes(linki.url) && linki.url != '/') && {backgroundColor:"rgb(25,118,210)", ":hover":{backgroundColor:"rgba(25,118,210,0.7)"}})}}>
                 <ListItemIcon>
-                  <linki.icon color="primary" sx={{ ...(refPageName.current === linki.url && {color:"white"})}} />
+                  <linki.icon color="primary" sx={{ ...( (linki.url == '/' && window.location.href == 'http://localhost:3000/' ? true : window.location.href.includes(linki.url) && linki.url != '/') && {color:"white"})}} />
                 </ListItemIcon>
-                <Typography fontFamily="shabnam" sx={{ ...(refPageName.current === linki.url && {color:"white"})}} >{linki.name}</Typography>
+                <Typography fontFamily="shabnam" sx={{ ...( (linki.url == '/' && window.location.href == 'http://localhost:3000/' ? true : window.location.href.includes(linki.url) && linki.url != '/') && {color:"white"})}} >{linki.name}</Typography>
               </ListItemButton>
             </ListItem>
           ))}

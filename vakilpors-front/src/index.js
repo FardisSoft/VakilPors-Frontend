@@ -31,7 +31,7 @@ root.render(
               <Route path="/Register" element={<><Sidebar component={Box}/><Register/></>}/>
               <Route path="/Policy" element={<Sidebar component={Policy}/>}/>
               <Route path="/dashboard" element={<Sidebar component={Forum}/>}/>
-              <Route path="/LawyerPage" element={<Sidebar component={LawyerPage}/>}/>
+              <Route path="/LawyerPage/:LawyerId" element={<Sidebar component={LawyerPage}/>}/>
               <Route path="/Lawyer-search-page" element={<Sidebar component={Lawyer_search_page}/>}/>
               <Route path="/user-display-profile" element={<Sidebar component={Display_Profile}/>}/>
               <Route path="/edit-user" element={<Sidebar component={Edit_user_profile}/>}/>
