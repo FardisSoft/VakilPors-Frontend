@@ -20,9 +20,6 @@ export const updateLawyer = (User, Userid) => {
   return axios.put(url, User);
 };
 
-
-
-
 export const deleteUser = (Userid) => {
   const url = `${SERVER_URL}/${Userid}`;
   return axios.delete(url);

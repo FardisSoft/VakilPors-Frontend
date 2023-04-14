@@ -76,9 +76,6 @@ const Edit_Lawyer_Profile = () => {
     }
   };
 
-
-
-
   useEffect(() => {
     const fetchData = async () => {
       console.log(refUserRole);
