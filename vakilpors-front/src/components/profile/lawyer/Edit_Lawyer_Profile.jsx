@@ -51,6 +51,7 @@ const Edit_Lawyer_Profile = () => {
 
   const [username, setUsername] = useState();
   const [title, setTitle] = useState();
+  const [StudyField, setStudyField] = useState();
   const [specialTitle, setspecialTitle] = useState();
   const [city, setCity] = useState();
   const [grade, setGrade] = useState('');
@@ -189,9 +190,9 @@ const Edit_Lawyer_Profile = () => {
                 <input
                   className="input100"
                   type="text"
-                  name="title"
+                  name="StudyField"
                   required
-                  value={getdetail.title}
+                  value={getdetail.StudyField}
                   onChange={setUserInfo}
                   margin="normal" />
               </div>
