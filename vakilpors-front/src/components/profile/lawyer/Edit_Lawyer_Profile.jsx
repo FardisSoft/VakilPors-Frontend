@@ -1,4 +1,5 @@
 import React, { useState,useEffect } from 'react';
+import useStateRef from 'react-usestateref';
 import { styled } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -46,7 +47,7 @@ const Edit_Lawyer_Profile = () => {
   const [description, setDescription] = useState(descriptionUser);
 
   const classes = useStyles();
-  const [getdetail, setdetail] = useState([]);
+  const [getdetail, setdetail, refdetail] = useStateRef({});
   const { refUserRole, getAccessToken } = useAuth();
 
   const [username, setUsername] = useState();
@@ -115,7 +116,7 @@ const Edit_Lawyer_Profile = () => {
           url = `https://api.fardissoft.ir/Customer/GetUserById?userId=${tokenData.uid}`;
         }
         if (refUserRole.current === "Vakil") {
-          url = `https://api.fardissoft.ir/Lawyer/GetLawyerById?lawyerId=${tokenData.uid}`;
+          url = `https://api.fardissoft.ir/Lawyer/GetLawyerByUserId?userId=${tokenData.uid}`
         }
         try {
           const response = await axios.get(url);
@@ -125,6 +126,9 @@ const Edit_Lawyer_Profile = () => {
           console.log('error : ', error);
         }
       }
+      if(!token){
+        // alert("شما باید ابتدا وارد حساب کاربری خود شوید.");
+      }
     };
 
     fetchData();
@@ -133,14 +137,17 @@ const Edit_Lawyer_Profile = () => {
 
   const updateuser = async (event) => {
     event.preventDefault();
-    console.log(getdetail);
     const token = await getAccessToken()
-    const tokenData = jwt(token);
-    try {
-      const success = await updateLawyer(getdetail, tokenData.uid);
-  } catch (error) {
-      console.log('error : ',error);
-  }
+    if(token){
+      const tokenData = jwt(token);
+      try {
+          const success = await updateLawyer(refdetail.current);
+          console.log(refdetail.current);
+          console.log("success",success);
+      } catch (error) {
+          console.log('error : ',error);
+      }
+    }
     // console.log(localStorage.getItem('accessToken'),"\n refresh : ", localStorage.getItem('refreshToken'));
     // console.log("main role : ", refUserRole.current);
   };
@@ -179,20 +186,20 @@ const Edit_Lawyer_Profile = () => {
                 <input
                   className="input100"
                   type="text"
-                  name="email"
+                  name="aboutMe"
                   required
                   value={getdetail.aboutMe}
                   onChange={setUserInfo}
                   margin="normal" />
               </div>
               <div className="form-row form-row-1">
-              <label style={{ position: "relative", top: "5px" }}><p>رشته تحصیلی</p></label>
+              <label style={{ position: "relative", top: "5px" }}><p>عنوان</p></label>
                 <input
                   className="input100"
                   type="text"
-                  name="StudyField"
+                  name="title"
                   required
-                  value={getdetail.StudyField}
+                  value={getdetail.title}
                   onChange={setUserInfo}
                   margin="normal" />
               </div>
@@ -206,7 +213,7 @@ const Edit_Lawyer_Profile = () => {
                 <input
                   className="input100"
                   type="text"
-                  name="email"
+                  name="city"
                   required
                   value={getdetail.city}
                   onChange={setUserInfo}
@@ -217,7 +224,7 @@ const Edit_Lawyer_Profile = () => {
                 <input
                   className="input100"
                   type="text"
-                  name="licencesNumber"
+                  name="parvandeNo"
                   required
                   value={getdetail.parvandeNo}
                   onChange={setUserInfo}
@@ -243,9 +250,9 @@ const Edit_Lawyer_Profile = () => {
                 <input
                   className="input100"
                   type="text"
-                  name="specialTitle"
+                  name="specialties"
                   required
-                  value={getdetail.specialTitle}
+                  value={getdetail.specialties}
                   onChange={setUserInfo}
                   margin="normal" />
               </div>
@@ -267,7 +274,7 @@ const Edit_Lawyer_Profile = () => {
                   margin="normal" />
               </div>
               <div className="form-row form-row-1">
-              <label style={{ position: "relative", top: "5px" }}><p>سابقه کاری </p></label>
+              <label style={{ position: "relative", top: "5px" }}><p>سابقه کار (سال) </p></label>
                 <input
                   className="input100"
                   type="text"
@@ -363,7 +370,7 @@ const Edit_Lawyer_Profile = () => {
                       type="file"
                       accept=".pdf"
                       id="resume-upload"
-                      onChange={updateuser}
+                      // onChange={setUserInfo}
                     />
                   </FormControl>
 
@@ -385,7 +392,9 @@ const Edit_Lawyer_Profile = () => {
                 }}
                 fullWidth
               >
-                <Select value={grade} label="نوع پروانه وکالت" onChange={updateuser} dir='rtl'>
+                <Select value={grade} label="نوع پروانه وکالت" 
+                // onChange={setUserInfo}
+                 dir='rtl'>
                   <MenuItem value="پایه یک دادگستری">پایه یک دادگستری</MenuItem>
                   <MenuItem value="پایه دو دادگستری">پایه دو دادگستری</MenuItem>
                   <MenuItem value="پایه سه دادگستری">پایه سه دادگستری</MenuItem>

@@ -50,7 +50,7 @@ const LawyerPage = () => {
         setCity(data.city);
         setEducation(data.education);
         setGrade(data.grade == 0 ? 'یک' : data.grade == 1 ? 'دو' : 'سه');
-        setLicenseNumber(data.licenseNumber);
+        setLicenseNumber(data.parvandeNo);
         setMemberOf(data.memberOf);
         setOfficeAddress(data.officeAddress);
         // setProfilePicture(data.user.profileImageUrl);

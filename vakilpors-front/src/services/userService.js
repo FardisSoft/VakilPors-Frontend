@@ -15,8 +15,8 @@ export const updateUser = (User, Userid) => {
   return axios.put(url, User);
 };
 
-export const updateLawyer = (User, Userid) => {
-  const url = `https://api.fardissoft.ir/Lawyer/UpdateLawyer/${Userid}`;
+export const updateLawyer = (User) => {
+  const url = `https://api.fardissoft.ir/Lawyer/UpdateLawyer`;
   return axios.put(url, User);
 };
 

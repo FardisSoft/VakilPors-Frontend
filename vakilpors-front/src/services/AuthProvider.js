@@ -69,12 +69,14 @@ const AuthProvider = ({ children }) => {
 
     const getAccessToken = async () => {
         if (!refAccessToken.current) { // login required
+            console.log("no token exists");
             return null; 
         }
 
         const tokenData = jwt(refAccessToken.current);
         // 604500 = (7 days - 5 minutes) to seconds
         if ( ( tokenData.exp + 604500 ) * 1000 <= Date.now() ) { // refresh token expired. login required.
+            console.log("refresh token expired");
             return null;
         }
 
