@@ -2,6 +2,7 @@ import { HomeOutlined, PersonSearchOutlined, ForumOutlined, PolicyOutlined, AppR
        LoginOutlined, LogoutOutlined, ManageAccountsOutlined, AccountCircleOutlined, CallOutlined,
        Menu, ChevronRight } from "@mui/icons-material";
 import React, { useState, useEffect } from 'react';
+import useStateRef from "react-usestateref";
 import { styled } from '@mui/material/styles';
 import { Link } from "react-router-dom";
 import { Box, Divider, Grid, Drawer } from '@mui/material';
@@ -64,7 +65,41 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 const Sidebar = (props) => {
 
   const { refUserRole, getAccessToken } = useAuth();
+  const [lawyerID, setLawyerID, refLawyerID] = useStateRef();
+  const [open, setOpen] = useState(false);
+  const [profilePicture, setProfilePicture] = useState(pic1);
+  const [online, setOnline] = useState(true);
+  const [name, setName] = useState('فلان فلانی');
   let tempLinks = [];
+
+  useEffect(() => {
+    const sidebarApi = async () => {
+      console.log(refUserRole);
+      const token = await getAccessToken();
+      if(token){
+        const tokenData = jwt(token);
+        let url = "";
+        if(refUserRole.current === "User"){
+          url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
+        }
+        if(refUserRole.current === "Vakil"){
+          url = BASE_API_ROUTE + `Lawyer/GetLawyerByUserId?userId=${tokenData.uid}`;
+        }
+        try {
+          const response = await axios.get(url);
+          if(refUserRole.current === "Vakil"){
+            setLawyerID(response.data.data.id);
+          }
+          console.log('response : ',response);
+          handleAPI(response.data.data);
+        } catch (error) {
+            console.log('error : ',error);
+        }
+      }
+    };
+    sidebarApi();
+  }, []);
+
   switch( refUserRole.current ){
     
     case null: // guest user
@@ -96,7 +131,7 @@ const Sidebar = (props) => {
       tempLinks = [
         {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
         {name:'ویرایش پروفایل', icon:ManageAccountsOutlined, url:'/edit_lawyer'},
-        {name:'مشاهده پروفایل', icon:AccountCircleOutlined, url:'/LawyerPage'},
+        {name:'مشاهده پروفایل', icon:AccountCircleOutlined, url:`/LawyerPage/${refLawyerID.current}`},
         {name:'فروم', icon:ForumOutlined, url:'/dashboard'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
         {name:'تماس با ما', icon:CallOutlined, url:'/'},
@@ -109,38 +144,7 @@ const Sidebar = (props) => {
     default:
       console.log("wrong user role");
   }
-
   const links = tempLinks;
-
-  const [open, setOpen] = useState(false);
-  const [profilePicture, setProfilePicture] = useState(pic1);
-  const [online, setOnline] = useState(true);
-  const [name, setName] = useState('فلان فلانی');
-
-  useEffect(() => {
-    const sidebarApi = async () => {
-      console.log(refUserRole);
-      const token = await getAccessToken();
-      if(token){
-        const tokenData = jwt(token);
-        let url = "";
-        if(refUserRole.current === "User"){
-          url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
-        }
-        if(refUserRole.current === "Vakil"){
-          url = BASE_API_ROUTE + `Lawyer/GetLawyerByUserId?userId=${tokenData.uid}`;
-        }
-        try {
-          const response = await axios.get(url);
-          console.log('response : ',response);
-          handleAPI(response.data.data);
-        } catch (error) {
-            console.log('error : ',error);
-        }
-      }
-    };
-    sidebarApi();
-  }, []);
 
   const handleAPI = (data) => {
     setProfilePicture(data.profileImageUrl);
