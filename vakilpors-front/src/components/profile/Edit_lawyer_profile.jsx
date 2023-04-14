@@ -74,6 +74,69 @@ const ProfileEdit = ({initialUsername, initialEmail, initialGender, initialEduca
     handleSubmit(e.target.files[0]);
   };
 
+  const lawyerProfileAPI = async () => {
+    // const url = BASE_API_ROUTE + `Lawyer/GetLawyerById?lawyerId=${2}`;
+    const data = {
+      "id": 1,
+      "rating": 0,
+      "parvandeNo": "string",
+      "isAuthorized": true,
+      "profileImageUrl": "string",
+      "title": "string",
+      "city": "string",
+      "grade": 0,
+      "licenseNumber": "12345",
+      "memberOf": "string",
+      "yearsOfExperience": 0,
+      "officeAddress": "string",
+      "education": "string",
+      "aboutMe": "string",
+      "callingCardImageUrl": "string",
+      "resumeLink": "string",
+      "specialties": "string",
+      "user": {
+        "id": 1,
+        "name": "yarooooo",
+        "userName": "string",
+        "phoneNumber": "string",
+        "email": "string",
+        "balance": 0,
+        "phoneNumberConfirmed": true,
+        "isActive": true,
+        "job": "string",
+        "bio": "string",
+        "profileImageUrl": "string",
+        "tranactions": [
+          {
+            "id": 0,
+            "amount": 0,
+            "date": "2023-04-13T18:49:33.863Z",
+            "description": "string",
+            "isSuccess": true,
+            "isIncome": true
+          }
+        ]
+      },
+      "profileBackgroundPictureUrl": "string",
+      "numberOfRates": 0,
+      "gender": "string",
+      "numbereOfConsulations": 0,
+      "numberOfAnswers": 0,
+      "numberOfLikes": 0,
+      "numberOfVerifies": 0,
+      "ratesList": [
+        "string"
+      ]
+    };
+    // try {
+    //     const response = await axios.get(url);
+    //     console.log('response : ',response);
+    //     handleInitializerWithAPI(response.data.data);
+    // } catch (error) {
+    //     console.log('error : ',error);
+    // }
+  }
+
   return (
     <>
     <Helmet>
