@@ -136,7 +136,7 @@ const Register = () => {
         <title>Sign Up</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     </Helmet>
-    <div className="page-content">
+    <div className="page-content" >
         <div className="form-v4-content">
             <div className="form-left">
                 <h2>سلام</h2>

@@ -68,7 +68,7 @@ const Forum = () => {
 								onChange={(e) => setThread(e.target.value)}
 							/>
 						</div>
-						<button className='homeBtn' style={{fontFamily:'calibri'}}>ساخت موضوع جدید</button>
+						<button className='homeBtn' style={{fontFamily:'calibri'}} onClick={createThread}>ساخت موضوع جدید</button>
 					</form>
 				
 				<div className='thread__container' style={{fontFamily:'calibri'}}>
