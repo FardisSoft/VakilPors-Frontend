@@ -1,1 +1,0 @@
-export const BASE_API_ROUTE = 'https://api.fardissoft.ir/';
