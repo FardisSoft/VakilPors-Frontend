@@ -3,11 +3,11 @@ import { styled } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import './css/a.css';
+import '../css/a.css';
 import { Helmet } from 'react-helmet-async';
 import jwt from 'jwt-decode';
 import axios from 'axios';
-import { useAuth } from "../../services/AuthProvider";
+import { useAuth } from "../../../services/AuthProvider";
 
 const useStyles = styled((theme) => ({
   root: {
@@ -35,7 +35,7 @@ const useStyles = styled((theme) => ({
   },
 }));
 
-const ProfileEdit = ({ initialUsername, initialEmail, initialJob, initialBio, initialImageURL, initialphoneNumber, onSave }) => {
+const Edit_User_Profile = ({ initialUsername, initialEmail, initialJob, initialBio, initialImageURL, initialphoneNumber, onSave }) => {
 
   const descriptionUser = "کاربر گرامی ! در این قسمت می توانید تمامی اطلاعات کاربری خود را بروزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";
   const [description, setDescription] = useState(descriptionUser);
@@ -192,4 +192,4 @@ const ProfileEdit = ({ initialUsername, initialEmail, initialJob, initialBio, in
   );
 };
 
-export default ProfileEdit;
+export default Edit_User_Profile;

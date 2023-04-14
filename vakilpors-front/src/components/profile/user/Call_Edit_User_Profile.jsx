@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import ProfileEdit from './ProfileEdit';
+import Edit_User_Profile from './Edit_User_Profile';
 
 
 
-const Edit_user_profile = () => {
+const Call_Edit_User_Profile = () => {
     const [username, setUsername] = useState('Hesam');
     const [email, setEmail] = useState('Hesam@example.com');
     const [job, setJob] = useState('lawyer')
@@ -21,11 +21,11 @@ const Edit_user_profile = () => {
 
     return (
         <div>
-          <ProfileEdit initialUsername={username} initialEmail={email} initialBio={bio} initialImageURL={imageURL} onSave={handleSave} /> 
+          <Edit_User_Profile initialUsername={username} initialEmail={email} initialBio={bio} initialImageURL={imageURL} onSave={handleSave} /> 
         </div>
       );
     };
     
     
     
-    export default Edit_user_profile;
+    export default Call_Edit_User_Profile;
