@@ -53,7 +53,7 @@ const Edit_Lawyer_Profile = () => {
   const [username, setUsername] = useState();
   const [title, setTitle] = useState();
   const [StudyField, setStudyField] = useState();
-  const [specialTitle, setspecialTitle] = useState();
+  const [specialTies, setSpecialTies] = useState();
   const [city, setCity] = useState();
   const [grade, setGrade] = useState('');
   const [licencesNumber, setLicencesNumber] = useState();
