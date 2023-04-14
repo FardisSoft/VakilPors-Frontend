@@ -3,22 +3,39 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
+import { AuthProvider } from './services/AuthProvider';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from './components/Login';
 import Register from './components/Register';
 import Policy from './components/Policy';
+import LawyerPage from './components/LawyerPage';
+import Sidebar from './components/Sidebar';
+import Forum from './components/Forum';
+import Lawyer_search_page from './components/Lawyer-search-page/Lawyer_search_page';
+import { Box } from '@mui/material';
+import Call_Edit_Lawyer_Profile from './components/profile/lawyer/Call_Edit_Lawyer_Profile';
+import Call_Edit_User_Profile from './components/profile/user/Call_Edit_User_Profile';
+import Call_Display_User_Profile from './components/profile/user/Call_Display_User_Profile';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <HelmetProvider>
-    <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<App />} />
-            <Route path="/Login" element={<Login/>}/>
-            <Route path="/Register" element={<Register/>}/>
-            <Route path="/Policy" element={<Policy/>}/>
-        </Routes>
+     <BrowserRouter>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<Sidebar component={App}/>} />
+              <Route path="/Login" element={<><Sidebar component={Box}/><Login/></>}/>
+              <Route path="/Register" element={<><Sidebar component={Box}/><Register/></>}/>
+              <Route path="/Policy" element={<Sidebar component={Policy}/>}/>
+              <Route path="/dashboard" element={<Sidebar component={Forum}/>}/>
+              <Route path="/LawyerPage/:LawyerId" element={<Sidebar component={LawyerPage}/>}/>
+              <Route path="/Lawyer-search-page" element={<Sidebar component={Lawyer_search_page}/>}/>
+              {/* <Route path="/user-display-profile" element={<Sidebar component={Call_Display_User_Profile}/>}/> */}
+              <Route path="/edit-user" element={<Sidebar component={Call_Edit_User_Profile}/>}/>
+              <Route path="/edit_lawyer" element={<Sidebar component={Call_Edit_Lawyer_Profile}/>}/>
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </HelmetProvider>
   </React.StrictMode>
