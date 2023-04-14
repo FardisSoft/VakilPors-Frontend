@@ -53,6 +53,8 @@ const AuthProvider = ({ children }) => {
         }
     };
 
+    
+
     const logout = () => {
         setAccessToken(null);
         setRefreshToken(null);

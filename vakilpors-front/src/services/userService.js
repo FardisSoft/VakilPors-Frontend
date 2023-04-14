@@ -11,9 +11,16 @@ export const LoginUser = (User) => {
 
 
 export const updateUser = (User, Userid) => {
-  const url = `${SERVER_URL}/${Userid}`;
+  const url = `https://api.fardissoft.ir/Customer/UpdateUser/${Userid}`;
   return axios.put(url, User);
 };
+
+export const updateLawyer = (User, Userid) => {
+  const url = `https://api.fardissoft.ir/Lawyer/UpdateLawyer/${Userid}`;
+  return axios.put(url, User);
+};
+
+
 
 
 export const deleteUser = (Userid) => {

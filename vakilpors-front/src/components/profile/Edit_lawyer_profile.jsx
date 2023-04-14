@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { styled } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -7,6 +7,11 @@ import './css/a.css';
 import { Helmet } from 'react-helmet-async';
 import { Box, FormControl, FormLabel, Input } from "@mui/material";
 import { InputLabel, Select, MenuItem } from '@mui/material';
+import jwt from 'jwt-decode';
+import axios from 'axios';
+import { useAuth } from "../../services/AuthProvider";
+import { updateLawyer } from '../../services/userService';
+
 
 const useStyles = styled((theme) => ({
   root: {
@@ -34,12 +39,15 @@ const useStyles = styled((theme) => ({
   },
 }));
 
-const ProfileEdit = ({initialUsername, initialEmail, initialGender, initialEducation, initialOfficeAddress, initialTitle, initialCity, initialGrade, initialLicencesNumber, initialMemberOf, initialYearsOfExperience, initialBio, initialImageURL, initialphoneNumber, onSave}) => {
+const ProfileEdit = ({ initialUsername, initialEmail, initialGender, initialEducation, initialOfficeAddress, initialTitle, initialCity, initialGrade, initialLicencesNumber, initialMemberOf, initialYearsOfExperience, initialBio, initialImageURL, initialphoneNumber, onSave }) => {
 
   const descriptionUser = "کاربر گرامی ! در این قسمت می توانید تمامی اطلاعات کاربری خود را بروزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";
   const [description, setDescription] = useState(descriptionUser);
 
   const classes = useStyles();
+  const [getdetail, setdetail] = useState([]);
+  const { refUserRole, getAccessToken } = useAuth();
+
   const [username, setUsername] = useState(initialUsername);
   const [title, setTitle] = useState(initialTitle);
   const [city, setCity] = useState(initialCity);
@@ -69,198 +77,263 @@ const ProfileEdit = ({initialUsername, initialEmail, initialGender, initialEduca
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave({username, email, Gender, Education, OfficeAddress, title, city, grade, licencesNumber, MemberOf, YearsOfExperience, bio, imageURL, phoneNumber});
+    onSave({ username, email, Gender, Education, OfficeAddress, title, city, grade, licencesNumber, MemberOf, YearsOfExperience, bio, imageURL, phoneNumber });
     setGrade(e.target.value);
     handleSubmit(e.target.files[0]);
   };
 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log(refUserRole);
+      const token = await getAccessToken();
+      if (token) {
+        const tokenData = jwt(token);
+        let url = "";
+        if (refUserRole.current === "User") {
+          url = `https://api.fardissoft.ir/Customer/GetUserById?userId=${tokenData.uid}`;
+        }
+        if (refUserRole.current === "Vakil") {
+          url = `https://api.fardissoft.ir/Lawyer/GetLawyerById?lawyerId=${tokenData.uid}`;
+        }
+        try {
+          const response = await axios.get(url);
+          console.log('response : ', response);
+          setdetail(response.data.data);
+        } catch (error) {
+          console.log('error : ', error);
+        }
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+  const updateuser = async (event) => {
+    event.preventDefault();
+    console.log(getdetail);
+    const token = await getAccessToken()
+    const tokenData = jwt(token);
+    try {
+      const success = await updateLawyer(getdetail, tokenData.uid);
+  } catch (error) {
+      console.log('error : ',error);
+  }
+    // console.log(localStorage.getItem('accessToken'),"\n refresh : ", localStorage.getItem('refreshToken'));
+    // console.log("main role : ", refUserRole.current);
+  };
+
+  const setUserInfo = (event) => {
+    setdetail({
+      ...getdetail,
+      [event.target.name]: event.target.value,
+    });
+  };
+
   return (
     <>
-    <Helmet>
-        <meta charSet="utf-8"/>
+      <Helmet>
+        <meta charSet="utf-8" />
         <title>Lawyer Profile</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-    </Helmet>
-    <div className="page-content" onSubmit={handleSubmit}>
-      <div className="form-v4-content-ForEdit">
-        <div className="form-left">
-                <h2>ویرایش اطلاعات کاربری</h2>
-                <p className="text-1">{description}</p>
-        </div>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+      </Helmet>
+      <div className="page-content" >
+        <div className="form-v4-content-ForEdit">
+          <div className="form-left">
+            <h2>ویرایش اطلاعات کاربری</h2>
+            <p className="text-1">{description}</p>
+          </div>
 
-          <form className="form-detail" id="myform" onSubmit={handleSubmit}>
-          <h2>اطلاعات کاربری</h2>
-          
-          <div className="form-group">
-            <br></br>
-            <br></br>
-            <br></br>
-            
-          <div className="form-row form-row-1">
-                    <TextField
-                      required
-                      label="درباره من"
-                      value={bio}
-                      onChange={(event) => setBio(event.target.value)}
-                      margin="normal"
-                    />
-           </div>
-           <div className="form-row form-row-1">
-           <TextField
-                required
-                label="رشته تحصیلی"
-                value={title}
-                onChange={(event) => setTitle(event.target.value)}
-                margin="normal"
-              />
-           </div>   
-           </div>  
+          <form className="form-detail" id="myform" >
+            <h2>اطلاعات کاربری</h2>
 
-           <div className="form-group">
-              <div 
-              className="form-row form-row-1"
+            <div className="form-group">
+              <br></br>
+              <br></br>
+              <br></br>
+
+              <div className="form-row form-row-1">
+              <label style={{ position: "relative", top: "5px" }}><p>درباره من</p></label>
+                <input
+                  className="input100"
+                  type="text"
+                  name="email"
+                  required
+                  value={getdetail.aboutMe}
+                  onChange={setUserInfo}
+                  margin="normal" />
+              </div>
+              <div className="form-row form-row-1">
+              <label style={{ position: "relative", top: "5px" }}><p>رشته تحصیلی</p></label>
+                <input
+                  className="input100"
+                  type="text"
+                  name="title"
+                  required
+                  value={getdetail.title}
+                  onChange={setUserInfo}
+                  margin="normal" />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <div
+                className="form-row form-row-1"
               >
-                <TextField
-                required
-                label="شهر"
-                value={city}
-                onChange={(event) => setCity(event.target.value)}
-                margin="normal"
-              />
+                  <label style={{ position: "relative", top: "5px" }}><p>شهر</p></label>
+                <input
+                  className="input100"
+                  type="text"
+                  name="email"
+                  required
+                  value={getdetail.city}
+                  onChange={setUserInfo}
+                  margin="normal" />
               </div>
               <div className="form-row form-row-1">
-              <TextField
-                required
-                label="شماره پروانه وکالت"
-                value={licencesNumber}
-                onChange={(event) => setLicencesNumber(event.target.value)}
-                margin="normal"
-              />
+              <label style={{ position: "relative", top: "5px" }}><p>شماره پروانه وکالت</p></label>
+                <input
+                  className="input100"
+                  type="text"
+                  name="licencesNumber"
+                  required
+                  value={getdetail.parvandeNo}
+                  onChange={setUserInfo}
+                  margin="normal" />
               </div>
-           </div>
+            </div>
 
-           <div className="form-group">
+            <div className="form-group">
               <div className="form-row form-row-1">
-                <TextField
-                required
-                label="جنسیت"
-                value={Gender}
-                onChange={(event) => setGender(event.target.value)}
-                margin="normal"
-              />
-              </div>
-              <div className="form-row form-row-1">
-                <TextField
-                required
-                label="سابقه فعالیت (سال)"
-                value={YearsOfExperience}
-                onChange={(event) => setYearsOfExperience(event.target.value)}
-                margin="normal"
-              />
-              </div>
-           </div>
-
-
-           <div className="form-group">
-              <div className="form-row form-row-1">
-                <TextField
-                required
-                label="تحصیلات"
-                value={Education}
-                onChange={(event) => setEducation(event.target.value)}
-                margin="normal"
-              />
+              <label style={{ position: "relative", top: "5px" }}><p>جنسیت</p></label>
+                <input
+                  className="input100"
+                  type="text"
+                  name="gender"
+                  required
+                  value={getdetail.gender}
+                  onChange={setUserInfo}
+                  margin="normal" />
               </div>
               <div className="form-row form-row-1">
-                <TextField
-                required
-                label="آدرس محل کار"
-                value={OfficeAddress}
-                onChange={(event) => setOfficeAddress(event.target.value)}
-                margin="normal"
-              />
+              <label style={{ position: "relative", top: "5px" }}><p>سابقه کاری </p></label>
+                <input
+                  className="input100"
+                  type="text"
+                  name="yearsOfExperience"
+                  required
+                  value={getdetail.yearsOfExperience}
+                  onChange={setUserInfo}
+                  margin="normal" />
               </div>
-           </div>
+            </div>
 
 
-
-           <div className="form-group">
+            <div className="form-group">
               <div className="form-row form-row-1">
-              <br></br>
-              <br></br>
-              <Box>
-                <FormControl>
-                  
-                  <FormLabel htmlFor="resume-upload">آپلود رزومه (PDF):</FormLabel>
-
-                  <FormLabel htmlFor="resume-upload"></FormLabel>
-                  <Input sx={{height: '70px'}}
-                    type="file"
-                    accept=".pdf"
-                    id="resume-upload"
-                    onChange={handleSubmit}
-                  />
-                </FormControl>
-
-              </Box>
-              </div>      
-              
+              <label style={{ position: "relative", top: "5px" }}><p>تحصیلات</p></label>
+                <input
+                  className="input100"
+                  type="text"
+                  name="education"
+                  required
+                  value={getdetail.education}
+                  onChange={setUserInfo}
+                  margin="normal" />
+              </div>
               <div className="form-row form-row-1">
-              <br></br> 
-              <br></br> 
+              <label style={{ position: "relative", top: "5px" }}><p>آدرس محل کار</p></label>
+                <input
+                  className="input100"
+                  type="text"
+                  name="officeAddress"
+                  required
+                  value={getdetail.officeAddress}
+                  onChange={setUserInfo}
+                  margin="normal" />
+              </div>
+            </div>
+
+
+
+            <div className="form-group">
+              <div className="form-row form-row-1">
+                <br></br>
+                <br></br>
+                <Box>
+                  <FormControl>
+
+                    <FormLabel htmlFor="resume-upload">آپلود رزومه (PDF):</FormLabel>
+
+                    <FormLabel htmlFor="resume-upload"></FormLabel>
+                    <Input sx={{ height: '70px' }}
+                      type="file"
+                      accept=".pdf"
+                      id="resume-upload"
+                      onChange={updateuser}
+                    />
+                  </FormControl>
+
+                </Box>
+              </div>
+
+              <div className="form-row form-row-1">
+                <br></br>
+                <br></br>
                 <label htmlFor="avatar-input">
                   <Button variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />}>
                     انتخاب عکس پروفایل
                   </Button>
                 </label>
                 <input
-                id="avatar-input"
-                className={classes.input}
-                type="file"
-                onChange={handleAvatarChange}
-              />
+                  id="avatar-input"
+                  className={classes.input}
+                  type="file"
+                  onChange={handleAvatarChange}
+                />
               </div>
-              </div>
+            </div>
 
-              <div className='form-row'>
+            <div className='form-row'>
 
-                  <FormControl 
-              sx={{
-                maxWidth: '220px',
-                 
-              }}
-              fullWidth
+              <FormControl
+                sx={{
+                  maxWidth: '220px',
+
+                }}
+                fullWidth
               >
-                    <Select value={grade} label="نوع پروانه وکالت" onChange={handleSubmit} dir='rtl'>
-                      <MenuItem value="پایه یک دادگستری">پایه یک دادگستری</MenuItem>
-                      <MenuItem value="پایه دو دادگستری">پایه دو دادگستری</MenuItem>
-                      <MenuItem value="پایه سه دادگستری">پایه سه دادگستری</MenuItem>
-                      <MenuItem value="کانون مشاوران قوه قضائیه">کانون مشاوران قوه قضائیه</MenuItem>
-                    </Select>
-                  </FormControl>
+                <Select value={grade} label="نوع پروانه وکالت" onChange={updateuser} dir='rtl'>
+                  <MenuItem value="پایه یک دادگستری">پایه یک دادگستری</MenuItem>
+                  <MenuItem value="پایه دو دادگستری">پایه دو دادگستری</MenuItem>
+                  <MenuItem value="پایه سه دادگستری">پایه سه دادگستری</MenuItem>
+                  <MenuItem value="کانون مشاوران قوه قضائیه">کانون مشاوران قوه قضائیه</MenuItem>
+                </Select>
+              </FormControl>
 
 
 
 
 
 
-              </div>
+            </div>
 
 
 
 
 
 
-      
 
-            <Button type="submit" variant="contained" color="primary" className={classes.submitButton}>
+
+            <Button type="submit" variant="contained" color="primary" className={classes.submitButton} onClick={updateuser}>
               ثبت اطلاعات
             </Button>
-            </form>
-    </div>
-    </div>
-    
-    
+          </form>
+        </div>
+      </div>
+
+
     </>
   );
 };

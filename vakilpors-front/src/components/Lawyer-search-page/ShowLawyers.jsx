@@ -13,7 +13,7 @@ const ShowLawyers = ({ Lawyer }) => {
                         <a class="img-layer lazy">
                             <img src={Lawyer.user.profileImageUrl} alt={Lawyer.user.profileImageUrl} style={{ display: "block" }} />
                         </a>
-                        <Link to={`${Lawyer.id}`}>
+                        <Link to={`/LawyerPage/${Lawyer.id}`}>
                             <h2 className="align-center">
                                 <p class="my-2">نام و نام خانوادگی : </p>
                                 <a title={Lawyer.user.name}  >

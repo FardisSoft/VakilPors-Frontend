@@ -8,6 +8,7 @@ import { Helmet } from 'react-helmet-async';
 import jwt from 'jwt-decode';
 import axios from 'axios';
 import { useAuth } from "../../services/AuthProvider";
+import { updateUser } from '../../services/userService';
 
 const useStyles = styled((theme) => ({
   root: {
@@ -94,9 +95,30 @@ const ProfileEdit = ({ initialUsername, initialEmail, initialJob, initialBio, in
     fetchData();
   }, []);
 
+  const updateuser = async (event) => {
+    event.preventDefault();
+    console.log(getdetail);
+    const token = await getAccessToken()
+    const tokenData = jwt(token);
+    try {
+      const success = await updateUser(getdetail, tokenData.uid);
+  } catch (error) {
+      console.log('error : ',error);
+  }
+    // console.log(localStorage.getItem('accessToken'),"\n refresh : ", localStorage.getItem('refreshToken'));
+    // console.log("main role : ", refUserRole.current);
+  };
+
+  const setUserInfo = (event) => {
+    setdetail({
+      ...getdetail,
+      [event.target.name]: event.target.value,
+    });
+  };
+
   return (
     <>
-    { }
+      { }
       <div className="page-content" onSubmit={handleSubmit} >
         <div className="form-v4-content-ForEdit">
           <div className="form-left">
@@ -110,61 +132,69 @@ const ProfileEdit = ({ initialUsername, initialEmail, initialJob, initialBio, in
             <div className="form-group">
 
               <div className="form-row form-row-1">
-                <label style={{ position: "relative", top: "18px" }}>نام و نام خانوادگی</label>
-                <TextField
+                <label style={{ position: "relative", top: "5px" }}><p>نام و نام خانوادگی</p></label>
+                <input
+                  className="input100"
+                  type="text"
+                  name="email"
                   required
                   value={getdetail.name}
-                  onChange={(event) => setUsername(event.target.value)}
-                  margin="normal"
-                />
+                  onChange={setUserInfo}
+                  margin="normal" />
               </div>
               <div className="form-row form-row-1">
-                <label style={{ position: "relative", top: "18px" }}>ایمیل</label>
-                <TextField
+                <label style={{ position: "relative", top: "5px" }}><p>ایمیل</p></label>
+                <input
+                  className="input100"
+                  type="text"
+                  name="email"
                   required
                   value={getdetail.email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  margin="normal"
-                />
+                  onChange={setUserInfo}
+                  margin="normal" />
               </div>
             </div>
             <div className="form-group">
               <div className="form-row form-row-1">
-                <label style={{ position: "relative", top: "18px" }}>شغل</label>
-                <TextField
-                  required
+                <label style={{ position: "relative", top: "5px" }}><p>شغل</p></label>
+                <input
+                  className="input100"
+                  type="text"
+                  name="job"
                   value={getdetail.job}
-                  onChange={(event) => setJob(event.target.value)}
-                  margin="normal"
-                />
+                  onChange={setUserInfo} />
+
               </div>
               <div className="form-row form-row-1">
-                <label style={{ position: "relative", top: "18px" }}>شماره همراه</label>
-                <TextField
+                <label style={{ position: "relative", top: "5px" }}><p>شماره همراه</p></label>
+                <input
+                  className="input100"
+                  type="text"
+                  name="email"
                   required
                   value={getdetail.phoneNumber}
-                  onChange={(event) => setphoneNumber(event.target.value)}
-                  margin="normal"
-                />
+                  onChange={setdetail.phoneNumber}
+                  margin="normal" />
               </div>
             </div>
             <div className="form-group">
               <div className="form-row form-row-1" >
-                <label style={{ position: "relative", top: "18px" }}>بیوگرافی</label>
-                <TextField
-                  value={""}
-                  onChange={(event) => setBio(event.target.value)}
-                  margin="normal"
-                  multiline
-                  rows={3}
-                />
+                <label style={{ position: "relative", top: "5px" }}><p>بیوگرافی</p></label>
+                <input
+                  className="input100"
+                  type="text"
+                  name="email"
+                  required
+                  value={getdetail.bio}
+                  onChange={setUserInfo}
+                  margin="normal" />
               </div>
 
               <div className="form-row form-row-1">
                 <br></br>
                 <label htmlFor="avatar-input">
                   <Button onChange={handleAvatarChange} variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />}>
-                  <p style={{color : "white", position : "relative", right :"8px"}}>انتخاب عکس پروفایل</p>
+                    <p style={{ color: "white", position: "relative", right: "8px" }}>انتخاب عکس پروفایل</p>
                   </Button>
                 </label>
                 <input
@@ -173,14 +203,10 @@ const ProfileEdit = ({ initialUsername, initialEmail, initialJob, initialBio, in
                   type="file"
                   onChange={handleAvatarChange}
                 />
-
-
               </div>
-
             </div>
 
-
-            <Button type="submit" variant="contained" color="primary" className={classes.submitButton}>
+            <Button type="submit" variant="contained" color="primary" className={classes.submitButton} onClick={updateuser}>
               ثبت اطلاعات
             </Button>
           </form>
