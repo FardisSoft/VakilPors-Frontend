@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect } from 'react';
-import useState from 'react-usestateref';
+import useStateRef from 'react-usestateref';
 import axios from 'axios';
 import { BASE_API_ROUTE } from "../Constants";
 import jwt from 'jwt-decode';
@@ -11,25 +11,27 @@ const useAuth = () => {
 };
 
 const AuthProvider = ({ children }) => {
-    const [userRole, setUserRole, refUserRole] = useState(null);
-    const [accessToken, setAccessToken, refAccessToken] = useState(null);
-    const [refreshToken, setRefreshToken, refRefreshToken] = useState(null);
+    const [userRole, setUserRole, refUserRole] = useStateRef(null);
+    const [accessToken, setAccessToken, refAccessToken] = useStateRef(null);
+    const [refreshToken, setRefreshToken, refRefreshToken] = useStateRef(null);
+    const [isLoggedIn, setIsLoggedIn, refIsLoggedIn] = useStateRef(false);
 
     useEffect(() => {
-        const fetchTokens = async () => {
-            const accesstoken = localStorage.getItem('accessToken');
-            const refreshtoken = localStorage.getItem('refreshToken');
-            if(accesstoken){
-                setAccessToken(accesstoken);
-                const tokenData = jwt(accesstoken);
-                setUserRole(tokenData['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']);
-            }
-            if(refreshtoken){
-                setRefreshToken(refreshtoken);
-            }
-        };
         fetchTokens();
     }, []);
+
+    const fetchTokens = async () => {
+        const accesstoken = localStorage.getItem('accessToken');
+        const refreshtoken = localStorage.getItem('refreshToken');
+        if(accesstoken){
+            setAccessToken(accesstoken);
+            const tokenData = jwt(accesstoken);
+            setUserRole(tokenData['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']);
+        }
+        if(refreshtoken){
+            setRefreshToken(refreshtoken);
+        }
+    };
 
     const login = async (getUser) => {
         const url = BASE_API_ROUTE + 'Auth/login';
@@ -44,6 +46,7 @@ const AuthProvider = ({ children }) => {
             setAccessToken(token);
             setRefreshToken(refreshToken);
             setUserRole(tokenData['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']);
+            setIsLoggedIn(true);
             localStorage.setItem('accessToken', token);
             localStorage.setItem('refreshToken', refreshToken);
             return "success";
@@ -59,6 +62,7 @@ const AuthProvider = ({ children }) => {
         setAccessToken(null);
         setRefreshToken(null);
         setUserRole(null);
+        setIsLoggedIn(false);
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
     };
@@ -68,6 +72,9 @@ const AuthProvider = ({ children }) => {
     };
 
     const getAccessToken = async () => {
+        
+        fetchTokens();
+
         if (!refAccessToken.current) { // login required
             console.log("no token exists");
             return null; 
@@ -108,6 +115,7 @@ const AuthProvider = ({ children }) => {
 
     const value = {
         refUserRole,
+        refIsLoggedIn,
         sendPasswordResetSMS,
         login,
         logout,

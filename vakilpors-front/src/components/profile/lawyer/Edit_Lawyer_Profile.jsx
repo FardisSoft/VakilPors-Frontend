@@ -5,7 +5,6 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import '../css/a.css';
-import { Helmet } from 'react-helmet-async';
 import { Box, FormControl, FormLabel, Input } from "@mui/material";
 import { InputLabel, Select, MenuItem } from '@mui/material';
 import jwt from 'jwt-decode';
@@ -161,11 +160,6 @@ const Edit_Lawyer_Profile = () => {
 
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Lawyer Profile</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-      </Helmet>
       <div className="page-content" >
         <div className="form-v4-content-ForEdit">
           <div className="form-left">

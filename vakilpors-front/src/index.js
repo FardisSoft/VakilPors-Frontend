@@ -16,6 +16,7 @@ import { Box } from '@mui/material';
 import Call_Edit_Lawyer_Profile from './components/profile/lawyer/Call_Edit_Lawyer_Profile';
 import Call_Edit_User_Profile from './components/profile/user/Call_Edit_User_Profile';
 import Call_Display_User_Profile from './components/profile/user/Call_Display_User_Profile';
+import ContactUs from './components/ContactUs';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -24,9 +25,9 @@ root.render(
      <BrowserRouter>
         <AuthProvider>
           <Routes>
-            <Route path="/" element={<Sidebar component={App}/>} />
-              <Route path="/Login" element={<><Sidebar component={Box}/><Login/></>}/>
-              <Route path="/Register" element={<><Sidebar component={Box}/><Register/></>}/>
+            <Route path="/" element={<Sidebar component={App} homePage={true}/>} />
+              <Route path="/Login" element={<Sidebar component={Login}/>}/>
+              <Route path="/Register" element={<Sidebar component={Register}/>}/>
               <Route path="/Policy" element={<Sidebar component={Policy}/>}/>
               <Route path="/dashboard" element={<Sidebar component={Forum}/>}/>
               <Route path="/LawyerPage/:LawyerId" element={<Sidebar component={LawyerPage}/>}/>
@@ -34,6 +35,7 @@ root.render(
               {/* <Route path="/user-display-profile" element={<Sidebar component={Call_Display_User_Profile}/>}/> */}
               <Route path="/edit-user" element={<Sidebar component={Call_Edit_User_Profile}/>}/>
               <Route path="/edit_lawyer" element={<Sidebar component={Call_Edit_Lawyer_Profile}/>}/>
+              <Route path="/contactUs" element={<Sidebar component={ContactUs}/>}/>
           </Routes>
         </AuthProvider>
       </BrowserRouter>

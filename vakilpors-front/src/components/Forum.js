@@ -8,6 +8,7 @@ import axios from 'axios';
 import { BASE_API_ROUTE } from "../Constants";
 import jwt from 'jwt-decode';
 import useStateRef from "react-usestateref";
+import { Helmet } from 'react-helmet-async';
 
 const Forum = () => {
 	const [thread, setThread] = useState("");
@@ -59,6 +60,9 @@ const Forum = () => {
 
 	return (
 		<>
+			<Helmet>
+              <title>Forum</title>
+          	</Helmet>
 			{/* <Nav /> */}
 			<main className='home' style={{background:'#84a0a0'}}>
 					<h2 className='homeTitle' style={{fontFamily:'calibri'}}>یک موضوع جدید ایجاد کنید یا موضوع مورد نظر خود را انتخاب کنید</h2>

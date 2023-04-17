@@ -59,11 +59,13 @@ const Register = () => {
             setErrorMessage("شماره موبایل خود را به صورت صحیح وارد کنید");
             return false;
         }
-        if(email !== ""){
-            if(!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)){
-                setErrorMessage("ایمیل خود را به صورت صحیح وارد کنید");
-                return false;
-            }
+        if(email === ""){
+            setErrorMessage("ایمیل خود را وارد کنید");
+            return false;
+        }
+        if(!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)){
+            setErrorMessage("ایمیل خود را به صورت صحیح وارد کنید");
+            return false;
         }
         if(password === ""){
             setErrorMessage("رمز خود را وارد کنید");
@@ -132,9 +134,7 @@ const Register = () => {
     return (
     <>
     <Helmet>
-        <meta charSet="utf-8"/>
         <title>Sign Up</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     </Helmet>
     <div className="page-content" >
         <div className="form-v4-content">
@@ -165,7 +165,7 @@ const Register = () => {
                 </div>
                 <div className="form-row">
                     <label htmlFor="your_email">ایمیل</label>
-                    <input type="text" name="your_email" id="your_email" className="input-text" value={email} onChange={(e) => setEmail(e.target.value)} pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}"/>
+                    <input type="text" name="your_email" id="your_email" className="input-text" value={email} onChange={(e) => setEmail(e.target.value)} required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}"/>
                 </div>
                 <div className="form-group">
                     <div className="form-row form-row-1 ">

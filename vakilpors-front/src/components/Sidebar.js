@@ -4,7 +4,8 @@ import { HomeOutlined, PersonSearchOutlined, ForumOutlined, PolicyOutlined, AppR
 import React, { useState, useEffect } from 'react';
 import useStateRef from "react-usestateref";
 import { styled } from '@mui/material/styles';
-import { Link } from "react-router-dom";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Link, useNavigate } from "react-router-dom";
 import { Box, Divider, Grid, Drawer } from '@mui/material';
 import { Badge, Avatar, Typography, Toolbar } from '@mui/material';
 import MuiAppBar from '@mui/material/AppBar';
@@ -14,9 +15,7 @@ import jwt from 'jwt-decode';
 import axios from 'axios';
 import { BASE_API_ROUTE } from '../Constants';
 
-import pic1 from '../assests/images/profileTest.jpg';
-
-const drawerWidth = 240;
+let drawerWidth = 240;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -44,7 +43,7 @@ const AppBar = styled(MuiAppBar, { shouldForwardProp: (prop) => prop !== 'open',
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
+    width: `calc(100% - ${drawerWidth})`,
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
@@ -62,19 +61,36 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-start',
 }));
 
+const theme = createTheme({
+  components: {
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          overflow: 'overlay', // Prevent scrollbars
+          height: '100vh'
+        },
+      },
+    },
+  },
+});
+
 const Sidebar = (props) => {
 
-  const { refUserRole, getAccessToken } = useAuth();
+  const { refUserRole, refIsLoggedIn, getAccessToken, logout } = useAuth();
   const [lawyerID, setLawyerID, refLawyerID] = useStateRef();
   const [open, setOpen] = useState(false);
-  const [profilePicture, setProfilePicture] = useState(pic1);
+  const [profilePicture, setProfilePicture] = useState();
   const [online, setOnline] = useState(true);
-  const [name, setName] = useState('فلان فلانی');
+  const [name, setName] = useState('');
   let tempLinks = [];
+  const navigate = useNavigate();
 
   useEffect(() => {
     const sidebarApi = async () => {
-      console.log(refUserRole);
+  
+      window.addEventListener('resize', updateSize);
+
+      // console.log("az too sidebar : ",refUserRole);
       const token = await getAccessToken();
       if(token){
         const tokenData = jwt(token);
@@ -96,9 +112,13 @@ const Sidebar = (props) => {
             console.log('error : ',error);
         }
       }
+      if(!token){
+        console.log('login required');
+        navigate("/Login");
+      }
     };
     sidebarApi();
-  }, []);
+  }, [refIsLoggedIn.current]);
 
   switch( refUserRole.current ){
     
@@ -106,7 +126,7 @@ const Sidebar = (props) => {
       tempLinks = [
         {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
-        {name:'تماس با ما', icon:CallOutlined, url:'/'},
+        {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
         {name:'ثبت نام', icon:AppRegistrationOutlined, url:'/Register'},
         {name:'ورود', icon:LoginOutlined, url:'/Login'}
       ];
@@ -120,10 +140,7 @@ const Sidebar = (props) => {
         {name:'جست و جوی وکیل', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
         {name:'فروم', icon:ForumOutlined, url:'/dashboard'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
-        {name:'تماس با ما', icon:CallOutlined, url:'/'},
-        {name:'ثبت نام', icon:AppRegistrationOutlined, url:'/Register'},
-        {name:'ورود', icon:LoginOutlined, url:'/Login'},
-        {name:'خروج از حساب', icon:LogoutOutlined, url:'/'}
+        {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
       ];
       break;
     
@@ -132,12 +149,10 @@ const Sidebar = (props) => {
         {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
         {name:'ویرایش پروفایل', icon:ManageAccountsOutlined, url:'/edit_lawyer'},
         {name:'مشاهده پروفایل', icon:AccountCircleOutlined, url:`/LawyerPage/${refLawyerID.current}`},
+        {name:'جست و جوی وکلا', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
         {name:'فروم', icon:ForumOutlined, url:'/dashboard'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
-        {name:'تماس با ما', icon:CallOutlined, url:'/'},
-        {name:'ثبت نام', icon:AppRegistrationOutlined, url:'/Register'},
-        {name:'ورود', icon:LoginOutlined, url:'/Login'},
-        {name:'خروج از حساب', icon:LogoutOutlined, url:'/'}
+        {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
       ];
       break;
     
@@ -151,6 +166,22 @@ const Sidebar = (props) => {
     setOnline(true);
     setName(refUserRole.current === "User" ? data.name : data.user.name);
   };
+
+  const updateSize = () => {
+    setOpen(false);
+    if(window.innerWidth >= 600){
+      drawerWidth = 240;
+    }
+    if(window.innerWidth < 600){
+      drawerWidth = '100vw';
+    }
+  }
+
+  const logoutHandler = () => {
+    alert('شما از حساب کاربری خود خارج شدید.');
+    logout();
+    navigate('/Login');
+  }
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -190,6 +221,7 @@ const Sidebar = (props) => {
   }));
 
   return (
+    <ThemeProvider theme={theme}>
     <Box sx={{ display: 'flex' }}>
       <AppBar position="fixed" open={open}>
         <Toolbar>
@@ -202,39 +234,53 @@ const Sidebar = (props) => {
         </Toolbar>
       </AppBar>
       
-      <Drawer variant="persistent" anchor="right" open={open} sx={{ width: drawerWidth, flexShrink: 0, '& .MuiDrawer-paper': {width: drawerWidth,},}}>
+      <Drawer variant="persistent" anchor="right" open={open} sx={{ width: drawerWidth == 240 || open ? drawerWidth : 0 , flexShrink: 0, '& .MuiDrawer-paper': {width: drawerWidth == 240 || open ? drawerWidth : 0,}}}>
         <DrawerHeader>
-          <IconButton sx={{pr:23.5, borderRadius:2, backgroundColor:"rgb(25,118,210)", ":hover":{backgroundColor:"rgba(25,118,210,0.7)"}}} onClick={handleDrawerClose}>
-            <ChevronRight sx={{color:"white"}} />
+          <IconButton sx={{width:drawerWidth, borderRadius:2, backgroundColor:"rgb(25,118,210)", ":hover":{backgroundColor:"rgba(25,118,210,0.7)"}}} onClick={handleDrawerClose}>
+            <ChevronRight sx={{position:"relative",right:drawerWidth == 240 ? 90 : '-45vw',color:"white"}} />
           </IconButton>
         </DrawerHeader>
         <Divider />
-        { props.userRole !== "unknown" && <Grid container direction="column" display="flex" alignItems="center" justifyContent="center" sx={{mt:2,mb:2}}>
+        { refUserRole.current && <Grid container direction="column" display="flex" alignItems="center" justifyContent="center" sx={{mt:2,mb:2}}>
           <StyledBadge invisible={!online} overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} variant="dot">
             <Avatar alt="profile picture" sx={{ width: 60, height: 60 }} srcSet={profilePicture} />
           </StyledBadge>
           <Typography sx={{fontFamily:"shabnam", mt:1}}>{name}</Typography>
         </Grid>}
         <Divider />
-        <List>
+        <List sx={{flex: '1 1 auto', overflow: 'overlay'}}>
           {links.map((linki,index) => (
             <ListItem key={index} component={Link} to={linki.url} disablePadding>
-              <ListItemButton sx={{ ...( (linki.url == '/' && window.location.href == 'http://localhost:3000/' ? true : window.location.href.includes(linki.url) && linki.url != '/') && {backgroundColor:"rgb(25,118,210)", ":hover":{backgroundColor:"rgba(25,118,210,0.7)"}})}}>
+              <ListItemButton sx={{ ...( (linki.url == '/' && props.homePage ? true : window.location.href.includes(linki.url) && linki.url != '/') && {backgroundColor:"rgb(25,118,210)", ":hover":{backgroundColor:"rgba(25,118,210,0.7)"}})}}>
                 <ListItemIcon>
-                  <linki.icon color="primary" sx={{ ...( (linki.url == '/' && window.location.href == 'http://localhost:3000/' ? true : window.location.href.includes(linki.url) && linki.url != '/') && {color:"white"})}} />
+                  <linki.icon color="primary" sx={{ ...( (linki.url == '/' && props.homePage ? true : window.location.href.includes(linki.url) && linki.url != '/') && {color:"white"})}} />
                 </ListItemIcon>
-                <Typography fontFamily="shabnam" sx={{ ...( (linki.url == '/' && window.location.href == 'http://localhost:3000/' ? true : window.location.href.includes(linki.url) && linki.url != '/') && {color:"white"})}} >{linki.name}</Typography>
+                <Typography fontFamily="shabnam" sx={{ ...( (linki.url == '/' && props.homePage ? true : window.location.href.includes(linki.url) && linki.url != '/') && {color:"white"})}} >{linki.name}</Typography>
               </ListItemButton>
             </ListItem>
           ))}
         </List>
+        { refUserRole.current && <>
+        <Divider />
+        <List sx={{position: 'sticky'}}>
+            <ListItem disablePadding>
+              <ListItemButton onClick={logoutHandler}>
+                <ListItemIcon>
+                  <LogoutOutlined color="primary" />
+                </ListItemIcon>
+                <Typography fontFamily="shabnam" >خروج از حساب</Typography>
+              </ListItemButton>
+            </ListItem>
+        </List>
+        </>}
       </Drawer>
 
-      <Main sx={{padding:'0 !important'}}>
+      <Main onClick={handleDrawerClose} open={open} sx={{padding:'0 !important'}}>
         <DrawerHeader/>
         <props.component/>
       </Main>
     </Box>
+    </ThemeProvider>
   );
 }
 

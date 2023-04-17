@@ -99,13 +99,11 @@ const Edit_User_Profile = ({ initialUsername, initialEmail, initialJob, initialB
   const updateuser = async (event) => {
     event.preventDefault();
     console.log(refdetail.current);
-    const token = await getAccessToken()
-    const tokenData = jwt(token);
     try {
       const success = await updateUser(refdetail.current);
-  } catch (error) {
-      console.log('error : ',error);
-  }
+    } catch (error) {
+        console.log('error : ',error);
+    }
     // console.log(localStorage.getItem('accessToken'),"\n refresh : ", localStorage.getItem('refreshToken'));
     // console.log("main role : ", refUserRole.current);
   };
