@@ -6,7 +6,7 @@ const Comments = ({ numberOfComments, threadId }) => {
 	const navigate = useNavigate();
 
 	const handleAddComment = () => {
-		navigate(`/${threadId}/replies`);
+		navigate(`/Replies/${threadId}`);
 	};
 	return (
 		<div className='likes__container'>

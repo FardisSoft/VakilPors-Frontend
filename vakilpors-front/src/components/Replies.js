@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { BASE_API_ROUTE } from "../Constants";
+import { useAuth } from "../services/AuthProvider";
 
 const Replies = () => {
 	const [replyList, setReplyList] = useState([]);
@@ -7,25 +10,27 @@ const Replies = () => {
 	const [title, setTitle] = useState("");
 	const navigate = useNavigate();
 	const { id } = useParams();
+	const { getAccessToken } = useAuth(); 
 
-	const addReply = () => {
-		fetch("https://api.fardissoft.ir/ThreadComment/CreateComment", {
-			method: "POST",
-			body: JSON.stringify({
-				id,
-				userId: localStorage.getItem("_id"),
-				reply,
-			}),
-			headers: {
-				"Content-Type": "application/json",
-			},
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				alert(data.message);
-				navigate("/dashboard");
-			})
-			.catch((err) => console.error(err));
+	const addReply = async () => {
+		const token = await getAccessToken();
+		if(token){
+			const url = BASE_API_ROUTE + "/ThreadComment/CreateComment";
+			const data = {
+					"id": id,
+					"text": reply,
+					"likeCount": 0,
+					"userId": 22,
+					"threadId": 2
+				  };
+			try{
+				const response = await axios.post(url,data,{headers: {Authorization: `Bearer ${token}`}});
+				console.log(response)
+			// setThreadList(response.data.data);
+			} catch (error) {
+			console.log(error);
+			}
+		}
 	};
 	const handleSubmitReply = (e) => {
 		e.preventDefault();
