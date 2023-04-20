@@ -1,8 +1,12 @@
 import { Link, Outlet } from "react-router-dom";
+import { Helmet } from 'react-helmet-async';
 
 const App = () => {
   return (
     <div>
+    <Helmet>
+      <title>Vakil Pors</title>
+    </Helmet>
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <a className="navbar-brand" href="/">وکیل پرس!</a>
       {/* <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

@@ -11,10 +11,6 @@ import {Done, Female, Male, LooksOne, LooksTwo, Looks3, CardMembership, Location
     ThumbUpAlt, FactCheck, Percent } from '@mui/icons-material';
 import { useParams } from "react-router-dom";
 
-import pic1 from '../assests/images/profileTest.jpg';
-import pic2 from '../assests/images/lawyer.jpg';
-import pic3 from '../assests/images/callingCardTest.jpg';
-
 const LawyerPage = () => {
 
     const [profilePicture, setProfilePicture] = useState();
@@ -121,7 +117,7 @@ const LawyerPage = () => {
     </Helmet>
     <Stack spacing={5} maxWidth="100%" margin={2}>
         <Grid container direction={{ xs: 'column', sm: 'row' }} alignItems="stretch">
-            <Grid sx={{backgroundImage:`url(${profileBackgroundPicture})`}} display="flex" alignItems="center" justifyContent="center" item component={Card} sm>
+            <Grid sx={{backgroundImage:`url(${profileBackgroundPicture})`,backgroundRepeat:'no-repeat',backgroundSize:'cover',backgroundPosition:'center'}} display="flex" alignItems="center" justifyContent="center" item component={Card} sm>
                 <CardContent>
                     <StyledBadge invisible={!online} overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} variant="dot">
                         <Avatar alt="lawyer profile" sx={{ width: 60, height: 60 }} srcSet={profilePicture} />
@@ -138,7 +134,7 @@ const LawyerPage = () => {
             </Grid>
             <Grid sx={{ border: "none", boxShadow: "none" }} display="flex" alignItems="center" justifyContent="center" item component={Card} sm>
                 <CardContent>
-                    <Button variant="contained">درخواست چت آنلاین</Button>
+                    <Button variant="contained" sx={{fontFamily:"shabnam"}}>درخواست چت آنلاین</Button>
                 </CardContent>
             </Grid>
         </Grid>

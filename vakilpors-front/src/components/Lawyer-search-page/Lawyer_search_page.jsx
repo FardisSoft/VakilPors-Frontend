@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Search from './Search';
 import { getAlllawyer } from "../../services/userService";
 import ShowLawyers from './ShowLawyers';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import "../../css/Main_ShowLawyer.css";
 import axios from "axios";
@@ -38,6 +39,9 @@ const Lawyer_search_page = () => {
 
     return (
         <>
+            <Helmet>
+                <title>Lawyer Search Page</title>
+            </Helmet>
             <div class="Main_contain">
                 <Search LawyerSearch={LawyerSearch} LawyerQuery={LawyerQuery} />
                 <section className="container" >

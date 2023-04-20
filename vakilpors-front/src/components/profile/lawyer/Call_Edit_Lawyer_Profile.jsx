@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Edit_Lawyer_Profile from './Edit_Lawyer_Profile';
-
+import { Helmet } from 'react-helmet-async';
 
 
 const Call_Edit_Lawyer_Profile = () => {
@@ -21,6 +21,9 @@ const Call_Edit_Lawyer_Profile = () => {
 
     return (
         <div>
+          <Helmet>
+              <title>Lawyer Profile</title>
+          </Helmet>
           <Edit_Lawyer_Profile initialUsername={username} initialEmail={email} initialBio={bio} initialImageURL={imageURL} onSave={handleSave} /> 
         </div>
       );

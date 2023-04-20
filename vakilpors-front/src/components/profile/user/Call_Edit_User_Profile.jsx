@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Edit_User_Profile from './Edit_User_Profile';
-
+import { Helmet } from 'react-helmet-async';
 
 
 const Call_Edit_User_Profile = () => {
@@ -21,6 +21,9 @@ const Call_Edit_User_Profile = () => {
 
     return (
         <div>
+          <Helmet>
+              <title>User Profile</title>
+          </Helmet>
           <Edit_User_Profile initialUsername={username} initialEmail={email} initialBio={bio} initialImageURL={imageURL} onSave={handleSave} /> 
         </div>
       );
