@@ -38,26 +38,31 @@ const Replies = () => {
 		setReply("");
 	};
 
+	const fetchReplies = async () => {
+	  const config = {
+		method: 'POST',
+		url: 'https://api.fardissoft.ir/ThreadComment/GetCommentsForThread',
+		headers: {
+		  'Content-Type': 'application/json'
+		},
+		data: {
+		  id
+		}
+	  };
+	
+	  try {
+		const response = await axios(config);
+		// setReplyList(response.data.replies);
+		setTitle(response.data.title);
+	  } catch (error) {
+		console.error(error);
+	  }
+	}
+	
 	useEffect(() => {
-		const fetchReplies = () => {
-			fetch("https://api.fardissoft.ir/ThreadComment/GetCommentsForThread", {
-				method: "POST",
-				body: JSON.stringify({
-					id,
-				}),
-				headers: {
-					"Content-Type": "application/json",
-				},
-			})
-				.then((res) => res.json())
-				.then((data) => {
-					setReplyList(data.replies);
-					setTitle(data.title);
-				})
-				.catch((err) => console.error(err));
-		};
-		fetchReplies();
+	  fetchReplies();
 	}, [id]);
+
 
 	return (
 		<main className='replies'>
