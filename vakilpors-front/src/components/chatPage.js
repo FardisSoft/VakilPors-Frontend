@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Avatar, Box, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, TextField, InputAdornment, Typography } from '@mui/material';
 import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined } from '@mui/icons-material';
 import moment from 'moment';
-import { Helmet } from 'react-helmet';
 import { Helmet } from 'react-helmet-async';
 
 const messages = [
