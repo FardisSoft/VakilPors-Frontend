@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Avatar, Box, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, TextField, InputAdornment, Typography } from '@mui/material';
 import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined } from '@mui/icons-material';
 import moment from 'moment';
+import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 const messages = [
 [
@@ -346,6 +348,11 @@ const ChatPage = () => {
   };
 
   return (
+    <>
+    <Helmet>
+    <title>Forum</title>
+    </Helmet>
+
     <Grid container direction={{ xs: 'column', sm: 'row' }} height={{xs:'auto', sm:'calc(100vh - 65px)'}} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', display:'flex', justifyContent:'space-around', alignItems:'stretch'}}>
       <Grid container direction={'column'} width={{ xs: '100%', sm: '20%' }} sx={{ borderBottom: { xs: '1px solid grey', sm: '0px solid grey' } }}>
         <Grid display="flex" flexDirection="column" alignItems="center" justifyContent={'center'} padding={1} border={'1px solid grey'} borderRadius={2}>
@@ -407,6 +414,7 @@ const ChatPage = () => {
         )}
       </Grid>
     </Grid>
+    </>
   );
 };
 
