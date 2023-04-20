@@ -64,7 +64,7 @@ const Replies = () => {
 			<h1 className='repliesTitle'>{title}</h1>
 
 			<form className='modal__content' onSubmit={handleSubmitReply}>
-				<label htmlFor='reply' style={{fontFamily:'calibri'}}>به این موضوع نظر بدهید</label>
+				<label htmlFor='reply'>به این موضوع نظر بدهید</label>
 				<textarea
 					rows={5}
 					value={reply}
@@ -74,15 +74,15 @@ const Replies = () => {
 					className='modalInput'
 				/>
 
-				<button className='modalBtn' style={{fontFamily:'calibri'}}>ارسال</button>
+				<button className='modalBtn'>ارسال</button>
 			</form>
 
-			<div className='thread__container' style={{fontFamily:'calibri'}}>
+			<div className='thread__container'>
 				{replyList.map((reply) => (
 					<div className='thread__item'>
 						<p>{reply.text}</p>
 						<div className='react__container'>
-							<p style={{ opacity: "0.5" }}>by {reply.name}</p>
+							<p style={{ opacity: "0.5" }}>توسط {reply.name}</p>
 						</div>
 					</div>
 				))}
