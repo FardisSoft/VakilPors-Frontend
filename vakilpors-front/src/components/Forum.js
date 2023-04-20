@@ -64,11 +64,11 @@ const Forum = () => {
               <title>Forum</title>
           	</Helmet>
 			{/* <Nav /> */}
-			<main className='home' style={{background:'#84a0a0'}}>
-					<h2 className='homeTitle' style={{fontFamily:'calibri'}}>یک موضوع جدید ایجاد کنید یا موضوع مورد نظر خود را انتخاب کنید</h2>
+			<main className='home'>
+					<h2 className='homeTitle'>یک موضوع جدید ایجاد کنید یا موضوع مورد نظر خود را از لیست پایین انتخاب کنید</h2>
 					<form className='homeForm' onSubmit={handleSubmit}>
-						<div className='home__container' >
-							<label htmlFor='thread'style={{fontFamily:'calibri'}}>موضوع</label>
+						<div className='home__container'>
+							<label htmlFor='thread'>موضوع جدید <br/></label>
 							<input
 								type='text'
 								name='thread'
@@ -77,10 +77,10 @@ const Forum = () => {
 								onChange={(e) => setThread(e.target.value)}
 							/>
 						</div>
-						<button className='homeBtn' style={{fontFamily:'calibri'}} onClick={createThread}>ساخت موضوع جدید</button>
+						<button className='homeBtn' onClick={createThread}>ساخت موضوع جدید</button>
 					</form>
 				
-				<div className='thread__container' style={{fontFamily:'calibri'}}>
+				<div className='thread__container'>
 					{threadList.map((thread) => (
 						<div className='thread__item' key={thread.id}>
 							<p>{thread.title}</p>

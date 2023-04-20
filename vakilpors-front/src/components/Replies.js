@@ -1,31 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { BASE_API_ROUTE } from "../Constants";
+import { useAuth } from "../services/AuthProvider";
 
 const Replies = () => {
 	const [replyList, setReplyList] = useState([]);
 	const [reply, setReply] = useState("");
 	const [title, setTitle] = useState("");
 	const navigate = useNavigate();
-	const { id } = useParams();
+	const { threadId } = useParams();
+	const { getAccessToken } = useAuth(); 
 
-	const addReply = () => {
-		fetch("https://api.fardissoft.ir/ThreadComment/CreateComment", {
-			method: "POST",
-			body: JSON.stringify({
-				id,
-				userId: localStorage.getItem("_id"),
-				reply,
-			}),
-			headers: {
-				"Content-Type": "application/json",
-			},
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				alert(data.message);
-				navigate("/dashboard");
-			})
-			.catch((err) => console.error(err));
+	const addReply = async () => {
+		const token = await getAccessToken();
+		if(token){
+			const url = BASE_API_ROUTE + "ThreadComment/CreateComment";
+			const data = {
+					"id": 0, // It doesn't matter what it is
+					"text": reply,
+					"likeCount": 0, // It doesn't matter what it is
+					"userId": 0, // It doesn't matter what it is
+					"threadId": Number(threadId)
+				  };
+			console.log('data : ',data);
+			try{
+				const response = await axios.post(url,data,{headers: {Authorization: `Bearer ${token}`}});
+				console.log('add reply response : ',response);
+			} catch (error) {
+				console.log('add reply error : ',error);
+			}
+		}
 	};
 	const handleSubmitReply = (e) => {
 		e.preventDefault();
@@ -33,33 +38,33 @@ const Replies = () => {
 		setReply("");
 	};
 
+	const fetchReplies = async () => {
+		const token = await getAccessToken();
+		if(token){
+			const url = BASE_API_ROUTE + `ThreadComment/GetCommentsForThread?threadId=${threadId}`;
+			console.log(url);
+			try{
+				const response = await axios.get(url,{headers: {Authorization: `Bearer ${token}`}});
+				console.log('fetch reply response : ',response);
+				// setTitle(response.data.title);
+				setReplyList(response.data.data);
+			} catch (error) {
+				console.log('fetch reply error : ',error);
+			}
+		}
+	}
+	
 	useEffect(() => {
-		const fetchReplies = () => {
-			fetch("https://api.fardissoft.ir/ThreadComment/GetCommentsForThread", {
-				method: "POST",
-				body: JSON.stringify({
-					id,
-				}),
-				headers: {
-					"Content-Type": "application/json",
-				},
-			})
-				.then((res) => res.json())
-				.then((data) => {
-					setReplyList(data.replies);
-					setTitle(data.title);
-				})
-				.catch((err) => console.error(err));
-		};
-		fetchReplies();
-	}, [id]);
+	  fetchReplies();
+	}, [threadId]);
+
 
 	return (
 		<main className='replies'>
 			<h1 className='repliesTitle'>{title}</h1>
 
 			<form className='modal__content' onSubmit={handleSubmitReply}>
-				<label htmlFor='reply' style={{fontFamily:'calibri'}}>به این موضوع نظر بدهید</label>
+				<label htmlFor='reply'>به این موضوع نظر بدهید</label>
 				<textarea
 					rows={5}
 					value={reply}
@@ -69,15 +74,15 @@ const Replies = () => {
 					className='modalInput'
 				/>
 
-				<button className='modalBtn' style={{fontFamily:'calibri'}}>ارسال</button>
+				<button className='modalBtn'>ارسال</button>
 			</form>
 
-			<div className='thread__container' style={{fontFamily:'calibri'}}>
+			<div className='thread__container'>
 				{replyList.map((reply) => (
 					<div className='thread__item'>
 						<p>{reply.text}</p>
 						<div className='react__container'>
-							<p style={{ opacity: "0.5" }}>by {reply.name}</p>
+							<p style={{ opacity: "0.5" }}>توسط {reply.name}</p>
 						</div>
 					</div>
 				))}
