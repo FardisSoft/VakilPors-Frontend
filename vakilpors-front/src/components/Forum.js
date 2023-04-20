@@ -83,7 +83,7 @@ const Forum = () => {
 				<div className='thread__container'>
 					{threadList.map((thread) => (
 						<div className='thread__item' key={thread.id}>
-							<p>{thread.title}</p>
+							<p style={{color: '#071e22'}}>{thread.title}</p>
 							<div className='react__container'>
 								<Likes
 									thread={thread}
