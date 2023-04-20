@@ -158,6 +158,13 @@ const ChatPage = () => {
     setPageWidth(window.innerWidth);
   }
 
+  const handleEnter = (event) => {
+    if(event.key == 'Enter'){
+      handleInputChange(event);
+      handleSendClick();
+    }
+  }
+
   const handleChatSelect = (chatindex) => {
     setSelectedChat(chatindex);
     setChatMessages(messages[chatindex - 1]);
@@ -274,7 +281,7 @@ const ChatPage = () => {
           </Grid>
         </Grid>
         <Grid sx={{ margin: '10px', whiteSpace: 'pre-wrap', wordBreak: 'break-word',}}>
-          <Typography fontFamily={'shabnam'} sx={isDeleted && {color:'red'}}>{ isDeleted ? 'This message was deleted' : message.content }</Typography>
+          <Typography fontFamily={'shabnam'} color={isDeleted ? 'red' : 'black'}>{ isDeleted ? 'This message was deleted' : message.content }</Typography>
         </Grid>
         <Grid container direction={'row'} display={'flex'} justifyContent={'flex-start'}>
           {!isCurrentUser || isDeleted ? null : (
@@ -285,10 +292,10 @@ const ChatPage = () => {
             <IconButton size="small" onClick={() => handleDeleteClick(message.messageId)}>
               <Delete />
             </IconButton>
-            { isEdited && <Typography fontSize={'15px'} marginRight={'10px'} position={'relative'} top={'5px'}>edited</Typography>}
+            { isEdited && <Typography fontSize={'13px'} marginRight={'10px'} position={'relative'} top={'7px'}>edited</Typography>}
             </>
           )}
-          <Typography marginRight={'15px'} fontSize={'15px'} position={'relative'} top={'6px'}>{moment(message.sentAt).format('MMM D YYYY, h:mm A')}</Typography>
+          <Typography marginRight={'15px'} fontSize={'13px'} position={'relative'} top={'7px'}>{moment(message.sentAt).format('MMM D YYYY, h:mm A')}</Typography>
         </Grid>
       </Grid>
     );
@@ -333,6 +340,7 @@ const ChatPage = () => {
                 placeholder="پیام خود را بنویسید..."
                 value={inputText}
                 onChange={handleInputChange}
+                onKeyDown={handleEnter}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
