@@ -44,6 +44,19 @@ const messages = [
     edited: true,
     file: false,
   },
+  {
+    messageId: 4,
+    sender: {
+      id: 1,
+      name: 'person 1',
+      avatar: 'https://i.pravatar.cc/150?img=1',
+    },
+    content: 'fine, you?',
+    sentAt: moment().subtract(1, 'hours').toISOString(),
+    deleted: false,
+    edited: false,
+    file: false,
+  },
 ],
 [
   {
@@ -83,6 +96,32 @@ const messages = [
     sentAt: moment().subtract(30, 'minutes').toISOString(),
     deleted: false,
     edited: false,
+    file: false,
+  },
+  {
+    messageId: 4,
+    sender: {
+      id: 3,
+      name: 'person 3',
+      avatar: 'https://i.pravatar.cc/150?img=3',
+    },
+    content: 'ممنون تو چطوری؟',
+    sentAt: moment().subtract(30, 'minutes').toISOString(),
+    deleted: false,
+    edited: true,
+    file: false,
+  },
+  {
+    messageId: 5,
+    sender: {
+      id: 2,
+      name: 'person 2',
+      avatar: 'https://i.pravatar.cc/150?img=2',
+    },
+    content: '👍👍',
+    sentAt: moment().subtract(30, 'minutes').toISOString(),
+    deleted: false,
+    edited: true,
     file: false,
   },
 ]];
@@ -253,7 +292,10 @@ const ChatPage = () => {
     const isEdited = message.edited;
     const isFile = message.file;
     return (
+      <Grid display="flex" flexDirection={isCurrentUser ? "row" : "row-reverse"}>
+
       <Grid key={message.messageId} sx={{
+        width: '80%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
@@ -292,11 +334,13 @@ const ChatPage = () => {
             <IconButton size="small" onClick={() => handleDeleteClick(message.messageId)}>
               <Delete />
             </IconButton>
-            { isEdited && <Typography fontSize={'13px'} marginRight={'10px'} position={'relative'} top={'7px'}>edited</Typography>}
             </>
           )}
+          { (isEdited && !isDeleted) && <Typography fontSize={'13px'} marginRight={'10px'} position={'relative'} top={'7px'}>edited</Typography>}
           <Typography marginRight={'15px'} fontSize={'13px'} position={'relative'} top={'7px'}>{moment(message.sentAt).format('MMM D YYYY, h:mm A')}</Typography>
         </Grid>
+      </Grid>
+
       </Grid>
     );
   };
@@ -322,8 +366,8 @@ const ChatPage = () => {
           </List>
         </Grid>
       </Grid> 
-      {pageWidth > 1020 && <Divider color='black' orientation="vertical" variant="middle" flexItem/>}
-      <Grid height={'100%'} width={{ xs: '100%', sm: '80%' }} maxWidth={800} sx={{ display: 'flex', flexDirection: 'column'}}>
+      {pageWidth > 1255 && <Divider color='black' orientation="vertical" variant="middle" flexItem/>}
+      <Grid height={'100%'} width={{ xs: '100%', sm: '80%' }} maxWidth={1000} sx={{ display: 'flex', flexDirection: 'column'}}>
         {selectedChat ? (
           <>
             <Grid container direction={'column'} height={'85%'} >
