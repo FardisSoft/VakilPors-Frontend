@@ -80,7 +80,7 @@ const Replies = () => {
 			<div className='thread__container'>
 				{replyList.map((reply) => (
 					<div className='thread__item'>
-						<p>{reply.text}</p>
+						<p style={{color: '#071e22'}}>{reply.text}</p>
 						<div className='react__container'>
 							<p style={{ opacity: "0.5" }}>توسط {reply.name}</p>
 						</div>
