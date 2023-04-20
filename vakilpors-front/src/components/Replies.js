@@ -17,17 +17,16 @@ const Replies = () => {
 		if(token){
 			const url = BASE_API_ROUTE + "ThreadComment/CreateComment";
 			const data = {
-					"id": 1000,
+					"id": 0, // It doesn't matter what it is
 					"text": reply,
-					"likeCount": 0,
-					"userId": 23000,
+					"likeCount": 0, // It doesn't matter what it is
+					"userId": 0, // It doesn't matter what it is
 					"threadId": Number(threadId)
 				  };
 			console.log('data : ',data);
 			try{
 				const response = await axios.post(url,data,{headers: {Authorization: `Bearer ${token}`}});
 				console.log('add reply response : ',response);
-			// setThreadList(response.data.data);
 			} catch (error) {
 				console.log('add reply error : ',error);
 			}
@@ -40,24 +39,19 @@ const Replies = () => {
 	};
 
 	const fetchReplies = async () => {
-	  const config = {
-		method: 'POST',
-		url: 'https://api.fardissoft.ir/ThreadComment/GetCommentsForThread',
-		headers: {
-		  'Content-Type': 'application/json'
-		},
-		data: {
-		  threadId
+		const token = await getAccessToken();
+		if(token){
+			const url = BASE_API_ROUTE + `ThreadComment/GetCommentsForThread?threadId=${threadId}`;
+			console.log(url);
+			try{
+				const response = await axios.get(url,{headers: {Authorization: `Bearer ${token}`}});
+				console.log('fetch reply response : ',response);
+				// setTitle(response.data.title);
+				setReplyList(response.data.data);
+			} catch (error) {
+				console.log('fetch reply error : ',error);
+			}
 		}
-	  };
-	
-	  try {
-		const response = await axios(config);
-		// setReplyList(response.data.replies);
-		setTitle(response.data.title);
-	  } catch (error) {
-		console.error(error);
-	  }
 	}
 	
 	useEffect(() => {
