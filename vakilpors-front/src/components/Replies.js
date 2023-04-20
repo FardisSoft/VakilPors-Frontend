@@ -9,26 +9,27 @@ const Replies = () => {
 	const [reply, setReply] = useState("");
 	const [title, setTitle] = useState("");
 	const navigate = useNavigate();
-	const { id } = useParams();
+	const { threadId } = useParams();
 	const { getAccessToken } = useAuth(); 
 
 	const addReply = async () => {
 		const token = await getAccessToken();
 		if(token){
-			const url = BASE_API_ROUTE + "/ThreadComment/CreateComment";
+			const url = BASE_API_ROUTE + "ThreadComment/CreateComment";
 			const data = {
-					"id": id,
+					"id": 1000,
 					"text": reply,
 					"likeCount": 0,
-					"userId": 22,
-					"threadId": 2
+					"userId": 23000,
+					"threadId": Number(threadId)
 				  };
+			console.log('data : ',data);
 			try{
 				const response = await axios.post(url,data,{headers: {Authorization: `Bearer ${token}`}});
-				console.log(response)
+				console.log('add reply response : ',response);
 			// setThreadList(response.data.data);
 			} catch (error) {
-			console.log(error);
+				console.log('add reply error : ',error);
 			}
 		}
 	};
@@ -46,7 +47,7 @@ const Replies = () => {
 		  'Content-Type': 'application/json'
 		},
 		data: {
-		  id
+		  threadId
 		}
 	  };
 	
@@ -61,7 +62,7 @@ const Replies = () => {
 	
 	useEffect(() => {
 	  fetchReplies();
-	}, [id]);
+	}, [threadId]);
 
 
 	return (
