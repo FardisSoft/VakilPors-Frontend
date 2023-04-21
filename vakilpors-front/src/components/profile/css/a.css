@@ -269,7 +269,7 @@
 }
 
 /* Responsive */
-@media screen and (max-width: 990px) {
+@media screen and (max-width: 5000px) {
 	.form-v4-content-ForEdit {
 		margin: 180px 20px;
 		flex-direction:  column;
