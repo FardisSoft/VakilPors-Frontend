@@ -154,9 +154,6 @@ const Call_Edit_Lawyer_Profile = () => {
             <h2>اطلاعات کاربری</h2>
 
             <div className="form-group">
-              <br></br>
-              <br></br>
-              <br></br>
 
               <div className="form-row form-row-1">
               <label style={{ position: "relative", top: "5px" }}><p>درباره من</p></label>
@@ -183,9 +180,7 @@ const Call_Edit_Lawyer_Profile = () => {
             </div>
 
             <div className="form-group">
-              <div
-                className="form-row form-row-1"
-              >
+              <div className="form-row form-row-1">
                   <label style={{ position: "relative", top: "5px" }}><p>شهر</p></label>
                 <input
                   className="input100"

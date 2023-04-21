@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import useStateRef from 'react-usestateref';
-import { styled } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+import { Button, Input } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import '../css/a.css';
 import { Helmet } from 'react-helmet-async';
@@ -11,7 +10,7 @@ import axios from 'axios';
 import { useAuth } from "../../../services/AuthProvider";
 import { updateUser } from '../../../services/userService';
 
-const Call_Edit_User_Profile = ({ initialUsername, initialEmail, initialJob, initialBio, initialImageURL, initialphoneNumber, onSave }) => {
+const Call_Edit_User_Profile = () => {
 
   const descriptionUser = "کاربر گرامی ! در این قسمت می توانید تمامی اطلاعات کاربری خود را بروزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";
   const [description, setDescription] = useState(descriptionUser);
@@ -25,12 +24,16 @@ const Call_Edit_User_Profile = ({ initialUsername, initialEmail, initialJob, ini
   
 
   const handleAvatarChange = (event) => {
+    console.log('oomad v ',refdetail.current);
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = () => {
-        //[user.profileImageUrl]: reader.result;
+        setdetail({
+          ...getdetail,
+          ['profileImageUrl']: reader.result,
+        });
       };
     }
   };
@@ -38,17 +41,10 @@ const Call_Edit_User_Profile = ({ initialUsername, initialEmail, initialJob, ini
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(refUserRole);
       const token = await getAccessToken();
       if (token) {
         const tokenData = jwt(token);
-        let url = "";
-        if (refUserRole.current === "User") {
-          url = `https://api.fardissoft.ir/Customer/GetUserById?userId=${tokenData.uid}`;
-        }
-        if (refUserRole.current === "Vakil") {
-          url = `https://api.fardissoft.ir/Lawyer/GetLawyerById?lawyerId=${tokenData.uid}`;
-        }
+        const url = `https://api.fardissoft.ir/Customer/GetUserById?userId=${tokenData.uid}`;
         try { 
           const response = await axios.get(url);
           console.log('response : ', response);
@@ -74,8 +70,6 @@ const Call_Edit_User_Profile = ({ initialUsername, initialEmail, initialJob, ini
         setErrorMessage("تغییر اطلاعات با خطا مواجه شد.");
         setErrorColor("red");
     }
-    // console.log(localStorage.getItem('accessToken'),"\n refresh : ", localStorage.getItem('refreshToken'));
-    // console.log("main role : ", refUserRole.current);
   };
 
   const setUserInfo = (event) => {
@@ -149,26 +143,32 @@ const Call_Edit_User_Profile = ({ initialUsername, initialEmail, initialJob, ini
               </div>
             </div>
             <div className="form-group">
-
-              <div className="form-row form-row-1">
-                <br></br>
-                <label htmlFor="avatar-input">
-                  <Button onChange={handleAvatarChange} variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />}>
-                    <p style={{ color: "white", position: "relative", right: "8px" }}>انتخاب عکس پروفایل</p>
-                  </Button>
-                </label>
+              {/* <div className="form-row form-row-1" >
+                <label style={{ position: "relative", top: "5px" }}><p>عکس پروفایل</p></label>
                 <input
-                  id="avatar-input"
+                  className="input100"
                   type="file"
+                  name="profileImageUrl"
+                  style={{justifyContent:'center',alignItems:'center'}}
+                  value={profileImage}
                   onChange={handleAvatarChange}
-                />
-              </div>
+                  margin="normal" />
+              </div> */}
+              {/* <div className="form-row form-row-1">
+                <Button variant="contained" color="primary" component="label" startIcon={<CloudUploadIcon sx={{color:"white"}}/>}>
+                  <p style={{ color: "white", position: "relative", right: "8px" }}>انتخاب عکس پروفایل</p>
+                  <input type="file" hidden id="fileInput" onChange={handleAvatarChange} />
+                </Button>
+                { refdetail.current.profileImageUrl && <Input htmlFor="fileInput" value={refdetail.current.profileImageUrl.name} disabled /> }
+              </div> */}
             </div>
 
-            <Button type="submit" variant="contained" color="primary"  onClick={updateuser}>
-              ثبت اطلاعات
-            </Button>
-            <label className="container"><p className="text" style={{color:errorColor}}>{errorMessage}</p></label>
+            <div className="form-row-last">
+              <Button type="submit" variant="contained" color="primary"  onClick={updateuser}>
+                ثبت اطلاعات
+              </Button>
+              <label className="container"><p className="text" style={{color:errorColor}}>{errorMessage}</p></label>
+            </div>
           </form>
         </div>
       </div>

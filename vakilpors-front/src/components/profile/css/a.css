@@ -270,7 +270,7 @@
 
 /* Responsive */
 @media screen and (max-width: 990px) {
-	.form-v4-content {
+	.form-v4-content-ForEdit {
 		margin: 180px 20px;
 		flex-direction:  column;
 		-o-flex-direction:  column;
@@ -278,12 +278,12 @@
 		-moz-flex-direction:  column;
 		-webkit-flex-direction:  column;
 	}
-	.form-v4-content .form-left {
+	.form-v4-content-ForEdit .form-left {
 		width: auto;
 		border-top-right-radius: 10px;
 		border-bottom-left-radius: 0;
 	}
-	.form-v4-content .form-detail {
+	.form-v4-content-ForEdit .form-detail {
 		padding: 30px 20px 30px 20px;
 	    width: auto;
 	}
