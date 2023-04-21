@@ -42,6 +42,9 @@ const useStyles = styled((theme) => ({
 
 const Edit_Lawyer_Profile = () => {
 
+  const [errorMessage, setErrorMessage] = useState("");
+  const [errorColor, setErrorColor] = useState("red");
+
   const descriptionUser = "کاربر گرامی ! در این قسمت می توانید تمامی اطلاعات کاربری خود را بروزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";
   const [description, setDescription] = useState(descriptionUser);
 
@@ -147,8 +150,12 @@ const Edit_Lawyer_Profile = () => {
           const success = await updateLawyer(refdetail.current);
           console.log(refdetail.current);
           console.log("success",success);
+          setErrorMessage("اطلاعات شما با موفقیت تغییر کرد.");
+          setErrorColor("green");
       } catch (error) {
           console.log('error : ',error);
+          setErrorMessage("تغییر اطلاعات با خطا مواجه شد.");
+          setErrorColor("red");
       }
     }
     // console.log(localStorage.getItem('accessToken'),"\n refresh : ", localStorage.getItem('refreshToken'));
@@ -419,6 +426,7 @@ const Edit_Lawyer_Profile = () => {
             <Button type="submit" variant="contained" color="primary" className={classes.submitButton} onClick={updateuser}>
               ثبت اطلاعات
             </Button>
+            <label className="container"><p className="text" style={{color:errorColor}}>{errorMessage}</p></label>
           </form>
         </div>
       </div>

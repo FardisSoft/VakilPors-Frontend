@@ -43,6 +43,8 @@ const Edit_User_Profile = ({ initialUsername, initialEmail, initialJob, initialB
   const [description, setDescription] = useState(descriptionUser);
   const { refUserRole, getAccessToken } = useAuth();
 
+  const [errorMessage, setErrorMessage] = useState("");
+  const [errorColor, setErrorColor] = useState("red");
 
   const classes = useStyles();
 
@@ -101,8 +103,12 @@ const Edit_User_Profile = ({ initialUsername, initialEmail, initialJob, initialB
     console.log(refdetail.current);
     try {
       const success = await updateUser(refdetail.current);
+      setErrorMessage("اطلاعات شما با موفقیت تغییر کرد.");
+      setErrorColor("green");
     } catch (error) {
         console.log('error : ',error);
+        setErrorMessage("تغییر اطلاعات با خطا مواجه شد.");
+        setErrorColor("red");
     }
     // console.log(localStorage.getItem('accessToken'),"\n refresh : ", localStorage.getItem('refreshToken'));
     // console.log("main role : ", refUserRole.current);
@@ -208,6 +214,7 @@ const Edit_User_Profile = ({ initialUsername, initialEmail, initialJob, initialB
             <Button type="submit" variant="contained" color="primary" className={classes.submitButton} onClick={updateuser}>
               ثبت اطلاعات
             </Button>
+            <label className="container"><p className="text" style={{color:errorColor}}>{errorMessage}</p></label>
           </form>
         </div>
       </div>
