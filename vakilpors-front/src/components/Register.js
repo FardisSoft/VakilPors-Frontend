@@ -41,9 +41,12 @@ const Register = () => {
     }   
 
     const handleSubmit = (event) => {
+    
         event.preventDefault()
         if( validateForm() )
             SignupApi();
+          
+
     }
 
     const validateForm = () => {
@@ -189,6 +192,7 @@ const Register = () => {
                 </div>
                 <div className="form-row-last">
                     <input type="submit" onClick={handleSubmit} name="register" className="register" value="بریم!"/>
+                    {/* for test change submit with Button */}
                     <label className="container"><p className="text" style={{color:errorColor}}>{errorMessage}</p></label>
                 </div>
             </form>

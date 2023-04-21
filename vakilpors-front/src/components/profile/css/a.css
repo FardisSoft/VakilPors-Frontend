@@ -1,6 +1,4 @@
-body {
-	margin:  0;
-}
+
 .page-content {
 	width: 100%;
 	margin:  0 auto;
@@ -17,12 +15,6 @@ body {
 	-ms-align-items: center;
 	-moz-align-items: center;
 	-webkit-align-items: center;
-}
-
-.btn-show-pass
-{
-
-
 }
 .form-v4-content-ForEdit  {
 	background: #fff;
@@ -277,7 +269,7 @@ body {
 }
 
 /* Responsive */
-@media screen and (max-width: 991px) {
+@media screen and (max-width: 990px) {
 	.form-v4-content {
 		margin: 180px 20px;
 		flex-direction:  column;
@@ -296,7 +288,10 @@ body {
 	    width: auto;
 	}
 }
-@media screen and (max-width: 575px) {
+@media screen and (max-width: 890px) {
+	.form-v4-content-ForEdit {
+		width: auto;
+	}
 	.form-v4-content-ForEdit .form-detail .form-group {
 		flex-direction: column;
 		-o-flex-direction:  column;

@@ -74,7 +74,11 @@ const Edit_Lawyer_Profile = () => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = () => {
-        setProfileUrl(reader.result);
+        setdetail({
+          ...getdetail,
+          //[user.profileImageUrl]: reader.result,
+        });
+        //setdetail(reader.result);
       };
     }
   };
