@@ -3,6 +3,8 @@ import { Avatar, Box, Divider, Grid, IconButton, List, ListItem, ListItemAvatar,
 import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined } from '@mui/icons-material';
 import moment from 'moment';
 import { Helmet } from 'react-helmet-async';
+import * as signalR from '@microsoft/signalr';
+
 
 const messages = [
 [
@@ -188,22 +190,56 @@ const ChatPage = () => {
     avatar: 'https://i.pravatar.cc/150?img=2',
   });
   const [pageWidth, setPageWidth] = useState(window.innerWidth);
+  let connection;
 
   useEffect(() => {
+    startConversation();
     window.addEventListener('resize', updateChatSize);
     return () => window.removeEventListener('resize', updateChatSize);
   }, []);
 
+  const startConversation = () => {
+    connection = new signalR.HubConnectionBuilder()
+      .withUrl("/chathub")
+      .configureLogging(signalR.LogLevel.Information)
+      .build();
+    const start = async () => {
+      try {
+        await connection.start();
+        console.log("SignalR Connected.");
+      } catch (err) {
+        console.log('error in connecting SignalR : ',err);
+        setTimeout(start, 5000);
+      }
+    };
+    connection.onclose(async () => {
+      await start();
+    });
+    connection.on("ReceiveMessage", (user, message) => {
+      createMessage(false,message);
+    });
+    // Start the connection.
+    start();
+  };
+
+  const sendMessage = async (message) => {
+    try {
+      await connection.invoke("SendMessage", user, message);
+    } catch (err) {
+      console.log('error in sending message : ',err);
+    }
+  };
+
   const updateChatSize = () => {
     setPageWidth(window.innerWidth);
-  }
+  };
 
   const handleEnter = (event) => {
     if(event.key == 'Enter'){
       handleInputChange(event);
       handleSendClick();
     }
-  }
+  };
 
   const handleChatSelect = (chatindex) => {
     setSelectedChat(chatindex);
@@ -218,17 +254,31 @@ const ChatPage = () => {
     if (inputText.trim() === '') {
       return;
     }
-    const newMessage = {
-      messageId: chatMessages.length + 1,
-      sender: user,
-      content: inputText.trim(),
-      sentAt: new Date().toISOString(),
-      deleted: false,
-      edited: false,
-      file: false,
-    };
-    setChatMessages([...chatMessages, newMessage]);
+    const newMessage = createMessage(true,null);
     setInputText('');
+    if(newMessage){
+      sendMessage(newMessage);
+    }
+  };
+
+  const createMessage = (isSelf, message) => {
+    let newMessage = null;
+    if(isSelf){
+      newMessage = {
+        messageId: chatMessages.length + 1,
+        sender: user,
+        content: inputText.trim(),
+        sentAt: new Date().toISOString(),
+        deleted: false,
+        edited: false,
+        file: false,
+      };
+    }
+    if(!isSelf){
+      newMessage = message;
+    }
+    setChatMessages([...chatMessages, newMessage]);
+    return newMessage;
   };
 
   const handleEditClick = (messageId) => {
@@ -294,54 +344,52 @@ const ChatPage = () => {
     const isFile = message.file;
     return (
       <Grid display="flex" flexDirection={isCurrentUser ? "row" : "row-reverse"}>
-
-      <Grid key={message.messageId} sx={{
-        width: '80%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        margin: '10px',
-        padding: '10px',
-        borderRadius: '10px',
-        backgroundColor: 'skyblue',
-        ...(isCurrentUser && {
-          alignSelf: 'flex-end',
-          backgroundColor: 'lightsteelblue',
-          // color: 'grey',
-        }),
-        ...(isDeleted && {
-          // backgroundColor: 'lightsteelblue',
-          fontStyle: 'italic',
-        }),
-        ...(isEdited && {
-          // backgroundColor: 'blueviolet',
-        }),
-      }}>
-        <Grid sx={{ display: 'flex', alignItems: 'center',}}>
-          <Avatar src={message.sender.avatar} alt={message.sender.name} />
-          <Grid marginRight={'10px'} container direction={'row'} display={'flex'} justifyContent={'space-around'}>
-            <Typography fontSize={'17px'} fontFamily={'shabnam'} marginLeft={'10px'}>{message.sender.name}</Typography>
+        <Grid key={message.messageId} sx={{
+          width: '80%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          margin: '10px',
+          padding: '10px',
+          borderRadius: '10px',
+          backgroundColor: 'skyblue',
+          ...(isCurrentUser && {
+            alignSelf: 'flex-end',
+            backgroundColor: 'lightsteelblue',
+            // color: 'grey',
+          }),
+          ...(isDeleted && {
+            // backgroundColor: 'lightsteelblue',
+            fontStyle: 'italic',
+          }),
+          ...(isEdited && {
+            // backgroundColor: 'blueviolet',
+          }),
+        }}>
+          <Grid sx={{ display: 'flex', alignItems: 'center',}}>
+            <Avatar src={message.sender.avatar} alt={message.sender.name} />
+            <Grid marginRight={'10px'} container direction={'row'} display={'flex'} justifyContent={'space-around'}>
+              <Typography fontSize={'17px'} fontFamily={'shabnam'} marginLeft={'10px'}>{message.sender.name}</Typography>
+            </Grid>
+          </Grid>
+          <Grid sx={{ margin: '10px', whiteSpace: 'pre-wrap', wordBreak: 'break-word',}}>
+            <Typography fontFamily={'shabnam'} color={isDeleted ? 'red' : 'black'}>{ isDeleted ? 'This message was deleted' : message.content }</Typography>
+          </Grid>
+          <Grid container direction={'row'} display={'flex'} justifyContent={'flex-start'}>
+            {!isCurrentUser || isDeleted ? null : (
+              <>
+              {!isFile && <IconButton size="small" onClick={() => handleEditClick(message.messageId)}>
+                <Edit />
+              </IconButton>}
+              <IconButton size="small" onClick={() => handleDeleteClick(message.messageId)}>
+                <Delete />
+              </IconButton>
+              </>
+            )}
+            { (isEdited && !isDeleted) && <Typography fontSize={'13px'} marginRight={'10px'} position={'relative'} top={'7px'}>edited</Typography>}
+            <Typography marginRight={'15px'} fontSize={'13px'} position={'relative'} top={'7px'}>{moment(message.sentAt).format('MMM D YYYY, h:mm A')}</Typography>
           </Grid>
         </Grid>
-        <Grid sx={{ margin: '10px', whiteSpace: 'pre-wrap', wordBreak: 'break-word',}}>
-          <Typography fontFamily={'shabnam'} color={isDeleted ? 'red' : 'black'}>{ isDeleted ? 'This message was deleted' : message.content }</Typography>
-        </Grid>
-        <Grid container direction={'row'} display={'flex'} justifyContent={'flex-start'}>
-          {!isCurrentUser || isDeleted ? null : (
-            <>
-            {!isFile && <IconButton size="small" onClick={() => handleEditClick(message.messageId)}>
-              <Edit />
-            </IconButton>}
-            <IconButton size="small" onClick={() => handleDeleteClick(message.messageId)}>
-              <Delete />
-            </IconButton>
-            </>
-          )}
-          { (isEdited && !isDeleted) && <Typography fontSize={'13px'} marginRight={'10px'} position={'relative'} top={'7px'}>edited</Typography>}
-          <Typography marginRight={'15px'} fontSize={'13px'} position={'relative'} top={'7px'}>{moment(message.sentAt).format('MMM D YYYY, h:mm A')}</Typography>
-        </Grid>
-      </Grid>
-
       </Grid>
     );
   };
@@ -349,7 +397,7 @@ const ChatPage = () => {
   return (
     <>
     <Helmet>
-    <title>Forum</title>
+      <title>Chat Page</title>
     </Helmet>
 
     <Grid container direction={{ xs: 'column', sm: 'row' }} height={{xs:'auto', sm:'calc(100vh - 65px)'}} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', display:'flex', justifyContent:'space-around', alignItems:'stretch'}}>
