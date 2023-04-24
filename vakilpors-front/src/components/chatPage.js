@@ -432,7 +432,7 @@ const ChatPage = () => {
             <Grid container direction={'column'} height={'85%'} >
             {/* border={'1px solid grey'} borderRadius={2} */}
               <Grid height={'100%'} sx={{ flex: '0 0 auto', overflow: 'overlay'}}>
-                {chatMessages.map((message) => renderMessage(message))}
+                {chats && chats[selectedChat].chatMessages.map((message) => renderMessage(message))}
               </Grid>
             </Grid>
             <Grid sx={{ display: 'flex', alignItems: 'center', padding: '10px',}}>
