@@ -14,7 +14,7 @@ const ChatPage = () => {
   const [selectedChat, setSelectedChat] = useState(null);
   const [inputText, setInputText] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
-  const [chatLists, setChatLists] = useState([]);
+  const [chats, setChats] = useState([]);
   const [user, setUser] = useState(null);
 
   const [pageWidth, setPageWidth] = useState(window.innerWidth);
@@ -31,8 +31,8 @@ const ChatPage = () => {
         navigate("/Login");
       }
       else{
-        await fetchUserData(token);
-        await getInitialInformaition(token);
+        await getUserData(token);
+        await getChats(token);
         await startConversation(token);
       }
     };
@@ -40,7 +40,7 @@ const ChatPage = () => {
     return () => window.removeEventListener('resize', updateChatSize);
   }, []);
 
-  const fetchUserData = async (token) => {
+  const getUserData = async (token) => {
     const tokenData = jwt(token);
     const url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
     try { 
@@ -52,13 +52,14 @@ const ChatPage = () => {
     }
   };
 
-  const getInitialInformaition = async (token) => {
+  const getChats = async (token) => {
     const url = BASE_API_ROUTE + 'Chat/GetChats';
     try { 
       const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
-      console.log('response in geting Initial Informaition : ', response);
+      console.log('response in geting chats : ', response);
+      setChats(response.data.data);
     } catch (error) {
-      console.log('error in getting Initial Informaition : ', error);
+      console.log('error in getting chats : ', error);
     }
   };
 
@@ -190,9 +191,25 @@ const ChatPage = () => {
     }
   };
 
-  const handleChatSelect = (chatindex) => {
-    // setSelectedChat(chatindex);
-    // setChatMessages(messages[chatindex - 1]);
+  const handleChatSelect = async (chatId) => {
+    const token = await getAccessToken();
+    if(!token){
+      console.log('login required');
+      navigate("/Login");
+    }
+    else{
+      setSelectedChat(chatId);
+      const url = BASE_API_ROUTE + `Chat/GetChatMessages?chatId=${chatId}`;
+      try { 
+        const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
+        console.log('response in geting chats : ', response);
+        setChatMessages(response.data.data);
+        // inja ro ham dorost kon
+        addToChat(chatId);
+      } catch (error) {
+        console.log('error in getting chats : ', error);
+      }
+    }
   };
 
   const handleInputChange = (event) => {
@@ -334,19 +351,21 @@ const ChatPage = () => {
     <Grid container direction={{ xs: 'column', sm: 'row' }} height={{xs:'auto', sm:'calc(100vh - 65px)'}} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', display:'flex', justifymessage:'space-around', alignItems:'stretch'}}>
       <Grid container direction={'column'} width={{ xs: '100%', sm: '20%' }} sx={{ borderBottom: { xs: '1px solid grey', sm: '0px solid grey' } }}>
         {user && <Grid display="flex" flexDirection="column" alignItems="center" justifymessage={'center'} padding={1} border={'1px solid grey'} borderRadius={2}>
-          <Avatar src={user.avatar} alt={user.name} />
+          <Avatar src={user.profileImageUrl} alt={user.name} />
           <Typography>{user.name}</Typography>
         </Grid>}
         <Grid container direction={'column'} height={'80%'} >
         {/* border={'1px solid grey'} borderRadius={2} */}
           <List sx={{height: '100%', flex: {xs:'0 0 auto', sm:'1 0 0'}, overflow: 'overlay'}}>
-            {chatLists.map((chatlist) => (
-              <ListItem sx={{cursor:'pointer',...(selectedChat === chatlist.listId && {backgroundColor:'skyblue',borderRadius:2})}} key={chatlist.listId} onClick={() => handleChatSelect(chatlist.listId)} >
+            {chats.map((chat) => (
+              /// inja ro dorost kon
+              <ListItem sx={{cursor:'pointer',...(selectedChat === chat.id && {backgroundColor:'skyblue',borderRadius:2})}} key={chat.id} onClick={() => handleChatSelect(chat.id)} >
                 <ListItemAvatar>
-                  <Avatar src={chatlist.avatar} alt={chatlist.name} />
+                  <Avatar src={chat.avatar} alt={chat.name} />
                 </ListItemAvatar>
-                <ListItemText primary={chatlist.name} />
+                <ListItemText primary={chat.name} />
               </ListItem>
+              /// search here ina chian to swagger?
             ))}
           </List>
         </Grid>
