@@ -4,203 +4,72 @@ import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined } from '@mui
 import moment from 'moment';
 import { Helmet } from 'react-helmet-async';
 import * as signalR from '@microsoft/signalr';
-
-
-const messages = [
-[
-  {
-    messageId: 1,
-    sender: {
-      id: 1,
-      name: 'person 1',
-      avatar: 'https://i.pravatar.cc/150?img=1',
-    },
-    content: 'Hi there!',
-    sentAt: moment().subtract(1, 'hours').toISOString(),
-    deleted: false,
-    edited: false,
-    file: false,
-  },
-  {
-    messageId: 2,
-    sender: {
-      id: 2,
-      name: 'user',
-      avatar: 'https://i.pravatar.cc/150?img=2',
-    },
-    content: 'Hello!',
-    sentAt: moment().subtract(30, 'minutes').toISOString(),
-    deleted: false,
-    edited: false,
-    file: false,
-  },
-  {
-    messageId: 3,
-    sender: {
-      id: 2,
-      name: 'user',
-      avatar: 'https://i.pravatar.cc/150?img=2',
-    },
-    content: 'how are you',
-    sentAt: moment().subtract(30, 'minutes').toISOString(),
-    deleted: false,
-    edited: true,
-    file: false,
-  },
-  {
-    messageId: 4,
-    sender: {
-      id: 1,
-      name: 'person 1',
-      avatar: 'https://i.pravatar.cc/150?img=1',
-    },
-    content: 'fine, you?',
-    sentAt: moment().subtract(1, 'hours').toISOString(),
-    deleted: false,
-    edited: false,
-    file: false,
-  },
-],
-[
-  {
-    messageId: 1,
-    sender: {
-      id: 3,
-      name: 'person 3',
-      avatar: 'https://i.pravatar.cc/150?img=3',
-    },
-    content: 'سلام',
-    sentAt: moment().subtract(30, 'minutes').toISOString(),
-    deleted: false,
-    edited: false,
-    file: false,
-  },
-  {
-    messageId: 2,
-    sender: {
-      id: 2,
-      name: 'user',
-      avatar: 'https://i.pravatar.cc/150?img=2',
-    },
-    content: 'سلام عزیزم',
-    sentAt: moment().subtract(30, 'minutes').toISOString(),
-    deleted: true,
-    edited: false,
-    file: false,
-  },
-  {
-    messageId: 3,
-    sender: {
-      id: 2,
-      name: 'user',
-      avatar: 'https://i.pravatar.cc/150?img=2',
-    },
-    content: 'خوبی',
-    sentAt: moment().subtract(30, 'minutes').toISOString(),
-    deleted: false,
-    edited: false,
-    file: false,
-  },
-  {
-    messageId: 4,
-    sender: {
-      id: 3,
-      name: 'person 3',
-      avatar: 'https://i.pravatar.cc/150?img=3',
-    },
-    content: 'ممنون تو چطوری؟',
-    sentAt: moment().subtract(30, 'minutes').toISOString(),
-    deleted: false,
-    edited: true,
-    file: false,
-  },
-  {
-    messageId: 5,
-    sender: {
-      id: 2,
-      name: 'person 2',
-      avatar: 'https://i.pravatar.cc/150?img=2',
-    },
-    content: '👍👍',
-    sentAt: moment().subtract(30, 'minutes').toISOString(),
-    deleted: false,
-    edited: true,
-    file: false,
-  },
-]];
-
-const chats = [
-  {
-    listId: 1,
-    avatar: 'https://i.pravatar.cc/150?img=1',
-    name: 'person 1'
-  },
-  {
-    listId: 2,
-    avatar: 'https://i.pravatar.cc/150?img=3',
-    name: 'person 3'
-  },
-  {
-    listId: 3,
-    avatar: 'https://i.pravatar.cc/150?img=4',
-    name: 'person 4'
-  },
-  {
-    listId: 4,
-    avatar: 'https://i.pravatar.cc/150?img=5',
-    name: 'person 5'
-  },{
-    listId: 5,
-    avatar: 'https://i.pravatar.cc/150?img=6',
-    name: 'person 6'
-  },
-  {
-    listId: 6,
-    avatar: 'https://i.pravatar.cc/150?img=7',
-    name: 'person 7'
-  },{
-    listId: 7,
-    avatar: 'https://i.pravatar.cc/150?img=8',
-    name: 'person 8'
-  },
-  {
-    listId: 8,
-    avatar: 'https://i.pravatar.cc/150?img=9',
-    name: 'person 9'
-  },{
-    listId: 9,
-    avatar: 'https://i.pravatar.cc/150?img=10',
-    name: 'person 10'
-  },
-  {
-    listId: 10,
-    avatar: 'https://i.pravatar.cc/150?img=11',
-    name: 'person 11'
-  },
-];
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../services/AuthProvider";
+import { BASE_API_ROUTE } from '../Constants';
+import axios from 'axios';
+import jwt from 'jwt-decode';
 
 const ChatPage = () => {
   const [selectedChat, setSelectedChat] = useState(null);
   const [inputText, setInputText] = useState('');
-  const [chatMessages, setChatMessages] = useState();
-  const [chatLists, setChatLists] = useState(chats);
-  const [user, setUser] = useState({
-    id: 2,
-    name: 'user',
-    avatar: 'https://i.pravatar.cc/150?img=2',
-  });
+  const [chatMessages, setChatMessages] = useState([]);
+  const [chatLists, setChatLists] = useState([]);
+  const [user, setUser] = useState(null);
+
   const [pageWidth, setPageWidth] = useState(window.innerWidth);
+	const { getAccessToken } = useAuth();
+  const navigate = useNavigate();
   let connection;
 
-  useEffect(() => {
-    startConversation();
+  useEffect( () => {
     window.addEventListener('resize', updateChatSize);
+    const doEveryThing = async () => {
+      const token = await getAccessToken();
+      if(!token){
+        console.log('login required');
+        navigate("/Login");
+      }
+      else{
+        await fetchUserData(token);
+        await getInitialInformaition(token);
+        await startConversation(token);
+      }
+    };
+    doEveryThing();
     return () => window.removeEventListener('resize', updateChatSize);
   }, []);
 
-  const startConversation = () => {
+  const fetchUserData = async (token) => {
+    const tokenData = jwt(token);
+    const url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
+    try { 
+      const response = await axios.get(url);
+      console.log('response in getting user data : ', response);
+      setUser(response.data.data);
+    } catch (error) {
+      console.log('error in getting user data : ', error);
+    }
+  };
+
+  const getInitialInformaition = async (token) => {
+    const url = BASE_API_ROUTE + 'Chat/GetChats';
+    try { 
+      const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
+      console.log('response in geting Initial Informaition : ', response);
+    } catch (error) {
+      console.log('error in getting Initial Informaition : ', error);
+    }
+  };
+
+  const startConversation = (token) => {
+
     connection = new signalR.HubConnectionBuilder()
-      .withUrl("/chathub")
+      .withUrl(BASE_API_ROUTE + "chathub",{
+        accessTokenFactory: () => token,
+        withCredentials: false,
+      })
+      .withAutomaticReconnect()
       .configureLogging(signalR.LogLevel.Information)
       .build();
     const start = async () => {
@@ -209,26 +78,106 @@ const ChatPage = () => {
         console.log("SignalR Connected.");
       } catch (err) {
         console.log('error in connecting SignalR : ',err);
-        setTimeout(start, 5000);
       }
     };
-    connection.onclose(async () => {
-      await start();
+
+    connection.on("ReceiveMessage", (message) => {
+      createMessage(false, message);
     });
-    connection.on("ReceiveMessage", (user, message) => {
-      createMessage(false,message);
+    connection.on("ReadMessages", (chatId) => {
+      readMessages(chatId);
     });
-    // Start the connection.
+    connection.on("DeleteMessage", (message) => {
+      deleteMessage(message);
+    });
+    connection.on("EditMessage", (message) => {
+      editMessage(message);
+    });
+
     start();
   };
 
+//////////////////////////////////////////////////
+
+  const createMessage = (isSelf, message) => {
+    let newMessage = null;
+    if(isSelf){
+      newMessage = {
+        id: chatMessages.length + 1,
+        sender: user,
+        message: inputText.trim(),
+        sendTime: new Date().toISOString(),
+        IsDeleted: false,
+        IsEdited: false,
+        IsFile: false,
+        IsRead: false,
+        senderId: 0,
+        chatId: 0,
+        chat: null
+      };
+    }
+    if(!isSelf){
+      newMessage = message;
+    }
+    setChatMessages([...chatMessages, newMessage]);
+    return newMessage;
+  };
+
+  const readMessages = (chatId) => {
+
+  };
+
+  const deleteMessage = (message) => {
+
+  };
+
+  const editMessage = (message) => {
+
+  };
+
+/////////////////////////////////////////////////////////////
+
   const sendMessage = async (message) => {
     try {
-      await connection.invoke("SendMessage", user, message);
+      await connection.invoke("SendMessage", message);
     } catch (err) {
-      console.log('error in sending message : ',err);
+      console.log('error in SendMessage : ',err);
     }
   };
+
+  const readChatMessage = async (chatId) => {
+    try {
+      await connection.invoke("ReadChatMessages", chatId);
+    } catch (err) {
+      console.log('error in ReadChatMessages : ',err);
+    }
+  };
+
+  const deleteChatMessage = async (chatId,id) => {
+    try {
+      await connection.invoke("DeleteChatMessage", chatId, id);
+    } catch (err) {
+      console.log('error in DeleteChatMessage : ',err);
+    }
+  };
+
+  const editChatMessage = async (message) => {
+    try {
+      await connection.invoke("EditChatMessage", message);
+    } catch (err) {
+      console.log('error in EditChatMessage : ',err);
+    }
+  };
+
+  const addToChat = async (chatId) => {
+    try {
+      await connection.invoke("AddToChat", chatId);
+    } catch (err) {
+      console.log('error in AddToChat : ',err);
+    }
+  };
+
+////////////////////////////////////////////////////////////
 
   const updateChatSize = () => {
     setPageWidth(window.innerWidth);
@@ -242,8 +191,8 @@ const ChatPage = () => {
   };
 
   const handleChatSelect = (chatindex) => {
-    setSelectedChat(chatindex);
-    setChatMessages(messages[chatindex - 1]);
+    // setSelectedChat(chatindex);
+    // setChatMessages(messages[chatindex - 1]);
   };
 
   const handleInputChange = (event) => {
@@ -261,35 +210,15 @@ const ChatPage = () => {
     }
   };
 
-  const createMessage = (isSelf, message) => {
-    let newMessage = null;
-    if(isSelf){
-      newMessage = {
-        messageId: chatMessages.length + 1,
-        sender: user,
-        content: inputText.trim(),
-        sentAt: new Date().toISOString(),
-        deleted: false,
-        edited: false,
-        file: false,
-      };
-    }
-    if(!isSelf){
-      newMessage = message;
-    }
-    setChatMessages([...chatMessages, newMessage]);
-    return newMessage;
-  };
-
-  const handleEditClick = (messageId) => {
-    const messageIndex = chatMessages.findIndex((message) => message.messageId === messageId);
+  const handleEditClick = (id) => {
+    const messageIndex = chatMessages.findIndex((message) => message.id === id);
     if (messageIndex === -1) {
       return;
     }
     const editedMessage = {
       ...chatMessages[messageIndex],
-      content: inputText.trim(),
-      edited: true,
+      message: inputText.trim(),
+      IsEdited: true,
     };
     const newMessages = [...chatMessages];
     newMessages.splice(messageIndex, 1, editedMessage);
@@ -297,15 +226,15 @@ const ChatPage = () => {
     setInputText('');
   };
 
-  const handleDeleteClick = (messageId) => {
-    const messageIndex = chatMessages.findIndex((message) => message.messageId === messageId);
+  const handleDeleteClick = (id) => {
+    const messageIndex = chatMessages.findIndex((message) => message.id === id);
     if (messageIndex === -1) {
       return;
     }
     const deletedMessage = {
       ...chatMessages[messageIndex],
-      content: 'This message was deleted',
-      deleted: true,
+      message: 'This message was IsDeleted',
+      IsDeleted: true,
     };
     const newMessages = [...chatMessages];
     newMessages.splice(messageIndex, 1, deletedMessage);
@@ -313,13 +242,11 @@ const ChatPage = () => {
   };
 
   const handleAttachFileClick = (event) => {
-    // Get the file from the input element
     const file = event.target.files[0];
-    // Create a new message with the file name and attach icon
     const newMessage = {
-      messageId: chatMessages.length + 1,
+      id: chatMessages.length + 1,
       sender: user,
-      content: (
+      message: (
         <Box backgroundColor={'white'} borderRadius={2} padding={1}>
           <span>{file.name}</span>
           <IconButton size="small">
@@ -329,22 +256,26 @@ const ChatPage = () => {
           </IconButton>
         </Box>
       ),
-      sentAt: new Date().toISOString(),
-      deleted: false,
-      edited: false,
-      file: true,
+      sendTime: new Date().toISOString(),
+      IsDeleted: false,
+      IsEdited: false,
+      IsFile: true,
+      IsRead: false,
+      senderId: 0,
+      chatId: 0,
+      chat: null
     };
     setChatMessages([...chatMessages, newMessage]);
   };
 
   const renderMessage = (message) => {
     const isCurrentUser = message.sender.id === user.id;
-    const isDeleted = message.deleted;
-    const isEdited = message.edited;
-    const isFile = message.file;
+    const isDeleted = message.IsDeleted;
+    const isEdited = message.IsEdited;
+    const isFile = message.IsFile;
     return (
       <Grid display="flex" flexDirection={isCurrentUser ? "row" : "row-reverse"}>
-        <Grid key={message.messageId} sx={{
+        <Grid key={message.id} sx={{
           width: '80%',
           display: 'flex',
           flexDirection: 'column',
@@ -368,26 +299,26 @@ const ChatPage = () => {
         }}>
           <Grid sx={{ display: 'flex', alignItems: 'center',}}>
             <Avatar src={message.sender.avatar} alt={message.sender.name} />
-            <Grid marginRight={'10px'} container direction={'row'} display={'flex'} justifyContent={'space-around'}>
+            <Grid marginRight={'10px'} container direction={'row'} display={'flex'} justifymessage={'space-around'}>
               <Typography fontSize={'17px'} fontFamily={'shabnam'} marginLeft={'10px'}>{message.sender.name}</Typography>
             </Grid>
           </Grid>
           <Grid sx={{ margin: '10px', whiteSpace: 'pre-wrap', wordBreak: 'break-word',}}>
-            <Typography fontFamily={'shabnam'} color={isDeleted ? 'red' : 'black'}>{ isDeleted ? 'This message was deleted' : message.content }</Typography>
+            <Typography fontFamily={'shabnam'} color={isDeleted ? 'red' : 'black'}>{ isDeleted ? 'This message was IsDeleted' : message.message }</Typography>
           </Grid>
-          <Grid container direction={'row'} display={'flex'} justifyContent={'flex-start'}>
+          <Grid container direction={'row'} display={'flex'} justifymessage={'flex-start'}>
             {!isCurrentUser || isDeleted ? null : (
               <>
-              {!isFile && <IconButton size="small" onClick={() => handleEditClick(message.messageId)}>
+              {!isFile && <IconButton size="small" onClick={() => handleEditClick(message.id)}>
                 <Edit />
               </IconButton>}
-              <IconButton size="small" onClick={() => handleDeleteClick(message.messageId)}>
+              <IconButton size="small" onClick={() => handleDeleteClick(message.id)}>
                 <Delete />
               </IconButton>
               </>
             )}
-            { (isEdited && !isDeleted) && <Typography fontSize={'13px'} marginRight={'10px'} position={'relative'} top={'7px'}>edited</Typography>}
-            <Typography marginRight={'15px'} fontSize={'13px'} position={'relative'} top={'7px'}>{moment(message.sentAt).format('MMM D YYYY, h:mm A')}</Typography>
+            { (isEdited && !isDeleted) && <Typography fontSize={'13px'} marginRight={'10px'} position={'relative'} top={'7px'}>IsEdited</Typography>}
+            <Typography marginRight={'15px'} fontSize={'13px'} position={'relative'} top={'7px'}>{moment(message.sendTime).format('MMM D YYYY, h:mm A')}</Typography>
           </Grid>
         </Grid>
       </Grid>
@@ -400,12 +331,12 @@ const ChatPage = () => {
       <title>Chat Page</title>
     </Helmet>
 
-    <Grid container direction={{ xs: 'column', sm: 'row' }} height={{xs:'auto', sm:'calc(100vh - 65px)'}} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', display:'flex', justifyContent:'space-around', alignItems:'stretch'}}>
+    <Grid container direction={{ xs: 'column', sm: 'row' }} height={{xs:'auto', sm:'calc(100vh - 65px)'}} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', display:'flex', justifymessage:'space-around', alignItems:'stretch'}}>
       <Grid container direction={'column'} width={{ xs: '100%', sm: '20%' }} sx={{ borderBottom: { xs: '1px solid grey', sm: '0px solid grey' } }}>
-        <Grid display="flex" flexDirection="column" alignItems="center" justifyContent={'center'} padding={1} border={'1px solid grey'} borderRadius={2}>
+        {user && <Grid display="flex" flexDirection="column" alignItems="center" justifymessage={'center'} padding={1} border={'1px solid grey'} borderRadius={2}>
           <Avatar src={user.avatar} alt={user.name} />
           <Typography>{user.name}</Typography>
-        </Grid>
+        </Grid>}
         <Grid container direction={'column'} height={'80%'} >
         {/* border={'1px solid grey'} borderRadius={2} */}
           <List sx={{height: '100%', flex: {xs:'0 0 auto', sm:'1 0 0'}, overflow: 'overlay'}}>
