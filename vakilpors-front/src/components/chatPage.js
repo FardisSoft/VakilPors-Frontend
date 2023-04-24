@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Avatar, Box, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, TextField, InputAdornment, Typography } from '@mui/material';
-import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined } from '@mui/icons-material';
+import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined, DoneAll } from '@mui/icons-material';
 import moment from 'moment';
 import { Helmet } from 'react-helmet-async';
 import * as signalR from '@microsoft/signalr';
@@ -13,7 +13,7 @@ import jwt from 'jwt-decode';
 const ChatPage = () => {
   const [selectedChat, setSelectedChat] = useState(null);
   const [inputText, setInputText] = useState('');
-  const [chatMessages, setChatMessages] = useState([]);
+  // const [chatMessages, setChatMessages] = useState([]);
   const [chats, setChats] = useState([]);
   const [user, setUser] = useState(null);
 
@@ -23,7 +23,7 @@ const ChatPage = () => {
   let connection;
 
   useEffect( () => {
-    window.addEventListener('resize', updateChatSize);
+    window.addEventListener('resize', updateChatPageSize);
     const doEveryThing = async () => {
       const token = await getAccessToken();
       if(!token){
@@ -37,7 +37,7 @@ const ChatPage = () => {
       }
     };
     doEveryThing();
-    return () => window.removeEventListener('resize', updateChatSize);
+    return () => window.removeEventListener('resize', updateChatPageSize);
   }, []);
 
   const getUserData = async (token) => {
@@ -53,7 +53,7 @@ const ChatPage = () => {
   };
 
   const getChats = async (token) => {
-    const url = BASE_API_ROUTE + 'Chat/GetChats';
+    const url = BASE_API_ROUTE + 'Chat/GetChatsWithMessages';
     try { 
       const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
       console.log('response in geting chats : ', response);
@@ -98,13 +98,14 @@ const ChatPage = () => {
     start();
   };
 
-//////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
 
   const createMessage = (isSelf, message) => {
     let newMessage = null;
     if(isSelf){
       newMessage = {
-        id: chatMessages.length + 1,
+        id: chats[selectedChat].chatMessages.length + 1,
+        // id: chats.find((chat) => chat.id === selectedChat).chatMessages.length + 1,
         sender: user,
         message: inputText.trim(),
         sendTime: new Date().toISOString(),
@@ -112,28 +113,65 @@ const ChatPage = () => {
         IsEdited: false,
         IsFile: false,
         IsRead: false,
-        senderId: 0,
-        chatId: 0,
-        chat: null
+        senderId: user.id,
+        chatId: selectedChat,
+        chat: null,
       };
     }
     if(!isSelf){
       newMessage = message;
     }
-    setChatMessages([...chatMessages, newMessage]);
+    setChats([
+      ...chats, {
+        ...chats[selectedChat],
+        chatMessages: [...chats[selectedChat].chatMessages, newMessage],
+      },
+    ]);
     return newMessage;
   };
 
   const readMessages = (chatId) => {
-
+    setChats(prevChats => {
+      const updatedChats = [...prevChats];
+      updatedChats[chatId] = {
+        ...updatedChats[chatId],
+        chatMessages: updatedChats[chatId].chatMessages.map(message => ({
+          ...message,
+          IsRead: true,
+        })),
+      };
+      return updatedChats;
+    });
   };
 
   const deleteMessage = (message) => {
-
+    setChats([
+      ...chats, {
+        ...chats[message.chatId],
+        chatMessages: [
+          ...chats[message.chatId].chatMessages, {
+            ...chats[message.chatId].chatMessages[message.id],
+            message: 'This message was IsDeleted',
+            IsDeleted: true,
+          },
+        ],
+      },
+    ]);
   };
 
   const editMessage = (message) => {
-
+    setChats([
+      ...chats, {
+        ...chats[message.chatId],
+        chatMessages: [
+          ...chats[message.chatId].chatMessages, {
+            ...chats[message.chatId].chatMessages[message.id],
+            message: message.message,
+            IsEdited: true,
+          },
+        ],
+      },
+    ]);
   };
 
 /////////////////////////////////////////////////////////////
@@ -180,7 +218,7 @@ const ChatPage = () => {
 
 ////////////////////////////////////////////////////////////
 
-  const updateChatSize = () => {
+  const updateChatPageSize = () => {
     setPageWidth(window.innerWidth);
   };
 
@@ -191,25 +229,28 @@ const ChatPage = () => {
     }
   };
 
-  const handleChatSelect = async (chatId) => {
-    const token = await getAccessToken();
-    if(!token){
-      console.log('login required');
-      navigate("/Login");
-    }
-    else{
-      setSelectedChat(chatId);
-      const url = BASE_API_ROUTE + `Chat/GetChatMessages?chatId=${chatId}`;
-      try { 
-        const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
-        console.log('response in geting chats : ', response);
-        setChatMessages(response.data.data);
-        // inja ro ham dorost kon
-        addToChat(chatId);
-      } catch (error) {
-        console.log('error in getting chats : ', error);
-      }
-    }
+  const handleChatSelect = (chatId) => {
+    setSelectedChat(chatId);
+    addToChat(chatId);
+    readChatMessage(chatId);
+    // const token = await getAccessToken();
+    // if(!token){
+    //   console.log('login required');
+    //   navigate("/Login");
+    // }
+    // else{
+    //   setSelectedChat(chatId);
+    //   const url = BASE_API_ROUTE + `Chat/GetChatMessages?chatId=${chatId}`;
+    //   try { 
+    //     const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
+    //     console.log('response in geting chats : ', response);
+    //     setChatMessages(response.data.data);
+    //     // inja ro ham dorost kon
+    //     addToChat(chatId);
+    //   } catch (error) {
+    //     console.log('error in getting chats : ', error);
+    //   }
+    // }
   };
 
   const handleInputChange = (event) => {
@@ -228,61 +269,73 @@ const ChatPage = () => {
   };
 
   const handleEditClick = (id) => {
-    const messageIndex = chatMessages.findIndex((message) => message.id === id);
+    const messageIndex = chats[selectedChat].chatMessages.findIndex((message) => message.id === id);
     if (messageIndex === -1) {
       return;
     }
-    const editedMessage = {
-      ...chatMessages[messageIndex],
-      message: inputText.trim(),
-      IsEdited: true,
-    };
-    const newMessages = [...chatMessages];
-    newMessages.splice(messageIndex, 1, editedMessage);
-    setChatMessages(newMessages);
+    setChats([
+      ...chats, {
+        ...chats[selectedChat],
+        chatMessages: [
+          ...chats[selectedChat].chatMessages, {
+            ...chats[selectedChat].chatMessages[messageIndex],
+            message: inputText.trim(),
+            IsEdited: true,
+          },
+        ],
+      },
+    ]);
     setInputText('');
+    editChatMessage(chats[selectedChat].chatMessages[messageIndex]);
   };
 
   const handleDeleteClick = (id) => {
-    const messageIndex = chatMessages.findIndex((message) => message.id === id);
+    const messageIndex = chats[selectedChat].chatMessages.findIndex((message) => message.id === id);
     if (messageIndex === -1) {
       return;
     }
-    const deletedMessage = {
-      ...chatMessages[messageIndex],
-      message: 'This message was IsDeleted',
-      IsDeleted: true,
-    };
-    const newMessages = [...chatMessages];
-    newMessages.splice(messageIndex, 1, deletedMessage);
-    setChatMessages(newMessages);
+    setChats([
+      ...chats, {
+        ...chats[selectedChat],
+        chatMessages: [
+          ...chats[selectedChat].chatMessages, {
+            ...chats[selectedChat].chatMessages[messageIndex],
+            message: 'This message was IsDeleted',
+            IsDeleted: true,
+          },
+        ],
+      },
+    ]);
+    setInputText('');
+    const deletedMessage = chats[selectedChat].chatMessages[messageIndex];
+    deleteChatMessage(deletedMessage.chatId, deletedMessage.id);
   };
 
   const handleAttachFileClick = (event) => {
-    const file = event.target.files[0];
-    const newMessage = {
-      id: chatMessages.length + 1,
-      sender: user,
-      message: (
-        <Box backgroundColor={'white'} borderRadius={2} padding={1}>
-          <span>{file.name}</span>
-          <IconButton size="small">
-            <a href={URL.createObjectURL(file)} download={file.name}>
-              <DownloadForOfflineOutlined />
-            </a>
-          </IconButton>
-        </Box>
-      ),
-      sendTime: new Date().toISOString(),
-      IsDeleted: false,
-      IsEdited: false,
-      IsFile: true,
-      IsRead: false,
-      senderId: 0,
-      chatId: 0,
-      chat: null
-    };
-    setChatMessages([...chatMessages, newMessage]);
+    // const file = event.target.files[0];
+    // const newMessage = {
+    //   id: chatMessages.length + 1,
+    //   sender: user,
+    //   message: (
+    //     <Box backgroundColor={'white'} borderRadius={2} padding={1}>
+    //       <span>{file.name}</span>
+    //       <IconButton size="small">
+    //         <a href={URL.createObjectURL(file)} download={file.name}>
+    //           <DownloadForOfflineOutlined />
+    //         </a>
+    //       </IconButton>
+    //     </Box>
+    //   ),
+    //   sendTime: new Date().toISOString(),
+    //   IsDeleted: false,
+    //   IsEdited: false,
+    //   IsFile: true,
+    //   IsRead: false,
+    //   senderId: 0,
+    //   chatId: 0,
+    //   chat: null
+    // };
+    // setChatMessages([...chatMessages, newMessage]);
   };
 
   const renderMessage = (message) => {
@@ -290,6 +343,7 @@ const ChatPage = () => {
     const isDeleted = message.IsDeleted;
     const isEdited = message.IsEdited;
     const isFile = message.IsFile;
+    const isRead = message.IsRead;
     return (
       <Grid display="flex" flexDirection={isCurrentUser ? "row" : "row-reverse"}>
         <Grid key={message.id} sx={{
@@ -315,7 +369,7 @@ const ChatPage = () => {
           }),
         }}>
           <Grid sx={{ display: 'flex', alignItems: 'center',}}>
-            <Avatar src={message.sender.avatar} alt={message.sender.name} />
+            <Avatar src={message.sender.profileImageUrl} alt={message.sender.name} />
             <Grid marginRight={'10px'} container direction={'row'} display={'flex'} justifymessage={'space-around'}>
               <Typography fontSize={'17px'} fontFamily={'shabnam'} marginLeft={'10px'}>{message.sender.name}</Typography>
             </Grid>
@@ -334,7 +388,8 @@ const ChatPage = () => {
               </IconButton>
               </>
             )}
-            { (isEdited && !isDeleted) && <Typography fontSize={'13px'} marginRight={'10px'} position={'relative'} top={'7px'}>IsEdited</Typography>}
+            { (isEdited && !isDeleted) && <Typography fontSize={'13px'} marginRight={'10px'} position={'relative'} top={'7px'}>edited</Typography>}
+            {!isRead && <IconButton size="small"> <DoneAll /> </IconButton>}
             <Typography marginRight={'15px'} fontSize={'13px'} position={'relative'} top={'7px'}>{moment(message.sendTime).format('MMM D YYYY, h:mm A')}</Typography>
           </Grid>
         </Grid>
