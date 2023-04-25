@@ -97,7 +97,7 @@ const LawyerPage = () => {
             const url = BASE_API_ROUTE + `Chat/StartChat?recieverUserId=${lawyerUserId}`;
             console.log(url);
             try { 
-                const response = await axios.post(url, {headers: {Authorization: `Bearer ${token}`}});
+                const response = await axios.post(url,'', {headers: {Authorization: `Bearer ${token}`}});
                 console.log('response in starting chat : ', response);
             } catch (error) {
                 console.log('error in starting chat : ', error);
