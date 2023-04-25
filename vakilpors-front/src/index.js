@@ -17,6 +17,8 @@ import Call_Edit_Lawyer_Profile from './components/profile/lawyer/Call_Edit_Lawy
 import Call_Edit_User_Profile from './components/profile/user/Call_Edit_User_Profile';
 import Call_Display_User_Profile from './components/profile/user/Call_Display_User_Profile';
 import ContactUs from './components/ContactUs';
+import PremiumPage from '../src/components/premium-page/PremiumPage';
+import Sort from './components/Lawyer-search-page/Sort';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -36,6 +38,8 @@ root.render(
               <Route path="/edit-user" element={<Sidebar component={Call_Edit_User_Profile}/>}/>
               <Route path="/edit_lawyer" element={<Sidebar component={Call_Edit_Lawyer_Profile}/>}/>
               <Route path="/contactUs" element={<Sidebar component={ContactUs}/>}/>
+              <Route path="/PremiumPage" element={<Sidebar component={PremiumPage}/>}/>
+              <Route path="/sort" element={<Sort/>}/>
           </Routes>
         </AuthProvider>
       </BrowserRouter>
