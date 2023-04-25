@@ -99,6 +99,7 @@ const LawyerPage = () => {
             try { 
                 const response = await axios.post(url,'', {headers: {Authorization: `Bearer ${token}`}});
                 console.log('response in starting chat : ', response);
+                navigate("/chatPage");
             } catch (error) {
                 console.log('error in starting chat : ', error);
             }
