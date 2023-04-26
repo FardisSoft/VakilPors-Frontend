@@ -37,7 +37,7 @@ root.render(
               {/* <Route path="/user-display-profile" element={<Sidebar component={Call_Display_User_Profile}/>}/> */}
               <Route path="/edit-user" element={<Sidebar component={Call_Edit_User_Profile}/>}/>
               <Route path="/edit_lawyer" element={<Sidebar component={Call_Edit_Lawyer_Profile}/>}/>
-              <Route path="/Replies/:threadId" element={<Sidebar component={Replies}/>}/>
+              <Route path="/Replies/:threadId/:userId" element={<Sidebar component={Replies}/>}/>
               <Route path="/contactUs" element={<Sidebar component={ContactUs}/>}/>
               <Route path="/chatPage" element={<Sidebar component={ChatPage}/>}/>
           </Routes>

@@ -2,11 +2,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import '../css/forum.css';
 
-const Comments = ({ numberOfComments, threadId }) => {
+const Comments = ({ numberOfComments, threadId, userId }) => {
 	const navigate = useNavigate();
 
 	const handleAddComment = () => {
-		navigate(`/Replies/${threadId}`);
+		navigate(`/Replies/${threadId}/${userId}`);
 	};
 	return (
 		<div className='likes__container'>

@@ -132,6 +132,7 @@ const Forum = () => {
 									// numberOfComments={thread.replies.length} // does not supported by backend
 									threadId={thread.id}
 									title={thread.title}
+									userId={refUserId.current}
 								/>
 								{(thread.userId == refUserId.current && !thread.hasAnswer) && 
 								<IconButton onClick={() => handleDeleteThread(thread)}>

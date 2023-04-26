@@ -4,15 +4,16 @@ import axios from 'axios';
 import { BASE_API_ROUTE } from "../Constants";
 import { useAuth } from "../services/AuthProvider";
 import moment from 'moment';
-import { Typography } from "@mui/material";
+import { Typography, IconButton } from "@mui/material";
 import Likes from "../utils/Likes";
+import { Delete, Edit } from '@mui/icons-material';
 
 const Replies = () => {
 	const [replyList, setReplyList] = useState([]);
 	const [reply, setReply] = useState("");
 	const [title, setTitle] = useState("");
 	const navigate = useNavigate();
-	const { threadId } = useParams();
+	const { threadId, userId } = useParams();
 	const { getAccessToken } = useAuth(); 
 
 	const addReply = async () => {
@@ -63,6 +64,13 @@ const Replies = () => {
 	  fetchReplies();
 	}, [threadId]);
 
+	const handleDeleteClick = (commentId) => {
+
+	};
+
+	const handleEditClick = (commentId) => {
+
+	};
 
 	return (
 		<main className='replies'>
@@ -89,6 +97,14 @@ const Replies = () => {
 							<p style={{ opacity: "0.5" }}>توسط {reply.user.name}</p>
 							<Typography sx={{fontSize:'10px'}}>{moment(reply.createDate).format('MMM D YYYY, h:mm A')}</Typography>
 							<Likes threadOrComment={reply} IsThread={false}/>
+							{(reply.user.userId === Number(userId) && !reply.isSetAsAnswer) && <>
+								<IconButton size="small" onClick={() => handleEditClick(reply.id)}>
+									<Edit />
+								</IconButton>
+								<IconButton size="small" onClick={() => handleDeleteClick(reply.id)}>
+									<Delete />
+								</IconButton>
+							</>}
 						</div>
 					</div>
 				))}
