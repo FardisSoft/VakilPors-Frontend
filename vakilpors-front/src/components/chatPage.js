@@ -90,7 +90,7 @@ const ChatPage = () => {
 
     refConnection.current.on("ReceiveMessage", (message) => {
       console.log("ReceiveMessage : ",message);
-      createMessage(false, message);
+      receiveMessage(message);
     });
     refConnection.current.on("ReadMessages", (chatId) => {
       readMessages(parseInt(chatId));
@@ -107,46 +107,17 @@ const ChatPage = () => {
 
 ////////////////////////////////////////////////////////////
 
-  const createMessage = (isSelf, message) => {
-    const chatIndex = getChatIndexByChatId(selectedChat);
-    let newMessage = null;
-    if(isSelf){
-      newMessage = {
-        id: 0,
-        sender: null,
-        message: inputText.trim(),
-        sendTime: new Date().toISOString(),
-        IsDeleted: false,
-        IsEdited: false,
-        IsFile: false,
-        IsRead: false,
-        senderId: user.id,
-        chatId: selectedChat,
-        chat: null,
-      };
-      //     "id": 0,
-      //     "message": "string",
-      //     "isFile": true,
-      //     "isDeleted": true,
-      //     "isEdited": true,
-      //     "isRead": true,
-      //     "sendTime": "2023-04-25T20:00:19.781Z",
-      //     "senderId": 0,
-      //     "chatId": 0,
-      //     "sender": "string",
-      //     "chat": "string"
-    }
-    if(!isSelf){
-      newMessage = message;
-    }
+  const receiveMessage = (message) => {
+    const chatIndex = getChatIndexByChatId(message.chatId);
+    console.log('in ghablie : ',refChats.current);
     const updatedChat = {
       ...refChats.current[chatIndex],
-      chatMessages: [...refChats.current[chatIndex].chatMessages, newMessage],
+      chatMessages: [...refChats.current[chatIndex].chatMessages, message],
     };
     const updatedChats = [...refChats.current];
     updatedChats[chatIndex] = updatedChat;
     setChats(updatedChats);
-    return newMessage;
+    console.log('in jadide : ',refChats.current);
   };
 
   const readMessages = (chatId) => {
@@ -188,12 +159,13 @@ const ChatPage = () => {
   };
 
   const editMessage = (message) => {
+    console.log('edit message in on editMessage : ',message)
     const chatIndex = getChatIndexByChatId(message.chatId);
     const updatedChatMessages = refChats.current[chatIndex].chatMessages.map((messag) => {
       if (messag.id === message.id) {
         return {
           ...messag,
-          message: messag.message,
+          message: message.message,
           IsEdited: true,
         };
       }
@@ -238,6 +210,7 @@ const ChatPage = () => {
 
   const editChatMessage = async (message) => {
     try {
+      console.log('message in invoke editChatMessage : ', message);
       await refConnection.current.invoke("EditChatMessage", message);
     } catch (err) {
       console.log('error in EditChatMessage : ',err);
@@ -246,7 +219,8 @@ const ChatPage = () => {
 
   const addToChat = async (chatId) => {
     try {
-      await refConnection.current.invoke("AddToChat", ''+chatId);
+      await refConnection.current.invoke("AddToChat", chatId.toString());
+      console.log('add to chat',chatId);
     } catch (err) {
       console.log('error in AddToChat : ',err);
     }
@@ -279,11 +253,21 @@ const ChatPage = () => {
     if (inputText.trim() === '') {
       return;
     }
-    const newMessage = createMessage(true,null);
+    const newMessage = {
+      id: 0,
+      sender: null,
+      message: inputText.trim(),
+      sendTime: new Date().toISOString(),
+      IsDeleted: false,
+      IsEdited: false,
+      IsFile: false,
+      IsRead: false,
+      senderId: user.id,
+      chatId: selectedChat,
+      chat: null,
+    };
     setInputText('');
-    if(newMessage){
-      sendMessage(newMessage);
-    }
+    sendMessage(newMessage);
   };
 
   const handleEditClick = (id) => {
