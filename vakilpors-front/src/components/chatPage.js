@@ -271,6 +271,10 @@ const ChatPage = () => {
   };
 
   const handleEditClick = (id) => {
+    if (inputText.trim() === '') {
+      alert('لطفا متن جدید پیام را وارد کنید و سپس دکمه ویرایش را بزنید.');
+      return;
+    }
     const chatIndex = getChatIndexByChatId(selectedChat);
     const messageIndex = refChats.current[chatIndex].chatMessages.findIndex((messag) => messag.id === id);
     const updatedChatMessages = refChats.current[chatIndex].chatMessages.map((messag) => {
