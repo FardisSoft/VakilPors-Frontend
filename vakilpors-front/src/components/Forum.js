@@ -9,6 +9,9 @@ import { BASE_API_ROUTE } from "../Constants";
 import jwt from 'jwt-decode';
 import useStateRef from "react-usestateref";
 import { Helmet } from 'react-helmet-async';
+import { Typography, IconButton } from "@mui/material";
+import moment from 'moment';
+import { Delete } from '@mui/icons-material';
 
 const Forum = () => {
 	const [thread, setThread] = useState("");
@@ -18,7 +21,7 @@ const Forum = () => {
 	const { getAccessToken } = useAuth();
 
 	useEffect(() => {
-		const checkUser = async () => {
+		const getThreadList = async () => {
 			const token = await getAccessToken();
 			if(token){
 				const tokenData = jwt(token);
@@ -33,7 +36,7 @@ const Forum = () => {
 				}
 			}
 		};
-		checkUser();
+		getThreadList();
 	}, [navigate]);
 
     const createThread = async () => {
@@ -46,12 +49,36 @@ const Forum = () => {
 				"description": "no description",
 				"likeCount": 0,
 				"userId": refUserId.current,
-      			"commentCount": 0
+      			"commentCount": 0,
+				"createDate": new Date().toISOString(),
+				"hasAnswer": false,
+				"user": null,
 			};
 			const response = await axios.post(url,data,{headers: {Authorization: `Bearer ${token}`}});
-			// setThreadList(response.data.data);
+			setThreadList(prevThreadList => {
+				const updatedThreadList = [...prevThreadList, response.data.data];
+				return updatedThreadList;
+			});
 		}
 	};
+
+	const handleDeleteThread = async (thread) => {
+		const token = await getAccessToken();
+		if(token){
+			const url = BASE_API_ROUTE + "Thread/DeleteThread";
+			console.log(url);
+			console.log(thread);
+			const data = {...thread,user:null};
+			console.log(data);
+			const response = await axios.delete(url,data,{headers: {Authorization: `Bearer ${token}`}});
+			// setThreadList(prevThreadList => {
+			// 	const updatedThreadList = [...prevThreadList, response.data.data];
+			// 	return updatedThreadList;
+			// });
+			console.log(response);
+		}
+	};
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		createThread();
@@ -63,10 +90,9 @@ const Forum = () => {
 			<Helmet>
               <title>Forum</title>
           	</Helmet>
-			{/* <Nav /> */}
 			<main className='home'>
 					<h2 className='homeTitle'>یک موضوع جدید ایجاد کنید یا موضوع مورد نظر خود را از لیست پایین انتخاب کنید</h2>
-					<form className='homeForm' onSubmit={handleSubmit}>
+					<form className='homeForm'>
 						<div className='home__container'>
 							<label htmlFor='thread'>موضوع جدید <br/></label>
 							<input
@@ -77,14 +103,18 @@ const Forum = () => {
 								onChange={(e) => setThread(e.target.value)}
 							/>
 						</div>
-						<button className='homeBtn' onClick={createThread}>ساخت موضوع جدید</button>
+						<button className='homeBtn' onClick={handleSubmit}>ساخت موضوع جدید</button>
 					</form>
 				
 				<div className='thread__container'>
 					{threadList.map((thread) => (
 						<div className='thread__item' key={thread.id}>
-							<p style={{color: '#071e22'}}>{thread.title}</p>
 							<div className='react__container'>
+								<Typography sx={{color: 'black', fontSize: '15px', fontFamily: 'shabnam', ml: '10px'}}>{thread.user.name} - </Typography>
+								<p style={{color: '#071e22'}}>{thread.title}</p>
+							</div>
+							<div className='react__container'>
+								<Typography>{moment(thread.createDate).format('MMM D YYYY, h:mm A')}</Typography>
 								<Likes
 									thread={thread}
 									user={refUserId.current}
@@ -95,6 +125,11 @@ const Forum = () => {
 									threadId={thread.id}
 									title={thread.title}
 								/>
+								{/* {console.log('thread.userId : ',thread.userId,'   refUserId : ',refUserId)} */}
+								{thread.userId == refUserId.current && 
+								<IconButton onClick={() => handleDeleteThread(thread)}>
+									<Delete />
+								</IconButton>}
 							</div>
 						</div>
 					))}
