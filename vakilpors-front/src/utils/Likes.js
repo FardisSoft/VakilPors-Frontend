@@ -12,7 +12,7 @@ const Likes = ({ threadOrComment, IsThread }) => {
 		if(token){
 			const url = BASE_API_ROUTE + (IsThread ? `Thread/LikeThread?threadId=${threadOrComment.id}` : `ThreadComment/LikeComment?commentId=${threadOrComment.id}`);
 			try{
-				const response = await axios.post(url,{headers: {Authorization: `Bearer ${token}`}});
+				const response = await axios.get(url,{headers: {Authorization: `Bearer ${token}`}});
 			} catch (error) {
 				console.log('error in liking : ',error);
 		    }
