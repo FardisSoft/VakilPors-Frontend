@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from 'axios';
 import { BASE_API_ROUTE } from "../Constants";
 import { useAuth } from "../services/AuthProvider";
 import moment from 'moment';
 import { Typography, IconButton } from "@mui/material";
 import Likes from "../utils/Likes";
-import { Delete, Edit, Task, TaskAlt } from '@mui/icons-material';
+import { Delete, Edit, TaskAlt } from '@mui/icons-material';
 
 const Replies = () => {
 	const [replyList, setReplyList] = useState([]);
 	const [reply, setReply] = useState("");
 	const [title, setTitle] = useState("");
 	const [IsSelfThread, setIsSelfThread] = useState(false);
-	const navigate = useNavigate();
 	const { threadId, userId } = useParams();
 	const { getAccessToken } = useAuth(); 
 
@@ -31,7 +30,6 @@ const Replies = () => {
 					"isSetAsAnswer": false,
 					"user": null
 				  };
-			// console.log('data : ',data);
 			try{
 				const response = await axios.post(url,data,{headers: {Authorization: `Bearer ${token}`}});
 				console.log('add reply response : ',response);
@@ -75,6 +73,8 @@ const Replies = () => {
 	};
 
 	const handleEditClick = async (commentId) => {
+		if(reply.trim() == '')
+			return;
 		const token = await getAccessToken();
 		if(token){
 			const url = BASE_API_ROUTE + "ThreadComment/UpdateComment";
@@ -96,11 +96,11 @@ const Replies = () => {
 			try{
 				const response = await axios.put(url,data,{headers: {Authorization: `Bearer ${token}`}});
 				console.log('update reply response : ',response);
+				fetchReplies();
 			} catch (error) {
 				console.log('update reply error : ',error);
 			}
 		}
-		fetchReplies();
 	};
 
 	const handleSetAsAnswerClick = async (commentId) => {
@@ -150,7 +150,7 @@ const Replies = () => {
 									<Delete />
 								</IconButton>
 							</>}
-							{(IsSelfThread && reply.user.userId !== Number(userId)) && 
+							{(IsSelfThread && reply.user.userId !== Number(userId) && !reply.isSetAsAnswer) && 
 								<IconButton size="small" onClick={() => handleSetAsAnswerClick(reply.id)}>
 									<TaskAlt />
 								</IconButton>}

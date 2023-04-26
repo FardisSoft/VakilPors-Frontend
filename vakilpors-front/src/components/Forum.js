@@ -128,10 +128,8 @@ const Forum = () => {
 									IsThread={true}
 								/>
 								<Comments
-									// thread={thread}
-									// numberOfComments={thread.replies.length} // does not supported by backend
 									threadId={thread.id}
-									title={thread.title}
+									numberOfComments={thread.commentCount}
 									userId={refUserId.current}
 								/>
 								{(thread.userId == refUserId.current && !thread.hasAnswer) && 
