@@ -3,7 +3,7 @@ import { useAuth } from "../services/AuthProvider";
 import axios from 'axios';
 import { BASE_API_ROUTE } from "../Constants";
 
-const Likes = ({ thread, userId }) => {
+const Likes = ({ thread }) => {
 	const { getAccessToken } = useAuth();
 	const handleLikeFunction = async () => {
 		const token = await getAccessToken();
@@ -14,7 +14,7 @@ const Likes = ({ thread, userId }) => {
 				"title": thread.title,
 				"description": thread.description,
 				"likeCount": thread.likeCount + 1,
-				"userId": userId,
+				"userId": 0,
       			"commentCount": 0
 			};
 			try{

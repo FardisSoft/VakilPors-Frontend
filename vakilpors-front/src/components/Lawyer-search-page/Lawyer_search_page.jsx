@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import "../../css/Main_ShowLawyer.css";
 import axios from "axios";
+import { BASE_API_ROUTE } from '../../Constants';
 
 
 const Lawyer_search_page = () => {
@@ -17,7 +18,7 @@ const Lawyer_search_page = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch("https://api.fardissoft.ir/Lawyer/GetAll")
+            const response = await fetch(BASE_API_ROUTE + "Lawyer/GetAll")
             const data = await response.json()
             setlawyerdetail(data.data)
             setFilteredLawyers(data.data)

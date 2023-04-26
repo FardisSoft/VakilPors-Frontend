@@ -48,21 +48,25 @@ const Forum = () => {
 		if(token){
 			const url = BASE_API_ROUTE + "Thread/CreateThread";
 			const data = {
-				"id": refThreadList.current.length,
+				"id": 0,
 				"title": thread,
 				"description": "no description",
 				"likeCount": 0,
-				"userId": refUserId.current,
+				"userId": 0,
       			"commentCount": 0,
 				"createDate": new Date().toISOString(),
 				"hasAnswer": false,
 				"user": null,
 			};
-			const response = await axios.post(url,data,{headers: {Authorization: `Bearer ${token}`}});
-			setThreadList(prevThreadList => {
-				const updatedThreadList = [...prevThreadList, response.data.data];
-				return updatedThreadList;
-			});
+			try {
+				const response = await axios.post(url,data,{headers: {Authorization: `Bearer ${token}`}});
+				setThreadList(prevThreadList => {
+					const updatedThreadList = [...prevThreadList, response.data.data];
+					return updatedThreadList;
+				});
+			} catch (err) {
+				console.log('error in creating thread : ',err);
+			}
 		}
 	};
 
@@ -70,26 +74,11 @@ const Forum = () => {
 		const token = await getAccessToken();
 		if(token){
 			const url = BASE_API_ROUTE + "Thread/DeleteThread";
-			// console.log(url);
-			// console.log(thread);
-			// const data = {...thread,user:null};
-			const data = {
-				"id": ''+thread.id,
-				"title": '',
-				"description": '',
-				"likeCount": 0,
-				"userId": 0,
-      			"commentCount": 0,
-				"createDate": '',
-				"hasAnswer": false,
-				"user": null,
-			};
-			console.log(data);
 			try{
-				const response = await axios.get(url,data,{headers: {Authorization: `Bearer ${token}`}});
-				console.log(response);
+				const response = await axios.get(url,{headers: {Authorization: `Bearer ${token}`}});
+				console.log('response in deleteing thread : ,',response);
 			} catch (err){
-				console.log(err);
+				console.log('error in deleteing thread : ,',err);
 			}
 			setThreadList(prevThreadList => {
 				const updatedThreadList = prevThreadList.splice(getThreadIndexByThreadId(thread.id),1);
@@ -129,14 +118,13 @@ const Forum = () => {
 					{threadList.map((thread) => (
 						<div className='thread__item' key={thread.id}>
 							<div className='react__container'>
-								<Typography sx={{color: 'black', fontSize: '15px', fontFamily: 'shabnam', ml: '10px'}}>{thread.user.name} - </Typography>
+								<Typography sx={{color: 'black', fontSize: '15px', fontFamily: 'shabnam', ml: '10px'}}>{thread.user.name}  -</Typography>
 								<p style={{color: '#071e22'}}>{thread.title}</p>
 							</div>
 							<div className='react__container'>
 								<Typography>{moment(thread.createDate).format('MMM D YYYY, h:mm A')}</Typography>
 								<Likes
 									thread={thread}
-									user={refUserId.current}
 								/>
 								<Comments
 									// thread={thread}
@@ -144,7 +132,6 @@ const Forum = () => {
 									threadId={thread.id}
 									title={thread.title}
 								/>
-								{/* {console.log('thread.userId : ',thread.userId,'   refUserId : ',refUserId)} */}
 								{(thread.userId == refUserId.current && !thread.hasAnswer) && 
 								<IconButton onClick={() => handleDeleteThread(thread)}>
 									<Delete />

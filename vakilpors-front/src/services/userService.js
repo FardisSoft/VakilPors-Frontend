@@ -1,36 +1,34 @@
 import axios from "axios";
 import { BASE_API_ROUTE } from '../Constants';
 
-const SERVER_URL = BASE_API_ROUTE ;
-
 
 export const LoginUser = (User) => {
-  const url = `${SERVER_URL}Auth/login`;
+  const url = BASE_API_ROUTE + 'Auth/login';
   return axios.post(url, User);
 };
 
 
 export const updateUser = (User) => {
-  const url = `https://api.fardissoft.ir/Customer/UpdateUser`;
+  const url = BASE_API_ROUTE + 'Customer/UpdateUser';
   return axios.put(url, User);
 };
 
 export const updateLawyer = (User) => {
-  const url = `https://api.fardissoft.ir/Lawyer/UpdateLawyer`;
+  const url = BASE_API_ROUTE + 'Lawyer/UpdateLawyer';
   return axios.put(url, User);
 };
 
 export const deleteUser = (Userid) => {
-  const url = `${SERVER_URL}/${Userid}`;
+  const url = `${BASE_API_ROUTE}/${Userid}`;
   return axios.delete(url);
 };
 
 export const getAlllawyer  = () => {
-  const url = `https://api.fardissoft.ir/Lawyer/GetAll`;
+  const url = BASE_API_ROUTE + 'Lawyer/GetAll';
   return axios.get(url);
 };
 
 export const getlawyer = (LawyerId) => {
-  const url = `http://localhost:8000/Lawyer/${LawyerId}`;
+  const url = BASE_API_ROUTE + 'Lawyer/${LawyerId}';
   return axios.get(url);
 };
