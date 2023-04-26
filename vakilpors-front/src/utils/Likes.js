@@ -17,7 +17,6 @@ const Likes = ({ threadOrComment, IsThread }) => {
 		const token = await getAccessToken();
 		const lOrDLThread = IsLike ? 'LikeThread' : 'UndoLikeThread';
 		const lOrDLComment = IsLike ? 'LikeComment' : 'UndoLikeComment';
-		setIsLike(prevState => !prevState);
 		if(token){
 			const url = BASE_API_ROUTE + (IsThread ? `Thread/${lOrDLThread}?threadId=${threadOrComment.id}` : `ThreadComment/${lOrDLComment}?commentId=${threadOrComment.id}`);
 			try{
@@ -25,6 +24,7 @@ const Likes = ({ threadOrComment, IsThread }) => {
 				const response = await axios.get(url,{headers: {Authorization: `Bearer ${token}`}});
 				console.log('response in liking/disLiking : ',response);
 				setNumberOfLikes(response.data.data);
+				setIsLike(prevState => !prevState);
 			} catch (error) {
 				console.log('error in liking/disLiking : ',error);
 		    }
