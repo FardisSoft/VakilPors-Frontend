@@ -23,8 +23,7 @@ const ChatPage = () => {
   const [connection, setConnection, refConnection] = useStateRef(null);
 
   const getChatIndexByChatId = (chatId) => {
-    // console.log('chatId : ',chatId,' and chatIndex : ',chats.findIndex((chat) => chat.id === chatId));
-    return chats.findIndex((chat) => chat.id === chatId);
+    return refChats.current.findIndex((chat) => chat.id === chatId);
   };
 
   useEffect( () => {
@@ -94,7 +93,7 @@ const ChatPage = () => {
       createMessage(false, message);
     });
     refConnection.current.on("ReadMessages", (chatId) => {
-      readMessages(chatId);
+      readMessages(parseInt(chatId));
     });
     refConnection.current.on("DeleteMessage", (message) => {
       deleteMessage(message);
@@ -113,8 +112,8 @@ const ChatPage = () => {
     let newMessage = null;
     if(isSelf){
       newMessage = {
-        id: refChats.current[chatIndex].chatMessages.length + 1,
-        sender: user,
+        id: 0,
+        sender: null,
         message: inputText.trim(),
         sendTime: new Date().toISOString(),
         IsDeleted: false,
@@ -125,6 +124,17 @@ const ChatPage = () => {
         chatId: selectedChat,
         chat: null,
       };
+      //     "id": 0,
+      //     "message": "string",
+      //     "isFile": true,
+      //     "isDeleted": true,
+      //     "isEdited": true,
+      //     "isRead": true,
+      //     "sendTime": "2023-04-25T20:00:19.781Z",
+      //     "senderId": 0,
+      //     "chatId": 0,
+      //     "sender": "string",
+      //     "chat": "string"
     }
     if(!isSelf){
       newMessage = message;
@@ -212,7 +222,7 @@ const ChatPage = () => {
 
   const readChatMessage = async (chatId) => {
     try {
-      await refConnection.current.invoke("ReadChatMessages", chatId);
+      await refConnection.current.invoke("ReadChatMessages", ''+chatId);
     } catch (err) {
       console.log('error in ReadChatMessages : ',err);
     }
@@ -220,7 +230,7 @@ const ChatPage = () => {
 
   const deleteChatMessage = async (chatId,id) => {
     try {
-      await refConnection.current.invoke("DeleteChatMessage", chatId, id);
+      await refConnection.current.invoke("DeleteChatMessage", ''+chatId, ''+id);
     } catch (err) {
       console.log('error in DeleteChatMessage : ',err);
     }
@@ -236,7 +246,7 @@ const ChatPage = () => {
 
   const addToChat = async (chatId) => {
     try {
-      await refConnection.current.invoke("AddToChat", chatId);
+      await refConnection.current.invoke("AddToChat", ''+chatId);
     } catch (err) {
       console.log('error in AddToChat : ',err);
     }
