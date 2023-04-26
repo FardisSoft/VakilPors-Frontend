@@ -124,7 +124,8 @@ const Forum = () => {
 							<div className='react__container'>
 								<Typography>{moment(thread.createDate).format('MMM D YYYY, h:mm A')}</Typography>
 								<Likes
-									thread={thread}
+									threadOrComment={thread}
+									IsThread={true}
 								/>
 								<Comments
 									// thread={thread}
