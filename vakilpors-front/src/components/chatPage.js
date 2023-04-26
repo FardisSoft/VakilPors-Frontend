@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import useStateRef from 'react-usestateref';
 import { Avatar, Box, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, TextField, InputAdornment, Typography } from '@mui/material';
 import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined, DoneAll } from '@mui/icons-material';
@@ -18,6 +18,7 @@ const ChatPage = () => {
   const [user, setUser] = useState(null);
 
   const [pageWidth, setPageWidth] = useState(window.innerWidth);
+  const lastMessageRef = useRef(null);
 	const { getAccessToken } = useAuth();
   const navigate = useNavigate();
   const [connection, setConnection, refConnection] = useStateRef(null);
@@ -117,6 +118,7 @@ const ChatPage = () => {
     const updatedChats = [...refChats.current];
     updatedChats[chatIndex] = updatedChat;
     setChats(updatedChats);
+    lastMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     console.log('in jadide : ',refChats.current);
   };
 
@@ -135,6 +137,7 @@ const ChatPage = () => {
     const updatedChats = [...refChats.current];
     updatedChats[chatIndex] = updatedChat;
     setChats(updatedChats);
+    lastMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const deleteMessage = (message) => {
@@ -355,6 +358,8 @@ const ChatPage = () => {
   };
 
   const renderMessage = (message) => {
+    const chatIndex = getChatIndexByChatId(selectedChat);
+    const messageIndex = refChats.current[chatIndex].chatMessages.findIndex((messag) => messag.id === message.id);
     const isCurrentUser = message.sender.id === user.id;
     const isDeleted = message.IsDeleted;
     const isEdited = message.IsEdited;
@@ -362,7 +367,8 @@ const ChatPage = () => {
     const isRead = message.IsRead;
     return (
       <Grid display="flex" flexDirection={isCurrentUser ? "row" : "row-reverse"}>
-        <Grid key={message.id} sx={{
+        <Grid key={message.id} ref={messageIndex === refChats.current[chatIndex].chatMessages.length - 1 ? lastMessageRef : null}
+        sx={{
           width: '80%',
           display: 'flex',
           flexDirection: 'column',
