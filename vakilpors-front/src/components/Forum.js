@@ -39,6 +39,10 @@ const Forum = () => {
 		getThreadList();
 	}, [navigate]);
 
+	const getThreadIndexByThreadId = (threadId) => {
+		return refThreadList.current.findIndex((thread) => thread.id === threadId);
+	};
+
     const createThread = async () => {
 		const token = await getAccessToken();
 		if(token){
@@ -86,12 +90,11 @@ const Forum = () => {
 				console.log(response);
 			} catch (err){
 				console.log(err);
-
 			}
-			// setThreadList(prevThreadList => {
-			// 	const updatedThreadList = [...prevThreadList, response.data.data];
-			// 	return updatedThreadList;
-			// });
+			setThreadList(prevThreadList => {
+				const updatedThreadList = prevThreadList.splice(getThreadIndexByThreadId(thread.id),1);
+				return updatedThreadList;
+			});
 		}
 	};
 
@@ -142,7 +145,7 @@ const Forum = () => {
 									title={thread.title}
 								/>
 								{/* {console.log('thread.userId : ',thread.userId,'   refUserId : ',refUserId)} */}
-								{thread.userId == refUserId.current && 
+								{(thread.userId == refUserId.current && !thread.hasAnswer) && 
 								<IconButton onClick={() => handleDeleteThread(thread)}>
 									<Delete />
 								</IconButton>}
