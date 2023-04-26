@@ -50,7 +50,7 @@ const ChatPage = () => {
     const url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
     try { 
       const response = await axios.get(url);
-      console.log('response in getting user data : ', response);
+      // console.log('response in getting user data : ', response);
       setUser(response.data.data);
     } catch (error) {
       console.log('error in getting user data : ', error);
@@ -61,7 +61,7 @@ const ChatPage = () => {
     const url = BASE_API_ROUTE + 'Chat/GetChatsWithMessages';
     try { 
       const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
-      console.log('response in geting chats : ', response);
+      // console.log('response in geting chats : ', response);
       setChats(response.data.data);
     } catch (error) {
       console.log('error in getting chats : ', error);
@@ -90,7 +90,7 @@ const ChatPage = () => {
     };
 
     refConnection.current.on("ReceiveMessage", (message) => {
-      console.log("ReceiveMessage : ",message);
+      // console.log("ReceiveMessage : ",message);
       receiveMessage(message);
     });
     refConnection.current.on("ReadMessages", (chatId) => {
@@ -110,7 +110,6 @@ const ChatPage = () => {
 
   const receiveMessage = (message) => {
     const chatIndex = getChatIndexByChatId(message.chatId);
-    console.log('in ghablie : ',refChats.current);
     const updatedChat = {
       ...refChats.current[chatIndex],
       chatMessages: [...refChats.current[chatIndex].chatMessages, message],
@@ -119,7 +118,6 @@ const ChatPage = () => {
     updatedChats[chatIndex] = updatedChat;
     setChats(updatedChats);
     lastMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    console.log('in jadide : ',refChats.current);
   };
 
   const readMessages = (chatId) => {
@@ -162,7 +160,6 @@ const ChatPage = () => {
   };
 
   const editMessage = (message) => {
-    console.log('edit message in on editMessage : ',message)
     const chatIndex = getChatIndexByChatId(message.chatId);
     const updatedChatMessages = refChats.current[chatIndex].chatMessages.map((messag) => {
       if (messag.id === message.id) {
@@ -187,8 +184,6 @@ const ChatPage = () => {
 
   const sendMessage = async (message) => {
     try {
-      console.log('connection : ',refConnection.current);
-      console.log("send message2",message);
       await refConnection.current.invoke("SendMessage", message);
     } catch (err) {
       console.log('error in SendMessage : ',err);
@@ -213,7 +208,6 @@ const ChatPage = () => {
 
   const editChatMessage = async (message) => {
     try {
-      console.log('message in invoke editChatMessage : ', message);
       await refConnection.current.invoke("EditChatMessage", message);
     } catch (err) {
       console.log('error in EditChatMessage : ',err);
@@ -223,7 +217,6 @@ const ChatPage = () => {
   const addToChat = async (chatId) => {
     try {
       await refConnection.current.invoke("AddToChat", chatId.toString());
-      console.log('add to chat',chatId);
     } catch (err) {
       console.log('error in AddToChat : ',err);
     }
