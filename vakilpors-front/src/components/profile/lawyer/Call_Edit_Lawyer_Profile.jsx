@@ -9,6 +9,7 @@ import axios from 'axios';
 import { useAuth } from "../../../services/AuthProvider";
 import { updateLawyer } from '../../../services/userService';
 import { Helmet } from 'react-helmet-async';
+import { BASE_API_ROUTE } from '../../../Constants';
 
 const Call_Edit_Lawyer_Profile = () => {
 
@@ -51,7 +52,7 @@ const Call_Edit_Lawyer_Profile = () => {
       const token = await getAccessToken();
       if (token) {
         const tokenData = jwt(token);
-        const url = `https://api.fardissoft.ir/Lawyer/GetLawyerByUserId?userId=${tokenData.uid}`;
+        const url = BASE_API_ROUTE + `Lawyer/GetLawyerByUserId?userId=${tokenData.uid}`;
         try {
           const response = await axios.get(url);
           console.log('response : ', response);
