@@ -69,7 +69,7 @@ const ForgotPassword = () => {
 
 
     const handleApi = async () => {
-        const url = BASE_API_ROUTE + `Auth/forgetpassword?PhoneNumber=${phoneNumber.trim()}`;
+        const url = BASE_API_ROUTE + `Auth/resetpassword`;
 
         console.log(url);
 
