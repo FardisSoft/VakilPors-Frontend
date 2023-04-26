@@ -19,12 +19,19 @@ import axios from "axios";
 import { InputAdornment , IconButton} from "@mui/material";
 import { Visibility } from "@mui/icons-material";
 import { VisibilityOff } from "@mui/icons-material";
+import { useParams } from "react-router-dom";
+
 
 
 const ForgotPassword = () => {
 
+    const delay = ms => new Promise(
+        resolve => setTimeout(resolve, ms)
+    );
 
-    const [phoneNumber, setPhoneNumber] = useState(''); 
+    const { phoneNumber } = useParams();
+    const navigate = useNavigate();
+
     const [verificationCode, setverificationCode] = useState(''); 
 
     const [newPassword, setnewPassword] = useState(''); 
@@ -38,7 +45,7 @@ const ForgotPassword = () => {
 
     
     const showErrorMessage = () => {
-        toast.error('شماره تلفن صحیح نمی باشد', {
+        toast.error('تعییر رمز عبور با خطا مواجه شد', {
             position: "bottom-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -52,7 +59,7 @@ const ForgotPassword = () => {
     };
 
     const showSuccesMessage = () => {
-        toast.success('کد فراموشی رمز به شماره تماس شما ارسال شد', {
+        toast.success('رمز عبور با موفقیت تغییر کرد', {
             position: "bottom-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -69,21 +76,44 @@ const ForgotPassword = () => {
 
 
     const handleApi = async () => {
-        const url = BASE_API_ROUTE + `Auth/resetpassword`;
 
+        const url = BASE_API_ROUTE + `Auth/resetpassword`;
         console.log(url);
+        console.log(phoneNumber);
+
+        const data = {
+            "phoneNumber": phoneNumber,
+            "code": verificationCode,
+            "newPassword": newPassword,
+            "confirmPassword": confirmPassword
+          }
+
+
 
         try{
-            const response = await axios.get(url);
-            
+            const Response = await axios.post(url, data);
             showSuccesMessage();
-            console.log(response);
+            await delay(5000);
+            navigate("/Login");
 
-        } catch (error) {
-
-            showErrorMessage();
-            console.log(error);
         }
+        catch (error) {
+             showErrorMessage();
+             console.log(error);
+             
+        }
+
+
+        // try{
+            
+        //     // const response = await axios.get(url);
+        //     // showSuccesMessage();
+        //     // console.log(response);
+
+        // } catch (error) {
+        //     showErrorMessage();
+        //     console.log(error);
+        // }
     }
 
     
@@ -108,7 +138,7 @@ const ForgotPassword = () => {
 
 
                     <TextField
-                        label='رمز عبور'
+                        label='رمز عبور جدید'
                         dir="ltr"
                         sx={{ mb: "30px" }}
                         variant="outlined"
@@ -131,7 +161,7 @@ const ForgotPassword = () => {
 
 
                     <TextField
-                        label= 'تکرار رمز عبور'
+                        label= 'تکرار رمز عبور جدید' 
                         dir="ltr"
                         sx={{ mb: "30px" }}
                         variant="outlined"

@@ -120,6 +120,10 @@ const Login = () => {
                             <span className="txt2">
                                 اکانت ندارید؟ <Link to="/Register">ثبت نام</Link> کنید!
                             </span>
+                            <br></br>
+                            <span className="txt2">
+                                <Link to="/Forgot_Password">فراموشی رمز عبور</Link>
+                            </span>
                         </div>
                     </form>
                 </div>

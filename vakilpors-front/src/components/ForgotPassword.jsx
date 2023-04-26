@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from "react-router-dom";
 import '../css/login-page-main-style.css';
@@ -17,10 +16,17 @@ import 'react-toastify/dist/ReactToastify.css';
 import { BASE_API_ROUTE } from "../Constants";
 import axios from "axios";
 
+
+
+
 const ForgotPassword = () => {
 
+    const delay = ms => new Promise(
+        resolve => setTimeout(resolve, ms)
+    );
 
     const [phoneNumber, setPhoneNumber] = useState(''); 
+    const navigate = useNavigate();
     
     const showErrorMessage = () => {
         toast.error('شماره تلفن صحیح نمی باشد', {
@@ -62,6 +68,11 @@ const ForgotPassword = () => {
             const response = await axios.get(url);
             
             showSuccesMessage();
+            
+            await delay(5000);
+            navigate(`/Reset_Password/${phoneNumber}`);
+
+
             console.log(response);
 
         } catch (error) {
@@ -87,7 +98,7 @@ const ForgotPassword = () => {
 
                     <Typography sx={{ fontFamily: "shabnam", }}>فراموشی رمز عبور</Typography>
 
-
+                    
                     <TextField value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} sx={{ mt: "50px", mb: "50px" }} id="outlined-basic" label="شماره موبایل" variant="outlined" dir="ltr" />
 
 
