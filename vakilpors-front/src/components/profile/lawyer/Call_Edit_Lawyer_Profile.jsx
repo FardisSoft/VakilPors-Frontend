@@ -9,6 +9,15 @@ import axios from 'axios';
 import { useAuth } from "../../../services/AuthProvider";
 import { updateLawyer } from '../../../services/userService';
 import { Helmet } from 'react-helmet-async';
+import TextField from '@mui/material/TextField';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+
+
+
+const filter = createFilterOptions();
+
 
 const Call_Edit_Lawyer_Profile = () => {
 
@@ -17,6 +26,180 @@ const Call_Edit_Lawyer_Profile = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [errorColor, setErrorColor] = useState("red");
   const descriptionUser = "کاربر گرامی ! در این قسمت می توانید تمامی اطلاعات کاربری خود را بروزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";  
+
+
+  const titles = [
+    { title: 'وکیل پایه یک دادگستری' },
+    { title: 'وکیل پایه دو دادگستری' },
+    { title: 'وکیل پایه سه دادگستری' },
+    { title: 'وکیل کانون مشاوران قوه قضائیه' },
+    { title: 'کارشناس حقوقی'},
+    { title: 'کارآموز وکالت' },
+    
+  ];
+
+  const genders = ['مرد', 'زن', 'سایر'];
+
+  const specialtieses = [
+    { title: 'ثبت احوال' },
+    { title: 'بیمه' },
+    { title: 'ملکی' },
+    { title: 'مالیات' },
+    { title: 'شرکت ها' },
+    { title: 'انحصار وراثت' },
+    { title: 'دیوان عدالت اداری' },
+    { title: 'مالکیت معنوی' },
+    { title: 'بین الملل' },
+    { title: 'اداره کار' },
+    { title: 'جرایم اینترنتی' },
+    { title: 'قراردها' },
+    { title: 'وصول مطالبات' },
+    { title: 'خانواده' },
+    { title: 'کیفری (جرائم)' },
+    { title: 'اجرای احکام' },
+    { title: 'جرایم علیه اشخاص' },
+    { title: 'جرایم علیه اموال' },
+    { title: 'جرایم علیه امنیت کشور' },
+    { title: 'اموال و مالکیت' },
+    { title: 'ثبت اسناد' },
+    { title: 'داوری' },
+    { title: 'سربازی و نظام وظیفه' },
+  ];
+
+  const specialtiesList = () => {
+    const defaultTakhasos = [];
+    if(getdetail && getdetail.specialties){
+      const tempList = getdetail.specialties.split('/');
+      
+      tempList.map((temp) => {
+        defaultTakhasos.push( {
+          title: temp
+        })
+      });
+    }
+   
+    console.log('in default takhasose : ',defaultTakhasos);
+    console.log('in special tiese : ' , [specialtieses[0]]);
+    return (
+
+      <Autocomplete
+        multiple
+        id="tags-outlined"
+        options={specialtieses}
+        getOptionLabel={(option) => option.title}
+        defaultValue={defaultTakhasos}
+        filterSelectedOptions
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            placeholder="تخصص ها"
+          />
+        )}
+      />
+
+    );
+  }
+
+  const genderList = () => {
+    return (
+
+      <Autocomplete
+      value={getdetail.gender}
+      onChange={(event, newValue) => {
+        setdetail({
+          ...getdetail,
+          ['gender']: newValue,
+        });
+      }}
+    // inputValue={inputValue}
+    // onInputChange={(event, newInputValue) => {
+    //   setInputValue(newInputValue);
+    // }}
+    id="controllable-states-demo"
+    options={genders}
+    renderInput={(params) => <TextField {...params} />}
+  />
+  );
+
+
+  }
+
+
+    
+  const titleList = () => {
+
+    return (
+      <Autocomplete
+        value={getdetail.title}
+        onChange={(event, newValue) => {
+          if (typeof newValue === 'string') {
+            setdetail({
+              ...getdetail,
+              ['title']: newValue,
+            });
+          } else if (newValue && newValue.inputValue) {
+            setdetail({
+              ...getdetail,
+              ['title']: newValue.inputValue,
+            });
+          } else if(newValue && newValue.title) {
+            setdetail({
+              ...getdetail,
+              ['title']: newValue.title,
+            });
+          }
+        }}
+        filterOptions={(options, params) => {
+          const filtered = filter(options, params);
+
+          const { inputValue } = params;
+
+          const isExisting = options.some((option) => inputValue === option.title);
+          if (inputValue !== '' && !isExisting) {
+            filtered.push({
+              inputValue,
+              title: `Add "${inputValue}"`,
+            });
+          }
+
+          return filtered;
+        }}
+        selectOnFocus
+        clearOnBlur
+        handleHomeEndKeys
+        id="free-solo-with-text-demo"
+        options={titles}
+        getOptionLabel={(option) => {
+          // Value selected with enter, right from the input
+          if (typeof option === 'string') {
+            return option;
+          }
+          // Add "xxx" option created dynamically
+          if (option.inputValue) {
+            return option.inputValue;
+          }
+          // Regular option
+          return option.title;
+        }}
+        renderOption={(props, option) => <li {...props}>{option.title}</li>}
+        freeSolo
+        renderInput={(params) => (
+          <TextField sx={{border:"none"}}{...params}/>
+        )}
+      />
+    );
+  };
+
+
+
+
+
+
+
+
+
+
+
 
   const handleAvatarChange = (file) => {
     setdetail({
@@ -127,24 +310,16 @@ const Call_Edit_Lawyer_Profile = () => {
                   margin="normal" />
               </div>
               <div className="form-row form-row-1">
-                <label style={{ position: "relative", top: "5px" }}><p>عنوان</p></label>
+
+              <label style={{ position: "relative", top: "5px" }}><p>ایمیل</p></label>
                 <input
                   className="input100"
                   type="text"
-                  name="title"
-                  value={getdetail.title}
+                  name="user.email"
+                  value={getdetail.user ? getdetail.user.email : ''}
                   onChange={setUserInfo}
                   margin="normal" />
-                {/* <FormControl sx={{ maxWidth: '220px',}} fullWidth>
-                  <Select onChange={handleGrade} label="نوع پروانه وکالت" 
-                  // onChange={setUserInfo}
-                  dir='rtl'>
-                    <MenuItem value="پایه یک دادگستری">پایه یک دادگستری</MenuItem>
-                    <MenuItem value="پایه دو دادگستری">پایه دو دادگستری</MenuItem>
-                    <MenuItem value="پایه سه دادگستری">پایه سه دادگستری</MenuItem>
-                    <MenuItem value="کانون مشاوران قوه قضائیه">کانون مشاوران قوه قضائیه</MenuItem>
-                  </Select>
-                </FormControl> */}
+
               </div>
             </div>
             <div className="form-group">
@@ -183,24 +358,13 @@ const Call_Edit_Lawyer_Profile = () => {
             </div>
             <div className="form-group">
               <div className="form-row form-row-1">
-                <label style={{ position: "relative", top: "5px" }}><p>ایمیل</p></label>
-                <input
-                  className="input100"
-                  type="text"
-                  name="user.email"
-                  value={getdetail.user ? getdetail.user.email : ''}
-                  onChange={setUserInfo}
-                  margin="normal" />
+              <label style={{ position: "relative", top: "5px" }}><p>عنوان</p></label>
+              {titleList()}
               </div>
               <div className="form-row form-row-1">
                 <label style={{ position: "relative", top: "5px" }}><p>جنسیت</p></label>
-                <input
-                  className="input100"
-                  type="text"
-                  name="gender"
-                  value={getdetail.gender}
-                  onChange={setUserInfo}
-                  margin="normal" />
+                  {genderList()}
+
               </div>
             </div>
             <div className="form-group">
@@ -213,6 +377,7 @@ const Call_Edit_Lawyer_Profile = () => {
                   value={getdetail.specialties}
                   onChange={setUserInfo}
                   margin="normal" />
+                  {specialtiesList()}
               </div>
             </div>
             <div className="form-group">
