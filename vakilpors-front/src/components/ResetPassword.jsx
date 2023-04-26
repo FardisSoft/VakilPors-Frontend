@@ -29,6 +29,8 @@ const ForgotPassword = () => {
         resolve => setTimeout(resolve, ms)
     );
 
+
+
     const { phoneNumber } = useParams();
     const navigate = useNavigate();
 
@@ -43,9 +45,39 @@ const ForgotPassword = () => {
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
 
+    const handleSubmit = (event) => {
     
-    const showErrorMessage = () => {
-        toast.error('تعییر رمز عبور با خطا مواجه شد', {
+        event.preventDefault()
+        if( validateForm() )
+            handleApi();
+          
+
+    }
+
+
+
+    const validateForm = () => {
+
+        if(!(newPassword.length < 31 && newPassword.length > 5 && /^[A-Za-z0-9]*$/.test(newPassword) &&  /[A-Z]/.test(newPassword) && /[a-z]/.test(newPassword))){ 
+            showErrorMessage("رمز خود را به صورت صحیح وارد کنید ( رمز شما باید بین 6 تا 30 کاراکتر باشد، فقط از اعداد و حروف انگلیسی تشکیل شده باشد و حداقل شامل یک حرف بزرگ و حداقل یک حرف کوچک باشد)");
+            return false;
+        }
+        if(newPassword !== confirmPassword){
+            showErrorMessage("رمز با تکرار رمز مطابقت ندارد");
+            return false;
+        }
+        return true;
+
+
+
+
+    }
+
+
+
+    
+    const showErrorMessage = (errorMessage) => {
+        toast.error(errorMessage, {
             position: "bottom-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -98,22 +130,13 @@ const ForgotPassword = () => {
 
         }
         catch (error) {
-             showErrorMessage();
+             showErrorMessage("تغییر رمز عبور با خطا مواجه شد.");
+
              console.log(error);
              
         }
 
 
-        // try{
-            
-        //     // const response = await axios.get(url);
-        //     // showSuccesMessage();
-        //     // console.log(response);
-
-        // } catch (error) {
-        //     showErrorMessage();
-        //     console.log(error);
-        // }
     }
 
     
@@ -185,7 +208,7 @@ const ForgotPassword = () => {
 
 
 
-                    <Button onClick={handleApi} variant="contained" disableElevation>
+                    <Button onClick={handleSubmit} variant="contained" disableElevation>
                        تغییر رمز عبور
                     </Button>
                     <ToastContainer />
