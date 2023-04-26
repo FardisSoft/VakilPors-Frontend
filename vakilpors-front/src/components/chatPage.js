@@ -79,7 +79,6 @@ const ChatPage = () => {
       .configureLogging(signalR.LogLevel.Information)
       .build()
     );
-    console.log('connection : ',refConnection.current);
     const start = async () => {
       try {
         await refConnection.current.start();
@@ -359,8 +358,8 @@ const ChatPage = () => {
     const isFile = message.IsFile;
     const isRead = message.IsRead;
     return (
-      <Grid display="flex" flexDirection={isCurrentUser ? "row" : "row-reverse"}>
-        <Grid key={message.id} ref={messageIndex === refChats.current[chatIndex].chatMessages.length - 1 ? lastMessageRef : null}
+      <Grid key={message.id} display="flex" flexDirection={isCurrentUser ? "row" : "row-reverse"}>
+        <Grid ref={messageIndex === refChats.current[chatIndex].chatMessages.length - 1 ? lastMessageRef : null}
         sx={{
           width: '80%',
           display: 'flex',
