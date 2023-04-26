@@ -66,16 +66,32 @@ const Forum = () => {
 		const token = await getAccessToken();
 		if(token){
 			const url = BASE_API_ROUTE + "Thread/DeleteThread";
-			console.log(url);
-			console.log(thread);
-			const data = {...thread,user:null};
+			// console.log(url);
+			// console.log(thread);
+			// const data = {...thread,user:null};
+			const data = {
+				"id": ''+thread.id,
+				"title": '',
+				"description": '',
+				"likeCount": 0,
+				"userId": 0,
+      			"commentCount": 0,
+				"createDate": '',
+				"hasAnswer": false,
+				"user": null,
+			};
 			console.log(data);
-			const response = await axios.delete(url,data,{headers: {Authorization: `Bearer ${token}`}});
+			try{
+				const response = await axios.get(url,data,{headers: {Authorization: `Bearer ${token}`}});
+				console.log(response);
+			} catch (err){
+				console.log(err);
+
+			}
 			// setThreadList(prevThreadList => {
 			// 	const updatedThreadList = [...prevThreadList, response.data.data];
 			// 	return updatedThreadList;
 			// });
-			console.log(response);
 		}
 	};
 
