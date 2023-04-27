@@ -26,10 +26,14 @@ a {
 	min-height: 100vh;
 	padding: 30px;
 }
-.homeTitle,
+.homeTitle {
+	font-family: 'shabnam', 'yekan';
+	margin-bottom: 30px;
+}
 .repliesTitle {
 	font-family: 'shabnam', 'yekan';
 	margin-bottom: 30px;
+	font-size: 30px;
 }
 .homeBtn,
 .modalBtn {
