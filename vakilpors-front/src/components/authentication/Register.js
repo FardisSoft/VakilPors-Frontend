@@ -40,11 +40,10 @@ const Register = () => {
         role === "user" ? setRoleTitle(roleTitleUser) : setRoleTitle(roleTitleLawyer);
         role === "user" ? setRoleName(roleLawyer) : setRoleName(roleUser);
         role === "user" ? setRole("lawyer") : setRole("user");
-    }   
+    };
 
-
-    const showErrorMessage = (errorMessage) => {
-        toast.error(errorMessage, {
+    const showErrorMessage = (message) => {
+        toast.error(message, {
             position: "bottom-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -57,8 +56,8 @@ const Register = () => {
             });
     };
 
-    const showSuccesMessage = () => {
-        toast.success('رمز عبور با موفقیت تغییر کرد', {
+    const showSuccesMessage = (message) => {
+        toast.success(message, {
             position: "bottom-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -70,18 +69,11 @@ const Register = () => {
             rtl:true,
             });
     };
-
-
-
-
 
     const handleSubmit = (event) => {
-    
         event.preventDefault()
         if( validateForm() )
             SignupApi();
-          
-
     }
 
     const validateForm = () => {
@@ -148,19 +140,13 @@ const Register = () => {
 
                 try{
                     const response_2 = await axios.post(url_2);
-                    
-                    showSuccesMessage();
-                    
-                    console.log("ok mibashadddddd");
-
+                    setErrorMessage('');
+                    showSuccesMessage('ایجاد حساب کاربری با موفقیت انجام شد');
                     await delay(5000);
                     navigate(`/Activation_Account/${phoneNumber}`);
-        
                     console.log(response_2);
-        
                 } catch (error) {
-        
-                    showErrorMessage();
+                    showErrorMessage('خطا');
                     console.log(error);
                 }
 
@@ -256,6 +242,7 @@ const Register = () => {
                     <label className="container"><p className="text" style={{color:errorColor}}>{errorMessage}</p></label>
                 </div>
             </form>
+            <ToastContainer/>
         </div>
     </div>
     </>

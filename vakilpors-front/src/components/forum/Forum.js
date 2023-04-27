@@ -73,17 +73,17 @@ const Forum = () => {
 	const handleDeleteThread = async (thread) => {
 		const token = await getAccessToken();
 		if(token){
-			const url = BASE_API_ROUTE + "Thread/DeleteThread";
+			const url = BASE_API_ROUTE + `Thread/DeleteThread?threadId=${thread.id}`;
 			try{
 				const response = await axios.get(url,{headers: {Authorization: `Bearer ${token}`}});
 				console.log('response in deleteing thread : ,',response);
+				setThreadList(prevThreadList => {
+					const updatedThreadList = prevThreadList.splice(getThreadIndexByThreadId(thread.id),1);
+					return updatedThreadList;
+				});
 			} catch (err){
 				console.log('error in deleteing thread : ,',err);
 			}
-			setThreadList(prevThreadList => {
-				const updatedThreadList = prevThreadList.splice(getThreadIndexByThreadId(thread.id),1);
-				return updatedThreadList;
-			});
 		}
 	};
 
