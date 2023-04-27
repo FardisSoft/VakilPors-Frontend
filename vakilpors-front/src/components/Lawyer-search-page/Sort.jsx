@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
@@ -16,17 +15,15 @@ import AdbIcon from '@mui/icons-material/Adb';
 const pages = ['امتیاز', '(الف تا ی)حروف الفبا', '(ی تا الف)حروف الفبا'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-function ResponsiveAppBar() {
+const Sort=()=> {
  
 
   return (
-    <AppBar position="relative" >
+    <AppBar position="relative" style={{ borderBottomRightRadius : "30px" ,borderBottomLeftRadius : "30px", height : "70px" , backgroundColor : "#012780"}}>
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
+        <Toolbar  >
 
-          <Typography
-            variant="h9"
-          >
+          <Typography variant="h9">
             مرتب سازی بر اساس
           </Typography>
 
@@ -36,9 +33,8 @@ function ResponsiveAppBar() {
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-
-              color="inherit"
-            >
+              color="inherit">
+        
               <MenuIcon />
             </IconButton>
             <Menu
@@ -89,9 +85,7 @@ function ResponsiveAppBar() {
             {pages.map((page) => (
               <Button
                 key={page}
-               
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
+                sx={{ my: 2, color: 'white', display: 'block' }}>
                 {page}
               </Button>
             ))}
@@ -131,4 +125,4 @@ function ResponsiveAppBar() {
     </AppBar>
   );
 }
-export default ResponsiveAppBar;
+export default Sort;

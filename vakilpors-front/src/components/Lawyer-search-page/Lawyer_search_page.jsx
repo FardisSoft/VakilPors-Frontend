@@ -6,6 +6,8 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import "../../css/Main_ShowLawyer.css";
 import axios from "axios";
+import Sort from './Sort';
+import PremiumCard from '../premium-page/PremiumCards';
 
 
 const Lawyer_search_page = () => {
@@ -44,6 +46,8 @@ const Lawyer_search_page = () => {
             </Helmet>
             <div class="Main_contain">
                 <Search LawyerSearch={LawyerSearch} LawyerQuery={LawyerQuery} />
+                <PremiumCard/>
+                <Sort></Sort>
                 <section className="container" >
                     <div class="contain">
                         <div className="row">
