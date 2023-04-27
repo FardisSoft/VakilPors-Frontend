@@ -1,6 +1,6 @@
 import { HomeOutlined, PersonSearchOutlined, ForumOutlined, PolicyOutlined, AppRegistrationOutlined,
        LoginOutlined, LogoutOutlined, ManageAccountsOutlined, AccountCircleOutlined, CallOutlined,
-       Menu, ChevronRight, ChatOutlined } from "@mui/icons-material";
+       Menu, ChevronRight, ChatOutlined, Dashboard } from "@mui/icons-material";
 import React, { useState, useEffect } from 'react';
 import useStateRef from "react-usestateref";
 import { styled } from '@mui/material/styles';
@@ -10,7 +10,7 @@ import { Box, Divider, Grid, Drawer } from '@mui/material';
 import { Badge, Avatar, Typography, Toolbar } from '@mui/material';
 import MuiAppBar from '@mui/material/AppBar';
 import { List, ListItem, ListItemButton, IconButton, ListItemIcon } from '@mui/material';
-import { useAuth } from "../services/AuthProvider";
+import { useAuth } from "../context/AuthProvider";
 import jwt from 'jwt-decode';
 import axios from 'axios';
 import { BASE_API_ROUTE } from '../Constants';
@@ -142,6 +142,7 @@ const Sidebar = (props) => {
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
         {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
+        {name:'داشبورد', icon:Dashboard, url:'/PremiumPage'},
       ];
       break;
     

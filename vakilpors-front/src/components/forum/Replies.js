@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from 'axios';
-import { BASE_API_ROUTE } from "../Constants";
-import { useAuth } from "../services/AuthProvider";
+import { BASE_API_ROUTE } from "../../Constants";
+import { useAuth } from "../../context/AuthProvider";
 import moment from 'moment';
 import { Typography, IconButton } from "@mui/material";
-import Likes from "../utils/Likes";
+import Likes from "./utils/Likes";
 import { Delete, Edit, TaskAlt } from '@mui/icons-material';
 
 const Replies = () => {
@@ -32,7 +32,6 @@ const Replies = () => {
 				  };
 			try{
 				const response = await axios.post(url,data,{headers: {Authorization: `Bearer ${token}`}});
-				console.log('add reply response : ',response);
 				fetchReplies();
 			} catch (error) {
 				console.log('add reply error : ',error);
@@ -69,7 +68,16 @@ const Replies = () => {
 	}, [threadId]);
 
 	const handleDeleteClick = async (commentId) => {
-
+		const token = await getAccessToken();
+		if(token){
+			const url = BASE_API_ROUTE + `ThreadComment/DeleteComment?commentId=${commentId}`;
+			try{
+				const response = await axios.get(url,{headers: {Authorization: `Bearer ${token}`}});
+				fetchReplies();
+			} catch (err){
+				console.log('error in deleteing comment : ,',err);
+			}
+		}
 	};
 
 	const handleEditClick = async (commentId) => {
@@ -138,7 +146,13 @@ const Replies = () => {
 			<div className='thread__container'>
 				{replyList.map((reply) => (
 					<div className='thread__item' key={reply.id}>
-						{reply.isSetAsAnswer && <TaskAlt/>}
+						{reply.isSetAsAnswer && <TaskAlt sx={{
+							color:'green',
+						...(reply.user.isLawyer && {
+							color : 'red',
+							// color: 'grey',
+						  }),
+						}}/>}
 						<p style={{color: '#071e22'}}>{reply.text}</p>
 						<div className='react__container'>
 							<p style={{ opacity: "0.5" }}>توسط {reply.user.name}</p>

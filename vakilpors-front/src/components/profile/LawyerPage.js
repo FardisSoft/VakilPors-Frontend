@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
-import { BASE_API_ROUTE } from '../Constants';
-import { useAuth } from "../services/AuthProvider";
+import { BASE_API_ROUTE } from '../../Constants';
+import { useAuth } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import { Button, Badge, styled, Avatar, Rating, Typography, Chip } from '@mui/material';
 import { Stack, Grid } from "@mui/material";
