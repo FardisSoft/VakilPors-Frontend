@@ -22,6 +22,7 @@ const ActivationAccount = () => {
 
     
     const { login } = useAuth();
+    //const [password, setPassword] = useState("");
 
     const delay = ms => new Promise(
         resolve => setTimeout(resolve, ms)
