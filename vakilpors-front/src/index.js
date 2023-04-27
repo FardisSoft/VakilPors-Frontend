@@ -21,7 +21,9 @@ import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 import ActivationAccount from './components/ActivationAccount';
 import ChatPage from './components/chatPage';
+
 import PremiumPage from './components/premium-page/PremiumPage';
+
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
