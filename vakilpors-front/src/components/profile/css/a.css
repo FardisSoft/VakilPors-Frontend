@@ -1,6 +1,4 @@
-body {
-	margin:  0;
-}
+
 .page-content {
 	width: 100%;
 	margin:  0 auto;
@@ -17,12 +15,6 @@ body {
 	-ms-align-items: center;
 	-moz-align-items: center;
 	-webkit-align-items: center;
-}
-
-.btn-show-pass
-{
-
-
 }
 .form-v4-content-ForEdit  {
 	background: #fff;
@@ -277,8 +269,8 @@ body {
 }
 
 /* Responsive */
-@media screen and (max-width: 991px) {
-	.form-v4-content {
+@media screen and (max-width: 5000px) {
+	.form-v4-content-ForEdit {
 		margin: 180px 20px;
 		flex-direction:  column;
 		-o-flex-direction:  column;
@@ -286,17 +278,20 @@ body {
 		-moz-flex-direction:  column;
 		-webkit-flex-direction:  column;
 	}
-	.form-v4-content .form-left {
+	.form-v4-content-ForEdit .form-left {
 		width: auto;
 		border-top-right-radius: 10px;
 		border-bottom-left-radius: 0;
 	}
-	.form-v4-content .form-detail {
+	.form-v4-content-ForEdit .form-detail {
 		padding: 30px 20px 30px 20px;
 	    width: auto;
 	}
 }
-@media screen and (max-width: 575px) {
+@media screen and (max-width: 890px) {
+	.form-v4-content-ForEdit {
+		width: auto;
+	}
 	.form-v4-content-ForEdit .form-detail .form-group {
 		flex-direction: column;
 		-o-flex-direction:  column;

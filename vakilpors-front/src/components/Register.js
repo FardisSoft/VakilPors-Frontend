@@ -7,10 +7,12 @@ import { BASE_API_ROUTE } from '../Constants';
 import '../css/signup-page-main-style.css';
 import { FaEye } from 'react-icons/fa';
 import { useAuth } from "../services/AuthProvider";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
     const [name, setName] = useState("");
-    const [phone, setPhone] = useState("");
+    const [phoneNumber, setphoneNumber] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -40,10 +42,46 @@ const Register = () => {
         role === "user" ? setRole("lawyer") : setRole("user");
     }   
 
+
+    const showErrorMessage = (errorMessage) => {
+        toast.error(errorMessage, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            rtl:true,
+            });
+    };
+
+    const showSuccesMessage = () => {
+        toast.success('رمز عبور با موفقیت تغییر کرد', {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            rtl:true,
+            });
+    };
+
+
+
+
+
     const handleSubmit = (event) => {
+    
         event.preventDefault()
         if( validateForm() )
             SignupApi();
+          
+
     }
 
     const validateForm = () => {
@@ -51,11 +89,11 @@ const Register = () => {
             setErrorMessage("نام و نام خانوادگی خود را وارد کنید");
             return false;
         }
-        if(phone === ""){
+        if(phoneNumber === ""){
             setErrorMessage("شماره موبایل خود را وارد کنید");
             return false;
         }
-        if(!/^\d+$/.test(phone)){ // only digit
+        if(!/^\d+$/.test(phoneNumber)){ // only digit
             setErrorMessage("شماره موبایل خود را به صورت صحیح وارد کنید");
             return false;
         }
@@ -94,7 +132,7 @@ const Register = () => {
     const SignupApi = async () => {
         const url = BASE_API_ROUTE + 'Auth/register';
         const data = {
-            "phoneNumber": phone,
+            "phoneNumber": phoneNumber,
             "password": password,
             "name": name,
             "email": email,
@@ -102,17 +140,42 @@ const Register = () => {
         }
         try{
             const response = await axios.post(url,data);
-            const success = await login({ "phoneNumber": phone, "password": password});
-            if(success === "success"){
-                setErrorColor("green");
-                setErrorMessage("ثبت نام با موفقیت انجام شد!");
-                await delay(1000);
-                navigate("/");
-            }
+            //const success = await login({ "phoneNumber": phoneNumber, "password": password});
+            //if(success === "success"){
+                const url_2 = BASE_API_ROUTE + `Auth/sendactivationcode?phoneNumber=${phoneNumber.trim()}`;
+
+                console.log(url_2);
+
+                try{
+                    const response_2 = await axios.post(url_2);
+                    
+                    showSuccesMessage();
+                    
+                    console.log("ok mibashadddddd");
+
+                    await delay(5000);
+                    navigate(`/Activation_Account/${phoneNumber}`);
+        
+                    console.log(response_2);
+        
+                } catch (error) {
+        
+                    showErrorMessage();
+                    console.log(error);
+                }
+
+
+                // setErrorColor("green");
+                // setErrorMessage("ثبت نام با موفقیت انجام شد!");
+                // await delay(1000);
+                // navigate("/");
+            //}
+            /*
             else{
                 setErrorColor("red");
                 setErrorMessage("ورود با خطا مواجه شد.");
             }
+            */
         } catch (error) {
             const responseData = error.response.data;
             if (responseData.hasOwnProperty('data')){
@@ -160,7 +223,7 @@ const Register = () => {
                     </div>
                     <div className="form-row form-row-1">
                         <label htmlFor="phone_number">شماره موبایل</label>
-                        <input type="tel" name="phone_number" id="phone_number" className="input-text" value={phone} onChange={(e) => setPhone(e.target.value)} required/>
+                        <input type="tel" name="phone_number" id="phone_number" className="input-text" value={phoneNumber} onChange={(e) => setphoneNumber(e.target.value)} required/>
                     </div>
                 </div>
                 <div className="form-row">
@@ -189,6 +252,7 @@ const Register = () => {
                 </div>
                 <div className="form-row-last">
                     <input type="submit" onClick={handleSubmit} name="register" className="register" value="بریم!"/>
+                    {/* for test change submit with Button */}
                     <label className="container"><p className="text" style={{color:errorColor}}>{errorMessage}</p></label>
                 </div>
             </form>

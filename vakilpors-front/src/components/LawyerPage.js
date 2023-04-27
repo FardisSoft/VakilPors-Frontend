@@ -23,9 +23,9 @@ const LawyerPage = () => {
     const [rate, setRate] = useState(0);
     const [numberOfRates, setNumberOfRates] = useState(0);
     const [city, setCity] = useState('');
-    const [grade, setGrade] = useState('');
+    // const [grade, setGrade] = useState('');
     const [licenseNumber, setLicenseNumber] = useState('');
-    const [memberOf, setMemberOf] = useState('');
+    // const [memberOf, setMemberOf] = useState('');
     const [specialties, setSpecialties] = useState([]);
     const [yearsOfExperience, setYearsOfExperience] = useState(0);
     const [gender, setGender] = useState('');
@@ -50,9 +50,9 @@ const LawyerPage = () => {
         setCallingCard(data.callingCardImageUrl);
         setCity(data.city);
         setEducation(data.education);
-        setGrade(data.grade == 0 ? 'یک' : data.grade == 1 ? 'دو' : 'سه');
+        // setGrade(data.grade == 0 ? 'یک' : data.grade == 1 ? 'دو' : 'سه');
         setLicenseNumber(data.parvandeNo);
-        setMemberOf(data.memberOf);
+        // setMemberOf(data.memberOf);
         setOfficeAddress(data.officeAddress);
         setProfilePicture(data.user.profileImageUrl);
         setRate(data.rating);
@@ -170,13 +170,17 @@ const LawyerPage = () => {
                         {gender === "مرد" ? <Male color="primary" sx={{ml:1}}/> : <Female color="primary" sx={{ml:1}}/>}
                         جنسیت : {gender}
                     </Typography>
-                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                    {/* <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
                         {grade === "یک" ? <LooksOne color="primary" sx={{ml:1}}/> : grade === "دو" ? <LooksTwo color="primary" sx={{ml:1}}/> : <Looks3 color="primary" sx={{ml:1}}/>}
                         پایه : {grade}
-                    </Typography>
-                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                    </Typography> */}
+                    {/* <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
                         <CardMembership color="primary" sx={{ml:1}}/>
                         عضو : {memberOf}
+                    </Typography> */}
+                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                        <CardMembership color="primary" sx={{ml:1}}/>
+                        عنوان : {title}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
                         <LocationOn color="primary" sx={{ml:1}}/>
