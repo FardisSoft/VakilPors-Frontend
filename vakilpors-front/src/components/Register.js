@@ -58,7 +58,7 @@ const Register = () => {
     };
 
     const showSuccesMessage = () => {
-        toast.success('رمز عبور با موفقیت تغییر کرد', {
+        toast.success('کد کاریری برای شما ارسال شد.', {
             position: "bottom-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -159,6 +159,8 @@ const Register = () => {
                     console.log(response_2);
         
                 } catch (error) {
+
+                    console.log("error darim che errori");
         
                     showErrorMessage();
                     console.log(error);
@@ -253,7 +255,8 @@ const Register = () => {
                 <div className="form-row-last">
                     <input type="submit" onClick={handleSubmit} name="register" className="register" value="بریم!"/>
                     {/* for test change submit with Button */}
-                    <label className="container"><p className="text" style={{color:errorColor}}>{errorMessage}</p></label>
+                    <ToastContainer />
+
                 </div>
             </form>
         </div>

@@ -49,6 +49,7 @@ root.render(
               <Route path="/chatPage" element={<Sidebar component={ChatPage}/>}/>
               <Route path="/PremiumPage" element={<Sidebar component={PremiumPage}/>}/>
 
+
           </Routes>
         </AuthProvider>
       </BrowserRouter>
