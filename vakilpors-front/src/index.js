@@ -19,6 +19,7 @@ import Call_Display_User_Profile from './components/profile/user/Call_Display_Us
 import ContactUs from './components/ContactUs';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
+import ActivationAccount from './components/ActivationAccount';
 
 
 
@@ -42,6 +43,7 @@ root.render(
               <Route path="/contactUs" element={<Sidebar component={ContactUs}/>}/>
               <Route path="/Forgot_Password" element={<Sidebar component={ForgotPassword}/>}/>
               <Route path="/Reset_Password/:phoneNumber" element={<Sidebar component={ResetPassword}/>}/>
+              <Route path="/Acctivation_Account" element={<Sidebar component={ActivationAccount}/>}/>
               
           </Routes>
         </AuthProvider>
