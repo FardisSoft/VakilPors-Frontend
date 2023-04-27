@@ -15,11 +15,11 @@ import AdbIcon from '@mui/icons-material/Adb';
 const pages = ['امتیاز', '(الف تا ی)حروف الفبا', '(ی تا الف)حروف الفبا'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-const Sort=()=> {
- 
+const Sort = () => {
+
 
   return (
-    <AppBar position="relative" style={{ borderBottomRightRadius : "30px" ,borderBottomLeftRadius : "30px", height : "70px" , backgroundColor : "#012780"}}>
+    <AppBar position="relative" style={{ borderBottomRightRadius: "30px", borderBottomLeftRadius: "30px", height: "70px", backgroundColor: "#012780" }}>
       <Container maxWidth="xl">
         <Toolbar  >
 
@@ -34,7 +34,7 @@ const Sort=()=> {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               color="inherit">
-        
+
               <MenuIcon />
             </IconButton>
             <Menu
@@ -93,8 +93,7 @@ const Sort=()=> {
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton  sx={{ p: 0 }}>
-
+              <IconButton sx={{ p: 0 }}>
               </IconButton>
             </Tooltip>
             <Menu
@@ -110,8 +109,6 @@ const Sort=()=> {
                 vertical: 'top',
                 horizontal: 'right',
               }}
-
-             
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} >

@@ -21,6 +21,7 @@ import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 import ActivationAccount from './components/ActivationAccount';
 import ChatPage from './components/chatPage';
+import PremiumPage from './components/premium-page/PremiumPage';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -46,6 +47,7 @@ root.render(
               <Route path="/Reset_Password/:phoneNumber" element={<Sidebar component={ResetPassword}/>}/>
               <Route path="/Activation_Account/:phoneNumber" element={<Sidebar component={ActivationAccount}/>}/>
               <Route path="/chatPage" element={<Sidebar component={ChatPage}/>}/>
+              <Route path="/PremiumPage" element={<Sidebar component={PremiumPage}/>}/>
           </Routes>
         </AuthProvider>
       </BrowserRouter>
