@@ -13,6 +13,7 @@ import TextField from '@mui/material/TextField';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
+import { BASE_API_ROUTE } from '../../../Constants';
 
 
 
@@ -233,7 +234,7 @@ const Call_Edit_Lawyer_Profile = () => {
       const token = await getAccessToken();
       if (token) {
         const tokenData = jwt(token);
-        const url = `https://api.fardissoft.ir/Lawyer/GetLawyerByUserId?userId=${tokenData.uid}`;
+        const url = BASE_API_ROUTE + `Lawyer/GetLawyerByUserId?userId=${tokenData.uid}`;
         try {
           const response = await axios.get(url);
           console.log('response : ', response);
