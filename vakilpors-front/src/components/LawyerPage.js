@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
 import { BASE_API_ROUTE } from '../Constants';
+import { useAuth } from "../services/AuthProvider";
+import { useNavigate } from "react-router-dom";
 import { Button, Badge, styled, Avatar, Rating, Typography, Chip } from '@mui/material';
 import { Stack, Grid } from "@mui/material";
 import { Card, CardContent, CardHeader, CardMedia } from "@mui/material";
@@ -39,6 +41,9 @@ const LawyerPage = () => {
     const [ratesList, setRatesList] = useState([]);
 
     const { LawyerId } = useParams();
+    const [ lawyerUserId, setLawyerUserId] = useState();
+    const { getAccessToken } = useAuth();
+    const navigate = useNavigate();
 
     const handleInitializerWithAPI = (data) => {
         setAboutMe(data.aboutMe);
@@ -74,12 +79,32 @@ const LawyerPage = () => {
                 const response = await axios.get(url);
                 console.log('response : ',response);
                 handleInitializerWithAPI(response.data.data);
+                setLawyerUserId(response.data.data.user.id);
             } catch (error) {
                 console.log('error : ',error);
             }
         };
         fetchData();
     }, []);
+
+    const handleChatStart = async () => {
+        const token = await getAccessToken();
+        if(!token){
+            console.log('login required');
+            navigate("/Login");
+        }
+        else{
+            const url = BASE_API_ROUTE + `Chat/StartChat?recieverUserId=${lawyerUserId}`;
+            console.log(url);
+            try { 
+                const response = await axios.post(url,'', {headers: {Authorization: `Bearer ${token}`}});
+                console.log('response in starting chat : ', response);
+                navigate("/chatPage");
+            } catch (error) {
+                console.log('error in starting chat : ', error);
+            }
+        }
+    };
 
     const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -134,7 +159,7 @@ const LawyerPage = () => {
             </Grid>
             <Grid sx={{ border: "none", boxShadow: "none" }} display="flex" alignItems="center" justifyContent="center" item component={Card} sm>
                 <CardContent>
-                    <Button variant="contained" sx={{fontFamily:"shabnam"}}>درخواست چت آنلاین</Button>
+                    <Button variant="contained" onClick={handleChatStart} sx={{fontFamily:"shabnam"}}>درخواست چت آنلاین</Button>
                 </CardContent>
             </Grid>
         </Grid>

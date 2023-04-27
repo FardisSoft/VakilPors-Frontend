@@ -9,6 +9,9 @@ import { BASE_API_ROUTE } from "../Constants";
 import jwt from 'jwt-decode';
 import useStateRef from "react-usestateref";
 import { Helmet } from 'react-helmet-async';
+import { Typography, IconButton } from "@mui/material";
+import moment from 'moment';
+import { Delete } from '@mui/icons-material';
 
 const Forum = () => {
 	const [thread, setThread] = useState("");
@@ -18,7 +21,7 @@ const Forum = () => {
 	const { getAccessToken } = useAuth();
 
 	useEffect(() => {
-		const checkUser = async () => {
+		const getThreadList = async () => {
 			const token = await getAccessToken();
 			if(token){
 				const tokenData = jwt(token);
@@ -33,25 +36,57 @@ const Forum = () => {
 				}
 			}
 		};
-		checkUser();
+		getThreadList();
 	}, [navigate]);
+
+	const getThreadIndexByThreadId = (threadId) => {
+		return refThreadList.current.findIndex((thread) => thread.id === threadId);
+	};
 
     const createThread = async () => {
 		const token = await getAccessToken();
 		if(token){
 			const url = BASE_API_ROUTE + "Thread/CreateThread";
 			const data = {
-				"id": refThreadList.current.length,
+				"id": 0,
 				"title": thread,
 				"description": "no description",
 				"likeCount": 0,
-				"userId": refUserId.current,
-      			"commentCount": 0
+				"userId": 0,
+      			"commentCount": 0,
+				"createDate": new Date().toISOString(),
+				"hasAnswer": false,
+				"user": null,
 			};
-			const response = await axios.post(url,data,{headers: {Authorization: `Bearer ${token}`}});
-			// setThreadList(response.data.data);
+			try {
+				const response = await axios.post(url,data,{headers: {Authorization: `Bearer ${token}`}});
+				setThreadList(prevThreadList => {
+					const updatedThreadList = [...prevThreadList, response.data.data];
+					return updatedThreadList;
+				});
+			} catch (err) {
+				console.log('error in creating thread : ',err);
+			}
 		}
 	};
+
+	const handleDeleteThread = async (thread) => {
+		const token = await getAccessToken();
+		if(token){
+			const url = BASE_API_ROUTE + "Thread/DeleteThread";
+			try{
+				const response = await axios.get(url,{headers: {Authorization: `Bearer ${token}`}});
+				console.log('response in deleteing thread : ,',response);
+			} catch (err){
+				console.log('error in deleteing thread : ,',err);
+			}
+			setThreadList(prevThreadList => {
+				const updatedThreadList = prevThreadList.splice(getThreadIndexByThreadId(thread.id),1);
+				return updatedThreadList;
+			});
+		}
+	};
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		createThread();
@@ -63,12 +98,11 @@ const Forum = () => {
 			<Helmet>
               <title>Forum</title>
           	</Helmet>
-			{/* <Nav /> */}
-			<main className='home' style={{background:'#84a0a0'}}>
-					<h2 className='homeTitle' style={{fontFamily:'calibri'}}>یک موضوع جدید ایجاد کنید یا موضوع مورد نظر خود را انتخاب کنید</h2>
-					<form className='homeForm' onSubmit={handleSubmit}>
-						<div className='home__container' >
-							<label htmlFor='thread'style={{fontFamily:'calibri'}}>موضوع</label>
+			<main className='home'>
+					<h2 className='homeTitle'>یک موضوع جدید ایجاد کنید یا موضوع مورد نظر خود را از لیست پایین انتخاب کنید</h2>
+					<form className='homeForm'>
+						<div className='home__container'>
+							<label htmlFor='thread'>موضوع جدید <br/></label>
 							<input
 								type='text'
 								name='thread'
@@ -77,24 +111,31 @@ const Forum = () => {
 								onChange={(e) => setThread(e.target.value)}
 							/>
 						</div>
-						<button className='homeBtn' style={{fontFamily:'calibri'}} onClick={createThread}>ساخت موضوع جدید</button>
+						<button className='homeBtn' onClick={handleSubmit}>ساخت موضوع جدید</button>
 					</form>
 				
-				<div className='thread__container' style={{fontFamily:'calibri'}}>
+				<div className='thread__container'>
 					{threadList.map((thread) => (
 						<div className='thread__item' key={thread.id}>
-							<p>{thread.title}</p>
 							<div className='react__container'>
+								<Typography sx={{color: 'black', fontSize: '15px', fontFamily: 'shabnam', ml: '10px'}}>{thread.user.name}  -</Typography>
+								<p style={{color: '#071e22'}}>{thread.title}</p>
+							</div>
+							<div className='react__container'>
+								<Typography>{moment(thread.createDate).format('MMM D YYYY, h:mm A')}</Typography>
 								<Likes
-									thread={thread}
-									user={refUserId.current}
+									threadOrComment={thread}
+									IsThread={true}
 								/>
 								<Comments
-									// thread={thread}
-									// numberOfComments={thread.replies.length} // does not supported by backend
 									threadId={thread.id}
-									title={thread.title}
+									numberOfComments={thread.commentCount}
+									userId={refUserId.current}
 								/>
+								{(thread.userId == refUserId.current && !thread.hasAnswer) && 
+								<IconButton onClick={() => handleDeleteThread(thread)}>
+									<Delete />
+								</IconButton>}
 							</div>
 						</div>
 					))}

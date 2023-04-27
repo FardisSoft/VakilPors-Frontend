@@ -1,6 +1,6 @@
 import { HomeOutlined, PersonSearchOutlined, ForumOutlined, PolicyOutlined, AppRegistrationOutlined,
        LoginOutlined, LogoutOutlined, ManageAccountsOutlined, AccountCircleOutlined, CallOutlined,
-       Menu, ChevronRight } from "@mui/icons-material";
+       Menu, ChevronRight, ChatOutlined } from "@mui/icons-material";
 import React, { useState, useEffect } from 'react';
 import useStateRef from "react-usestateref";
 import { styled } from '@mui/material/styles';
@@ -138,9 +138,10 @@ const Sidebar = (props) => {
         {name:'ویرایش پروفایل', icon:ManageAccountsOutlined, url:'/edit-user'},
         // {name:'مشاهده پروفایل', icon:ManageAccountsOutlined, url:'/user-display-profile'},        
         {name:'جست و جوی وکیل', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
-        {name:'فروم', icon:ForumOutlined, url:'/dashboard'},
+        {name:'فروم', icon:ForumOutlined, url:'/Forum'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
+        {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
       ];
       break;
     
@@ -150,9 +151,10 @@ const Sidebar = (props) => {
         {name:'ویرایش پروفایل', icon:ManageAccountsOutlined, url:'/edit_lawyer'},
         {name:'مشاهده پروفایل', icon:AccountCircleOutlined, url:`/LawyerPage/${refLawyerID.current}`},
         {name:'جست و جوی وکلا', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
-        {name:'فروم', icon:ForumOutlined, url:'/dashboard'},
+        {name:'فروم', icon:ForumOutlined, url:'/Forum'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
+        {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
       ];
       break;
     
@@ -250,7 +252,7 @@ const Sidebar = (props) => {
         <Divider />
         <List sx={{flex: '1 1 auto', overflow: 'overlay'}}>
           {links.map((linki,index) => (
-            <ListItem key={index} component={Link} to={linki.url} disablePadding>
+            <ListItem key={index} component={Link} to={linki.url} onClick={handleDrawerClose} disablePadding>
               <ListItemButton sx={{ ...( (linki.url == '/' && props.homePage ? true : window.location.href.includes(linki.url) && linki.url != '/') && {backgroundColor:"rgb(25,118,210)", ":hover":{backgroundColor:"rgba(25,118,210,0.7)"}})}}>
                 <ListItemIcon>
                   <linki.icon color="primary" sx={{ ...( (linki.url == '/' && props.homePage ? true : window.location.href.includes(linki.url) && linki.url != '/') && {color:"white"})}} />
@@ -259,20 +261,15 @@ const Sidebar = (props) => {
               </ListItemButton>
             </ListItem>
           ))}
+          {refUserRole.current && <ListItem disablePadding>
+            <ListItemButton onClick={logoutHandler}>
+              <ListItemIcon>
+                <LogoutOutlined color="primary" />
+              </ListItemIcon>
+              <Typography fontFamily="shabnam" >خروج از حساب</Typography>
+            </ListItemButton>
+          </ListItem>}
         </List>
-        { refUserRole.current && <>
-        <Divider />
-        <List sx={{position: 'sticky'}}>
-            <ListItem disablePadding>
-              <ListItemButton onClick={logoutHandler}>
-                <ListItemIcon>
-                  <LogoutOutlined color="primary" />
-                </ListItemIcon>
-                <Typography fontFamily="shabnam" >خروج از حساب</Typography>
-              </ListItemButton>
-            </ListItem>
-        </List>
-        </>}
       </Drawer>
 
       <Main onClick={handleDrawerClose} open={open} sx={{padding:'0 !important'}}>
