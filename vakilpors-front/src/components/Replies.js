@@ -22,7 +22,7 @@ const Replies = () => {
 			const url = BASE_API_ROUTE + "ThreadComment/CreateComment";
 			const data = {
 					"id": 0, // It doesn't matter what it is
-					"text": reply.trim(),
+					"text": reply,
 					"likeCount": 0, // It doesn't matter what it is
 					"userId": 0, // It doesn't matter what it is
 					"threadId": Number(threadId),
@@ -82,7 +82,7 @@ const Replies = () => {
 			const url = BASE_API_ROUTE + "ThreadComment/UpdateComment";
 			const data = {
 				"id": ''+commentId, // It doesn't matter what it is
-				"text": reply.trim(),
+				"text": reply,
 				"likeCount": 0, // It doesn't matter what it is
 				"userId": userId, // It doesn't matter what it is
 				"threadId": Number(threadId),
