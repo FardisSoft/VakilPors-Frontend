@@ -42,7 +42,7 @@ const ActivationAccount = () => {
     };
 
     const showSuccesMessage = () => {
-        toast.success('رمز عبور با موفقیت تغییر کرد', {
+        toast.success('حساب کاربری شما با موفقیت فعال شد.', {
             position: "bottom-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -55,35 +55,33 @@ const ActivationAccount = () => {
             });
     };
 
-    // const handleApi = async () => {
+     const handleApi = async () => {
 
-    //     const url = BASE_API_ROUTE + `Auth/activateaccount`;
-    //     console.log(url);
-    //     console.log(phoneNumber);
+         const url = BASE_API_ROUTE + `Auth/activateaccount`;
+         console.log(url);
+         console.log(phoneNumber);
+         console.log(ActivationCode);
 
-    //     const data = {
-    //         "phoneNumber": phoneNumber,
-    //         "code": ActivationCode,
-    //       }
+         const data = {
+             "phoneNumber": phoneNumber,
+             "code": ActivationCode,
+           }
 
+         try{
+             const Response = await axios.post(url, data);
+             showSuccesMessage();
+             await delay(5000);
+             navigate("/");
 
+         }
+         catch (error) {
+              showErrorMessage("فعالسازی حساب کاربری با خطا مواجه شد");
 
-    //     try{
-    //         const Response = await axios.post(url, data);
-    //         showSuccesMessage();
-    //         await delay(5000);
-    //         navigate("/Login");
+              console.log(error);
 
-    //     }
-    //     catch (error) {
-    //          showErrorMessage("تغییر رمز عبور با خطا مواجه شد.");
+         }
 
-    //          console.log(error);
-
-    //     }
-
-
-    //}
+     }
 
 
     return (
@@ -103,7 +101,7 @@ const ActivationAccount = () => {
                     <TextField value={ActivationCode} onChange={(e) => setActivationCode(e.target.value)} sx={{ mt: "50px", mb: "50px" }} id="outlined-basic" label="کد تایید" variant="outlined" dir="ltr" />
 
 
-                    <Button variant="contained" disableElevation>
+                    <Button onChange={handleApi} variant="contained" disableElevation>
                         فعال کردن حساب کاربری
                     </Button>
                     <ToastContainer />
