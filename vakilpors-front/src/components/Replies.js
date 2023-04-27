@@ -138,7 +138,13 @@ const Replies = () => {
 			<div className='thread__container'>
 				{replyList.map((reply) => (
 					<div className='thread__item' key={reply.id}>
-						{reply.isSetAsAnswer && <TaskAlt/>}
+						{reply.isSetAsAnswer && <TaskAlt sx={{
+							color:'green',
+						...(reply.user.isLawyer && {
+							color : 'red',
+							// color: 'grey',
+						  }),
+						}}/>}
 						<p style={{color: '#071e22'}}>{reply.text}</p>
 						<div className='react__container'>
 							<p style={{ opacity: "0.5" }}>توسط {reply.user.name}</p>
