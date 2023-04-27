@@ -36,7 +36,7 @@ const Search = ({ LawyerSearch, LawyerQuery }) => {
                                         aria-describedby="basic-addon1"
                                     />
                                     <button>
-                                        <i class="zmdi zmdi-search" style={{position :"relative", top :"-1px", left : "-3px"}}><FaSearch /></i>
+                                        <i class="zmdi zmdi-search" style={{position :"relative", left : "-10px"}}><FaSearch /></i>
                                     </button>
                                 </form>
                             </div>

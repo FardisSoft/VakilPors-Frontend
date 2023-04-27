@@ -111,7 +111,7 @@ const Login = () => {
                                 <div className="login100-form-bgbtn"></div>
                                 <button type="submit">
 
-                                    <p style={{ color: "white" }}>ورود</p>
+                                    <p style={{ color: "white",width : "200px"}}>ورود</p>
                                 </button>
                             </div>
                         </div>
