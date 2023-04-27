@@ -140,8 +140,8 @@ const Register = () => {
         }
         try{
             const response = await axios.post(url,data);
-            const success = await login({ "phoneNumber": phoneNumber, "password": password});
-            if(success === "success"){
+            //const success = await login({ "phoneNumber": phoneNumber, "password": password});
+            //if(success === "success"){
                 const url_2 = BASE_API_ROUTE + `Auth/sendactivationcode?phoneNumber=${phoneNumber.trim()}`;
 
                 console.log(url_2);
@@ -169,11 +169,13 @@ const Register = () => {
                 // setErrorMessage("ثبت نام با موفقیت انجام شد!");
                 // await delay(1000);
                 // navigate("/");
-            }
+            //}
+            /*
             else{
                 setErrorColor("red");
                 setErrorMessage("ورود با خطا مواجه شد.");
             }
+            */
         } catch (error) {
             const responseData = error.response.data;
             if (responseData.hasOwnProperty('data')){

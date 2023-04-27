@@ -16,7 +16,12 @@ import { useParams } from "react-router-dom";
 
 
 
+
 const ActivationAccount = () => {
+
+
+    
+    const { login } = useAuth();
 
     const delay = ms => new Promise(
         resolve => setTimeout(resolve, ms)
@@ -69,10 +74,20 @@ const ActivationAccount = () => {
 
          try{
              const Response = await axios.post(url, data);
-             showSuccesMessage();
-             await delay(5000);
-             navigate("/");
-
+             
+             //const success = await login({ "phoneNumber": phoneNumber, "password": password});
+             const success = "success";
+             if(success === "success"){
+                showSuccesMessage();
+                await delay(5000);
+                navigate('/');
+             }
+             else{
+                //setErrorColor("red");
+                //setErrorMessage("ورود با خطا مواجه شد.");
+                showErrorMessage('ورود با خطا مواجه گردید.')
+             }
+            
          }
          catch (error) {
               showErrorMessage("فعالسازی حساب کاربری با خطا مواجه شد");
@@ -92,15 +107,9 @@ const ActivationAccount = () => {
 
 
     <Grid display={"flex"} justifyContent={"center"} alignItems={"center"} width={"100%"} height={"100%"} backgroundColor={'#ABC0C0'}>
-                <Grid flexDirection={'column'} borderRadius={"10px"} padding={"10px"} paddingTop={"50px"} paddingX={"50px"} paddingBottom={"50px"} display={"flex"} position={"relative"} m={"10%"} justifyContent={"center"} xs={4} spacing={5} alignSelf={"center"} backgroundColor={'white'}>
-
-
+                <Grid flexDirection={'column'} borderRadius={"10px"} padding={"10px"} paddingTop={"50px"} paddingX={"50px"} paddingBottom={"50px"} display={"flex"} position={"relative"} m={"10%"} justifyContent={"center"} item xs={4} spacing={5} alignSelf={"center"} backgroundColor={'white'}>
                     <Typography sx={{ fontFamily: "shabnam", }}>فعال کردن حساب کاربری</Typography>
-
-                    
                     <TextField value={ActivationCode} onChange={(e) => setActivationCode(e.target.value)} sx={{ mt: "50px", mb: "50px" }} id="outlined-basic" label="کد تایید" variant="outlined" dir="ltr" />
-
-
                     <Button onChange={handleApi} variant="contained" disableElevation>
                         فعال کردن حساب کاربری
                     </Button>

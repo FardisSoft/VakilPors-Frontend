@@ -67,7 +67,7 @@ const Call_Edit_Lawyer_Profile = () => {
   ];
 
   const specialtiesList = () => {
-    const defaultTakhasos = [];
+    let defaultTakhasos = [];
     if(getdetail && getdetail.specialties){
       const tempList = getdetail.specialties.split('/');
       
