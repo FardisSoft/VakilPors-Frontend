@@ -2,18 +2,15 @@ import React, { useState,useEffect } from 'react';
 import useStateRef from 'react-usestateref';
 import Button from '@mui/material/Button';
 import { MuiFileInput } from 'mui-file-input'
-import '../css/a.css';
-import { Select, MenuItem } from '@mui/material';
+import '../../css/edit_profiles_style.css';
 import jwt from 'jwt-decode';
 import axios from 'axios';
-import { useAuth } from "../../../services/AuthProvider";
-import { updateLawyer } from '../../../services/userService';
+import { useAuth } from "../../context/AuthProvider";
+import { updateLawyer } from '../../services/userService';
 import { Helmet } from 'react-helmet-async';
 import TextField from '@mui/material/TextField';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
-import { BASE_API_ROUTE } from '../../../Constants';
+import { BASE_API_ROUTE } from '../../Constants';
 
 
 

@@ -10,7 +10,7 @@ import { Box, Divider, Grid, Drawer } from '@mui/material';
 import { Badge, Avatar, Typography, Toolbar } from '@mui/material';
 import MuiAppBar from '@mui/material/AppBar';
 import { List, ListItem, ListItemButton, IconButton, ListItemIcon } from '@mui/material';
-import { useAuth } from "../services/AuthProvider";
+import { useAuth } from "../context/AuthProvider";
 import jwt from 'jwt-decode';
 import axios from 'axios';
 import { BASE_API_ROUTE } from '../Constants';

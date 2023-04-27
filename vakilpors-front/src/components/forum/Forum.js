@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Likes from "../utils/Likes";
-import Comments from "../utils/Comments";
+import Likes from "./utils/Likes";
+import Comments from "./utils/Comments";
 import { useNavigate } from "react-router-dom";
-import '../css/forum.css';
-import { useAuth } from "../services/AuthProvider";
+import '../../css/forum.css';
+import { useAuth } from "../../context/AuthProvider";
 import axios from 'axios';
-import { BASE_API_ROUTE } from "../Constants";
+import { BASE_API_ROUTE } from "../../Constants";
 import jwt from 'jwt-decode';
 import useStateRef from "react-usestateref";
 import { Helmet } from 'react-helmet-async';

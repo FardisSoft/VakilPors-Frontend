@@ -3,10 +3,10 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import { BASE_API_ROUTE } from '../Constants';
-import '../css/signup-page-main-style.css';
+import { BASE_API_ROUTE } from '../../Constants';
+import '../../css/signup-page-main-style.css';
 import { FaEye } from 'react-icons/fa';
-import { useAuth } from "../services/AuthProvider";
+import { useAuth } from "../../context/AuthProvider";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

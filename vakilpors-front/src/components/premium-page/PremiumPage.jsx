@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import jwt from 'jwt-decode';
-import { useAuth } from "../../services/AuthProvider";
+import { useAuth } from "../../context/AuthProvider";
 import { CircularProgress } from '@mui/material';
 import axios from 'axios';
 import '../../css/premium-page.css';

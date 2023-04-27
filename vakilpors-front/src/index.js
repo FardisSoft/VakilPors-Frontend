@@ -3,23 +3,22 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
-import { AuthProvider } from './services/AuthProvider';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Login from './components/Login';
-import Register from './components/Register';
+import { AuthProvider } from './context/AuthProvider';
+import Login from './components/authentication/Login'
+import Register from './components/authentication/Register';
 import Policy from './components/Policy';
-import LawyerPage from './components/LawyerPage';
+import LawyerPage from './components/profile/LawyerPage';
 import Sidebar from './components/Sidebar';
-import Forum from './components/Forum';
+import Forum from './components/forum/Forum';
 import Lawyer_search_page from './components/Lawyer-search-page/Lawyer_search_page';
-import Call_Edit_Lawyer_Profile from './components/profile/lawyer/Call_Edit_Lawyer_Profile';
-import Call_Edit_User_Profile from './components/profile/user/Call_Edit_User_Profile';
-import Call_Display_User_Profile from './components/profile/user/Call_Display_User_Profile';
-import Replies from './components/Replies';
+import Call_Edit_Lawyer_Profile from './components/profile/Call_Edit_Lawyer_Profile';
+import Call_Edit_User_Profile from './components/profile/Call_Edit_User_Profile';
+import Replies from './components/forum/Replies';
 import ContactUs from './components/ContactUs';
-import ForgotPassword from './components/ForgotPassword';
-import ResetPassword from './components/ResetPassword';
-import ActivationAccount from './components/ActivationAccount';
+import ForgotPassword from './components/authentication/ForgotPassword';
+import ResetPassword from './components/authentication/ResetPassword';
+import ActivationAccount from './components/authentication/ActivationAccount';
 import ChatPage from './components/chatPage';
 import PremiumPage from './components/premium-page/PremiumPage'
 
