@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from "react-router-dom";
-import '../css/login-page-main-style.css';
-import '../css/login-page-util-style.css';
-import { useAuth } from "../services/AuthProvider";
+import { useAuth } from "../../context/AuthProvider";
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Typography } from "@mui/material";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { BASE_API_ROUTE } from "../Constants";
+import { BASE_API_ROUTE } from "../../Constants";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 

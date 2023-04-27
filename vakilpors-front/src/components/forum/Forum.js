@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Likes from "../utils/Likes";
-import Comments from "../utils/Comments";
+import Likes from "./utils/Likes";
+import Comments from "./utils/Comments";
 import { useNavigate } from "react-router-dom";
-import '../css/forum.css';
-import { useAuth } from "../services/AuthProvider";
+import '../../css/forum.css';
+import { useAuth } from "../../context/AuthProvider";
 import axios from 'axios';
-import { BASE_API_ROUTE } from "../Constants";
+import { BASE_API_ROUTE } from "../../Constants";
 import jwt from 'jwt-decode';
 import useStateRef from "react-usestateref";
 import { Helmet } from 'react-helmet-async';
@@ -73,17 +73,17 @@ const Forum = () => {
 	const handleDeleteThread = async (thread) => {
 		const token = await getAccessToken();
 		if(token){
-			const url = BASE_API_ROUTE + "Thread/DeleteThread";
+			const url = BASE_API_ROUTE + `Thread/DeleteThread?threadId=${thread.id}`;
 			try{
 				const response = await axios.get(url,{headers: {Authorization: `Bearer ${token}`}});
 				console.log('response in deleteing thread : ,',response);
+				setThreadList(prevThreadList => {
+					const updatedThreadList = prevThreadList.splice(getThreadIndexByThreadId(thread.id),1);
+					return updatedThreadList;
+				});
 			} catch (err){
 				console.log('error in deleteing thread : ,',err);
 			}
-			setThreadList(prevThreadList => {
-				const updatedThreadList = prevThreadList.splice(getThreadIndexByThreadId(thread.id),1);
-				return updatedThreadList;
-			});
 		}
 	};
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../services/AuthProvider";
+import { useAuth } from "../../../context/AuthProvider";
 import axios from 'axios';
-import { BASE_API_ROUTE } from "../Constants";
+import { BASE_API_ROUTE } from "../../../Constants";
 
 const Likes = ({ threadOrComment, IsThread }) => {
 

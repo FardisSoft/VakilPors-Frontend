@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import jwt from 'jwt-decode';
-import { useAuth } from "../../services/AuthProvider";
+import { useAuth } from "../../context/AuthProvider";
 import { CircularProgress } from '@mui/material';
 import axios from 'axios';
 import '../../css/premium-page.css';
 import { Link } from 'react-router-dom';
+import { BASE_API_ROUTE } from '../../Constants';
 
 
 const PremiumPage = () => {
@@ -27,10 +28,10 @@ const PremiumPage = () => {
         const tokenData = jwt(token);
         let url = "";
         if (refUserRole.current === "User") {
-          url = `https://api.fardissoft.ir/Customer/GetUserById?userId=${tokenData.uid}`;
+          url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
         }
         if (refUserRole.current === "Vakil") {
-          url = `https://api.fardissoft.ir/Lawyer/GetLawyerById?lawyerId=${tokenData.uid}`;
+          url = BASE_API_ROUTE + `Lawyer/GetLawyerById?lawyerId=${tokenData.uid}`;
         }
         try {
           const response = await axios.get(url);
@@ -46,7 +47,7 @@ const PremiumPage = () => {
 
 
   const payroll = async () => {
-    const url = "https://api.fardissoft.ir/Payment/request";
+    const url = BASE_API_ROUTE + "Payment/request";
     const data = {
       "amount": getamountdetail.amount,
       "description": getamountdetail.description

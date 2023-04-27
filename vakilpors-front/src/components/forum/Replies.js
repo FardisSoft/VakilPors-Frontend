@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from 'axios';
-import { BASE_API_ROUTE } from "../Constants";
-import { useAuth } from "../services/AuthProvider";
+import { BASE_API_ROUTE } from "../../Constants";
+import { useAuth } from "../../context/AuthProvider";
 import moment from 'moment';
 import { Typography, IconButton } from "@mui/material";
-import Likes from "../utils/Likes";
+import Likes from "./utils/Likes";
 import { Delete, Edit, TaskAlt } from '@mui/icons-material';
 
 const Replies = () => {

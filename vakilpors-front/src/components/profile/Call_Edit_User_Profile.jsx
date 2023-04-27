@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import useStateRef from 'react-usestateref';
 import { Button } from '@mui/material';
 import { MuiFileInput } from 'mui-file-input'
-import '../css/a.css';
+import '../../css/edit_profiles_style.css';
 import { Helmet } from 'react-helmet-async';
 import jwt from 'jwt-decode';
 import axios from 'axios';
-import { useAuth } from "../../../services/AuthProvider";
-import { updateUser } from '../../../services/userService';
+import { useAuth } from "../../context/AuthProvider";
+import { updateUser } from '../../services/userService';
+import { BASE_API_ROUTE } from '../../Constants';
 
 const Call_Edit_User_Profile = () => {
 
@@ -29,7 +30,7 @@ const Call_Edit_User_Profile = () => {
       const token = await getAccessToken();
       if (token) {
         const tokenData = jwt(token);
-        const url = `https://api.fardissoft.ir/Customer/GetUserById?userId=${tokenData.uid}`;
+        const url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
         try { 
           const response = await axios.get(url);
           console.log('response : ', response);

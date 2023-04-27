@@ -6,7 +6,7 @@ import moment from 'moment';
 import { Helmet } from 'react-helmet-async';
 import * as signalR from '@microsoft/signalr';
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../services/AuthProvider";
+import { useAuth } from "../context/AuthProvider";
 import { BASE_API_ROUTE } from '../Constants';
 import axios from 'axios';
 import jwt from 'jwt-decode';
