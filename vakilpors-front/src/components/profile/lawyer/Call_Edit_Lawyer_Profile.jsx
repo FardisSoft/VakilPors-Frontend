@@ -26,7 +26,7 @@ const Call_Edit_Lawyer_Profile = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [errorColor, setErrorColor] = useState("red");
   const descriptionUser = "کاربر گرامی ! در این قسمت می توانید تمامی اطلاعات کاربری خود را بروزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";  
-
+  const [defaultTakhasos, setDefaultTakhasos] = useState([]);
 
   const titles = [
     { title: 'وکیل پایه یک دادگستری' },
@@ -66,20 +66,21 @@ const Call_Edit_Lawyer_Profile = () => {
     { title: 'سربازی و نظام وظیفه' },
   ];
 
-  const specialtiesList = () => {
-    let defaultTakhasos = [];
+  const getDefaultTakhasos = () => {
+    const tt = [];
     if(getdetail && getdetail.specialties){
       const tempList = getdetail.specialties.split('/');
       
       tempList.map((temp) => {
-        defaultTakhasos.push( {
-          title: temp
-        })
+        tt.push({title: temp});
       });
     }
+    setDefaultTakhasos(tt);
+    console.log(defaultTakhasos);
+  }
+
+  const specialtiesList = () => {
    
-    console.log('in default takhasose : ',defaultTakhasos);
-    console.log('in special tiese : ' , [specialtieses[0]]);
     return (
 
       <Autocomplete
@@ -120,8 +121,6 @@ const Call_Edit_Lawyer_Profile = () => {
     renderInput={(params) => <TextField {...params} />}
   />
   );
-
-
   }
 
 
@@ -239,6 +238,7 @@ const Call_Edit_Lawyer_Profile = () => {
           const response = await axios.get(url);
           console.log('response : ', response);
           setdetail(response.data.data);
+          getDefaultTakhasos();
         } catch (error) {
           console.log('error : ', error);
         }
