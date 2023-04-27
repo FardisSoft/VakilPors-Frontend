@@ -73,8 +73,10 @@ const Replies = () => {
 	};
 
 	const handleEditClick = async (commentId) => {
-		if(reply.trim() == '')
+		if(reply.trim() == ''){
+			alert('لطفا متن جدید نظر را وارد کنید و سپس دکمه ویرایش را بزنید')
 			return;
+		}
 		const token = await getAccessToken();
 		if(token){
 			const url = BASE_API_ROUTE + "ThreadComment/UpdateComment";
