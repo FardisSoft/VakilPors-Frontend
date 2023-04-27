@@ -68,6 +68,7 @@ const ForgotPassword = () => {
             const response = await axios.get(url);
             
             showSuccesMessage();
+
             
             await delay(5000);
             navigate(`/Reset_Password/${phoneNumber}`);
