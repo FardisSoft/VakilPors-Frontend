@@ -375,7 +375,7 @@ const Call_Edit_Lawyer_Profile = () => {
                   value={getdetail.specialties}
                   onChange={setUserInfo}
                   margin="normal" />
-                  {specialtiesList()}
+                  
               </div>
             </div>
             <div className="form-group">
