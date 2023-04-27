@@ -27,6 +27,15 @@ const ChatPage = () => {
     return refChats.current.findIndex((chat) => chat.id === chatId);
   };
 
+  const delay = ms => new Promise(
+    resolve => setTimeout(resolve, ms)
+  );
+
+  const showLastMessage = async () => {
+    await delay(300);
+    lastMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
   useEffect( () => {
     window.addEventListener('resize', updateChatPageSize);
     const doEveryThing = async () => {
@@ -116,7 +125,7 @@ const ChatPage = () => {
     const updatedChats = [...refChats.current];
     updatedChats[chatIndex] = updatedChat;
     setChats(updatedChats);
-    lastMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    showLastMessage();
   };
 
   const readMessages = (chatId) => {
@@ -134,7 +143,7 @@ const ChatPage = () => {
     const updatedChats = [...refChats.current];
     updatedChats[chatIndex] = updatedChat;
     setChats(updatedChats);
-    lastMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    showLastMessage();
   };
 
   const deleteMessage = (message) => {
@@ -358,8 +367,9 @@ const ChatPage = () => {
     const isFile = message.IsFile;
     const isRead = message.IsRead;
     return (
-      <Grid key={message.id} display="flex" flexDirection={isCurrentUser ? "row" : "row-reverse"}>
-        <Grid ref={messageIndex === refChats.current[chatIndex].chatMessages.length - 1 ? lastMessageRef : null}
+      <Grid ref={messageIndex === refChats.current[chatIndex].chatMessages.length - 1 ? lastMessageRef : null}
+        key={message.id} display="flex" flexDirection={isCurrentUser ? "row" : "row-reverse"}>
+        <Grid
         sx={{
           width: '80%',
           display: 'flex',
