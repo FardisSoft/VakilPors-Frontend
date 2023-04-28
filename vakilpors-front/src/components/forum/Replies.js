@@ -149,12 +149,10 @@ const Replies = () => {
 						</p>
 
 						<div className='react__container'>
-							<Badge badgeContent={reply.likeCount} color="primary">
 							<Likes
 									threadOrComment={reply}
 									IsThread={false}
 								/>
-    						</Badge>
 							<p style={{ opacity: "0.5" }}>توسط {reply.user.name}</p>
 							<Typography sx={{fontSize:'10px'}}>{moment(reply.createDate).format('MMM D YYYY, h:mm A')}</Typography>
 							{(reply.user.userId === Number(userId) && !reply.isSetAsAnswer) && <>

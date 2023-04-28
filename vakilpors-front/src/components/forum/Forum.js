@@ -123,12 +123,10 @@ const Forum = () => {
 							</div>
 							<div className='react__container_1'>
 
-								<Badge badgeContent={thread.likeCount} color="primary">
 								<Likes
 									threadOrComment={thread}
 									IsThread={true}
 								/>
-    							</Badge>
 								<Badge badgeContent={thread.commentCount} color="primary">
 								<Comments
 								  	threadId={thread.id}
