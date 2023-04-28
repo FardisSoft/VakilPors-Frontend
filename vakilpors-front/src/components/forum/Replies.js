@@ -89,23 +89,11 @@ const Replies = () => {
 		if(token){
 			const url = BASE_API_ROUTE + "ThreadComment/UpdateComment";
 			const data = {
-				"id": commentId, // It doesn't matter what it is
+				"id": commentId,
 				"text": reply,
-				// "likeCount": 0, // It doesn't matter what it is
-				// "userId": userId, // It doesn't matter what it is
-				// "threadId": Number(threadId),
-				// "createDate": new Date().toISOString(),
-				// "isSetAsAnswer": false,
-				// "user": {
-				// 	"userId": userId,
-				// 	"name": "",
-				// 	"isLawyer": false,
-				// 	"isPremium": false
-				// }
 			};
 			try{
 				const response = await axios.put(url,data,{headers: {Authorization: `Bearer ${token}`}});
-				console.log('update reply response : ',response);
 				fetchReplies();
 			} catch (error) {
 				console.log('update reply error : ',error);
