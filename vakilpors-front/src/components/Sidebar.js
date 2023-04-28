@@ -164,8 +164,26 @@ const Sidebar = (props) => {
   }
   const links = tempLinks;
 
+  const getImage = async (imageURL) => {
+    try {
+      const response = await axios.get(imageURL, {
+        responseType: 'arraybuffer'
+      });
+      const base64 = btoa(
+        new Uint8Array(response.data).reduce(
+          (data, byte) => data + String.fromCharCode(byte),
+          ''
+        )
+      );
+      const imageSrc = `data:image/jpeg;base64,${base64}`;
+      return imageSrc;
+    } catch (error) {
+      console.log('error in convertnig image to base64 : ', error);
+    }
+  };
+
   const handleAPI = (data) => {
-    setProfilePicture(data.profileImageUrl);
+    getImage(data.profileImageUrl).then((src) => setProfilePicture(src));
     setOnline(true);
     setName(refUserRole.current === "User" ? data.name : data.user.name);
   };

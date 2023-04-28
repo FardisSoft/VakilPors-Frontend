@@ -61,8 +61,12 @@ const Call_Edit_User_Profile = () => {
   const updateuser = async (event) => {
     event.preventDefault();
     console.log(refdetail.current);
+    const formData = new FormData();
+    for (const key in refdetail.current) {
+      formData.append(key, refdetail.current[key]);
+    }
     try {
-      const success = await updateUser(refdetail.current);
+      const success = await updateUser(formData);
       setErrorMessage("اطلاعات شما با موفقیت تغییر کرد.");
       setErrorColor("green");
     } catch (error) {
