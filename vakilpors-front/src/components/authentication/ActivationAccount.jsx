@@ -27,6 +27,8 @@ const ActivationAccount = () => {
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
 
+    
+
     const { login } = useAuth();
     //const [password, setPassword] = useState("");
 
