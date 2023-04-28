@@ -81,7 +81,7 @@ a {
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	width: 110%;
+	width: 100%;
 	padding: 20px;
 }
 .thread__item {
@@ -114,6 +114,8 @@ a {
 	font-family: 'shabnam', 'yekan';
 	display: flex;
 	align-items: center;
+	margin-left: 5px;
+	width: auto;
 }
 
 .react__container_1 {
@@ -121,6 +123,14 @@ a {
 	display: flex;
 	align-items: center;
 }
+
+.react__container_1_1 {
+	font-family: 'shabnam', 'yekan';
+	display: flex;
+	align-items: center;
+	margin-left: 10px;
+}
+
 
 .modal {
 	font-family: 'shabnam', 'yekan';

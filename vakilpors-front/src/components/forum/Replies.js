@@ -151,27 +151,29 @@ const Replies = () => {
 
 						</p>
 
-						<div className='react__container'>
+						<div className='react__container_1_1'>
 							<Likes
 									threadOrComment={reply}
 									IsThread={false}
 								/>
 							{(reply.user.userId === Number(userId) && !reply.isSetAsAnswer) && <>
-								<IconButton size="small" onClick={() => handleEditClick(reply.id)}>
+								<IconButton size="large" onClick={() => handleEditClick(reply.id)}>
 									<Edit />
 								</IconButton>
-								<IconButton size="small" onClick={() => handleDeleteClick(reply.id)}>
+								<IconButton size="large" onClick={() => handleDeleteClick(reply.id)}>
 									<Delete />
 								</IconButton>
 							</>}
 							{(IsSelfThread && reply.user.userId !== Number(userId) && !reply.isSetAsAnswer) && 
-								<IconButton size="small" onClick={() => handleSetAsAnswerClick(reply.id)}>
+								<IconButton size="large" onClick={() => handleSetAsAnswerClick(reply.id)}>
 									<TaskAlt />
 								</IconButton>}
+
+
 								
 							<div className="react__container">
-								<p style={{color:'#071e22'}}>
-									توسط {reply.user.name}
+								<p style={{color:'#071e22'}}> 
+									<Typography sx={{marginRight:'5px', fontSize: '15px', fontFamily: 'shabnam', ml: '10px'}}>توسط {reply.user.name} </Typography>
 									</p>
 								<Typography sx={{fontSize:'10px'}}>{moment(reply.createDate).format('MMM D YYYY, h:mm A')}</Typography>
 							</div>
