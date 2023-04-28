@@ -76,7 +76,7 @@ const theme = createTheme({
 
 const Sidebar = (props) => {
 
-  const { refUserRole, refIsLoggedIn, getAccessToken, logout } = useAuth();
+  const { refUserRole, refIsLoggedIn, getAccessToken, logout, getImage } = useAuth();
   const [lawyerID, setLawyerID, refLawyerID] = useStateRef();
   const [open, setOpen] = useState(false);
   const [profilePicture, setProfilePicture] = useState();
@@ -163,24 +163,6 @@ const Sidebar = (props) => {
       console.log("wrong user role");
   }
   const links = tempLinks;
-
-  const getImage = async (imageURL) => {
-    try {
-      const response = await axios.get(imageURL, {
-        responseType: 'arraybuffer'
-      });
-      const base64 = btoa(
-        new Uint8Array(response.data).reduce(
-          (data, byte) => data + String.fromCharCode(byte),
-          ''
-        )
-      );
-      const imageSrc = `data:image/jpeg;base64,${base64}`;
-      return imageSrc;
-    } catch (error) {
-      console.log('error in convertnig image to base64 : ', error);
-    }
-  };
 
   const handleAPI = (data) => {
     getImage(data.profileImageUrl).then((src) => setProfilePicture(src));
