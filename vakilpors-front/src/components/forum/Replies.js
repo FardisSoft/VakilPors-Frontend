@@ -156,8 +156,6 @@ const Replies = () => {
 									threadOrComment={reply}
 									IsThread={false}
 								/>
-							<p style={{ opacity: "0.5" }}>توسط {reply.user.name}</p>
-							<Typography sx={{fontSize:'10px'}}>{moment(reply.createDate).format('MMM D YYYY, h:mm A')}</Typography>
 							{(reply.user.userId === Number(userId) && !reply.isSetAsAnswer) && <>
 								<IconButton size="small" onClick={() => handleEditClick(reply.id)}>
 									<Edit />
