@@ -20,7 +20,7 @@ const Call_Edit_Lawyer_Profile = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [errorColor, setErrorColor] = useState("red");
   const descriptionUser = "کاربر گرامی ! در این قسمت می توانید تمامی اطلاعات کاربری خود را بروزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";  
-  const [defaultTakhasos, setDefaultTakhasos] = useState([]);
+  const [defaultTakhasos, setDefaultTakhasos, refDefaultTakhasos] = useStateRef([]);
 
   const titles = [
     { title: 'وکیل پایه یک دادگستری' },
@@ -70,7 +70,7 @@ const Call_Edit_Lawyer_Profile = () => {
       });
     }
     setDefaultTakhasos(tt);
-    console.log(defaultTakhasos);
+    // console.log(refDefaultTakhasos.current);
   }
 
   const specialtiesList = () => { 
@@ -80,7 +80,7 @@ const Call_Edit_Lawyer_Profile = () => {
         id="tags-outlined"
         options={specialtieses}
         getOptionLabel={(option) => option.title}
-        defaultValue={defaultTakhasos}
+        defaultValue={refDefaultTakhasos.current}
         filterSelectedOptions
         renderInput={(params) => (
           <TextField
@@ -95,18 +95,22 @@ const Call_Edit_Lawyer_Profile = () => {
   const genderList = () => {
     return (
       <Autocomplete
-      value={refdetail.current.gender}
-      onChange={(event, newValue) => {
-        setdetail({
-          ...refdetail.current,
-          ['gender']: newValue,
-        });
-      }}
-    id="controllable-states-demo"
-    options={genders}
-    renderInput={(params) => <TextField {...params} />}
-  />
-  );
+        value={refdetail.current.gender}
+        onChange={(event, newValue) => {
+          setdetail({
+            ...refdetail.current,
+            ['gender']: newValue,
+          });
+        }}
+        // inputValue={refdetail.current.gender}
+        // onInputChange={(event, newInputValue) => {
+        //   setInputValue(newInputValue);
+        // }}
+        id="controllable-states-demo"
+        options={genders}
+        renderInput={(params) => <TextField {...params} />}
+      />
+    );
   }
 
   const titleList = () => {
@@ -216,7 +220,6 @@ const Call_Edit_Lawyer_Profile = () => {
         // alert("شما باید ابتدا وارد حساب کاربری خود شوید.");
       }
     };
-
     fetchData();
   }, []);
 
@@ -345,7 +348,7 @@ const Call_Edit_Lawyer_Profile = () => {
                   value={refdetail.current.specialties}
                   onChange={setUserInfo}
                   margin="normal" />
-                {specialtiesList()}
+                {/* {specialtiesList()} */}
               </div>
             </div>
             <div className="form-group">
