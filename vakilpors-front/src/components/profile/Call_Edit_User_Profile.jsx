@@ -140,7 +140,7 @@ const Call_Edit_User_Profile = () => {
             <div className="form-group">
               <div className="form-row form-row-1">
                 <label style={{ position: "relative", top: "5px" }}><p>عکس پروفایل</p></label>
-                <MuiFileInput fullWidth margin='10px' value={getdetail.profileImageUrl} onChange={handleAvatarChange} />
+                <MuiFileInput fullWidth margin='10px' value={getdetail.profileImage} onChange={handleAvatarChange} />
               </div>
             </div>
             <div className="form-row-last">

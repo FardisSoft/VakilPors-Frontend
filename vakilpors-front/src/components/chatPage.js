@@ -107,9 +107,9 @@ const ChatPage = () => {
 
     refConnection.current.on("ReceiveMessage", (message) => {
       setChatsAddMessage(message);
-      // if(refSelectedChat.current == message.chatId){
-      //   readChatMessage(refSelectedChat.current);
-      // }
+      if(refSelectedChat.current == message.chatId){
+        readChatMessage(refSelectedChat.current);
+      }
       showLastMessage();
     });
     refConnection.current.on("ReadMessages", (chatId) => {
