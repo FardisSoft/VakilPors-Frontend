@@ -7,6 +7,7 @@ import moment from 'moment';
 import { Typography, IconButton } from "@mui/material";
 import Likes from "./utils/Likes";
 import { Delete, Edit, TaskAlt } from '@mui/icons-material';
+import Badge from '@mui/material/Badge';
 
 const Replies = () => {
 	const [replyList, setReplyList] = useState([]);
@@ -146,18 +147,28 @@ const Replies = () => {
 			<div className='thread__container'>
 				{replyList.map((reply) => (
 					<div className='thread__item' key={reply.id}>
+						
+						<p style={{color: '#071e22'}}>
 						{reply.isSetAsAnswer && <TaskAlt sx={{
-							color:'green',
+							color:'purple',
 						...(reply.user.isLawyer && {
-							color : 'red',
+							color : 'gold',
 							// color: 'grey',
 						  }),
 						}}/>}
-						<p style={{color: '#071e22'}}>{reply.text}</p>
+						{reply.text}
+
+						</p>
+
 						<div className='react__container'>
+							<Badge badgeContent={reply.likeCount} color="primary">
+							<Likes
+									threadOrComment={reply}
+									IsThread={false}
+								/>
+    						</Badge>
 							<p style={{ opacity: "0.5" }}>توسط {reply.user.name}</p>
 							<Typography sx={{fontSize:'10px'}}>{moment(reply.createDate).format('MMM D YYYY, h:mm A')}</Typography>
-							<Likes threadOrComment={reply} IsThread={false}/>
 							{(reply.user.userId === Number(userId) && !reply.isSetAsAnswer) && <>
 								<IconButton size="small" onClick={() => handleEditClick(reply.id)}>
 									<Edit />
