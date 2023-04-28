@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Clear } from '@mui/icons-material';
+import { Link } from "react-router-dom";
 
 
 const useStyles = makeStyles({
@@ -105,6 +106,10 @@ const showErrorMessage = (errorMessage) => {
 
 }
 
+const queryParameters = new URLSearchParams(window.location.search)
+const ReferenceId = queryParameters.get("ReferenceId")
+const Status = queryParameters.get("Status")
+const WasSuccessful = queryParameters.get("WasSuccessful")
 
   return (
     <>
@@ -121,17 +126,18 @@ const showErrorMessage = (errorMessage) => {
       </div>
       {success && (
         <div className={classes.referenceText}>
-          شماره پیگیری: {referenceId} <br></br>
-          مبلغ: {amount} تومان
+          شماره پیگیری: {ReferenceId} <br></br>
+          ok ? {Status}
         </div>
         
       )}
       <br></br>
       
       
-      <Button onClick={directTo} variant="contained" color="success">
+        <Link to="/PremiumPage">
         بازگشت به صفحه اصلی
-      </Button>
+        </Link>
+
       <ToastContainer />
 
       </Grid>

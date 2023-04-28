@@ -16,7 +16,7 @@ const PremiumPage = () => {
   const { refUserRole, getAccessToken } = useAuth();
   const [gettransactions, settransactions] = useState([]);
   const [getsub, setsub] = useState([]);
-  const [maxIdData, setMaxIdData] = useState([]);
+
   const [getamountdetail, setamountdetail] = useState({
     amount: "",
     description: "خرید اشتراک ماهانه"
@@ -89,21 +89,6 @@ const PremiumPage = () => {
 
 
 
-
-  const handleFindMaxId = () => {
-    let maxId = -Infinity;
-    let maxIdItem = null;
-
-    gettransactions.forEach((item) => {
-      if (item.id > maxId && item.isSuccess === true) {
-        maxId = item.id;
-        maxIdItem = item;
-      }
-    });
-
-    setMaxIdData(maxIdItem);
-  }
-
   return (
     <div class="container">
       <div classNameName="col-12">
@@ -144,7 +129,7 @@ const PremiumPage = () => {
                     </span>
                   </div>
                   <div className="d-flex justify-content-between mt-3">
-                    <span>تاریخ شروع:</span>
+                    <span>تاریخ پایان بسته:</span>
                     <span>
                     {getsub.expireDate}
                     </span>
@@ -155,9 +140,7 @@ const PremiumPage = () => {
                 <div className="report-box shadow-sm mt-3 bg-white" id="history">
                   <div className="row">
                     <div className="col-12 col-md-6 mt-4 mt-lg-0">
-
                       {gettransactions.map((x) =>
-
                         x.isSuccess === true ?
                           (
                             <>
@@ -166,14 +149,10 @@ const PremiumPage = () => {
                               <p>توضيحات : {x.description}</p>
                               <hr></hr>
                             </>
-
-                          )
-                          :
-                          (
+                          ):(
                             <p></p>
                           )
                       )}
-
                     </div>
                   </div>
                 </div>
