@@ -32,7 +32,6 @@ const Replies = () => {
 				  };
 			try{
 				const response = await axios.post(url,data,{headers: {Authorization: `Bearer ${token}`}});
-				console.log('add reply response : ',response);
 				fetchReplies();
 			} catch (error) {
 				console.log('add reply error : ',error);
@@ -69,7 +68,16 @@ const Replies = () => {
 	}, [threadId]);
 
 	const handleDeleteClick = async (commentId) => {
-
+		const token = await getAccessToken();
+		if(token){
+			const url = BASE_API_ROUTE + `ThreadComment/DeleteComment?commentId=${commentId}`;
+			try{
+				const response = await axios.get(url,{headers: {Authorization: `Bearer ${token}`}});
+				fetchReplies();
+			} catch (err){
+				console.log('error in deleteing comment : ,',err);
+			}
+		}
 	};
 
 	const handleEditClick = async (commentId) => {

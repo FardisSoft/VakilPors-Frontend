@@ -56,6 +56,7 @@ const Register = () => {
             });
     };
 
+
     const showSuccesMessage = (message) => {
         toast.success(message, {
             position: "bottom-right",
@@ -146,7 +147,10 @@ const Register = () => {
                     navigate(`/Activation_Account/${phoneNumber}`);
                     console.log(response_2);
                 } catch (error) {
-                    showErrorMessage('خطا');
+                    console.log("error darim che errori");
+        
+                    showErrorMessage();
+
                     console.log(error);
                 }
 
@@ -239,7 +243,8 @@ const Register = () => {
                 <div className="form-row-last">
                     <input type="submit" onClick={handleSubmit} name="register" className="register" value="بریم!"/>
                     {/* for test change submit with Button */}
-                    <label className="container"><p className="text" style={{color:errorColor}}>{errorMessage}</p></label>
+                    <ToastContainer />
+
                 </div>
             </form>
             <ToastContainer/>

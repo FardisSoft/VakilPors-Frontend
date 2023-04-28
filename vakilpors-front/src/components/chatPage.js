@@ -12,7 +12,7 @@ import axios from 'axios';
 import jwt from 'jwt-decode';
 
 const ChatPage = () => {
-  const [selectedChat, setSelectedChat] = useState(null);
+  const [selectedChat, setSelectedChat, refSelectedChat] = useStateRef(null);
   const [inputText, setInputText] = useState('');
   const [chats, setChats, refChats] = useStateRef([]);
   const [user, setUser] = useState(null);
@@ -23,9 +23,26 @@ const ChatPage = () => {
   const navigate = useNavigate();
   const [connection, setConnection, refConnection] = useStateRef(null);
 
+//////////////////////////////////////////////////////////// util functions
+
   const getChatIndexByChatId = (chatId) => {
     return refChats.current.findIndex((chat) => chat.id === chatId);
   };
+
+  const getUserIndex = (chatId) => {
+    return refChats.current[getChatIndexByChatId(chatId)].users[0].id == user.id ? 1 : 0;
+  };
+
+  const delay = ms => new Promise(
+    resolve => setTimeout(resolve, ms)
+  );
+
+  const showLastMessage = async () => {
+    await delay(300);
+    lastMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+//////////////////////////////////////////////////////////// get initial data
 
   useEffect( () => {
     window.addEventListener('resize', updateChatPageSize);
@@ -89,25 +106,29 @@ const ChatPage = () => {
     };
 
     refConnection.current.on("ReceiveMessage", (message) => {
-      // console.log("ReceiveMessage : ",message);
-      receiveMessage(message);
+      setChatsAddMessage(message);
+      // if(refSelectedChat.current == message.chatId){
+      //   readChatMessage(refSelectedChat.current);
+      // }
+      showLastMessage();
     });
     refConnection.current.on("ReadMessages", (chatId) => {
-      readMessages(parseInt(chatId));
+      setChatsReadMessage(parseInt(chatId));
+      showLastMessage();
     });
     refConnection.current.on("DeleteMessage", (message) => {
-      deleteMessage(message);
+      setChatsDeleteMessage(message);
     });
     refConnection.current.on("EditMessage", (message) => {
-      editMessage(message);
+      setChatsEditMessage(message);
     });
 
     start();
   };
 
-////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////// setChats - On functions
 
-  const receiveMessage = (message) => {
+  const setChatsAddMessage = (message) => {
     const chatIndex = getChatIndexByChatId(message.chatId);
     const updatedChat = {
       ...refChats.current[chatIndex],
@@ -116,15 +137,14 @@ const ChatPage = () => {
     const updatedChats = [...refChats.current];
     updatedChats[chatIndex] = updatedChat;
     setChats(updatedChats);
-    lastMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  const readMessages = (chatId) => {
+  const setChatsReadMessage = (chatId) => {
     const chatIndex = getChatIndexByChatId(chatId);
     const updatedChatMessages = refChats.current[chatIndex].chatMessages.map((message) => {
       return {
         ...message,
-        IsRead: true,
+        isRead: true,
       };
     });
     const updatedChat = {
@@ -134,38 +154,36 @@ const ChatPage = () => {
     const updatedChats = [...refChats.current];
     updatedChats[chatIndex] = updatedChat;
     setChats(updatedChats);
-    lastMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  const deleteMessage = (message) => {
+  const setChatsDeleteMessage = (message) => {
     const chatIndex = getChatIndexByChatId(message.chatId);
-    const updatedChatMessages = refChats.current[chatIndex].chatMessages.map((messag) => {
-      if (messag.id === message.id) {
-        return {
-          ...messag,
-          message: 'This message was deleted',
-          IsDeleted: true,
-        };
-      }
-      return messag;
-    });
-    const updatedChat = {
-      ...refChats.current[chatIndex],
-      chatMessages: updatedChatMessages,
-    };
-    const updatedChats = [...refChats.current];
-    updatedChats[chatIndex] = updatedChat;
-    setChats(updatedChats);
+      const updatedChatMessages = refChats.current[chatIndex].chatMessages.map((messag) => {
+        if (messag.id === message.id) {
+          return {
+            ...messag,
+            isDeleted: true,
+          };
+        }
+        return messag;
+      });
+      const updatedChat = {
+        ...refChats.current[chatIndex],
+        chatMessages: updatedChatMessages,
+      };
+      const updatedChats = [...refChats.current];
+      updatedChats[chatIndex] = updatedChat;
+      setChats(updatedChats);
   };
 
-  const editMessage = (message) => {
+  const setChatsEditMessage = (message) => {
     const chatIndex = getChatIndexByChatId(message.chatId);
     const updatedChatMessages = refChats.current[chatIndex].chatMessages.map((messag) => {
       if (messag.id === message.id) {
         return {
           ...messag,
           message: message.message,
-          IsEdited: true,
+          isEdited: true,
         };
       }
       return messag;
@@ -179,7 +197,7 @@ const ChatPage = () => {
     setChats(updatedChats);
   };
 
-/////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////// Invoke functions
 
   const sendMessage = async (message) => {
     try {
@@ -221,7 +239,7 @@ const ChatPage = () => {
     }
   };
 
-////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////// UI
 
   const updateChatPageSize = () => {
     setPageWidth(window.innerWidth);
@@ -245,7 +263,7 @@ const ChatPage = () => {
   };
 
   const handleSendClick = () => {
-    if (inputText.trim() === '') {
+    if (inputText.trim() == '') {
       return;
     }
     const newMessage = {
@@ -253,68 +271,37 @@ const ChatPage = () => {
       sender: null,
       message: inputText.trim(),
       sendTime: new Date().toISOString(),
-      IsDeleted: false,
-      IsEdited: false,
-      IsFile: false,
-      IsRead: false,
+      isDeleted: false,
+      isEdited: false,
+      isFile: false,
+      isRead: false,
       senderId: user.id,
-      chatId: selectedChat,
+      chatId: refSelectedChat.current,
       chat: null,
     };
     setInputText('');
     sendMessage(newMessage);
   };
 
-  const handleEditClick = (id) => {
+  const handleEditClick = (message) => {
     if (inputText.trim() === '') {
       alert('لطفا متن جدید پیام را وارد کنید و سپس دکمه ویرایش را بزنید.');
       return;
     }
-    const chatIndex = getChatIndexByChatId(selectedChat);
-    const messageIndex = refChats.current[chatIndex].chatMessages.findIndex((messag) => messag.id === id);
-    const updatedChatMessages = refChats.current[chatIndex].chatMessages.map((messag) => {
-      if (messag.id === id) {
-        return {
-          ...messag,
-          message: inputText.trim(),
-          IsEdited: true,
-        };
-      }
-      return messag;
-    });
-    const updatedChat = {
-      ...refChats.current[chatIndex],
-      chatMessages: updatedChatMessages,
+    const updatedMessage = {
+      ...message,
+      message: inputText.trim(),
+      isEdited: true,
     };
-    const updatedChats = [...refChats.current];
-    updatedChats[chatIndex] = updatedChat;
-    setChats(updatedChats);
     setInputText('');
-    editChatMessage(refChats.current[chatIndex].chatMessages[messageIndex]);
+    editChatMessage(updatedMessage);
   };
 
-  const handleDeleteClick = (id) => {
-    const chatIndex = getChatIndexByChatId(selectedChat);
-    const messageIndex = refChats.current[chatIndex].chatMessages.findIndex((messag) => messag.id === id);
-    const updatedChatMessages = refChats.current[chatIndex].chatMessages.map((messag) => {
-      if (messag.id === id) {
-        return {
-          ...messag,
-          message: 'This message was deleted',
-          IsDeleted: true,
-        };
-      }
-      return messag;
-    });
-    const updatedChat = {
-      ...refChats.current[chatIndex],
-      chatMessages: updatedChatMessages,
+  const handleDeleteClick = (message) => {
+    const deletedMessage = {
+      ...message,
+      isDeleted: true,
     };
-    const updatedChats = [...refChats.current];
-    updatedChats[chatIndex] = updatedChat;
-    setChats(updatedChats);
-    setInputText('');
-    const deletedMessage = refChats.current[chatIndex].chatMessages[messageIndex];
     deleteChatMessage(deletedMessage.chatId, deletedMessage.id);
   };
 
@@ -345,21 +332,20 @@ const ChatPage = () => {
     // setChatMessages([...chatMessages, newMessage]);
   };
 
-  const getUserIndex = (chatId) => {
-    return refChats.current[getChatIndexByChatId(chatId)].users[0].id == user.id ? 1 : 0;
-  };
+///////////////////////////////////////////////////////////// components
 
   const renderMessage = (message) => {
-    const chatIndex = getChatIndexByChatId(selectedChat);
+    const chatIndex = getChatIndexByChatId(refSelectedChat.current);
     const messageIndex = refChats.current[chatIndex].chatMessages.findIndex((messag) => messag.id === message.id);
     const isCurrentUser = message.sender.id === user.id;
-    const isDeleted = message.IsDeleted;
-    const isEdited = message.IsEdited;
-    const isFile = message.IsFile;
-    const isRead = message.IsRead;
+    const isDeleted = message.isDeleted;
+    const isEdited = message.isEdited;
+    const isFile = message.isFile;
+    const isRead = message.isRead;
     return (
-      <Grid key={message.id} display="flex" flexDirection={isCurrentUser ? "row" : "row-reverse"}>
-        <Grid ref={messageIndex === refChats.current[chatIndex].chatMessages.length - 1 ? lastMessageRef : null}
+      <Grid ref={messageIndex === refChats.current[chatIndex].chatMessages.length - 1 ? lastMessageRef : null}
+        key={message.id} display="flex" flexDirection={isCurrentUser ? "row" : "row-reverse"}>
+        <Grid
         sx={{
           width: '80%',
           display: 'flex',
@@ -389,15 +375,15 @@ const ChatPage = () => {
             </Grid>
           </Grid>
           <Grid sx={{ margin: '10px', whiteSpace: 'pre-wrap', wordBreak: 'break-word',}}>
-            <Typography fontFamily={'shabnam'} color={isDeleted ? 'red' : 'black'}>{ message.message }</Typography>
+            <Typography fontFamily={'shabnam'} color={isDeleted ? 'red' : 'black'}>{ isDeleted ? 'This message was deleted' : message.message }</Typography>
           </Grid>
           <Grid container direction={'row'} display={'flex'} justifyContent={'flex-start'}>
             {!isCurrentUser || isDeleted ? null : (
               <>
-              {!isFile && <IconButton size="small" onClick={() => handleEditClick(message.id)}>
+              {!isFile && <IconButton size="small" onClick={() => handleEditClick(message)}>
                 <Edit />
               </IconButton>}
-              <IconButton size="small" onClick={() => handleDeleteClick(message.id)}>
+              <IconButton size="small" onClick={() => handleDeleteClick(message)}>
                 <Delete />
               </IconButton>
               </>
@@ -427,7 +413,7 @@ const ChatPage = () => {
         {/* border={'1px solid grey'} borderRadius={2} */}
           <List sx={{height: '100%', flex: {xs:'0 0 auto', sm:'1 0 0'}, overflow: 'overlay'}}>
             {refChats.current.map((chat) => (
-              <ListItem sx={{cursor:'pointer',...(selectedChat === chat.id && {backgroundColor:'skyblue',borderRadius:2})}} key={chat.id} onClick={() => handleChatSelect(chat.id)} >
+              <ListItem sx={{cursor:'pointer',...(refSelectedChat.current === chat.id && {backgroundColor:'skyblue',borderRadius:2})}} key={chat.id} onClick={() => handleChatSelect(chat.id)} >
                 <ListItemAvatar>
                   <Avatar src={chat.users[getUserIndex(chat.id)].profileImageUrl} alt={chat.users[getUserIndex(chat.id)].name} />
                 </ListItemAvatar>
@@ -439,12 +425,12 @@ const ChatPage = () => {
       </Grid> 
       {pageWidth > 1255 && <Divider color='black' orientation="vertical" variant="middle" flexItem/>}
       <Grid height={'100%'} width={{ xs: '100%', sm: '80%' }} maxWidth={1000} sx={{ display: 'flex', flexDirection: 'column'}}>
-        {selectedChat ? (
+        {refSelectedChat.current ? (
           <>
             <Grid container direction={'column'} height={'85%'} >
             {/* border={'1px solid grey'} borderRadius={2} */}
               <Grid height={'100%'} sx={{ flex: '0 0 auto', overflow: 'overlay'}}>
-                {refChats.current && refChats.current[getChatIndexByChatId(selectedChat)].chatMessages.map((message) => renderMessage(message))}
+                {refChats.current && refChats.current[getChatIndexByChatId(refSelectedChat.current)].chatMessages.map((message) => renderMessage(message))}
               </Grid>
             </Grid>
             <Grid sx={{ display: 'flex', alignItems: 'center', padding: '10px',}}>

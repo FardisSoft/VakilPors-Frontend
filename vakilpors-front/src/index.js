@@ -22,6 +22,7 @@ import ActivationAccount from './components/authentication/ActivationAccount';
 import ChatPage from './components/chatPage';
 
 import PremiumPage from './components/premium-page/PremiumPage';
+import ResponseTransaction from './components/premium-page/ResponseTransaction';
 
 
 
@@ -49,6 +50,9 @@ root.render(
               <Route path="/Activation_Account/:phoneNumber" element={<Sidebar component={ActivationAccount}/>}/>
               <Route path="/chatPage" element={<Sidebar component={ChatPage}/>}/>
               <Route path="/PremiumPage" element={<Sidebar component={PremiumPage}/>}/>
+              <Route path="/ResponseTransaction" element={<ResponseTransaction />}/>
+              
+
           </Routes>
         </AuthProvider>
       </BrowserRouter>
