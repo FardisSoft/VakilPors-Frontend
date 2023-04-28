@@ -1,5 +1,5 @@
 import React from 'react';
-// import { makeStyles } from '@mui/styles';
+import { makeStyles } from '@mui/styles';
 import { CheckCircleOutline } from '@mui/icons-material';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from "react-router-dom";
@@ -8,10 +8,9 @@ import Button from '@mui/material/Button';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Clear } from '@mui/icons-material';
-import styled from '@emotion/styled';
 
 
-const useStyles = styled({
+const useStyles = makeStyles({
   confirmationContainer: {
     display: 'flex',
     flexDirection: 'column',

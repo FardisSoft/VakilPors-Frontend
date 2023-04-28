@@ -7,24 +7,23 @@ const Likes = ({ threadOrComment, IsThread }) => {
 
 	const { getAccessToken } = useAuth();
 	const [numberOfLikes, setNumberOfLikes] = useState(0);
-	const [IsLike, setIsLike] = useState(true);
+	const [isCurrentUserLiked, setIsCurrentUserLiked] = useState(false);
 
 	useEffect(() => {
 		setNumberOfLikes(threadOrComment.likeCount);
+		setIsCurrentUserLiked(IsThread ? threadOrComment.isCurrentUserLikedThread : threadOrComment.isCurrentUserLikedComment);
 	}, []);
 
 	const handleLikeOrDisLike = async () => {
 		const token = await getAccessToken();
-		const lOrDLThread = IsLike ? 'LikeThread' : 'UndoLikeThread';
-		const lOrDLComment = IsLike ? 'LikeComment' : 'UndoLikeComment';
+		const lOrDLThread = isCurrentUserLiked ? 'UndoLikeThread' : 'LikeThread';
+		const lOrDLComment = isCurrentUserLiked ? 'UndoLikeComment' : 'LikeComment';
 		if(token){
 			const url = BASE_API_ROUTE + (IsThread ? `Thread/${lOrDLThread}?threadId=${threadOrComment.id}` : `ThreadComment/${lOrDLComment}?commentId=${threadOrComment.id}`);
 			try{
-				console.log('url : ',url);
 				const response = await axios.get(url,{headers: {Authorization: `Bearer ${token}`}});
-				console.log('response in liking/disLiking : ',response);
 				setNumberOfLikes(response.data.data);
-				setIsLike(prevState => !prevState);
+				setIsCurrentUserLiked(prevState => !prevState);
 			} catch (error) {
 				console.log('error in liking/disLiking : ',error);
 		    }
