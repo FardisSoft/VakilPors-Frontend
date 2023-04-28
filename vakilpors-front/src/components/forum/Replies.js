@@ -138,10 +138,13 @@ const Replies = () => {
 						
 						<p style={{color: '#071e22'}}>
 						{reply.isSetAsAnswer && <TaskAlt sx={{
-							color:'purple',
+							color:'green',
 						...(reply.user.isLawyer && {
 							color : 'gold',
 							// color: 'grey',
+						  }),
+						  ...(reply.user.isPremium && {
+							color : 'purple',
 						  }),
 						}}/>}
 						{reply.text}
@@ -167,6 +170,13 @@ const Replies = () => {
 								<IconButton size="small" onClick={() => handleSetAsAnswerClick(reply.id)}>
 									<TaskAlt />
 								</IconButton>}
+								
+							<div className="react__container">
+								<p style={{color:'#071e22'}}>
+									توسط {reply.user.name}
+									</p>
+								<Typography sx={{fontSize:'10px'}}>{moment(reply.createDate).format('MMM D YYYY, h:mm A')}</Typography>
+							</div>
 						</div>
 					</div>
 				))}
