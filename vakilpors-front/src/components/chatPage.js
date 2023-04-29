@@ -305,31 +305,30 @@ const ChatPage = () => {
     deleteChatMessage(deletedMessage.chatId, deletedMessage.id);
   };
 
-  const handleAttachFileClick = (event) => {
-    // const file = event.target.files[0];
-    // const newMessage = {
-    //   id: chatMessages.length + 1,
-    //   sender: user,
-    //   message: (
-    //     <Box backgroundColor={'white'} borderRadius={2} padding={1}>
-    //       <span>{file.name}</span>
-    //       <IconButton size="small">
-    //         <a href={URL.createObjectURL(file)} download={file.name}>
-    //           <DownloadForOfflineOutlined />
-    //         </a>
-    //       </IconButton>
-    //     </Box>
-    //   ),
-    //   sendTime: new Date().toISOString(),
-    //   IsDeleted: false,
-    //   IsEdited: false,
-    //   IsFile: true,
-    //   IsRead: false,
-    //   senderId: 0,
-    //   chatId: 0,
-    //   chat: null
-    // };
-    // setChatMessages([...chatMessages, newMessage]);
+  const handleAttachFileClick = async (event) => {
+    const file = event.target.files[0];
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    const url = BASE_API_ROUTE + 'File/Upload';
+    try{
+      const response = await axios.post(url,formData);
+      const newMessage = {
+        id: 0,
+        sender: null,
+        message: response.data,
+        sendTime: new Date().toISOString(),
+        isDeleted: false,
+        isEdited: false,
+        isFile: true,
+        isRead: false,
+        senderId: user.id,
+        chatId: refSelectedChat.current,
+        chat: null,
+      };
+      sendMessage(newMessage);
+    } catch(err) {
+      console.log('error in upLoading file : ',err);
+    }
   };
 
 ///////////////////////////////////////////////////////////// components
@@ -375,17 +374,31 @@ const ChatPage = () => {
             </Grid>
           </Grid>
           <Grid sx={{ margin: '10px', whiteSpace: 'pre-wrap', wordBreak: 'break-word',}}>
-            <Typography fontFamily={'shabnam'} color={isDeleted ? 'red' : 'black'}>{ isDeleted ? 'This message was deleted' : message.message }</Typography>
+            <Typography fontFamily={'shabnam'} color={isDeleted ? 'red' : 'black'}>
+              { isDeleted ? 'This message was deleted' : 
+                isFile ? 
+                <Box backgroundColor={'white'} borderRadius={2} padding={1}>
+                  <IconButton size="small">
+                    <a href={message.message} download={'download'}>
+                      <span style={{marginLeft:"10px",fontSize:'15px'}}>{'download'}</span> 
+                      {/* file.name */}
+                      <DownloadForOfflineOutlined />
+                    </a>
+                  </IconButton>
+                </Box>
+                : message.message }
+            </Typography>
           </Grid>
           <Grid container direction={'row'} display={'flex'} justifyContent={'flex-start'}>
             {!isCurrentUser || isDeleted ? null : (
               <>
-              {!isFile && <IconButton size="small" onClick={() => handleEditClick(message)}>
+              {!isFile && <>
+              <IconButton size="small" onClick={() => handleEditClick(message)}>
                 <Edit />
-              </IconButton>}
+              </IconButton>
               <IconButton size="small" onClick={() => handleDeleteClick(message)}>
                 <Delete />
-              </IconButton>
+              </IconButton></>}
               </>
             )}
             { (isEdited && !isDeleted) && <Typography fontSize={'13px'} marginRight={'10px'} position={'relative'} top={'7px'}>edited</Typography>}

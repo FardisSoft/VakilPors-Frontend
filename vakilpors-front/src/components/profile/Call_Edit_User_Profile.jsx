@@ -17,20 +17,6 @@ const Call_Edit_User_Profile = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [errorColor, setErrorColor] = useState("red");
   const [getdetail, setdetail, refdetail] = useStateRef({});
-
-  // const upLoadFile = async (file) => {
-  //   const formData = new FormData();
-  //   formData.append('file', file, file.name);
-  //   const url = BASE_API_ROUTE + 'FileTest/Upload';
-  //   try{
-  //     const response = await axios.post(url,formData,{headers: {
-  //         'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
-  //         'accept': '*/*'}});
-  //     console.log('response in upLoading file : ',response);
-  //   } catch(err) {
-  //     console.log('error in upLoading file : ',err);
-  //   }
-  // };
   
   const handleAvatarChange = (file) => {
     setdetail({
