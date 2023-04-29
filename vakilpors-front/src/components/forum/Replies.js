@@ -143,6 +143,7 @@ const Replies = () => {
 							borderRadius: '12px',
 							padding:'1px',
 							width: '27px',
+							marginLeft: '10px',
 						...(reply.user.isLawyer && {
 							color : 'lightyellow',
 							backgroundColor:'gold',
