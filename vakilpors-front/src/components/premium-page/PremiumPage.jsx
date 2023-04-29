@@ -7,6 +7,9 @@ import '../../css/premium-page.css';
 import { Link } from 'react-router-dom';
 import { BASE_API_ROUTE } from '../../Constants';
 
+import Moment from 'moment-jalaali';
+import "moment/locale/fa";
+Moment.locale("fa");
 
 const PremiumPage = () => {
 
@@ -137,9 +140,14 @@ const PremiumPage = () => {
                   </div>
                   <div className="d-flex justify-content-between mt-3">
                     <span>تاریخ شروع:</span>
-                    <span>
-                    {getsub.expireDate}
-                    </span>
+                      <div>
+                          <div key={getsub.id}>
+                              <span>
+                                  {Moment(getsub.expireDate).locale("fa").format('jD/jM/jYYYY') + ' ساعت ' + Moment(getsub.expireDate).format('HH:mm')}
+                              </span>
+                          </div>
+                    </div>
+
                   </div>
                 </div>
               </div>
@@ -154,7 +162,14 @@ const PremiumPage = () => {
                           (
                             <>
                               <p>مبلغ : {x.amount}</p>
-                              <p>تاريخ خريد :{x.date}</p>
+                              <p>تاريخ خريد : </p>
+                              <div>
+                                <div key={x.id}>
+                                    <span>
+                                        {Moment(x.date).locale("fa").format('jD/jM/jYYYY') + ' ساعت ' + Moment(x.date).format('HH:mm')}
+                                    </span>
+                                </div>
+                              </div>
                               <p>توضيحات : {x.description}</p>
                               <hr></hr>
                             </>
