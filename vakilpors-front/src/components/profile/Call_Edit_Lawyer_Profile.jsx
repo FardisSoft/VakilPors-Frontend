@@ -176,21 +176,24 @@ const Call_Edit_Lawyer_Profile = () => {
   const handleAvatarChange = (file) => {
     setdetail({
       ...refdetail.current,
-      ['profileImageUrl']: file,
+      ['user']: {
+        ...refdetail.current.user,
+        ['profileImage']: file,
+      }
     });
   };
 
   const handleBackGroundChange = (file) => {
     setdetail({
       ...refdetail.current,
-      ['profileBackgroundPictureUrl']: file,
+      ['profileBackgroundPicture']: file,
     });
   };
 
   const handleCallingCardChange = (file) => {
     setdetail({
       ...refdetail.current,
-      ['callingCardImageUrl']: file,
+      ['callingCardImage']: file,
     });
   };
 
@@ -225,11 +228,17 @@ const Call_Edit_Lawyer_Profile = () => {
 
   const updateuser = async (event) => {
     event.preventDefault();
-    const token = await getAccessToken()
+    console.log(refdetail.current);
+    const formData = new FormData();
+    for (const key in refdetail.current) {
+      formData.append(key, refdetail.current[key]);
+    }
+    console.log(formData);
+    const token = await getAccessToken();
     if(token){
       const tokenData = jwt(token);
       try {
-          const success = await updateLawyer(refdetail.current);
+          const success = await updateLawyer(formData);
           console.log(refdetail.current);
           console.log("success",success);
           setErrorMessage("اطلاعات شما با موفقیت تغییر کرد.");
@@ -388,17 +397,17 @@ const Call_Edit_Lawyer_Profile = () => {
             <div className="form-group">
               <div className="form-row form-row-1">
                 <label style={{ position: "relative", top: "5px" }}><p>عکس پروفایل</p></label>
-                <MuiFileInput fullWidth margin='10px' value={refdetail.current.profileImageUrl} onChange={handleAvatarChange} />
+                <MuiFileInput fullWidth margin='10px' value={refdetail.current.user ? refdetail.current.user.profileImage : null} onChange={handleAvatarChange} />
               </div>
               <div className="form-row form-row-1">
                 <label style={{ position: "relative", top: "5px" }}><p>عکس پس زمینه پروفایل</p></label>
-                <MuiFileInput fullWidth margin='10px' value={refdetail.current.profileBackgroundPictureUrl} onChange={handleBackGroundChange} />
+                <MuiFileInput fullWidth margin='10px' value={refdetail.current.profileBackgroundPicture} onChange={handleBackGroundChange} />
               </div>
             </div>
             <div className="form-group">
               <div className="form-row form-row-1">
                 <label style={{ position: "relative", top: "5px" }}><p>کارت ویزیت</p></label>
-                <MuiFileInput fullWidth margin='10px' value={refdetail.current.callingCardImageUrl} onChange={handleCallingCardChange} />
+                <MuiFileInput fullWidth margin='10px' value={refdetail.current.callingCardImage} onChange={handleCallingCardChange} />
               </div>
               <div className="form-row form-row-1">
                 <label style={{ position: "relative", top: "5px" }}><p>رزومه</p></label>
