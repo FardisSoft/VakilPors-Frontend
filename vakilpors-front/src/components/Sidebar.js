@@ -94,13 +94,7 @@ const Sidebar = (props) => {
       const token = await getAccessToken();
       if(token){
         const tokenData = jwt(token);
-        let url = "";
-        if(refUserRole.current === "User"){
-          url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
-        }
-        if(refUserRole.current === "Vakil"){
-          url = BASE_API_ROUTE + `Lawyer/GetLawyerByUserId?userId=${tokenData.uid}`;
-        }
+        const url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
         try {
           const response = await axios.get(url);
           if(refUserRole.current === "Vakil"){
@@ -167,7 +161,7 @@ const Sidebar = (props) => {
   const handleAPI = (data) => {
     setProfilePicture(data.profileImageUrl);
     setOnline(true);
-    setName(refUserRole.current === "User" ? data.name : data.user.name);
+    setName(data.name);
   };
 
   const updateSize = () => {
