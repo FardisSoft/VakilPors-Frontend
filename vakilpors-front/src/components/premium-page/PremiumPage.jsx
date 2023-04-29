@@ -16,7 +16,7 @@ const PremiumPage = () => {
 
 
   const [getpremiumdetail, setpremiumdetail] = useState([]);
-  const { refUserRole, getAccessToken } = useAuth();
+  const { getAccessToken } = useAuth();
   const [gettransactions, settransactions] = useState([]);
   const [getsub, setsub] = useState([]);
   const [maxIdData, setMaxIdData] = useState([]);
@@ -28,31 +28,23 @@ const PremiumPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(refUserRole);
       const token = await getAccessToken();
       if (token) {
         const tokenData = jwt(token);
-        let url = "";
-        if (refUserRole.current === "User") {
-          url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
-        }
-        if (refUserRole.current === "Vakil") {
-          url = BASE_API_ROUTE + `Lawyer/GetLawyerById?lawyerId=${tokenData.uid}`;
-        }
-        try {
+        const url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
+        try { 
+          const response = await axios.get(url);
+          // console.log('response in getting user data : ', response);
           const headers = {
             'Content-Type': 'application/json',
-            'Authorization': "Bearer " + localStorage.getItem("accessToken")
-          }
-          const response = await axios.get(url);
+            'Authorization': "Bearer " + token
+          };
           const premiumdetail = await axios.get(BASE_API_ROUTE + `Wallet/GetTransactions`, {
             headers: headers
           });
-
-          const getsubstatus = await axios.get(BASE_API_ROUTE + `Premium/GetSubscriptionStatus`,
-            {
-              headers: headers
-            });
+          const getsubstatus = await axios.get(BASE_API_ROUTE + `Premium/GetSubscriptionStatus`, {
+            headers: headers
+          });
           setsub(getsubstatus.data.data);
           settransactions(premiumdetail.data);
           setpremiumdetail(response.data.data);
@@ -121,7 +113,7 @@ const PremiumPage = () => {
             <div className="row">
               <div className="col-12 col-md-6">
                 <div className="profile shadow-sm text-center bg-white" id="showprofile">
-                  <img src="https://cdn2.iconfinder.com/data/icons/man-user-human-profile-person-business-avatar/100/13-1User-3-512.png" style={{ width: "150px", height: "150px" }} />
+                  <img src={getpremiumdetail.profileImageUrl} style={{ width: "150px", height: "150px" }} />
 
                   <h4 className="mb-4 mt-3 text-dark username tahoma" id="username">{getpremiumdetail.name}</h4>
                   <Link to="/edit-user" className="edit-profile-link">

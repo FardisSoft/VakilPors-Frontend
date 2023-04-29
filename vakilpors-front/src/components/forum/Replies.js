@@ -135,17 +135,23 @@ const Replies = () => {
 			<div className='thread__container'>
 				{replyList.map((reply) => (
 					<div className='thread__item' key={reply.id}>
-						
+						{/* {console.log(reply.user.isPremium)} */}
 						<p style={{color: '#071e22'}}>
 						{reply.isSetAsAnswer && <TaskAlt sx={{
 							color:'green',
+							backgroundColor:'lightgreen',
+							borderRadius: '12px',
+							padding:'1px',
+							width: '27px',
+							marginLeft: '10px',
 						...(reply.user.isLawyer && {
-							color : 'gold',
-							// color: 'grey',
+							color : 'lightyellow',
+							backgroundColor:'gold',
 						  }),
-						  ...(reply.user.isPremium && {
-							color : 'purple',
-						  }),
+						//   ...(reply.user.isPremium && {
+						// 	color : 'purple',
+						// 	backgroundColor:'gold',
+						//   }),
 						}}/>}
 						{reply.text}
 
