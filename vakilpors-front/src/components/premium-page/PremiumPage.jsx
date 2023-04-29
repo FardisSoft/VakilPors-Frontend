@@ -143,7 +143,7 @@ const PremiumPage = () => {
                       <div>
                           <div key={getsub.id}>
                               <span>
-                                  {Moment(getsub.expireDate).locale("fa").format('jD/jM/jYYYY') + ' ساعت ' + Moment(getsub.expireDate).format('HH:mm')}
+                                  {Moment(getsub.expireDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(getsub.expireDate).format('HH:mm')}
                               </span>
                           </div>
                     </div>
@@ -166,7 +166,7 @@ const PremiumPage = () => {
                               <div>
                                 <div key={x.id}>
                                     <span>
-                                        {Moment(x.date).locale("fa").format('jD/jM/jYYYY') + ' ساعت ' + Moment(x.date).format('HH:mm')}
+                                        {Moment(x.date).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(x.date).format('HH:mm')}
                                     </span>
                                 </div>
                               </div>
