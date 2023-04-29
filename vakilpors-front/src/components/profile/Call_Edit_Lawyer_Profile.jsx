@@ -231,15 +231,18 @@ const Call_Edit_Lawyer_Profile = () => {
     console.log(refdetail.current);
     const formData = new FormData();
     for (const key in refdetail.current) {
-      formData.append(key, refdetail.current[key]);
+      if(key != 'user')
+        formData.append(key, refdetail.current[key]);
+      if(key == 'user')
+        for (const keyUser in refdetail.current['user']){
+          formData.append('user.' + keyUser, refdetail.current['user'][keyUser]);
+        }
     }
-    console.log(formData);
     const token = await getAccessToken();
     if(token){
       const tokenData = jwt(token);
       try {
           const success = await updateLawyer(formData);
-          console.log(refdetail.current);
           console.log("success",success);
           setErrorMessage("اطلاعات شما با موفقیت تغییر کرد.");
           setErrorColor("green");
