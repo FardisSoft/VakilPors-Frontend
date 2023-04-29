@@ -165,8 +165,9 @@ const LawyerPage = () => {
             </Grid>
             <Grid sx={{ border: "none", boxShadow: "none" }} display="flex" alignItems="center" justifyContent="center" item component={Card} sm>
                 <CardContent>
-                    { ( watcherUserId && watcherUserId != lawyerUserId ) &&
-                    <Button variant="contained" onClick={handleChatStart} sx={{fontFamily:"shabnam"}}>درخواست چت آنلاین</Button>}
+                    <Button disabled={!(watcherUserId && watcherUserId != lawyerUserId)}
+                    variant="contained" onClick={handleChatStart} sx={{fontFamily:"shabnam"}}>
+                        درخواست چت آنلاین</Button>
                 </CardContent>
             </Grid>
         </Grid>
