@@ -76,7 +76,7 @@ const theme = createTheme({
 
 const Sidebar = (props) => {
 
-  const { refUserRole, refIsLoggedIn, getAccessToken, logout, getImage } = useAuth();
+  const { refUserRole, refIsLoggedIn, getAccessToken, logout } = useAuth();
   const [lawyerID, setLawyerID, refLawyerID] = useStateRef();
   const [open, setOpen] = useState(false);
   const [profilePicture, setProfilePicture] = useState();
@@ -165,7 +165,7 @@ const Sidebar = (props) => {
   const links = tempLinks;
 
   const handleAPI = (data) => {
-    getImage(data.profileImageUrl).then((src) => setProfilePicture(src));
+    setProfilePicture(data.profileImageUrl);
     setOnline(true);
     setName(refUserRole.current === "User" ? data.name : data.user.name);
   };

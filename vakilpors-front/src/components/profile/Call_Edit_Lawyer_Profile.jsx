@@ -200,7 +200,7 @@ const Call_Edit_Lawyer_Profile = () => {
   const handleResumeChange = (file) => {
     setdetail({
       ...refdetail.current,
-      ['resumeLink']: file,
+      ['resume']: file,
     });
   }
 
@@ -411,7 +411,7 @@ const Call_Edit_Lawyer_Profile = () => {
               </div>
               <div className="form-row form-row-1">
                 <label style={{ position: "relative", top: "5px" }}><p>رزومه</p></label>
-                <MuiFileInput fullWidth margin='10px' value={refdetail.current.resumeLink} onChange={handleResumeChange} />
+                <MuiFileInput fullWidth margin='10px' value={refdetail.current.resume} onChange={handleResumeChange} />
               </div>
             </div>
             <div className="form-row-last">
