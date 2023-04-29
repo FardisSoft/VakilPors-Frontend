@@ -7,6 +7,7 @@ import moment from 'moment';
 import { Typography, IconButton } from "@mui/material";
 import Likes from "./utils/Likes";
 import { Delete, Edit, TaskAlt } from '@mui/icons-material';
+import Badge from '@mui/material/Badge';
 
 const Replies = () => {
 	const [replyList, setReplyList] = useState([]);
@@ -89,23 +90,11 @@ const Replies = () => {
 		if(token){
 			const url = BASE_API_ROUTE + "ThreadComment/UpdateComment";
 			const data = {
-				"id": ''+commentId, // It doesn't matter what it is
+				"id": commentId,
 				"text": reply,
-				"likeCount": 0, // It doesn't matter what it is
-				"userId": userId, // It doesn't matter what it is
-				"threadId": Number(threadId),
-				"createDate": new Date().toISOString(),
-				"isSetAsAnswer": false,
-				"user": {
-					"userId": userId,
-					"name": "",
-					"isLawyer": false,
-					"isPremium": false
-				}
 			};
 			try{
 				const response = await axios.put(url,data,{headers: {Authorization: `Bearer ${token}`}});
-				console.log('update reply response : ',response);
 				fetchReplies();
 			} catch (error) {
 				console.log('update reply error : ',error);
@@ -146,30 +135,48 @@ const Replies = () => {
 			<div className='thread__container'>
 				{replyList.map((reply) => (
 					<div className='thread__item' key={reply.id}>
+						
+						<p style={{color: '#071e22'}}>
 						{reply.isSetAsAnswer && <TaskAlt sx={{
 							color:'green',
 						...(reply.user.isLawyer && {
-							color : 'red',
+							color : 'gold',
 							// color: 'grey',
 						  }),
+						  ...(reply.user.isPremium && {
+							color : 'purple',
+						  }),
 						}}/>}
-						<p style={{color: '#071e22'}}>{reply.text}</p>
-						<div className='react__container'>
-							<p style={{ opacity: "0.5" }}>توسط {reply.user.name}</p>
-							<Typography sx={{fontSize:'10px'}}>{moment(reply.createDate).format('MMM D YYYY, h:mm A')}</Typography>
-							<Likes threadOrComment={reply} IsThread={false}/>
+						{reply.text}
+
+						</p>
+
+						<div className='react__container_1_1'>
+							<Likes
+									threadOrComment={reply}
+									IsThread={false}
+								/>
 							{(reply.user.userId === Number(userId) && !reply.isSetAsAnswer) && <>
-								<IconButton size="small" onClick={() => handleEditClick(reply.id)}>
+								<IconButton size="large" onClick={() => handleEditClick(reply.id)}>
 									<Edit />
 								</IconButton>
-								<IconButton size="small" onClick={() => handleDeleteClick(reply.id)}>
+								<IconButton size="large" onClick={() => handleDeleteClick(reply.id)}>
 									<Delete />
 								</IconButton>
 							</>}
 							{(IsSelfThread && reply.user.userId !== Number(userId) && !reply.isSetAsAnswer) && 
-								<IconButton size="small" onClick={() => handleSetAsAnswerClick(reply.id)}>
+								<IconButton size="large" onClick={() => handleSetAsAnswerClick(reply.id)}>
 									<TaskAlt />
 								</IconButton>}
+
+
+								
+							<div className="react__container">
+								<p style={{color:'#071e22'}}> 
+									<Typography sx={{marginRight:'5px', fontSize: '15px', fontFamily: 'shabnam', ml: '10px'}}>توسط {reply.user.name} </Typography>
+									</p>
+								<Typography sx={{fontSize:'10px'}}>{moment(reply.createDate).format('MMM D YYYY, h:mm A')}</Typography>
+							</div>
 						</div>
 					</div>
 				))}

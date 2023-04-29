@@ -165,7 +165,7 @@ const Sidebar = (props) => {
   const links = tempLinks;
 
   const handleAPI = (data) => {
-    setProfilePicture(data.profileImageUrl);
+    setProfilePicture(refUserRole.current === "User" ? data.profileImageUrl : data.user.profileImageUrl);
     setOnline(true);
     setName(refUserRole.current === "User" ? data.name : data.user.name);
   };

@@ -11,7 +11,10 @@ import useStateRef from "react-usestateref";
 import { Helmet } from 'react-helmet-async';
 import { Typography, IconButton } from "@mui/material";
 import moment from 'moment';
-import { Delete } from '@mui/icons-material';
+import { Delete, Margin } from '@mui/icons-material';
+import Badge from '@mui/material/Badge';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 
 const Forum = () => {
 	const [thread, setThread] = useState("");
@@ -116,24 +119,33 @@ const Forum = () => {
 					{threadList.map((thread) => (
 						<div className='thread__item' key={thread.id}>
 							<div className='react__container'>
-								<Typography sx={{color: 'black', fontSize: '15px', fontFamily: 'shabnam', ml: '10px'}}>{thread.user.name}  -</Typography>
 								<p style={{color: '#071e22'}}>{thread.title}</p>
 							</div>
-							<div className='react__container'>
-								<Typography>{moment(thread.createDate).format('MMM D YYYY, h:mm A')}</Typography>
+							<div className='react__container_1'>
+
 								<Likes
 									threadOrComment={thread}
 									IsThread={true}
 								/>
+								<Badge badgeContent={thread.commentCount} color="primary">
 								<Comments
-									threadId={thread.id}
-									numberOfComments={thread.commentCount}
-									userId={refUserId.current}
+								  	threadId={thread.id}
+								  	numberOfComments={thread.commentCount}
+								  	userId={refUserId.current}
 								/>
+								</Badge>
+
 								{(thread.userId == refUserId.current && !thread.hasAnswer) && 
 								<IconButton onClick={() => handleDeleteThread(thread)}>
-									<Delete />
+									<Delete sx={{color: '#0d6efd'}}/>
 								</IconButton>}
+								<br/>
+								<br/>
+								<p> تاریخ ایجاد
+								<Typography>{moment(thread.createDate).format('MMM D YYYY, h:mm A')}</Typography>
+								ایجاد شده توسط
+								<Typography sx={{fontSize: '15px', fontFamily: 'shabnam', ml: '10px'}}>{thread.user.name} </Typography>
+								</p>
 							</div>
 						</div>
 					))}

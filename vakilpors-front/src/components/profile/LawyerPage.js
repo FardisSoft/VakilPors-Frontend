@@ -12,6 +12,7 @@ import {Done, Female, Male, LooksOne, LooksTwo, Looks3, CardMembership, Location
     Business, VerifiedUser, WorkHistory, School, Gavel, CoPresent, QuestionAnswer,
     ThumbUpAlt, FactCheck, Percent } from '@mui/icons-material';
 import { useParams } from "react-router-dom";
+import jwt from 'jwt-decode';
 
 const LawyerPage = () => {
 
@@ -42,6 +43,7 @@ const LawyerPage = () => {
 
     const { LawyerId } = useParams();
     const [ lawyerUserId, setLawyerUserId] = useState();
+    const [ watcherUserId, setWatcherUserId] = useState();
     const { getAccessToken } = useAuth();
     const navigate = useNavigate();
 
@@ -74,6 +76,10 @@ const LawyerPage = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            const token = await getAccessToken();
+            if(token){
+                setWatcherUserId(jwt(token).uid);
+            }
             const url = BASE_API_ROUTE + `Lawyer/GetLawyerById?lawyerId=${LawyerId}`;
             try {
                 const response = await axios.get(url);
@@ -159,7 +165,9 @@ const LawyerPage = () => {
             </Grid>
             <Grid sx={{ border: "none", boxShadow: "none" }} display="flex" alignItems="center" justifyContent="center" item component={Card} sm>
                 <CardContent>
-                    <Button variant="contained" onClick={handleChatStart} sx={{fontFamily:"shabnam"}}>درخواست چت آنلاین</Button>
+                    <Button disabled={!(watcherUserId && watcherUserId != lawyerUserId)}
+                    variant="contained" onClick={handleChatStart} sx={{fontFamily:"shabnam"}}>
+                        درخواست چت آنلاین</Button>
                 </CardContent>
             </Grid>
         </Grid>

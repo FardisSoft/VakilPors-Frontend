@@ -17,25 +17,11 @@ const Call_Edit_User_Profile = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [errorColor, setErrorColor] = useState("red");
   const [getdetail, setdetail, refdetail] = useStateRef({});
-
-  const upLoadFile = async (file) => {
-    const formData = new FormData();
-    formData.append('file', file, file.name);
-    const url = BASE_API_ROUTE + 'FileTest/Upload';
-    try{
-      const response = await axios.post(url,formData,{headers: {
-          'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
-          'accept': '*/*'}});
-      console.log('response in upLoading file : ',response);
-    } catch(err) {
-      console.log('error in upLoading file : ',err);
-    }
-  };
   
   const handleAvatarChange = (file) => {
     setdetail({
-        ...getdetail,
-        ['profileImageUrl']: file,
+        ...refdetail.current,
+        ['profileImage']: file,
       });
   };
 
@@ -61,8 +47,12 @@ const Call_Edit_User_Profile = () => {
   const updateuser = async (event) => {
     event.preventDefault();
     console.log(refdetail.current);
+    const formData = new FormData();
+    for (const key in refdetail.current) {
+      formData.append(key, refdetail.current[key]);
+    }
     try {
-      const success = await updateUser(refdetail.current);
+      const success = await updateUser(formData);
       setErrorMessage("اطلاعات شما با موفقیت تغییر کرد.");
       setErrorColor("green");
     } catch (error) {
@@ -74,7 +64,7 @@ const Call_Edit_User_Profile = () => {
 
   const setUserInfo = (event) => {
     setdetail({
-      ...getdetail,
+      ...refdetail.current,
       [event.target.name]: event.target.value,
     });
   };
@@ -100,7 +90,7 @@ const Call_Edit_User_Profile = () => {
                   type="text"
                   name="name"
                   required
-                  value={getdetail.name}
+                  value={refdetail.current.name}
                   onChange={setUserInfo}
                   margin="normal" />
               </div>
@@ -111,7 +101,7 @@ const Call_Edit_User_Profile = () => {
                   type="text"
                   name="email"
                   required
-                  value={getdetail.email}
+                  value={refdetail.current.email}
                   onChange={setUserInfo}
                   margin="normal" />
               </div>
@@ -123,7 +113,7 @@ const Call_Edit_User_Profile = () => {
                   className="input100"
                   type="text"
                   name="job"
-                  value={getdetail.job}
+                  value={refdetail.current.job}
                   onChange={setUserInfo} />
               </div>
               <div className="form-row form-row-1" >
@@ -132,7 +122,7 @@ const Call_Edit_User_Profile = () => {
                   className="input100"
                   type="text"
                   name="bio"
-                  value={getdetail.bio}
+                  value={refdetail.current.bio}
                   onChange={setUserInfo}
                   margin="normal" />
               </div>
@@ -140,7 +130,7 @@ const Call_Edit_User_Profile = () => {
             <div className="form-group">
               <div className="form-row form-row-1">
                 <label style={{ position: "relative", top: "5px" }}><p>عکس پروفایل</p></label>
-                <MuiFileInput fullWidth margin='10px' value={getdetail.profileImageUrl} onChange={upLoadFile} />
+                <MuiFileInput fullWidth margin='10px' value={refdetail.current.profileImage} onChange={handleAvatarChange} />
               </div>
             </div>
             <div className="form-row-last">
