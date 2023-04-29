@@ -107,8 +107,10 @@ const ChatPage = () => {
 
     refConnection.current.on("ReceiveMessage", (message) => {
       setChatsAddMessage(message);
-      if(refSelectedChat.current == message.chatId){
-        readChatMessage(refSelectedChat.current);
+      const chatIndex = getChatIndexByChatId(message.chatId);
+      const numberOfMessages = refChats.current[chatIndex].chatMessages.length;
+      if(refSelectedChat.current == message.chatId && refChats.current[chatIndex].chatMessages[numberOfMessages - 1].sender.id != user.id){
+        readChatMessage(message.chatId);
       }
       showLastMessage();
     });
@@ -255,7 +257,11 @@ const ChatPage = () => {
   const handleChatSelect = (chatId) => {
     setSelectedChat(chatId);
     addToChat(chatId);
-    readChatMessage(chatId);
+    const chatIndex = getChatIndexByChatId(chatId);
+    const numberOfMessages = refChats.current[chatIndex].chatMessages.length;
+    if(numberOfMessages > 0 && refChats.current[chatIndex].chatMessages[numberOfMessages - 1].sender.id != user.id){
+      readChatMessage(chatId);
+    }
   };
 
   const handleInputChange = (event) => {
