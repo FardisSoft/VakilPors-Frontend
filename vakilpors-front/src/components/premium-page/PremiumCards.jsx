@@ -1,7 +1,59 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
 
 const PremiumCard = () => {
+
+
+  const navigate = useNavigate();
+
+  const delay = ms => new Promise(
+    resolve => setTimeout(resolve, ms)
+);
+
+  const showSuccesMessage = (payam) => {
+    toast.success(payam, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        rtl:true,
+        });
+};
+  
+  const onClick1 = async () => {
+
+    showSuccesMessage('پکیج رایگان با موفقیت خریداری شد.');
+    await delay(5000);
+    navigate('/');
+};
+
+
+
+const onClick2 = async () => {
+
+  showSuccesMessage('در حال انتقال به صفحه پریمیوم');
+  await delay(5000);
+  navigate('/PremiumPage');
+};
+
+
+const onClick3 = async () => {
+
+  showSuccesMessage('در حال انتقال به صفحه پریمیوم');
+  await delay(5000);
+  navigate('/PremiumPage');
+};
+
+
+
+
 
   return (
     <div class="container">
@@ -17,7 +69,8 @@ const PremiumCard = () => {
               <li>بررسی پرسش و پاسخ های دیگر</li>
               <li>اطلاع از پاسخ های دربافتی از طریق ایمیل</li>
             </ul>
-            <button type="button" class="btn btn-lg btn-block btn-outline-primary"><Link to="/PremiumPage">خرید</Link></button>
+            <button onClick={onClick1} type="button" class="btn btn-lg btn-block btn-outline-primary"><Link to="/PremiumPage">خرید</Link></button>
+            <ToastContainer />
           </div>
         </div>
         <div class="col-4 card mb-4 box-shadow" style={{borderTopRightRadius : "20px", borderBottomLeftRadius : "20px"}}>
@@ -32,7 +85,8 @@ const PremiumCard = () => {
               <li>برگزاری میتینگ و هماهنگی با وکلای درخواستی</li>
               <li>چت آنلاین با وکلای درخواستی</li>
             </ul>
-            <button type="button" class="btn btn-lg btn-block btn-outline-primary"><Link to="/PremiumPage">خرید</Link></button>
+            <button onClick={onClick2} type="button" class="btn btn-lg btn-block btn-outline-primary"><Link to="/PremiumPage">خرید</Link></button>
+            <ToastContainer />
           </div>
         </div>
         <div class="col-4 card mb-4 box-shadow" style={{borderTopRightRadius : "20px", borderBottomLeftRadius : "20px"}}>
@@ -47,7 +101,8 @@ const PremiumCard = () => {
               <li>برگزاری میتینگ و هماهنگی با وکلای درخواستی</li>
               <li>چت آنلاین با وکلای درخواستی</li>
             </ul>
-            <button type="button" class="btn btn-lg btn-block btn-outline-primary"><Link to="/PremiumPage">خرید</Link></button>
+            <button onClick={onClick3} type="button" class="btn btn-lg btn-block btn-outline-primary"><Link to="/PremiumPage">خرید</Link></button>
+            <ToastContainer />
           </div>
         </div>
       </div>

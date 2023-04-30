@@ -10,18 +10,20 @@ import { useAuth } from "../context/AuthProvider";
 import { BASE_API_ROUTE } from '../Constants';
 import axios from 'axios';
 import jwt from 'jwt-decode';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ChatPage = () => {
   const [selectedChat, setSelectedChat, refSelectedChat] = useStateRef(null);
-  const [inputText, setInputText] = useState('');
   const [chats, setChats, refChats] = useStateRef([]);
-  const [user, setUser] = useState(null);
+  const [user, setUser, refUser] = useStateRef(null);
+  const [connection, setConnection, refConnection] = useStateRef(null);
+  const [inputText, setInputText] = useState('');
 
   const [pageWidth, setPageWidth] = useState(window.innerWidth);
   const lastMessageRef = useRef(null);
 	const { getAccessToken } = useAuth();
   const navigate = useNavigate();
-  const [connection, setConnection, refConnection] = useStateRef(null);
 
 //////////////////////////////////////////////////////////// util functions
 
@@ -29,8 +31,22 @@ const ChatPage = () => {
     return refChats.current.findIndex((chat) => chat.id === chatId);
   };
 
+  const showErrorMessage = (errorMessage) => {
+    toast.error(errorMessage, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        rtl:true,
+        });
+};
+
   const getUserIndex = (chatId) => {
-    return refChats.current[getChatIndexByChatId(chatId)].users[0].id == user.id ? 1 : 0;
+    return refChats.current[getChatIndexByChatId(chatId)].users[0].id == refUser.current.id ? 1 : 0;
   };
 
   const delay = ms => new Promise(
@@ -38,7 +54,7 @@ const ChatPage = () => {
   );
 
   const showLastMessage = async () => {
-    await delay(300);
+    await delay(500);
     lastMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
 
@@ -107,14 +123,9 @@ const ChatPage = () => {
 
     refConnection.current.on("ReceiveMessage", (message) => {
       setChatsAddMessage(message);
-      // if(refSelectedChat.current == message.chatId){
-      //   readChatMessage(refSelectedChat.current);
-      // }
-      showLastMessage();
     });
     refConnection.current.on("ReadMessages", (chatId) => {
       setChatsReadMessage(parseInt(chatId));
-      showLastMessage();
     });
     refConnection.current.on("DeleteMessage", (message) => {
       setChatsDeleteMessage(message);
@@ -137,6 +148,14 @@ const ChatPage = () => {
     const updatedChats = [...refChats.current];
     updatedChats[chatIndex] = updatedChat;
     setChats(updatedChats);
+    showLastMessage();
+    console.log('recevid a message and refSelectedChat.current, message.chatId : ',refSelectedChat.current, message.chatId);
+    console.log('recevid a message and message.sender.id: ',message.sender.id);
+    console.log('recevid a message and user.id : ',refUser.current.id);
+    console.log('message.sender.id == refUser.current.id : ',message.sender.id != refUser.current.id)
+    if((refSelectedChat.current == message.chatId) && (message.sender.id != refUser.current.id)){
+      readChatMessage(message.chatId);
+    }
   };
 
   const setChatsReadMessage = (chatId) => {
@@ -255,7 +274,12 @@ const ChatPage = () => {
   const handleChatSelect = (chatId) => {
     setSelectedChat(chatId);
     addToChat(chatId);
-    readChatMessage(chatId);
+    const chatIndex = getChatIndexByChatId(chatId);
+    const numberOfMessages = refChats.current[chatIndex].chatMessages.length;
+    if(numberOfMessages > 0 && refChats.current[chatIndex].chatMessages[numberOfMessages - 1].sender.id != refUser.current.id){
+      readChatMessage(chatId);
+    }
+    showLastMessage();
   };
 
   const handleInputChange = (event) => {
@@ -275,7 +299,7 @@ const ChatPage = () => {
       isEdited: false,
       isFile: false,
       isRead: false,
-      senderId: user.id,
+      senderId: refUser.current.id,
       chatId: refSelectedChat.current,
       chat: null,
     };
@@ -285,7 +309,7 @@ const ChatPage = () => {
 
   const handleEditClick = (message) => {
     if (inputText.trim() === '') {
-      alert('لطفا متن جدید پیام را وارد کنید و سپس دکمه ویرایش را بزنید.');
+      showErrorMessage('لطفا متن جدید پیام را وارد کنید و سپس دکمه ویرایش را بزنید.');
       return;
     }
     const updatedMessage = {
@@ -305,31 +329,30 @@ const ChatPage = () => {
     deleteChatMessage(deletedMessage.chatId, deletedMessage.id);
   };
 
-  const handleAttachFileClick = (event) => {
-    // const file = event.target.files[0];
-    // const newMessage = {
-    //   id: chatMessages.length + 1,
-    //   sender: user,
-    //   message: (
-    //     <Box backgroundColor={'white'} borderRadius={2} padding={1}>
-    //       <span>{file.name}</span>
-    //       <IconButton size="small">
-    //         <a href={URL.createObjectURL(file)} download={file.name}>
-    //           <DownloadForOfflineOutlined />
-    //         </a>
-    //       </IconButton>
-    //     </Box>
-    //   ),
-    //   sendTime: new Date().toISOString(),
-    //   IsDeleted: false,
-    //   IsEdited: false,
-    //   IsFile: true,
-    //   IsRead: false,
-    //   senderId: 0,
-    //   chatId: 0,
-    //   chat: null
-    // };
-    // setChatMessages([...chatMessages, newMessage]);
+  const handleAttachFileClick = async (event) => {
+    const file = event.target.files[0];
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    const url = BASE_API_ROUTE + 'File/Upload';
+    try{
+      const response = await axios.post(url,formData);
+      const newMessage = {
+        id: 0,
+        sender: null,
+        message: response.data,
+        sendTime: new Date().toISOString(),
+        isDeleted: false,
+        isEdited: false,
+        isFile: true,
+        isRead: false,
+        senderId: refUser.current.id,
+        chatId: refSelectedChat.current,
+        chat: null,
+      };
+      sendMessage(newMessage);
+    } catch(err) {
+      console.log('error in upLoading file : ',err);
+    }
   };
 
 ///////////////////////////////////////////////////////////// components
@@ -337,7 +360,7 @@ const ChatPage = () => {
   const renderMessage = (message) => {
     const chatIndex = getChatIndexByChatId(refSelectedChat.current);
     const messageIndex = refChats.current[chatIndex].chatMessages.findIndex((messag) => messag.id === message.id);
-    const isCurrentUser = message.sender.id === user.id;
+    const isCurrentUser = message.sender.id === refUser.current.id;
     const isDeleted = message.isDeleted;
     const isEdited = message.isEdited;
     const isFile = message.isFile;
@@ -375,17 +398,32 @@ const ChatPage = () => {
             </Grid>
           </Grid>
           <Grid sx={{ margin: '10px', whiteSpace: 'pre-wrap', wordBreak: 'break-word',}}>
-            <Typography fontFamily={'shabnam'} color={isDeleted ? 'red' : 'black'}>{ isDeleted ? 'This message was deleted' : message.message }</Typography>
+            <Typography fontFamily={'shabnam'} color={isDeleted ? 'red' : 'black'}>
+              { isDeleted ? 'This message was deleted' : 
+                isFile ? 
+                <Box backgroundColor={'white'} borderRadius={2} padding={1}>
+                  <IconButton size="small">
+                    <a href={message.message} download={'download'}>
+                      <span style={{marginLeft:"10px",fontSize:'15px'}}>{'download'}</span> 
+                      {/* file.name */}
+                      <DownloadForOfflineOutlined />
+                    </a>
+                  </IconButton>
+                </Box>
+                : message.message }
+            </Typography>
           </Grid>
           <Grid container direction={'row'} display={'flex'} justifyContent={'flex-start'}>
             {!isCurrentUser || isDeleted ? null : (
               <>
-              {!isFile && <IconButton size="small" onClick={() => handleEditClick(message)}>
+              {!isFile && <>
+              <IconButton size="small" onClick={() => handleEditClick(message)}>
                 <Edit />
-              </IconButton>}
+                <ToastContainer />
+              </IconButton>
               <IconButton size="small" onClick={() => handleDeleteClick(message)}>
                 <Delete />
-              </IconButton>
+              </IconButton></>}
               </>
             )}
             { (isEdited && !isDeleted) && <Typography fontSize={'13px'} marginRight={'10px'} position={'relative'} top={'7px'}>edited</Typography>}
@@ -405,9 +443,9 @@ const ChatPage = () => {
 
     <Grid container direction={{ xs: 'column', sm: 'row' }} height={{xs:'auto', sm:'calc(100vh - 65px)'}} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', display:'flex', justifyContent:'space-around', alignItems:'stretch'}}>
       <Grid container direction={'column'} width={{ xs: '100%', sm: '20%' }} sx={{ borderBottom: { xs: '1px solid grey', sm: '0px solid grey' } }}>
-        {user && <Grid display="flex" flexDirection="column" alignItems="center" justifyContent={'center'} padding={1} border={'1px solid grey'} borderRadius={2}>
-          <Avatar src={user.profileImageUrl} alt={user.name} />
-          <Typography>{user.name}</Typography>
+        {refUser.current && <Grid display="flex" flexDirection="column" alignItems="center" justifyContent={'center'} padding={1} border={'1px solid grey'} borderRadius={2}>
+          <Avatar src={refUser.current.profileImageUrl} alt={refUser.current.name} />
+          <Typography>{refUser.current.name}</Typography>
         </Grid>}
         <Grid container direction={'column'} height={'80%'} >
         {/* border={'1px solid grey'} borderRadius={2} */}

@@ -135,46 +135,51 @@ const Replies = () => {
 			<div className='thread__container'>
 				{replyList.map((reply) => (
 					<div className='thread__item' key={reply.id}>
-						
+						{/* {console.log(reply.user.isPremium)} */}
 						<p style={{color: '#071e22'}}>
 						{reply.isSetAsAnswer && <TaskAlt sx={{
 							color:'green',
+							backgroundColor:'lightgreen',
+							borderRadius: '12px',
+							padding:'1px',
+							width: '27px',
+							marginLeft: '10px',
 						...(reply.user.isLawyer && {
-							color : 'gold',
-							// color: 'grey',
+							color : 'lightyellow',
+							backgroundColor:'gold',
 						  }),
-						  ...(reply.user.isPremium && {
-							color : 'purple',
-						  }),
+						//   ...(reply.user.isPremium && {
+						// 	color : 'purple',
+						// 	backgroundColor:'gold',
+						//   }),
 						}}/>}
 						{reply.text}
 
 						</p>
 
-						<div className='react__container_1'>
-							<Badge badgeContent={reply.likeCount} color="primary">
+						<div className='react__container_1_1'>
 							<Likes
 									threadOrComment={reply}
 									IsThread={false}
 								/>
-    						</Badge>
-							
 							{(reply.user.userId === Number(userId) && !reply.isSetAsAnswer) && <>
-								<IconButton size="small" onClick={() => handleEditClick(reply.id)}>
+								<IconButton size="large" onClick={() => handleEditClick(reply.id)}>
 									<Edit />
 								</IconButton>
-								<IconButton size="small" onClick={() => handleDeleteClick(reply.id)}>
+								<IconButton size="large" onClick={() => handleDeleteClick(reply.id)}>
 									<Delete />
 								</IconButton>
 							</>}
 							{(IsSelfThread && reply.user.userId !== Number(userId) && !reply.isSetAsAnswer) && 
-								<IconButton size="small" onClick={() => handleSetAsAnswerClick(reply.id)}>
+								<IconButton size="large" onClick={() => handleSetAsAnswerClick(reply.id)}>
 									<TaskAlt />
 								</IconButton>}
+
+
 								
 							<div className="react__container">
-								<p style={{color:'#071e22'}}>
-									توسط {reply.user.name}
+								<p style={{color:'#071e22'}}> 
+									<Typography sx={{marginRight:'5px', fontSize: '15px', fontFamily: 'shabnam', ml: '10px'}}>توسط {reply.user.name} </Typography>
 									</p>
 								<Typography sx={{fontSize:'10px'}}>{moment(reply.createDate).format('MMM D YYYY, h:mm A')}</Typography>
 							</div>

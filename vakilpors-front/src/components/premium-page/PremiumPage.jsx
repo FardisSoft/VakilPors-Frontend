@@ -7,13 +7,16 @@ import '../../css/premium-page.css';
 import { Link } from 'react-router-dom';
 import { BASE_API_ROUTE } from '../../Constants';
 
+import Moment from 'moment-jalaali';
+import "moment/locale/fa";
+Moment.locale("fa");
 
 const PremiumPage = () => {
 
 
 
   const [getpremiumdetail, setpremiumdetail] = useState([]);
-  const { refUserRole, getAccessToken } = useAuth();
+  const { getAccessToken } = useAuth();
   const [gettransactions, settransactions] = useState([]);
   const [getsub, setsub] = useState([]);
 
@@ -25,35 +28,26 @@ const PremiumPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(refUserRole);
       const token = await getAccessToken();
       if (token) {
         const tokenData = jwt(token);
-        let url = "";
-        if (refUserRole.current === "User") {
-          url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
-        }
-        if (refUserRole.current === "Vakil") {
-          url = BASE_API_ROUTE + `Lawyer/GetLawyerById?lawyerId=${tokenData.uid}`;
-        }
-        try {
+        const url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
+        try { 
+          const response = await axios.get(url);
+          // console.log('response in getting user data : ', response);
           const headers = {
             'Content-Type': 'application/json',
-            'Authorization': "Bearer " + localStorage.getItem("accessToken")
-          }
-          const response = await axios.get(url);
+            'Authorization': "Bearer " + token
+          };
           const premiumdetail = await axios.get(BASE_API_ROUTE + `Wallet/GetTransactions`, {
             headers: headers
           });
-
-          const getsubstatus = await axios.get(BASE_API_ROUTE + `Premium/GetSubscriptionStatus`,
-            {
-              headers: headers
-            });
+          const getsubstatus = await axios.get(BASE_API_ROUTE + `Premium/GetSubscriptionStatus`, {
+            headers: headers
+          });
           setsub(getsubstatus.data.data);
           settransactions(premiumdetail.data);
           setpremiumdetail(response.data.data);
-          handleFindMaxId();
         } catch (error) {
           console.log('error : ', error);
         }
@@ -103,12 +97,14 @@ const PremiumPage = () => {
             <div className="row">
               <div className="col-12 col-md-6">
                 <div className="profile shadow-sm text-center bg-white" id="showprofile">
-                  <img src="https://cdn2.iconfinder.com/data/icons/man-user-human-profile-person-business-avatar/100/13-1User-3-512.png" style={{ width: "150px", height: "150px" }} />
+                  <img src={getpremiumdetail.profileImageUrl} style={{ width: "150px", height: "150px" }} />
 
                   <h4 className="mb-4 mt-3 text-dark username tahoma" id="username">{getpremiumdetail.name}</h4>
+                  <br></br>
                   <Link to="/edit-user" className="edit-profile-link">
                     ویرایش پروفایل
                   </Link>
+                  <br></br>
                 </div>
               </div>
               <div className="col-12 col-md-6 mt-4 mt-md-0">
@@ -125,14 +121,17 @@ const PremiumPage = () => {
                     <span>آخرین خرید:</span>
                     <span>
                       {getsub.id}
-
                     </span>
                   </div>
                   <div className="d-flex justify-content-between mt-3">
-                    <span>تاریخ پایان بسته:</span>
-                    <span>
-                    {getsub.expireDate}
-                    </span>
+                    <span>تاریخ پایان:</span>
+                      <div>
+                          <div key={getsub.id}>
+                              <span>
+                                  {Moment(getsub.expireDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(getsub.expireDate).format('HH:mm')}
+                              </span>
+                          </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -145,7 +144,14 @@ const PremiumPage = () => {
                           (
                             <>
                               <p>مبلغ : {x.amount}</p>
-                              <p>تاريخ خريد :{x.date}</p>
+                              <p>تاريخ خريد : </p>
+                              <div>
+                                <div key={x.id}>
+                                    <span>
+                                        {Moment(x.date).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(x.date).format('HH:mm')}
+                                    </span>
+                                </div>
+                              </div>
                               <p>توضيحات : {x.description}</p>
                               <hr></hr>
                             </>
@@ -163,14 +169,15 @@ const PremiumPage = () => {
             <div className="buy-account shadow-md bg-white" id="buy">
               <h3 className="text-center font-weight-bold">تمدید اشتراک</h3>
               <br />
-              <span className="error">از تمدید طولانی مدت اکانت خود پرهیز کنید ، پیشنهاد ما تمدید ماهانه میباشد</span>
+              <span className="error">با خرید اشتراک ویژه بهترین ضامن پرونده ات باش!</span>
               <div className="form-group mt-3 psc" id="p_1">
                 <label for="service">انتخاب مدت زمان</label>
 
                 <select className="form-control tamdid" name="amount" value={getamountdetail.amount} onChange={setUserInfo}>
                   <option value=" ">--- انتخاب کنید ---</option>
-                  <option value="300000" >پلاس 1 ساله</option>
-                  <option value="150000">پلاس 3 ماهه</option>
+                  <option value="20000" >برنزی </option>
+                  <option value="30000">نقره ای</option>
+                  <option value="50000">طلایی</option>
                 </select>
 
               </div>

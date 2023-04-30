@@ -14,6 +14,8 @@ import { useAuth } from "../context/AuthProvider";
 import jwt from 'jwt-decode';
 import axios from 'axios';
 import { BASE_API_ROUTE } from '../Constants';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 let drawerWidth = 240;
 
@@ -84,6 +86,25 @@ const Sidebar = (props) => {
   const [name, setName] = useState('');
   let tempLinks = [];
   const navigate = useNavigate();
+
+  const delay = ms => new Promise(
+    resolve => setTimeout(resolve, ms)
+);
+
+
+  const showSuccesMessage = (payam) => {
+    toast.success(payam, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        rtl:true,
+        });
+};
 
   useEffect(() => {
     const sidebarApi = async () => {
@@ -165,7 +186,7 @@ const Sidebar = (props) => {
   const links = tempLinks;
 
   const handleAPI = (data) => {
-    setProfilePicture(data.profileImageUrl);
+    setProfilePicture(refUserRole.current === "User" ? data.profileImageUrl : data.user.profileImageUrl);
     setOnline(true);
     setName(refUserRole.current === "User" ? data.name : data.user.name);
   };
@@ -180,8 +201,9 @@ const Sidebar = (props) => {
     }
   }
 
-  const logoutHandler = () => {
-    alert('شما از حساب کاربری خود خارج شدید.');
+  const logoutHandler = async () => {
+    showSuccesMessage('شما از حساب کاربری خود خارج شدید.')
+    await delay(5000);
     logout();
     navigate('/Login');
   }
@@ -264,6 +286,8 @@ const Sidebar = (props) => {
           ))}
           {refUserRole.current && <ListItem disablePadding>
             <ListItemButton onClick={logoutHandler}>
+            <ToastContainer />
+            
               <ListItemIcon>
                 <LogoutOutlined color="primary" />
               </ListItemIcon>

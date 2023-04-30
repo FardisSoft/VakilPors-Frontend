@@ -12,19 +12,15 @@ import TextField from '@mui/material/TextField';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import { BASE_API_ROUTE } from '../../Constants';
 
-
-
 const filter = createFilterOptions();
 
-
 const Call_Edit_Lawyer_Profile = () => {
-
   const { getAccessToken } = useAuth();
   const [getdetail, setdetail, refdetail] = useStateRef({});
   const [errorMessage, setErrorMessage] = useState("");
   const [errorColor, setErrorColor] = useState("red");
   const descriptionUser = "کاربر گرامی ! در این قسمت می توانید تمامی اطلاعات کاربری خود را بروزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";  
-  const [defaultTakhasos, setDefaultTakhasos] = useState([]);
+  const [defaultTakhasos, setDefaultTakhasos, refDefaultTakhasos] = useStateRef([]);
 
   const titles = [
     { title: 'وکیل پایه یک دادگستری' },
@@ -66,27 +62,25 @@ const Call_Edit_Lawyer_Profile = () => {
 
   const getDefaultTakhasos = () => {
     const tt = [];
-    if(getdetail && getdetail.specialties){
-      const tempList = getdetail.specialties.split('/');
+    if(refdetail.current && refdetail.current.specialties){
+      const tempList = refdetail.current.specialties.split('/');
       
       tempList.map((temp) => {
         tt.push({title: temp});
       });
     }
     setDefaultTakhasos(tt);
-    console.log(defaultTakhasos);
+    // console.log(refDefaultTakhasos.current);
   }
 
-  const specialtiesList = () => {
-   
+  const specialtiesList = () => { 
     return (
-
       <Autocomplete
         multiple
         id="tags-outlined"
         options={specialtieses}
         getOptionLabel={(option) => option.title}
-        defaultValue={defaultTakhasos}
+        defaultValue={refDefaultTakhasos.current}
         filterSelectedOptions
         renderInput={(params) => (
           <TextField
@@ -95,62 +89,55 @@ const Call_Edit_Lawyer_Profile = () => {
           />
         )}
       />
-
     );
   }
 
   const genderList = () => {
     return (
-
       <Autocomplete
-      value={getdetail.gender}
-      onChange={(event, newValue) => {
-        setdetail({
-          ...getdetail,
-          ['gender']: newValue,
-        });
-      }}
-    // inputValue={inputValue}
-    // onInputChange={(event, newInputValue) => {
-    //   setInputValue(newInputValue);
-    // }}
-    id="controllable-states-demo"
-    options={genders}
-    renderInput={(params) => <TextField {...params} />}
-  />
-  );
+        value={refdetail.current.gender}
+        onChange={(event, newValue) => {
+          setdetail({
+            ...refdetail.current,
+            ['gender']: newValue,
+          });
+        }}
+        // inputValue={refdetail.current.gender}
+        // onInputChange={(event, newInputValue) => {
+        //   setInputValue(newInputValue);
+        // }}
+        id="controllable-states-demo"
+        options={genders}
+        renderInput={(params) => <TextField {...params} />}
+      />
+    );
   }
 
-
-    
   const titleList = () => {
-
     return (
       <Autocomplete
-        value={getdetail.title}
+        value={refdetail.current.title}
         onChange={(event, newValue) => {
           if (typeof newValue === 'string') {
             setdetail({
-              ...getdetail,
+              ...refdetail.current,
               ['title']: newValue,
             });
           } else if (newValue && newValue.inputValue) {
             setdetail({
-              ...getdetail,
+              ...refdetail.current,
               ['title']: newValue.inputValue,
             });
           } else if(newValue && newValue.title) {
             setdetail({
-              ...getdetail,
+              ...refdetail.current,
               ['title']: newValue.title,
             });
           }
         }}
         filterOptions={(options, params) => {
           const filtered = filter(options, params);
-
           const { inputValue } = params;
-
           const isExisting = options.some((option) => inputValue === option.title);
           if (inputValue !== '' && !isExisting) {
             filtered.push({
@@ -158,7 +145,6 @@ const Call_Edit_Lawyer_Profile = () => {
               title: `Add "${inputValue}"`,
             });
           }
-
           return filtered;
         }}
         selectOnFocus
@@ -187,42 +173,34 @@ const Call_Edit_Lawyer_Profile = () => {
     );
   };
 
-
-
-
-
-
-
-
-
-
-
-
   const handleAvatarChange = (file) => {
     setdetail({
-      ...getdetail,
-      ['profileImageUrl']: file,
+      ...refdetail.current,
+      ['user']: {
+        ...refdetail.current.user,
+        ['profileImage']: file,
+      }
     });
   };
 
   const handleBackGroundChange = (file) => {
     setdetail({
-      ...getdetail,
-      ['profileBackgroundPictureUrl']: file,
+      ...refdetail.current,
+      ['profileBackgroundPicture']: file,
     });
   };
 
   const handleCallingCardChange = (file) => {
     setdetail({
-      ...getdetail,
-      ['callingCardImageUrl']: file,
+      ...refdetail.current,
+      ['callingCardImage']: file,
     });
   };
 
   const handleResumeChange = (file) => {
     setdetail({
-      ...getdetail,
-      ['resumeLink']: file,
+      ...refdetail.current,
+      ['resume']: file,
     });
   }
 
@@ -245,18 +223,26 @@ const Call_Edit_Lawyer_Profile = () => {
         // alert("شما باید ابتدا وارد حساب کاربری خود شوید.");
       }
     };
-
     fetchData();
   }, []);
 
   const updateuser = async (event) => {
     event.preventDefault();
-    const token = await getAccessToken()
+    console.log(refdetail.current);
+    const formData = new FormData();
+    for (const key in refdetail.current) {
+      if(key != 'user')
+        formData.append(key, refdetail.current[key]);
+      if(key == 'user')
+        for (const keyUser in refdetail.current['user']){
+          formData.append('user.' + keyUser, refdetail.current['user'][keyUser]);
+        }
+    }
+    const token = await getAccessToken();
     if(token){
       const tokenData = jwt(token);
       try {
-          const success = await updateLawyer(refdetail.current);
-          console.log(refdetail.current);
+          const success = await updateLawyer(formData);
           console.log("success",success);
           setErrorMessage("اطلاعات شما با موفقیت تغییر کرد.");
           setErrorColor("green");
@@ -271,14 +257,14 @@ const Call_Edit_Lawyer_Profile = () => {
   const setUserInfo = (event) => {
     event.target.name.includes('user') 
     ? setdetail({
-      ...getdetail,
+      ...refdetail.current,
       ['user']: {
-        ...getdetail.user,
+        ...refdetail.current.user,
         [event.target.name.slice(5)]: event.target.value,
       }
     })
     : setdetail({
-      ...getdetail,
+      ...refdetail.current,
       [event.target.name]: event.target.value,
     });
   };
@@ -303,7 +289,7 @@ const Call_Edit_Lawyer_Profile = () => {
                   className="input100"
                   type="text"
                   name="user.name"
-                  value={getdetail.user ? getdetail.user.name : ''}
+                  value={refdetail.current.user ? refdetail.current.user.name : ''}
                   onChange={setUserInfo}
                   margin="normal" />
               </div>
@@ -314,7 +300,7 @@ const Call_Edit_Lawyer_Profile = () => {
                   className="input100"
                   type="text"
                   name="user.email"
-                  value={getdetail.user ? getdetail.user.email : ''}
+                  value={refdetail.current.user ? refdetail.current.user.email : ''}
                   onChange={setUserInfo}
                   margin="normal" />
 
@@ -327,7 +313,7 @@ const Call_Edit_Lawyer_Profile = () => {
                   className="input100"
                   type="text"
                   name="aboutMe"
-                  value={getdetail.aboutMe}
+                  value={refdetail.current.aboutMe}
                   onChange={setUserInfo}
                   margin="normal" />
               </div>
@@ -339,7 +325,7 @@ const Call_Edit_Lawyer_Profile = () => {
                   className="input100"
                   type="text"
                   name="city"
-                  value={getdetail.city}
+                  value={refdetail.current.city}
                   onChange={setUserInfo}
                   margin="normal" />
               </div>
@@ -349,20 +335,19 @@ const Call_Edit_Lawyer_Profile = () => {
                   className="input100"
                   type="text"
                   name="parvandeNo"
-                  value={getdetail.parvandeNo}
+                  value={refdetail.current.parvandeNo}
                   onChange={setUserInfo}
                   margin="normal" />
               </div>
             </div>
             <div className="form-group">
               <div className="form-row form-row-1">
-              <label style={{ position: "relative", top: "5px" }}><p>عنوان</p></label>
-              {titleList()}
+                <label style={{ position: "relative", top: "5px" }}><p>عنوان</p></label>
+                {titleList()}
               </div>
               <div className="form-row form-row-1">
                 <label style={{ position: "relative", top: "5px" }}><p>جنسیت</p></label>
-                  {genderList()}
-
+                {genderList()}
               </div>
             </div>
             <div className="form-group">
@@ -372,10 +357,10 @@ const Call_Edit_Lawyer_Profile = () => {
                   className="input100"
                   type="text"
                   name="specialties"
-                  value={getdetail.specialties}
+                  value={refdetail.current.specialties}
                   onChange={setUserInfo}
                   margin="normal" />
-                  
+                {/* {specialtiesList()} */}
               </div>
             </div>
             <div className="form-group">
@@ -385,7 +370,7 @@ const Call_Edit_Lawyer_Profile = () => {
                   className="input100"
                   type="text"
                   name="yearsOfExperience"
-                  value={getdetail.yearsOfExperience}
+                  value={refdetail.current.yearsOfExperience}
                   onChange={setUserInfo}
                   margin="normal" />
               </div>
@@ -395,7 +380,7 @@ const Call_Edit_Lawyer_Profile = () => {
                   className="input100"
                   type="text"
                   name="education"
-                  value={getdetail.education}
+                  value={refdetail.current.education}
                   onChange={setUserInfo}
                   margin="normal" />
               </div>
@@ -407,7 +392,7 @@ const Call_Edit_Lawyer_Profile = () => {
                   className="input100"
                   type="text"
                   name="officeAddress"
-                  value={getdetail.officeAddress}
+                  value={refdetail.current.officeAddress}
                   onChange={setUserInfo}
                   margin="normal" />
               </div>
@@ -415,21 +400,21 @@ const Call_Edit_Lawyer_Profile = () => {
             <div className="form-group">
               <div className="form-row form-row-1">
                 <label style={{ position: "relative", top: "5px" }}><p>عکس پروفایل</p></label>
-                <MuiFileInput fullWidth margin='10px' value={getdetail.profileImageUrl} onChange={handleAvatarChange} />
+                <MuiFileInput fullWidth margin='10px' value={refdetail.current.user ? refdetail.current.user.profileImage : null} onChange={handleAvatarChange} />
               </div>
               <div className="form-row form-row-1">
                 <label style={{ position: "relative", top: "5px" }}><p>عکس پس زمینه پروفایل</p></label>
-                <MuiFileInput fullWidth margin='10px' value={getdetail.profileBackgroundPictureUrl} onChange={handleBackGroundChange} />
+                <MuiFileInput fullWidth margin='10px' value={refdetail.current.profileBackgroundPicture} onChange={handleBackGroundChange} />
               </div>
             </div>
             <div className="form-group">
               <div className="form-row form-row-1">
                 <label style={{ position: "relative", top: "5px" }}><p>کارت ویزیت</p></label>
-                <MuiFileInput fullWidth margin='10px' value={getdetail.callingCardImageUrl} onChange={handleCallingCardChange} />
+                <MuiFileInput fullWidth margin='10px' value={refdetail.current.callingCardImage} onChange={handleCallingCardChange} />
               </div>
               <div className="form-row form-row-1">
                 <label style={{ position: "relative", top: "5px" }}><p>رزومه</p></label>
-                <MuiFileInput fullWidth margin='10px' value={getdetail.resumeLink} onChange={handleResumeChange} />
+                <MuiFileInput fullWidth margin='10px' value={refdetail.current.resume} onChange={handleResumeChange} />
               </div>
             </div>
             <div className="form-row-last">
