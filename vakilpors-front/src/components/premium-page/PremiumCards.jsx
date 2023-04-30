@@ -29,7 +29,7 @@ const PremiumCard = () => {
   
   const onClick1 = async () => {
 
-    showSuccesMessage('پکیج رایگان با موفقیت خریداری شد.');
+    showSuccesMessage('در حال انتقال به صفحه پریمیوم.');
     await delay(5000);
     navigate('/');
 };
