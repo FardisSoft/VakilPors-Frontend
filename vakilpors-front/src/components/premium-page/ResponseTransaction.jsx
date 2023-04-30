@@ -49,10 +49,12 @@ const useStyles = makeStyles({
 function ResponseTransaction(props) {
 
   const classes = useStyles();
-  let { amount, referenceId, success } = props;
+  let { amount, referenceId } = props;
+  const queryParameters = new URLSearchParams(window.location.search)
+  const ReferenceId = queryParameters.get("ReferenceId")
+  const success = queryParameters.get("WasSuccessful")
 
-  //success = true;
-  success = false;
+
 
   const icon = success ? (
     <CheckCircleOutline className={classes.successIcon} />
@@ -107,10 +109,7 @@ function ResponseTransaction(props) {
 
   }
 
-  const queryParameters = new URLSearchParams(window.location.search)
-  const ReferenceId = queryParameters.get("ReferenceId")
-  const Status = queryParameters.get("Status")
-  const WasSuccessful = queryParameters.get("WasSuccessful")
+ 
 
 
 
@@ -123,19 +122,19 @@ function ResponseTransaction(props) {
   };
 
   async function activateSubscription(premiumPlan) {
-    
+
     const url = `https://api.fardissoft.ir/Premium/ActivateSubscription?PremiumPlan=${premiumPlan}`;
     const headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer " + localStorage.getItem("accessToken")
     }
-    const response = await axios.post(url,{
+    const response = await axios.post(url, {
       headers: headers
     });
-    console.log('response :',response);
+    console.log('response :', response);
   }
 
-  
+
 
   return (
     <>
@@ -153,20 +152,23 @@ function ResponseTransaction(props) {
           {success && (
             <div className={classes.referenceText}>
               شماره پیگیری: {ReferenceId} <br></br>
-              ok ? {Status}
+              ok ? {success}
             </div>
 
           )}
           <br></br>
-          <Link to="/PremiumPage">
-            بازگشت به صفحه اصلی
-          </Link>
+          <button onClick={activateSubscription}>
+            <Link to="/PremiumPage">
+              بازگشت به صفحه اصلی
+            </Link>
+          </button>
+
 
           <ToastContainer />
 
         </Grid>
       </Grid>
-      <button onClick={handleFormSubmit} styel={{ color: "red" }}>ddddd</button>
+      <button onClick={handleFormSubmit} style={{ backgroundColor: "red" }}>ddddd</button>
       { /** <form onSubmit={handleFormSubmit}>
         <label htmlFor="premiumPlan">Choose a premium plan:</label>
         <select
