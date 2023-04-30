@@ -1,4 +1,3 @@
-import React from 'react';
 import { makeStyles } from '@mui/styles';
 import { CheckCircleOutline } from '@mui/icons-material';
 import { Helmet } from 'react-helmet-async';
@@ -9,6 +8,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Clear } from '@mui/icons-material';
 import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import axios from 'axios';
 
 
 const useStyles = makeStyles({
@@ -19,7 +20,7 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     margin: 'auto',
     height: '100vh',
-    width: '100%' ,
+    width: '100%',
     backgroundColor: '#f0f0f0',
   },
   errorIcon: {
@@ -49,41 +50,27 @@ function ResponseTransaction(props) {
 
   const classes = useStyles();
   let { amount, referenceId, success } = props;
-  
+
   //success = true;
   success = false;
 
   const icon = success ? (
     <CheckCircleOutline className={classes.successIcon} />
-    ) : (
+  ) : (
     <Clear className={classes.errorIcon} />
   );
 
   const confirmationMessage = success
-  ? "تراکنش با موفقیت انجام شد!"
-  : "تراکنش با خطا مواجه شد!";
+    ? "تراکنش با موفقیت انجام شد!"
+    : "تراکنش با خطا مواجه شد!";
 
 
   const delay = ms => new Promise(
     resolve => setTimeout(resolve, ms)
-);
+  );
 
   const showSuccesMessage = (successMessage) => {
     toast.success(successMessage, {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        rtl:true,
-        });
-};
-
-const showErrorMessage = (errorMessage) => {
-  toast.error(errorMessage, {
       position: "bottom-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -92,58 +79,108 @@ const showErrorMessage = (errorMessage) => {
       draggable: true,
       progress: undefined,
       theme: "light",
-      rtl:true,
-      });
-};
+      rtl: true,
+    });
+  };
+
+  const showErrorMessage = (errorMessage) => {
+    toast.error(errorMessage, {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      rtl: true,
+    });
+  };
 
   const navigate = useNavigate();
 
   const directTo = async () => {
+
+    showSuccesMessage('بازگشت به صفحه اصلی...');
+    await delay(5000);
+    navigate('/PremiumPage');
+
+  }
+
+  const queryParameters = new URLSearchParams(window.location.search)
+  const ReferenceId = queryParameters.get("ReferenceId")
+  const Status = queryParameters.get("Status")
+  const WasSuccessful = queryParameters.get("WasSuccessful")
+
+
+
+  const [premiumPlan, setPremiumPlan] = useState("gold");
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    const data = await activateSubscription(premiumPlan);
+    console.log(data);
+  };
+
+  async function activateSubscription(premiumPlan) {
     
-      showSuccesMessage('بازگشت به صفحه اصلی...');
-      await delay(5000);
-      navigate('/PremiumPage');
+    const url = `https://api.fardissoft.ir/Premium/ActivateSubscription?PremiumPlan=${premiumPlan}`;
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + localStorage.getItem("accessToken")
+    }
+    const response = await axios.post(url,{
+      headers: headers
+    });
+    console.log('response :',response);
+  }
 
-}
-
-const queryParameters = new URLSearchParams(window.location.search)
-const ReferenceId = queryParameters.get("ReferenceId")
-const Status = queryParameters.get("Status")
-const WasSuccessful = queryParameters.get("WasSuccessful")
+  
 
   return (
     <>
-    <Helmet>
-      <title>Redirect to premium page</title>
-    </Helmet>
+      <Helmet>
+        <title>Redirect to premium page</title>
+      </Helmet>
 
-    <Grid display={"flex"} flexDirection={"column"} margin={"auto"} alignItems={"center"} justifyContent={"center"} width={"100%"} height={"100vh"} backgroundColor={'#ABC0C0'}>
-      <Grid alignItems={"center"} margin={"auto"} height={"100%"} width={"60%"} flexDirection={'column'} borderRadius={"10px"} padding={"5px"} paddingTop={"5px"} paddingX={"5px"} paddingBottom={"5px"} display={"flex"} position={"relative"} m={"3%"} justifyContent={"center"} item xs={4} spacing={5} alignSelf={"center"} backgroundColor={'white'}>
-            <hr></hr>
-            {icon}
-      <div className={classes.confirmationText}>
-        {confirmationMessage} 
-      </div>
-      {success && (
-        <div className={classes.referenceText}>
-          شماره پیگیری: {ReferenceId} <br></br>
-          ok ? {Status}
-        </div>
-        
-      )}
-      <br></br>
-      
-      
-        <Link to="/PremiumPage">
-        بازگشت به صفحه اصلی
-        </Link>
+      <Grid display={"flex"} flexDirection={"column"} margin={"auto"} alignItems={"center"} justifyContent={"center"} width={"100%"} height={"100vh"} backgroundColor={'#ABC0C0'}>
+        <Grid alignItems={"center"} margin={"auto"} height={"100%"} width={"60%"} flexDirection={'column'} borderRadius={"10px"} padding={"5px"} paddingTop={"5px"} paddingX={"5px"} paddingBottom={"5px"} display={"flex"} position={"relative"} m={"3%"} justifyContent={"center"} item xs={4} spacing={5} alignSelf={"center"} backgroundColor={'white'}>
+          <hr></hr>
+          {icon}
+          <div className={classes.confirmationText}>
+            {confirmationMessage}
+          </div>
+          {success && (
+            <div className={classes.referenceText}>
+              شماره پیگیری: {ReferenceId} <br></br>
+              ok ? {Status}
+            </div>
 
-      <ToastContainer />
+          )}
+          <br></br>
+          <Link to="/PremiumPage">
+            بازگشت به صفحه اصلی
+          </Link>
 
+          <ToastContainer />
+
+        </Grid>
       </Grid>
-    </Grid> 
-
-
+      <button onClick={handleFormSubmit} styel={{ color: "red" }}>ddddd</button>
+      { /** <form onSubmit={handleFormSubmit}>
+        <label htmlFor="premiumPlan">Choose a premium plan:</label>
+        <select
+          id="premiumPlan"
+          value={premiumPlan}
+          onChange={(event) => setPremiumPlan(event.target.value)}>
+          <option value="gold">Gold</option>
+          <option value="silver">Silver</option>
+          <option value="bronze">Bronze</option>
+        </select>
+        <button type="submit">Activate Subscription</button>
+      </form>
+ */
+      }
     </>
   );
 }
