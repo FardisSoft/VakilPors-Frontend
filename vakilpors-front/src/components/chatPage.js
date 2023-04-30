@@ -10,6 +10,8 @@ import { useAuth } from "../context/AuthProvider";
 import { BASE_API_ROUTE } from '../Constants';
 import axios from 'axios';
 import jwt from 'jwt-decode';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ChatPage = () => {
   const [selectedChat, setSelectedChat, refSelectedChat] = useStateRef(null);
@@ -28,6 +30,20 @@ const ChatPage = () => {
   const getChatIndexByChatId = (chatId) => {
     return refChats.current.findIndex((chat) => chat.id === chatId);
   };
+
+  const showErrorMessage = (errorMessage) => {
+    toast.error(errorMessage, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        rtl:true,
+        });
+};
 
   const getUserIndex = (chatId) => {
     return refChats.current[getChatIndexByChatId(chatId)].users[0].id == user.id ? 1 : 0;
@@ -291,7 +307,7 @@ const ChatPage = () => {
 
   const handleEditClick = (message) => {
     if (inputText.trim() === '') {
-      alert('لطفا متن جدید پیام را وارد کنید و سپس دکمه ویرایش را بزنید.');
+      showErrorMessage('لطفا متن جدید پیام را وارد کنید و سپس دکمه ویرایش را بزنید.');
       return;
     }
     const updatedMessage = {
@@ -401,6 +417,7 @@ const ChatPage = () => {
               {!isFile && <>
               <IconButton size="small" onClick={() => handleEditClick(message)}>
                 <Edit />
+                <ToastContainer />
               </IconButton>
               <IconButton size="small" onClick={() => handleDeleteClick(message)}>
                 <Delete />

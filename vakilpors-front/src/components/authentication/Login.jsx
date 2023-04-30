@@ -8,6 +8,8 @@ import { FaEye } from 'react-icons/fa';
 import showPwdImg from '../../assests/images/show-password.svg';
 import hidePwdImg from '../../assests/images/hide-password.svg';
 import { useAuth } from "../../context/AuthProvider";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Login = () => {
@@ -19,6 +21,35 @@ const Login = () => {
         phoneNumber: "",
         password: ""
     });
+
+
+    const showErrorMessage = (errorMessage) => {
+        toast.error(errorMessage, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            rtl:true,
+            });
+    };
+
+    const showSuccesMessage = (payam) => {
+        toast.success(payam, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            rtl:true,
+            });
+    };
 
     const { login } = useAuth();
 
@@ -34,15 +65,13 @@ const Login = () => {
             setErrorMessage(" ");
             const success = await login(getUser);
             if(success === "success"){
-                setErrorColor("green");
-                setErrorMessage("وارد شدید! :)");
+                showSuccesMessage("با موفقیت وارد شدید.");
                 await delay(1000);
                 navigate("/");
                 setUser({});
             }
             else{
-                setErrorColor("red");
-                setErrorMessage("ورود با خطا مواجه شد.");
+                showErrorMessage("ورود با خطا مواجه شد.");
             }
             // console.log(localStorage.getItem('accessToken'),"\n refresh : ", localStorage.getItem('refreshToken'));
             // console.log("main role : ", refUserRole.current);
@@ -69,6 +98,7 @@ const Login = () => {
             <div className="container-login100">
                 <div className="wrap-login100">
                     <form className="login100-form validate-form" onSubmit={createUser}>
+                    <ToastContainer />
                         <span className="login100-form-title p-b-26">
                             به وکیل پرس خوش آمدید!
                         </span>

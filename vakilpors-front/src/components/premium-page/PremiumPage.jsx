@@ -116,9 +116,11 @@ const PremiumPage = () => {
                   <img src={getpremiumdetail.profileImageUrl} style={{ width: "150px", height: "150px" }} />
 
                   <h4 className="mb-4 mt-3 text-dark username tahoma" id="username">{getpremiumdetail.name}</h4>
+                  <br></br>
                   <Link to="/edit-user" className="edit-profile-link">
                     ویرایش پروفایل
                   </Link>
+                  <br></br>
                 </div>
               </div>
               <div className="col-12 col-md-6 mt-4 mt-md-0">
