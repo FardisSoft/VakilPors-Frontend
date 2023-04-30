@@ -149,10 +149,6 @@ const ChatPage = () => {
     updatedChats[chatIndex] = updatedChat;
     setChats(updatedChats);
     showLastMessage();
-    console.log('recevid a message and refSelectedChat.current, message.chatId : ',refSelectedChat.current, message.chatId);
-    console.log('recevid a message and message.sender.id: ',message.sender.id);
-    console.log('recevid a message and user.id : ',refUser.current.id);
-    console.log('message.sender.id == refUser.current.id : ',message.sender.id != refUser.current.id)
     if((refSelectedChat.current == message.chatId) && (message.sender.id != refUser.current.id)){
       readChatMessage(message.chatId);
     }
