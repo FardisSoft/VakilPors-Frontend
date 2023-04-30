@@ -109,8 +109,8 @@ const PremiumPage = () => {
               </div>
               <div className="col-12 col-md-6 mt-4 mt-md-0">
                 <div className="expire shadow-sm text-center bg-white" id="untilexpire">
-                  <CircularProgress variant="determinate" value={getsub.remainingDays} size="6rem" />
-                  <h4 className="mt-4 text-dark mb-0 font-weight-bold">تعداد روزهای باقی مانده : {getsub.remainingDays}</h4>
+                  <CircularProgress variant="determinate" value={getsub.remainingDays  < 100 ? getsub.remainingDays : 100} size="6rem" />
+                  <h4 className="mt-4 text-dark mb-0 font-weight-bold">تعداد روزهای باقی مانده : {getsub.remainingDays  < 100 ? getsub.remainingDays : "رایگان"}</h4>
                   <div className="d-flex justify-content-between mt-3">
                     <span>نوع سرویس</span>
                     <span>
@@ -120,7 +120,7 @@ const PremiumPage = () => {
                   <div className="d-flex justify-content-between mt-3">
                     <span>آخرین خرید:</span>
                     <span>
-                      {getsub.id}
+                      {getsub.premiumName}
                     </span>
                   </div>
                   <div className="d-flex justify-content-between mt-3">
