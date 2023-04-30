@@ -10,6 +10,7 @@ import { Clear } from '@mui/icons-material';
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import axios from 'axios';
+import { useAuth } from '../../context/AuthProvider';
 
 
 const useStyles = makeStyles({
@@ -53,7 +54,7 @@ function ResponseTransaction(props) {
   const queryParameters = new URLSearchParams(window.location.search)
   const ReferenceId = queryParameters.get("ReferenceId")
   const success = queryParameters.get("WasSuccessful")
-
+  const { getAccessToken } = useAuth();
 
 
   const icon = success ? (
@@ -109,7 +110,7 @@ function ResponseTransaction(props) {
 
   }
 
- 
+
 
 
 
@@ -122,16 +123,13 @@ function ResponseTransaction(props) {
   };
 
   async function activateSubscription(premiumPlan) {
-
+   
     const url = `https://api.fardissoft.ir/Premium/ActivateSubscription?PremiumPlan=${premiumPlan}`;
-    const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': "Bearer " + localStorage.getItem("accessToken")
+    const token = await getAccessToken();
+    if (token) {
+      const response = await axios.post(url, '',{headers: {Authorization: `Bearer ${token}`}});
+   console.log("response : ",response);
     }
-    const response = await axios.post(url, {
-      headers: headers
-    });
-    console.log('response :', response);
   }
 
 
@@ -168,21 +166,6 @@ function ResponseTransaction(props) {
 
         </Grid>
       </Grid>
-      <button onClick={handleFormSubmit} style={{ backgroundColor: "red" }}>ddddd</button>
-      { /** <form onSubmit={handleFormSubmit}>
-        <label htmlFor="premiumPlan">Choose a premium plan:</label>
-        <select
-          id="premiumPlan"
-          value={premiumPlan}
-          onChange={(event) => setPremiumPlan(event.target.value)}>
-          <option value="gold">Gold</option>
-          <option value="silver">Silver</option>
-          <option value="bronze">Bronze</option>
-        </select>
-        <button type="submit">Activate Subscription</button>
-      </form>
- */
-      }
     </>
   );
 }
