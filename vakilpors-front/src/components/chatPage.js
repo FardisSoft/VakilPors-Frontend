@@ -15,15 +15,15 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const ChatPage = () => {
   const [selectedChat, setSelectedChat, refSelectedChat] = useStateRef(null);
-  const [inputText, setInputText] = useState('');
   const [chats, setChats, refChats] = useStateRef([]);
-  const [user, setUser] = useState(null);
+  const [user, setUser, refUser] = useStateRef(null);
+  const [connection, setConnection, refConnection] = useStateRef(null);
+  const [inputText, setInputText] = useState('');
 
   const [pageWidth, setPageWidth] = useState(window.innerWidth);
   const lastMessageRef = useRef(null);
 	const { getAccessToken } = useAuth();
   const navigate = useNavigate();
-  const [connection, setConnection, refConnection] = useStateRef(null);
 
 //////////////////////////////////////////////////////////// util functions
 
@@ -46,7 +46,7 @@ const ChatPage = () => {
 };
 
   const getUserIndex = (chatId) => {
-    return refChats.current[getChatIndexByChatId(chatId)].users[0].id == user.id ? 1 : 0;
+    return refChats.current[getChatIndexByChatId(chatId)].users[0].id == refUser.current.id ? 1 : 0;
   };
 
   const delay = ms => new Promise(
@@ -54,7 +54,7 @@ const ChatPage = () => {
   );
 
   const showLastMessage = async () => {
-    await delay(300);
+    await delay(500);
     lastMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
 
@@ -123,16 +123,9 @@ const ChatPage = () => {
 
     refConnection.current.on("ReceiveMessage", (message) => {
       setChatsAddMessage(message);
-      const chatIndex = getChatIndexByChatId(message.chatId);
-      const numberOfMessages = refChats.current[chatIndex].chatMessages.length;
-      if(refSelectedChat.current == message.chatId && refChats.current[chatIndex].chatMessages[numberOfMessages - 1].sender.id != user.id){
-        readChatMessage(message.chatId);
-      }
-      showLastMessage();
     });
     refConnection.current.on("ReadMessages", (chatId) => {
       setChatsReadMessage(parseInt(chatId));
-      showLastMessage();
     });
     refConnection.current.on("DeleteMessage", (message) => {
       setChatsDeleteMessage(message);
@@ -155,6 +148,14 @@ const ChatPage = () => {
     const updatedChats = [...refChats.current];
     updatedChats[chatIndex] = updatedChat;
     setChats(updatedChats);
+    showLastMessage();
+    console.log('recevid a message and refSelectedChat.current, message.chatId : ',refSelectedChat.current, message.chatId);
+    console.log('recevid a message and message.sender.id: ',message.sender.id);
+    console.log('recevid a message and user.id : ',refUser.current.id);
+    console.log('message.sender.id == refUser.current.id : ',message.sender.id != refUser.current.id)
+    if((refSelectedChat.current == message.chatId) && (message.sender.id != refUser.current.id)){
+      readChatMessage(message.chatId);
+    }
   };
 
   const setChatsReadMessage = (chatId) => {
@@ -275,9 +276,10 @@ const ChatPage = () => {
     addToChat(chatId);
     const chatIndex = getChatIndexByChatId(chatId);
     const numberOfMessages = refChats.current[chatIndex].chatMessages.length;
-    if(numberOfMessages > 0 && refChats.current[chatIndex].chatMessages[numberOfMessages - 1].sender.id != user.id){
+    if(numberOfMessages > 0 && refChats.current[chatIndex].chatMessages[numberOfMessages - 1].sender.id != refUser.current.id){
       readChatMessage(chatId);
     }
+    showLastMessage();
   };
 
   const handleInputChange = (event) => {
@@ -297,7 +299,7 @@ const ChatPage = () => {
       isEdited: false,
       isFile: false,
       isRead: false,
-      senderId: user.id,
+      senderId: refUser.current.id,
       chatId: refSelectedChat.current,
       chat: null,
     };
@@ -343,7 +345,7 @@ const ChatPage = () => {
         isEdited: false,
         isFile: true,
         isRead: false,
-        senderId: user.id,
+        senderId: refUser.current.id,
         chatId: refSelectedChat.current,
         chat: null,
       };
@@ -358,7 +360,7 @@ const ChatPage = () => {
   const renderMessage = (message) => {
     const chatIndex = getChatIndexByChatId(refSelectedChat.current);
     const messageIndex = refChats.current[chatIndex].chatMessages.findIndex((messag) => messag.id === message.id);
-    const isCurrentUser = message.sender.id === user.id;
+    const isCurrentUser = message.sender.id === refUser.current.id;
     const isDeleted = message.isDeleted;
     const isEdited = message.isEdited;
     const isFile = message.isFile;
@@ -441,9 +443,9 @@ const ChatPage = () => {
 
     <Grid container direction={{ xs: 'column', sm: 'row' }} height={{xs:'auto', sm:'calc(100vh - 65px)'}} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', display:'flex', justifyContent:'space-around', alignItems:'stretch'}}>
       <Grid container direction={'column'} width={{ xs: '100%', sm: '20%' }} sx={{ borderBottom: { xs: '1px solid grey', sm: '0px solid grey' } }}>
-        {user && <Grid display="flex" flexDirection="column" alignItems="center" justifyContent={'center'} padding={1} border={'1px solid grey'} borderRadius={2}>
-          <Avatar src={user.profileImageUrl} alt={user.name} />
-          <Typography>{user.name}</Typography>
+        {refUser.current && <Grid display="flex" flexDirection="column" alignItems="center" justifyContent={'center'} padding={1} border={'1px solid grey'} borderRadius={2}>
+          <Avatar src={refUser.current.profileImageUrl} alt={refUser.current.name} />
+          <Typography>{refUser.current.name}</Typography>
         </Grid>}
         <Grid container direction={'column'} height={'80%'} >
         {/* border={'1px solid grey'} borderRadius={2} */}
