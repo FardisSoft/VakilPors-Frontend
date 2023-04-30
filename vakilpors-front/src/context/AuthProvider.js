@@ -67,10 +67,6 @@ const AuthProvider = ({ children }) => {
         localStorage.removeItem('refreshToken');
     };
 
-    const sendPasswordResetSMS = async (email) => {
-        
-    };
-
     const getAccessToken = async () => {
         
         fetchTokens();
@@ -113,10 +109,22 @@ const AuthProvider = ({ children }) => {
         }
     };
 
+    // const getImage = async (imageURL) => {
+    //     try {
+    //         const response = await axios.get(imageURL, {
+    //             responseType: 'arraybuffer'
+    //         });
+    //         const base64 = btoa(new Uint8Array(response.data).reduce((data, byte) => data + String.fromCharCode(byte),''));
+    //         const imageSrc = `data:image/jpeg;base64,${base64}`;
+    //         return imageSrc;
+    //     } catch (error) {
+    //       console.log('error in convertnig image to base64 : ', error);
+    //     }
+    // };
+
     const value = {
         refUserRole,
         refIsLoggedIn,
-        sendPasswordResetSMS,
         login,
         logout,
         getAccessToken

@@ -1,9 +1,7 @@
 import { useState, useEffect, useContext } from "react";
-
 import { Link, useParams } from "react-router-dom";
-
-
 import { getlawyer } from "../../services/userService";
+
 
 const ViewContact = () => {
   const { LawyerId } = useParams();

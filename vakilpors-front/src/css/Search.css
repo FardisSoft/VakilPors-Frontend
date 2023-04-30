@@ -154,8 +154,7 @@
     position: relative;
 
     background: url("../assests/images/Law.jpg") no-repeat center center;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+
 
     background-size: cover;
   }
@@ -527,7 +526,10 @@
     border-top-right-radius: 20px;
     border-bottom-right-radius: 5px;
     border-top-left-radius: 5px;
-    padding: 10px;
+    padding-bottom: 0px;
+    padding-top: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
     background-color: rgba(255,255,255,0.1);
     position: relative;
     overflow: hidden;

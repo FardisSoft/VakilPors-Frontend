@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
-import { BASE_API_ROUTE } from '../Constants';
+import { BASE_API_ROUTE } from '../../Constants';
+import { useAuth } from "../../context/AuthProvider";
+import { useNavigate } from "react-router-dom";
 import { Button, Badge, styled, Avatar, Rating, Typography, Chip } from '@mui/material';
 import { Stack, Grid } from "@mui/material";
 import { Card, CardContent, CardHeader, CardMedia } from "@mui/material";
@@ -10,6 +12,7 @@ import {Done, Female, Male, LooksOne, LooksTwo, Looks3, CardMembership, Location
     Business, VerifiedUser, WorkHistory, School, Gavel, CoPresent, QuestionAnswer,
     ThumbUpAlt, FactCheck, Percent } from '@mui/icons-material';
 import { useParams } from "react-router-dom";
+import jwt from 'jwt-decode';
 
 const LawyerPage = () => {
 
@@ -21,9 +24,9 @@ const LawyerPage = () => {
     const [rate, setRate] = useState(0);
     const [numberOfRates, setNumberOfRates] = useState(0);
     const [city, setCity] = useState('');
-    const [grade, setGrade] = useState('');
+    // const [grade, setGrade] = useState('');
     const [licenseNumber, setLicenseNumber] = useState('');
-    const [memberOf, setMemberOf] = useState('');
+    // const [memberOf, setMemberOf] = useState('');
     const [specialties, setSpecialties] = useState([]);
     const [yearsOfExperience, setYearsOfExperience] = useState(0);
     const [gender, setGender] = useState('');
@@ -39,15 +42,19 @@ const LawyerPage = () => {
     const [ratesList, setRatesList] = useState([]);
 
     const { LawyerId } = useParams();
+    const [ lawyerUserId, setLawyerUserId] = useState();
+    const [ watcherUserId, setWatcherUserId] = useState();
+    const { getAccessToken } = useAuth();
+    const navigate = useNavigate();
 
     const handleInitializerWithAPI = (data) => {
         setAboutMe(data.aboutMe);
         setCallingCard(data.callingCardImageUrl);
         setCity(data.city);
         setEducation(data.education);
-        setGrade(data.grade == 0 ? 'یک' : data.grade == 1 ? 'دو' : 'سه');
+        // setGrade(data.grade == 0 ? 'یک' : data.grade == 1 ? 'دو' : 'سه');
         setLicenseNumber(data.parvandeNo);
-        setMemberOf(data.memberOf);
+        // setMemberOf(data.memberOf);
         setOfficeAddress(data.officeAddress);
         setProfilePicture(data.user.profileImageUrl);
         setRate(data.rating);
@@ -69,17 +76,41 @@ const LawyerPage = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            const token = await getAccessToken();
+            if(token){
+                setWatcherUserId(jwt(token).uid);
+            }
             const url = BASE_API_ROUTE + `Lawyer/GetLawyerById?lawyerId=${LawyerId}`;
             try {
                 const response = await axios.get(url);
                 console.log('response : ',response);
                 handleInitializerWithAPI(response.data.data);
+                setLawyerUserId(response.data.data.user.id);
             } catch (error) {
                 console.log('error : ',error);
             }
         };
         fetchData();
     }, []);
+
+    const handleChatStart = async () => {
+        const token = await getAccessToken();
+        if(!token){
+            console.log('login required');
+            navigate("/Login");
+        }
+        else{
+            const url = BASE_API_ROUTE + `Chat/StartChat?recieverUserId=${lawyerUserId}`;
+            console.log(url);
+            try { 
+                const response = await axios.post(url,'', {headers: {Authorization: `Bearer ${token}`}});
+                console.log('response in starting chat : ', response);
+                navigate("/chatPage");
+            } catch (error) {
+                console.log('error in starting chat : ', error);
+            }
+        }
+    };
 
     const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -134,7 +165,9 @@ const LawyerPage = () => {
             </Grid>
             <Grid sx={{ border: "none", boxShadow: "none" }} display="flex" alignItems="center" justifyContent="center" item component={Card} sm>
                 <CardContent>
-                    <Button variant="contained" sx={{fontFamily:"shabnam"}}>درخواست چت آنلاین</Button>
+                    <Button disabled={!(watcherUserId && watcherUserId != lawyerUserId)}
+                    variant="contained" onClick={handleChatStart} sx={{fontFamily:"shabnam"}}>
+                        درخواست چت آنلاین</Button>
                 </CardContent>
             </Grid>
         </Grid>
@@ -145,13 +178,17 @@ const LawyerPage = () => {
                         {gender === "مرد" ? <Male color="primary" sx={{ml:1}}/> : <Female color="primary" sx={{ml:1}}/>}
                         جنسیت : {gender}
                     </Typography>
-                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                    {/* <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
                         {grade === "یک" ? <LooksOne color="primary" sx={{ml:1}}/> : grade === "دو" ? <LooksTwo color="primary" sx={{ml:1}}/> : <Looks3 color="primary" sx={{ml:1}}/>}
                         پایه : {grade}
-                    </Typography>
-                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                    </Typography> */}
+                    {/* <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
                         <CardMembership color="primary" sx={{ml:1}}/>
                         عضو : {memberOf}
+                    </Typography> */}
+                    <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                        <CardMembership color="primary" sx={{ml:1}}/>
+                        عنوان : {title}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
                         <LocationOn color="primary" sx={{ml:1}}/>
