@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import useStateRef from 'react-usestateref';
 import { Avatar, Box, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, TextField, InputAdornment, Typography } from '@mui/material';
-import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined, DoneAll } from '@mui/icons-material';
+import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined, DoneAll, Cancel } from '@mui/icons-material';
 import moment from 'moment';
 import { Helmet } from 'react-helmet-async';
 import * as signalR from '@microsoft/signalr';
@@ -19,6 +19,10 @@ const ChatPage = () => {
   const [user, setUser, refUser] = useStateRef(null);
   const [connection, setConnection, refConnection] = useStateRef(null);
   const [inputText, setInputText] = useState('');
+
+  const inputRef = useRef(null);
+	const [isEditActive, setIsEditActive] = useState(false);
+	const [editActiveMessage, setEditActiveMessage] = useState('');
 
   const [pageWidth, setPageWidth] = useState(window.innerWidth);
   const lastMessageRef = useRef(null);
@@ -304,17 +308,30 @@ const ChatPage = () => {
   };
 
   const handleEditClick = (message) => {
+    setInputText(message.message);
+		setIsEditActive(true);
+		setEditActiveMessage(message);
+		inputRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  const handleEditMessage = () => {
     if (inputText.trim() === '') {
       showErrorMessage('لطفا متن جدید پیام را وارد کنید و سپس دکمه ویرایش را بزنید.');
       return;
     }
     const updatedMessage = {
-      ...message,
+      ...editActiveMessage,
       message: inputText.trim(),
       isEdited: true,
     };
     setInputText('');
+    setIsEditActive(false);
     editChatMessage(updatedMessage);
+  };
+
+  const handleCancelEditMessage = () => {
+    setIsEditActive(false);
+		setInputText('');
   };
 
   const handleDeleteClick = (message) => {
@@ -469,6 +486,7 @@ const ChatPage = () => {
             </Grid>
             <Grid sx={{ display: 'flex', alignItems: 'center', padding: '10px',}}>
               <TextField sx={{ flexGrow: 1 }}
+                ref={inputRef}
                 variant="outlined"
                 dir='rtl'
                 fullWidth
@@ -479,6 +497,14 @@ const ChatPage = () => {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
+                      {isEditActive ? <>
+                      <IconButton size="small" onClick={handleEditMessage}>
+                        <Edit />
+                      </IconButton>
+                      <IconButton size="small" onClick={handleCancelEditMessage}>
+                        <Cancel />
+                      </IconButton>
+                      </> : <>
                       <IconButton size="small" component="label">
                         <AttachFile />
                         <input type="file" style={{ display: 'none' }} onChange={handleAttachFileClick} />
@@ -486,6 +512,7 @@ const ChatPage = () => {
                       <IconButton size="small" onClick={handleSendClick}>
                         <Send />
                       </IconButton>
+                      </>}
                     </InputAdornment>
                   ),}}
               />
