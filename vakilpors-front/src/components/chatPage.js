@@ -24,6 +24,9 @@ const ChatPage = () => {
 	const [isEditActive, setIsEditActive] = useState(false);
 	const [editActiveMessage, setEditActiveMessage] = useState('');
 
+  const messageRefs = useRef([]);
+  messageRefs.current.push(React.createRef()); //// 😢😢😢 naaaaaaaaaaaaaaaaaaaaaaaaaaaaa 😭😭😭
+
   const [pageWidth, setPageWidth] = useState(window.innerWidth);
   const lastMessageRef = useRef(null);
 	const { getAccessToken } = useAuth();
@@ -98,7 +101,7 @@ const ChatPage = () => {
     const url = BASE_API_ROUTE + 'Chat/GetChatsWithMessages';
     try { 
       const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
-      // console.log('response in geting chats : ', response);
+      // console.log('response in geting chats : ', response.data.data);
       setChats(response.data.data);
     } catch (error) {
       console.log('error in getting chats : ', error);
@@ -324,6 +327,7 @@ const ChatPage = () => {
       message: inputText.trim(),
       isEdited: true,
     };
+    delete updatedMessage.ref;
     setInputText('');
     setIsEditActive(false);
     editChatMessage(updatedMessage);
@@ -335,11 +339,7 @@ const ChatPage = () => {
   };
 
   const handleDeleteClick = (message) => {
-    const deletedMessage = {
-      ...message,
-      isDeleted: true,
-    };
-    deleteChatMessage(deletedMessage.chatId, deletedMessage.id);
+    deleteChatMessage(message.chatId, message.id);
   };
 
   const handleAttachFileClick = async (event) => {
@@ -368,11 +368,22 @@ const ChatPage = () => {
     }
   };
 
+  const goToReply = (chatIndex, messageReplyIndex) => {
+    refChats.current[chatIndex].chatMessages[messageReplyIndex].ref.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
 ///////////////////////////////////////////////////////////// components
 
-  const renderMessage = (message) => {
+  const renderMessage = (message,index) => {
+    messageRefs.current[index] = React.createRef();
+    message.ref = messageRefs.current[index];
     const chatIndex = getChatIndexByChatId(refSelectedChat.current);
     const messageIndex = refChats.current[chatIndex].chatMessages.findIndex((messag) => messag.id === message.id);
+    let messageReplyIndex = null;
+    messageReplyIndex = messageIndex;
+    // if(message.replyId){
+    //   messageReplyIndex = refChats.current[chatIndex].chatMessages.findIndex((messag) => messag.id === message.replyId);
+    // }
     const isCurrentUser = message.sender.id === refUser.current.id;
     const isDeleted = message.isDeleted;
     const isEdited = message.isEdited;
@@ -382,6 +393,7 @@ const ChatPage = () => {
       <Grid ref={messageIndex === refChats.current[chatIndex].chatMessages.length - 1 ? lastMessageRef : null}
         key={message.id} display="flex" flexDirection={isCurrentUser ? "row" : "row-reverse"}>
         <Grid
+        ref={messageRefs.current[index]}
         sx={{
           width: '80%',
           display: 'flex',
@@ -404,12 +416,25 @@ const ChatPage = () => {
             // backgroundColor: 'blueviolet',
           }),
         }}>
+
+          { messageReplyIndex != null &&
+          <Grid container justifyContent="flex-start" borderBottom="1px solid gray" marginBottom="10px">
+            <Grid item xs={12} sx={{overflow:'hidden', width: '200px'}}>
+              <Typography fontFamily="shabnam" fontSize="13px" sx={{whiteSpace: 'nowrap',cursor: 'pointer',marginBottom: '2px',padding: '2px',border: '3px solid lightblue',backgroundColor: 'lightblue',borderRadius: '7px',textOverflow: 'ellipsis',overflow: 'hidden',}}
+               onClick={() => goToReply(chatIndex, messageReplyIndex)}>
+                در پاسخ به
+                {' : ' + refChats.current[chatIndex].chatMessages[messageReplyIndex].message}
+              </Typography>
+            </Grid>
+          </Grid>}
+
           <Grid sx={{ display: 'flex', alignItems: 'center',}}>
             <Avatar src={message.sender.profileImageUrl} alt={message.sender.name} />
             <Grid marginRight={'10px'} container direction={'row'} display={'flex'} justifyContent={'space-around'}>
               <Typography fontSize={'17px'} fontFamily={'shabnam'} marginLeft={'10px'}>{message.sender.name}</Typography>
             </Grid>
           </Grid>
+
           <Grid sx={{ margin: '10px', whiteSpace: 'pre-wrap', wordBreak: 'break-word',}}>
             <Typography fontFamily={'shabnam'} color={isDeleted ? 'red' : 'black'}>
               { isDeleted ? 'This message was deleted' : 
@@ -426,6 +451,7 @@ const ChatPage = () => {
                 : message.message }
             </Typography>
           </Grid>
+
           <Grid container direction={'row'} display={'flex'} justifyContent={'flex-start'}>
             {!isCurrentUser || isDeleted ? null : (
               <>
@@ -440,7 +466,7 @@ const ChatPage = () => {
               </>
             )}
             { (isEdited && !isDeleted) && <Typography fontSize={'13px'} marginRight={'10px'} position={'relative'} top={'7px'}>edited</Typography>}
-            {isRead && <IconButton size="small"> <DoneAll /> </IconButton>}
+            {isRead && <IconButton size="small" sx={{cursor:'default !important'}}> <DoneAll /> </IconButton>}
             <Typography marginRight={'15px'} fontSize={'13px'} position={'relative'} top={'7px'}>{moment(message.sendTime).format('MMM D YYYY, h:mm A')}</Typography>
           </Grid>
         </Grid>
@@ -481,7 +507,7 @@ const ChatPage = () => {
             <Grid container direction={'column'} height={'85%'} >
             {/* border={'1px solid grey'} borderRadius={2} */}
               <Grid height={'100%'} sx={{ flex: '0 0 auto', overflow: 'overlay'}}>
-                {refChats.current && refChats.current[getChatIndexByChatId(refSelectedChat.current)].chatMessages.map((message) => renderMessage(message))}
+                {refChats.current && refChats.current[getChatIndexByChatId(refSelectedChat.current)].chatMessages.map((message,index) => renderMessage(message,index))}
               </Grid>
             </Grid>
             <Grid sx={{ display: 'flex', alignItems: 'center', padding: '10px',}}>
