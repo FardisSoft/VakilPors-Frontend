@@ -1,0 +1,50 @@
+.pb\+\+\+ {
+    padding-bottom: 24px !important;
+}
+
+*, *:after, *::before {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.circle-icon.big {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+    padding: 6px;
+}
+
+.mr {
+    margin-left: 6px !important;
+    margin-right: auto !important;
+}
+
+.circle-icon {
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    text-align: center;
+    padding: 3px;
+    position: relative;
+}
+
+.text-bold {
+    font-weight: bold !important;
+}
+
+.-mt {
+    margin-top: -3px !important;
+}
+
+.bgc-3 {
+    background-color: #690 !important;
+}
+.tc-white {
+    color: #fff !important;
+}
+
+*, *:after, *::before {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
