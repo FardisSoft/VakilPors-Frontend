@@ -308,6 +308,8 @@ const ChatPage = () => {
       senderId: refUser.current.id,
       chatId: refSelectedChat.current,
       chat: null,
+      replyId: null,
+      replyMessage: null,
     };
     setInputText('');
     sendMessage(newMessage);
@@ -364,6 +366,8 @@ const ChatPage = () => {
         senderId: refUser.current.id,
         chatId: refSelectedChat.current,
         chat: null,
+        replyId: null,
+        replyMessage: null,
       };
       sendMessage(newMessage);
     } catch(err) {
@@ -394,7 +398,8 @@ const ChatPage = () => {
       senderId: refUser.current.id,
       chatId: refSelectedChat.current,
       chat: null,
-      // replyId: replyActiveMessage,
+      replyId: replyActiveMessage.id,
+      replyMessage: null,
     };
     setInputText('');
     setIsReplyActive(false);
@@ -418,10 +423,9 @@ const ChatPage = () => {
     const chatIndex = getChatIndexByChatId(refSelectedChat.current);
     const messageIndex = refChats.current[chatIndex].chatMessages.findIndex((messag) => messag.id === message.id);
     let messageReplyIndex = null;
-    messageReplyIndex = messageIndex;
-    // if(message.replyId){
-    //   messageReplyIndex = refChats.current[chatIndex].chatMessages.findIndex((messag) => messag.id === message.replyId);
-    // }
+    if(message.replyId){
+      messageReplyIndex = refChats.current[chatIndex].chatMessages.findIndex((messag) => messag.id === message.replyId);
+    }
     const isCurrentUser = message.sender.id === refUser.current.id;
     const isDeleted = message.isDeleted;
     const isEdited = message.isEdited;
@@ -462,7 +466,7 @@ const ChatPage = () => {
               <Typography fontFamily="shabnam" fontSize="13px" sx={{whiteSpace: 'nowrap',cursor: 'pointer',marginBottom: '2px',padding: '2px',border: '3px solid lightblue',backgroundColor: 'lightblue',borderRadius: '7px',textOverflow: 'ellipsis',overflow: 'hidden',}}
                onClick={() => goToReply(chatIndex, messageReplyIndex)}>
                 در پاسخ به
-                {' : ' + refChats.current[chatIndex].chatMessages[messageReplyIndex].message}
+                {' : ' + ( refChats.current[chatIndex].chatMessages[messageReplyIndex].isDeleted ? 'This message was deleted' : refChats.current[chatIndex].chatMessages[messageReplyIndex].message )}
               </Typography>
             </Grid>
           </Grid>}
@@ -574,7 +578,7 @@ const ChatPage = () => {
                 <Grid item xs={12} sx={{overflow:'hidden', width: '200px'}}>
                   <Typography fontFamily="shabnam" fontSize="13px" sx={{whiteSpace: 'nowrap',cursor: 'pointer',marginBottom: '2px',padding: '2px',border: '3px solid lightblue',backgroundColor: 'lightblue',borderRadius: '7px',textOverflow: 'ellipsis',overflow: 'hidden',}}>
                     در پاسخ به
-                    {' : ' + replyActiveMessage.message}
+                    {' : ' + ( replyActiveMessage.isDeleted ? 'This message was deleted' : replyActiveMessage.message )}
                   </Typography>
                 </Grid>
               </Grid>}
