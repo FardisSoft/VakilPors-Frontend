@@ -233,12 +233,14 @@ const AddNewCase = () => {
 
             <Typography variant="h4" sx={{fontFamily: "shabnam"}} padding={4}>افزودن پرونده جدید</Typography>
                 <hr></hr>
+                
 
-                <div class="circle-icon big bgc-3 tc-white text-bold visible-xs-inline-block flip mr -mt">1</div>
 
-                <Typography variant="h6" sx={{fontFamily: "shabnam"}} padding={4}>چه کاری می‌خواهید برای شما انجام شود؟</Typography>
-                {jobLists()}
 
+                  <div class="circle-icon big bgc-3 tc-white text-bold visible-xs-inline-block flip mr -mt">1</div>
+                  <Typography variant="h6" sx={{fontFamily: "shabnam"}} padding={4}>چه کاری می‌خواهید برای شما انجام شود؟</Typography>
+                  {jobLists()}
+                
                 <br></br>
                 <br></br>
 
