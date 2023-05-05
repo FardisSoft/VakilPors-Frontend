@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import useStateRef from 'react-usestateref';
-import { Avatar, Box, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, TextField, InputAdornment, Typography } from '@mui/material';
-import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined, DoneAll, Cancel } from '@mui/icons-material';
+import { Avatar, Box, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, TextField, InputAdornment, Typography, Tooltip } from '@mui/material';
+import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined, DoneAll, Cancel, Reply } from '@mui/icons-material';
 import moment from 'moment';
 import { Helmet } from 'react-helmet-async';
 import * as signalR from '@microsoft/signalr';
@@ -18,17 +18,20 @@ const ChatPage = () => {
   const [chats, setChats, refChats] = useStateRef([]);
   const [user, setUser, refUser] = useStateRef(null);
   const [connection, setConnection, refConnection] = useStateRef(null);
-  const [inputText, setInputText] = useState('');
 
+  const [inputText, setInputText] = useState('');
   const inputRef = useRef(null);
+
 	const [isEditActive, setIsEditActive] = useState(false);
 	const [editActiveMessage, setEditActiveMessage] = useState('');
+  const [isReplyActive, setIsReplyActive] = useState(false);
+	const [replyActiveMessage, setReplyActiveMessage] = useState('');
 
+  const lastMessageRef = useRef(null);
   const messageRefs = useRef([]);
-  messageRefs.current.push(React.createRef()); //// 😢😢😢 naaaaaaaaaaaaaaaaaaaaaaaaaaaaa 😭😭😭
+  messageRefs.current.push(React.createRef());
 
   const [pageWidth, setPageWidth] = useState(window.innerWidth);
-  const lastMessageRef = useRef(null);
 	const { getAccessToken } = useAuth();
   const navigate = useNavigate();
 
@@ -270,7 +273,7 @@ const ChatPage = () => {
   const handleEnter = (event) => {
     if(event.key == 'Enter'){
       handleInputChange(event);
-      handleSendClick();
+      isEditActive ? handleEditMessage() : isReplyActive ? handleReplyMessage() : handleSendClick();
     }
   };
 
@@ -368,6 +371,41 @@ const ChatPage = () => {
     }
   };
 
+  const handleReplyClick = (message) => {
+		setIsReplyActive(true);
+		setReplyActiveMessage(message);
+		inputRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  const handleReplyMessage = () => {
+    if (inputText.trim() === '') {
+      showErrorMessage('لطفا متن پاسخ را وارد کنید و سپس دکمه ارسال را بزنید.');
+      return;
+    }
+    const newMessage = {
+      id: 0,
+      sender: null,
+      message: inputText.trim(),
+      sendTime: new Date().toISOString(),
+      isDeleted: false,
+      isEdited: false,
+      isFile: false,
+      isRead: false,
+      senderId: refUser.current.id,
+      chatId: refSelectedChat.current,
+      chat: null,
+      // replyId: replyActiveMessage,
+    };
+    setInputText('');
+    setIsReplyActive(false);
+    sendMessage(newMessage);
+  };
+
+  const handleCancelReplyMessage = () => {
+    setIsReplyActive(false);
+		setInputText('');
+  };
+
   const goToReply = (chatIndex, messageReplyIndex) => {
     refChats.current[chatIndex].chatMessages[messageReplyIndex].ref.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
@@ -417,6 +455,7 @@ const ChatPage = () => {
           }),
         }}>
 
+          {/* reply message */}
           { messageReplyIndex != null &&
           <Grid container justifyContent="flex-start" borderBottom="1px solid gray" marginBottom="10px">
             <Grid item xs={12} sx={{overflow:'hidden', width: '200px'}}>
@@ -428,6 +467,7 @@ const ChatPage = () => {
             </Grid>
           </Grid>}
 
+          {/* name and avatar */}
           <Grid sx={{ display: 'flex', alignItems: 'center',}}>
             <Avatar src={message.sender.profileImageUrl} alt={message.sender.name} />
             <Grid marginRight={'10px'} container direction={'row'} display={'flex'} justifyContent={'space-around'}>
@@ -435,6 +475,7 @@ const ChatPage = () => {
             </Grid>
           </Grid>
 
+          {/* content */}
           <Grid sx={{ margin: '10px', whiteSpace: 'pre-wrap', wordBreak: 'break-word',}}>
             <Typography fontFamily={'shabnam'} color={isDeleted ? 'red' : 'black'}>
               { isDeleted ? 'This message was deleted' : 
@@ -452,7 +493,14 @@ const ChatPage = () => {
             </Typography>
           </Grid>
 
+          {/* icons and date */}
           <Grid container direction={'row'} display={'flex'} justifyContent={'flex-start'}>
+            {!isCurrentUser && 
+              <Tooltip title="پاسخ دادن">
+                <IconButton size="small" onClick={() => handleReplyClick(message)}>
+                  <Reply />
+                </IconButton>
+              </Tooltip>}
             {!isCurrentUser || isDeleted ? null : (
               <>
               {!isFile && <>
@@ -482,10 +530,14 @@ const ChatPage = () => {
 
     <Grid container direction={{ xs: 'column', sm: 'row' }} height={{xs:'auto', sm:'calc(100vh - 65px)'}} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', display:'flex', justifyContent:'space-around', alignItems:'stretch'}}>
       <Grid container direction={'column'} width={{ xs: '100%', sm: '20%' }} sx={{ borderBottom: { xs: '1px solid grey', sm: '0px solid grey' } }}>
+        
+        {/* show user him/herself info */}
         {refUser.current && <Grid display="flex" flexDirection="column" alignItems="center" justifyContent={'center'} padding={1} border={'1px solid grey'} borderRadius={2}>
           <Avatar src={refUser.current.profileImageUrl} alt={refUser.current.name} />
           <Typography>{refUser.current.name}</Typography>
         </Grid>}
+
+        {/* show chats (persons that user has chatted with) */}
         <Grid container direction={'column'} height={'80%'} >
         {/* border={'1px solid grey'} borderRadius={2} */}
           <List sx={{height: '100%', flex: {xs:'0 0 auto', sm:'1 0 0'}, overflow: 'overlay'}}>
@@ -499,18 +551,34 @@ const ChatPage = () => {
             ))}
           </List>
         </Grid>
+
       </Grid> 
+
       {pageWidth > 1255 && <Divider color='black' orientation="vertical" variant="middle" flexItem/>}
-      <Grid height={'100%'} width={{ xs: '100%', sm: '80%' }} maxWidth={1000} sx={{ display: 'flex', flexDirection: 'column'}}>
+      
+      <Grid height={isReplyActive ? '95%' : '100%'} width={{ xs: '100%', sm: '80%' }} maxWidth={1000} sx={{ display: 'flex', flexDirection: 'column'}}>
         {refSelectedChat.current ? (
           <>
+            {/* show messages */}
             <Grid container direction={'column'} height={'85%'} >
             {/* border={'1px solid grey'} borderRadius={2} */}
               <Grid height={'100%'} sx={{ flex: '0 0 auto', overflow: 'overlay'}}>
                 {refChats.current && refChats.current[getChatIndexByChatId(refSelectedChat.current)].chatMessages.map((message,index) => renderMessage(message,index))}
               </Grid>
             </Grid>
-            <Grid sx={{ display: 'flex', alignItems: 'center', padding: '10px',}}>
+
+            {/* input field */}
+            <Grid sx={{ display: 'flex', alignItems: 'center', padding: '10px', flexDirection: 'column'}}>
+
+              { isReplyActive && <Grid container justifyContent="flex-start">
+                <Grid item xs={12} sx={{overflow:'hidden', width: '200px'}}>
+                  <Typography fontFamily="shabnam" fontSize="13px" sx={{whiteSpace: 'nowrap',cursor: 'pointer',marginBottom: '2px',padding: '2px',border: '3px solid lightblue',backgroundColor: 'lightblue',borderRadius: '7px',textOverflow: 'ellipsis',overflow: 'hidden',}}>
+                    در پاسخ به
+                    {' : ' + replyActiveMessage.message}
+                  </Typography>
+                </Grid>
+              </Grid>}
+
               <TextField sx={{ flexGrow: 1 }}
                 ref={inputRef}
                 variant="outlined"
@@ -528,6 +596,13 @@ const ChatPage = () => {
                         <Edit />
                       </IconButton>
                       <IconButton size="small" onClick={handleCancelEditMessage}>
+                        <Cancel />
+                      </IconButton>
+                      </> : isReplyActive ? <>
+                      <IconButton size="small" onClick={handleReplyMessage}>
+                        <Reply />
+                      </IconButton>
+                      <IconButton size="small" onClick={handleCancelReplyMessage}>
                         <Cancel />
                       </IconButton>
                       </> : <>
