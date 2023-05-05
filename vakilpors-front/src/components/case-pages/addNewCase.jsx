@@ -20,13 +20,38 @@ import { Paper } from "@mui/material";
 import LooksOneIcon from '@mui/icons-material/LooksOne';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import useStateRef from 'react-usestateref';
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import ReactDOM from 'react-dom';
+import {Editor, EditorState} from 'draft-js';
+import 'draft-js/dist/Draft.css';
+import { MuiFileInput } from 'mui-file-input'
+
+import Box from '@mui/material/Box';
+import Input from '@mui/material/Input';
+import FilledInput from '@mui/material/FilledInput';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+
 
 const filter = createFilterOptions();
+
+
 
 const AddNewCase = () => {
 
 
   const [getdetail, setdetail, refdetail] = useStateRef({});
+
+  const [text, setText] = useState('');
+
+  const handleTextChange = (event) => {
+    const textValue = event.target.value;
+    setText(textValue);
+
+  };
+  
 
 
   const titles = [
@@ -56,6 +81,84 @@ const AddNewCase = () => {
     { title: 'سربازی و نظام وظیفه' },
     
   ];
+
+  const jobs = [
+
+    { job: 'مشاوره حضوری' },
+    { job: 'مشاوره تلفنی' },
+    { job: 'مشاوره آنلاین' },
+    { job: 'وکالت' },
+    { job: 'داوری' },
+
+  ]
+
+  const handleDescriptChange = (file) => {
+    setdetail({
+      ...refdetail.current,
+      ['Descript']: file,
+    });
+  }
+
+
+  const jobLists = () => {
+    return (
+      <Autocomplete 
+        value={refdetail.current.job}
+        onChange={(event, newValue) => {
+          if (typeof newValue === 'string') {
+            setdetail({
+              ...refdetail.current,
+              ['job']: newValue,
+            });
+          } else if (newValue && newValue.inputValue) {
+            setdetail({
+              ...refdetail.current,
+              ['job']: newValue.inputValue,
+            });
+          } else if(newValue && newValue.job) {
+            setdetail({
+              ...refdetail.current,
+              ['job']: newValue.job,
+            });
+          }
+        }}
+        filterOptions={(options, params) => {
+          const filtered = filter(options, params);
+          const { inputValue } = params;
+          const isExisting = options.some((option) => inputValue === option.job);
+          if (inputValue !== '' && !isExisting) {
+            filtered.push({
+              inputValue,
+              job: `Add "${inputValue}"`,
+            });
+          }
+          return filtered;
+        }}
+        selectOnFocus
+        clearOnBlur
+        handleHomeEndKeys
+        id="free-solo-with-text-demo"
+        options={jobs}
+        getOptionLabel={(option) => {
+          // Value selected with enter, right from the input
+          if (typeof option === 'string') {
+            return option;
+          }
+          // Add "xxx" option created dynamically
+          if (option.inputValue) {
+            return option.inputValue;
+          }
+          // Regular option
+          return option.job;
+        }}
+        renderOption={(props, option) => <li {...props}>{option.job}</li>}
+        freeSolo
+        renderInput={(params) => (
+          <TextField sx={{border:"none"}}{...params}/>
+        )}
+      />
+    );
+  }
     
   const titleList = () => {
     return (
@@ -125,16 +228,94 @@ const AddNewCase = () => {
 
 
 
-    <Grid display={"flex"} flexDirection={"column"} margin={"auto"} alignItems={"center"} justifyContent={"center"} width={"100%"} height={"100vh"} backgroundColor={'#ABC0C0'}>
-        <Grid flexDirection={'column'} height={"100%"} width={"100vh"} borderRadius={"10px"} padding={"10px"} paddingTop={"50px"} paddingX={"50px"} paddingBottom={"50px"} display={"flex"} position={"relative"} m={"2%"} justifyContent={"center"} item xs={4} spacing={5} alignSelf={"center"} backgroundColor={'white'}>
+    <Grid display={"flex"} flexDirection={"column"} margin={"auto"} alignItems={"center"} justifyContent={"center"} width={"100%"} height={"100%"} backgroundColor={'#ABC0C0'}>
+        <Grid flexDirection={'column'} height={"100%"}  width={"80%"} borderRadius={"10px"} padding={"10px"} paddingTop={"50px"} paddingX={"50px"} paddingBottom={"50px"} display={"flex"} position={"relative"} m={"2%"} justifyContent={"center"} item xs={4} spacing={5} alignSelf={"center"} backgroundColor={'white'}>
 
             <Typography variant="h4" sx={{fontFamily: "shabnam"}} padding={4}>افزودن پرونده جدید</Typography>
                 <hr></hr>
-                
+
                 <div class="circle-icon big bgc-3 tc-white text-bold visible-xs-inline-block flip mr -mt">1</div>
 
                 <Typography variant="h6" sx={{fontFamily: "shabnam"}} padding={4}>چه کاری می‌خواهید برای شما انجام شود؟</Typography>
+                {jobLists()}
+
+                <br></br>
+                <br></br>
+
+                <div class="circle-icon big bgc-3 tc-white text-bold visible-xs-inline-block flip mr -mt">2</div>
+
+                <Typography variant="h6" sx={{fontFamily: "shabnam"}} padding={4}>پرونده شما در چه زمینه ای است؟</Typography>
                 {titleList()}
+
+
+                <br></br>
+                <br></br>
+
+                <div class="circle-icon big bgc-3 tc-white text-bold visible-xs-inline-block flip mr -mt">3</div>
+
+                <Typography variant="h6" sx={{fontFamily: "shabnam"}} padding={4}>پرونده خود را توضیح دهید : </Typography>
+
+
+
+                <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
+                <textarea 
+                  style={{ 
+                    fontSize: '18px', 
+                    lineHeight: '1.5',
+                    width: '100%',
+                    minHeight: '200px'
+                  }} 
+                  value={text} 
+                  onChange={handleTextChange}
+                />
+              </div>
+              <br></br>
+              <br></br>
+              
+              <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
+
+                <label style={{ position: "relative", top: "5px" }}><p>توضیحات پرونده</p></label>
+                <MuiFileInput fullWidth margin='10px' value={refdetail.current.Descript} onChange={handleDescriptChange} />
+
+              </div>
+              <br></br>
+              <br></br>
+
+              <div class="circle-icon big bgc-3 tc-white text-bold visible-xs-inline-block flip mr -mt">4</div>
+              <Typography variant="h6" sx={{fontFamily: "shabnam"}} padding={4}>بودجه شما چقدر است ؟  </Typography>
+
+              <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                <div>
+                  <FormControl fullWidth sx={{ m: 1 }}>
+                    <InputLabel htmlFor="outlined-adornment-amount">حداقل</InputLabel>
+                    <OutlinedInput
+                      id="outlined-adornment-amount"
+                      startAdornment={<InputAdornment position="start">تومان</InputAdornment>}
+                      label="Amount"
+                    />
+                  </FormControl>
+                </div>
+              </Box>
+
+              <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                <div>
+                  <FormControl fullWidth sx={{ m: 1 }}>
+                    <InputLabel htmlFor="outlined-adornment-amount">حداکثر</InputLabel>
+                    <OutlinedInput
+                      id="outlined-adornment-amount"
+                      startAdornment={<InputAdornment position="start">تومان</InputAdornment>}
+                      label="Amount"
+                    />
+                  </FormControl>
+                </div>
+              </Box>
+
+              <br></br>
+              <br></br>
+              <button type="submit" class="btn btn-p-primary btn-lg btn-block" id="create-new-project">
+              ایجاد پرونده  
+              </button>
+
         </Grid>
     </Grid>
 

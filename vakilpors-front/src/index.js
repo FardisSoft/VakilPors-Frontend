@@ -26,8 +26,6 @@ import ResponseTransaction from './components/premium-page/ResponseTransaction';
 
 import AddNewCase from './components/case-pages/addNewCase';
 
-
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -53,7 +51,6 @@ root.render(
               <Route path="/PremiumPage" element={<Sidebar component={PremiumPage}/>}/>
               <Route path="/ResponseTransaction" element={<ResponseTransaction />}/>
               <Route path="/new-case" element={<AddNewCase />}/>
-              
               
 
           </Routes>
