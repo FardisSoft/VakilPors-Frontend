@@ -255,6 +255,23 @@ const AddNewCase = () => {
 
                 <div class="circle-icon big bgc-3 tc-white text-bold visible-xs-inline-block flip mr -mt">3</div>
 
+
+                <label style={{ position: "relative", top: "5px" }}><p>نام پرونده</p></label>
+                <div style={{ border: '1px solid #ccc', borderRadius: '5px' }}>
+                <input
+                  className="input100"
+                  type="text"
+                  name="case.name"
+                  // onChange={setUserInfo}
+                  margin="normal" />
+                </div>
+
+                <br></br>
+                <br></br>
+
+              
+                <div class="circle-icon big bgc-3 tc-white text-bold visible-xs-inline-block flip mr -mt">4</div>
+
                 <Typography variant="h6" sx={{fontFamily: "shabnam"}} padding={4}>پرونده خود را توضیح دهید : </Typography>
 
 
@@ -283,7 +300,7 @@ const AddNewCase = () => {
               <br></br>
               <br></br>
 
-              <div class="circle-icon big bgc-3 tc-white text-bold visible-xs-inline-block flip mr -mt">4</div>
+              <div class="circle-icon big bgc-3 tc-white text-bold visible-xs-inline-block flip mr -mt">5</div>
               <Typography variant="h6" sx={{fontFamily: "shabnam"}} padding={4}>بودجه شما چقدر است ؟  </Typography>
 
               <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
