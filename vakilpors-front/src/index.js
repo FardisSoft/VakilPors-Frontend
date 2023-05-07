@@ -20,6 +20,7 @@ import ForgotPassword from './components/authentication/ForgotPassword';
 import ResetPassword from './components/authentication/ResetPassword';
 import ActivationAccount from './components/authentication/ActivationAccount';
 import ChatPage from './components/chatPage';
+import Rate from './components/Rate';
 
 import PremiumPage from './components/premium-page/PremiumPage';
 import ResponseTransaction from './components/premium-page/ResponseTransaction';
@@ -50,6 +51,7 @@ root.render(
               <Route path="/chatPage" element={<Sidebar component={ChatPage}/>}/>
               <Route path="/PremiumPage" element={<Sidebar component={PremiumPage}/>}/>
               <Route path="/payment/verify" element={<ResponseTransaction />}/>
+              <Route path="/Rate" element={<Sidebar component={Rate}/>}/>
               
 
           </Routes>

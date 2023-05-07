@@ -420,7 +420,7 @@ const ChatPage = () => {
   };
 
   const handleRateClick = () => {
-
+    navigate('/Rate');
   };
 
 ///////////////////////////////////////////////////////////// components
