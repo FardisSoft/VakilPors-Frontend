@@ -243,6 +243,7 @@ const Register = () => {
                 <div className="form-row-last">
                     <input type="submit" onClick={handleSubmit} name="register" className="register" value="بریم!"/>
                     {/* for test change submit with Button */}
+                    <label style={{marginTop:'20px'}} className="container"><p className="text" style={{color:errorColor}}>{errorMessage}</p></label>
                     <ToastContainer />
 
                 </div>
