@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import useStateRef from 'react-usestateref';
 import { Avatar, Box, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, TextField, InputAdornment, Typography, Tooltip } from '@mui/material';
-import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined, DoneAll, Cancel, Reply } from '@mui/icons-material';
+import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined, DoneAll, Cancel, Reply, RateReview } from '@mui/icons-material';
 import moment from 'moment';
 import { Helmet } from 'react-helmet-async';
 import * as signalR from '@microsoft/signalr';
@@ -33,7 +33,7 @@ const ChatPage = () => {
   messageRefs.current.push(React.createRef());
 
   const [pageWidth, setPageWidth] = useState(window.innerWidth);
-	const { getAccessToken } = useAuth();
+	const { refUserRole, getAccessToken } = useAuth();
   const navigate = useNavigate();
 
 //////////////////////////////////////////////////////////// util functions
@@ -419,6 +419,10 @@ const ChatPage = () => {
     refChats.current[chatIndex].chatMessages[messageReplyIndex].ref.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
 
+  const handleRateClick = () => {
+
+  };
+
 ///////////////////////////////////////////////////////////// components
 
   const renderMessage = (message,index) => {
@@ -555,6 +559,9 @@ const ChatPage = () => {
                   <Avatar src={chat.users[getUserIndex(chat.id)].profileImageUrl} alt={chat.users[getUserIndex(chat.id)].name} />
                 </ListItemAvatar>
                 <ListItemText primary={chat.users[getUserIndex(chat.id)].name} />
+                { (refUserRole.current === "User" && chat.users[getUserIndex(chat.id)].lawyerId != null && chat.chatMessages.length > 9) && <IconButton size="small" onClick={handleRateClick}>
+                  <RateReview />
+                </IconButton>}
               </ListItem>
             ))}
           </List>
