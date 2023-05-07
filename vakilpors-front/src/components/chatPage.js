@@ -540,8 +540,8 @@ const ChatPage = () => {
       <title>Chat Page</title>
     </Helmet>
 
-    <Grid container direction={{ xs: 'column', sm: 'row' }} height={{xs:'auto', sm:'calc(100vh - 65px)'}} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', display:'flex', justifyContent:'space-around', alignItems:'stretch'}}>
-      <Grid container direction={'column'} width={{ xs: '100%', sm: '20%' }} sx={{ borderBottom: { xs: '1px solid grey', sm: '0px solid grey' } }}>
+    <Grid container direction={{ xs: 'column', md: 'row' }} height={{xs:'auto', md:'calc(100vh - 65px)'}} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', display:'flex', justifyContent:'space-around', alignItems:'stretch'}}>
+      <Grid container direction={'column'} width={{ xs: '100%', md: '20%' }} sx={{ borderBottom: { xs: '1px solid grey', md: '0px solid grey' } }}>
         
         {/* show user him/herself info */}
         {refUser.current && <Grid display="flex" flexDirection="column" alignItems="center" justifyContent={'center'} padding={1} border={'1px solid grey'} borderRadius={2}>
@@ -552,7 +552,7 @@ const ChatPage = () => {
         {/* show chats (persons that user has chatted with) */}
         <Grid container direction={'column'} height={'80%'} >
         {/* border={'1px solid grey'} borderRadius={2} */}
-          <List sx={{height: '100%', flex: {xs:'0 0 auto', sm:'1 0 0'}, overflow: 'overlay'}}>
+          <List sx={{height: '100%', flex: {xs:'0 0 auto', md:'1 0 0'}, overflow: 'overlay'}}>
             {refChats.current.map((chat) => (
               <ListItem sx={{cursor:'pointer',...(refSelectedChat.current === chat.id && {backgroundColor:'skyblue',borderRadius:2})}} key={chat.id} onClick={() => handleChatSelect(chat.id)} >
                 <ListItemAvatar>
@@ -571,13 +571,13 @@ const ChatPage = () => {
 
       {pageWidth > 1255 && <Divider color='black' orientation="vertical" variant="middle" flexItem/>}
       
-      <Grid height={isReplyActive ? '95%' : '100%'} width={{ xs: '100%', sm: '80%' }} maxWidth={1000} sx={{ display: 'flex', flexDirection: 'column'}}>
+      <Grid height={isReplyActive ? '95%' : '100%'} width={{ xs: '100%', md: '80%' }} maxWidth={1000} sx={{ display: 'flex', flexDirection: 'column'}}>
         {refSelectedChat.current ? (
           <>
             {/* show messages */}
-            <Grid container direction={'column'} height={'85%'} >
+            <Grid container direction={'column'} height={{xs:'auto',md:'85%'}} >
             {/* border={'1px solid grey'} borderRadius={2} */}
-              <Grid height={'100%'} sx={{ flex: '0 0 auto', overflow: 'overlay'}}>
+              <Grid height={{xs:'auto',md:'85%'}} sx={{ flex: '0 0 auto', overflow: 'overlay'}}>
                 {refChats.current && refChats.current[getChatIndexByChatId(refSelectedChat.current)].chatMessages.map((message,index) => renderMessage(message,index))}
               </Grid>
             </Grid>
