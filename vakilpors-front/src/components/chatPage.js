@@ -26,6 +26,7 @@ const ChatPage = () => {
 	const [editActiveMessage, setEditActiveMessage] = useState('');
   const [isReplyActive, setIsReplyActive] = useState(false);
 	const [replyActiveMessage, setReplyActiveMessage] = useState('');
+  const [activeChats, setActiveChats] = useState([]);
 
   const lastMessageRef = useRef(null);
   const messageRefs = useRef([]);
@@ -279,11 +280,14 @@ const ChatPage = () => {
 
   const handleChatSelect = (chatId) => {
     setSelectedChat(chatId);
-    addToChat(chatId);
-    const chatIndex = getChatIndexByChatId(chatId);
-    const numberOfMessages = refChats.current[chatIndex].chatMessages.length;
-    if(numberOfMessages > 0 && refChats.current[chatIndex].chatMessages[numberOfMessages - 1].sender.id != refUser.current.id){
-      readChatMessage(chatId);
+    if(!activeChats.includes(chatId)){
+      setActiveChats([...activeChats,chatId]);
+      addToChat(chatId);
+      const chatIndex = getChatIndexByChatId(chatId);
+      const numberOfMessages = refChats.current[chatIndex].chatMessages.length;
+      if(numberOfMessages > 0 && refChats.current[chatIndex].chatMessages[numberOfMessages - 1].sender.id != refUser.current.id){
+        readChatMessage(chatId);
+      }
     }
     showLastMessage();
   };
