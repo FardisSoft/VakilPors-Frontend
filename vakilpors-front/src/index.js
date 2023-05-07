@@ -51,7 +51,7 @@ root.render(
               <Route path="/chatPage" element={<Sidebar component={ChatPage}/>}/>
               <Route path="/PremiumPage" element={<Sidebar component={PremiumPage}/>}/>
               <Route path="/payment/verify" element={<ResponseTransaction />}/>
-              <Route path="/Rate" element={<Sidebar component={Rate}/>}/>
+              <Route path="/Rate/:LawyerId" element={<Sidebar component={Rate}/>}/>
               
 
           </Routes>

@@ -7,11 +7,13 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Helmet } from 'react-helmet-async';
+import { useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
 
 const Rate = () => {
   const [value, setValue] = useState(0);
   const [comment, setComment] = useState("");
+  const { LawyerId } = useParams();
 
   const handleChange = (event) => {
     setValue(event.target.value);

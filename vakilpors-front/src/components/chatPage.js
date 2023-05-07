@@ -419,8 +419,8 @@ const ChatPage = () => {
     refChats.current[chatIndex].chatMessages[messageReplyIndex].ref.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
 
-  const handleRateClick = () => {
-    navigate('/Rate');
+  const handleRateClick = (lawyerId) => {
+    navigate(`/Rate/${lawyerId}`);
   };
 
 ///////////////////////////////////////////////////////////// components
@@ -559,7 +559,7 @@ const ChatPage = () => {
                   <Avatar src={chat.users[getUserIndex(chat.id)].profileImageUrl} alt={chat.users[getUserIndex(chat.id)].name} />
                 </ListItemAvatar>
                 <ListItemText primary={chat.users[getUserIndex(chat.id)].name} />
-                { (refUserRole.current === "User" && chat.users[getUserIndex(chat.id)].lawyerId != null && chat.chatMessages.length > 9) && <IconButton size="small" onClick={handleRateClick}>
+                { (refUserRole.current === "User" && chat.users[getUserIndex(chat.id)].lawyerId != null && chat.chatMessages.length > 9) && <IconButton size="small" onClick={() => handleRateClick(chat.users[getUserIndex(chat.id)].lawyerId)}>
                   <RateReview />
                 </IconButton>}
               </ListItem>
