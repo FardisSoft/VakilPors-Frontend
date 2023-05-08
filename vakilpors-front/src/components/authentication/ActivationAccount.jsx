@@ -89,7 +89,7 @@ const ActivationAccount = () => {
              console.log(phoneNumber);
              console.log(password);
 
-             const success = await login({ "phoneNumber": phoneNumber, "password": password});
+             const success = await login(phoneNumber, password);
              
              console.log(phoneNumber);
              //const success = "success";

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from 'react-helmet-async';
-import { useAuth } from "../../context/AuthProvider";
+import { Grid, TextField, Typography, Slide, Button, InputAdornment, IconButton } from '@mui/material';
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Grid, TextField, Typography, Slide, Button, InputAdornment, IconButton } from '@mui/material';
+import { useAuth } from "../../context/AuthProvider";
 import smilinglawyer from '../../assests/images/lawyer_smiler.jpg';
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 // mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
@@ -24,15 +24,9 @@ const theme = createTheme({
 // mui rtl
 
 const Login = () => {
-
-    const [errorMessage, setErrorMessage] = useState("");
-    const [errorColor, setErrorColor] = useState("red");
     
-    const [getUser, setUser] = useState({
-        phoneNumber: "",
-        password: ""
-    });
-
+    const [password, setPassword] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
     const [show, setShow] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -73,32 +67,23 @@ const Login = () => {
 
     const navigate = useNavigate();
 
-    const createUser = async (event) => {
+    const handleLoginClick = async (event) => {
         event.preventDefault();
-        if (!getUser.phoneNumber || !getUser.password) {
-            setErrorMessage("لطفا شماره موبایل یا رمز عبور را وارد کنید.");
+        if (phoneNumber === '' || password === '') {
+            showErrorMessage("لطفا شماره موبایل و رمز عبور را وارد کنید.");
             return;
         }
         else {
-            setErrorMessage(" ");
-            const success = await login(getUser);
+            const success = await login(phoneNumber, password);
             if(success === "success"){
                 showSuccesMessage("با موفقیت وارد شدید.");
                 await delay(1000);
                 navigate("/");
-                setUser({});
             }
             else{
                 showErrorMessage("ورود با خطا مواجه شد.");
             }
         }
-    };
-
-    const setUserInfo = (event) => {
-        setUser({
-            ...getUser,
-            [event.target.name]: event.target.value,
-        });
     };
 
     const delay = ms => new Promise(
@@ -141,12 +126,9 @@ const Login = () => {
                 </Slide>
                 <Slide in={show} direction="left">
                     <TextField
-                      id="phoneNumber"
                       label="شماره موبایل"
                       type="text"
-                      name="phoneNumber"
-                      value={getUser.phoneNumber}
-                      onChange={setUserInfo}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
                       variant="outlined"
                       inputProps={{ dir: "rtl", style: { fontFamily:"shabnam", fontSize: "17px",color:"black",} }}
                       InputLabelProps={{ align: "right", dir: "rtl", style: { fontFamily:"shabnam", fontSize: "17px",color:"black",} }}
@@ -160,12 +142,9 @@ const Login = () => {
                 </Slide>
                 <Slide in={show} direction="right">
                     <TextField
-                      id="password"
                       label="رمز عبور"
                       type={showPassword ? "text" : "password"}
-                      name="password"
-                      value={getUser.password}
-                      onChange={setUserInfo}
+                      onChange={(e) => setPassword(e.target.value)}
                       variant="outlined"
                       InputProps={{ dir: "rtl", style: { fontFamily:"shabnam", fontSize: "17px",color:"black",},
                       endAdornment: (
@@ -189,14 +168,13 @@ const Login = () => {
                 </Slide>
                 <Slide in={show} direction="up">
                     <Grid container direction={{xs:'column',sm:'row'}} sx={{ display: "flex", m: 2, justifyContent:"center" }}>
-                        <Button size={'large'} variant="contained" color="primary" sx={{fontsize:"18px",fontFamily:"shabnam"}} >
+                        <Button size={'large'} variant="contained" color="primary" sx={{fontsize:"18px",fontFamily:"shabnam"}} onClick={handleLoginClick}>
                             ورود
                         </Button>
                     </Grid>
                 </Slide>
                 <Slide in={show} direction="up">
                     <Grid container direction="column" alignItems="center">
-                        <Typography sx={{ color: errorColor }}>{errorMessage}</Typography>
                         <Typography sx={{ textAlign: "center", fontFamily:"shabnam", align:"center", color:"black" }}>
                             اکانت ندارید؟ <Link to="/Register">ثبت نام کنید!</Link>
                         </Typography>

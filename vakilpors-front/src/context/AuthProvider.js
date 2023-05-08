@@ -33,11 +33,11 @@ const AuthProvider = ({ children }) => {
         }
     };
 
-    const login = async (getUser) => {
+    const login = async (phoneNumber, password) => {
         const url = BASE_API_ROUTE + 'Auth/login';
         const data = {
-            "phoneNumber": getUser.phoneNumber,
-            "password": getUser.password
+            "phoneNumber": phoneNumber,
+            "password": password
         }
         try{
             const response = await axios.post(url,data);
