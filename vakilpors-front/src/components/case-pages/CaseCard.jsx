@@ -40,13 +40,15 @@ function card(title, nameOfCase, typeOfCase, minCash, maxCash) { (
   )}
 
 
-export default function OutlinedCard() {
+export default function OutlinedCard({items:[]}) {
   return (
-    
-          
+    {items.map((x)=>(
     <Box sx={{fontFamily:'shabnam', direction:'rtl', minWidth: 300 }}>
-        <Card variant="outlined">{card}</Card>
+        <Card variant="outlined">{card()}</Card>
     </Box>
+
+    ))}
+          
 
   );
 }

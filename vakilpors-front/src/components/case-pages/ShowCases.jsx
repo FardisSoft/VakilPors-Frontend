@@ -39,6 +39,24 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 
 
+
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+import PrintIcon from '@mui/icons-material/Print';
+import ShareIcon from '@mui/icons-material/Share';
+
+
+
+const actions = [
+    { icon: <FileCopyIcon />, name: 'Copy' },
+    { icon: <SaveIcon />, name: 'Save' },
+    { icon: <PrintIcon />, name: 'Print' },
+    { icon: <ShareIcon />, name: 'Share' },
+  ];
+
 const bull = (
     <Box
       component="span"
@@ -47,26 +65,26 @@ const bull = (
       •
     </Box>
   );
+
   
-
-
-
-  const card = (
+const card = (
     <React.Fragment>
       <CardContent>
         <Typography sx={{fontFamily: "shabnam", fontSize: 14 }} color="text.secondary" gutterBottom>
-          مشاوره حضوری
+          مشاوره تلفنی
         </Typography>
         <Typography sx={{fontFamily: "shabnam"}} variant="h5" component="div">
-          پرونده طلاق نادر و سیمین
+          جدایی نادر از سیمین
         </Typography>
         <Typography sx={{fontFamily: "shabnam", mb: 1.5 }} color="text.secondary">
           خانواده
         </Typography>
         <Typography sx={{fontFamily: "shabnam"}} variant="body2">
+            
           حداقل بودجه : 5 میلیون تومان
           <br />
           حداکثر بودجه : 10 میلیون تومان
+
         </Typography>
       </CardContent>
       <CardActions>
@@ -75,7 +93,7 @@ const bull = (
     </React.Fragment>
   );
 
-
+  
 
 
 const ShowCases = () => {
@@ -87,16 +105,39 @@ const ShowCases = () => {
             <title>پرونده های من</title>
         </Helmet>
 
+
         <Grid display={"flex"} flexDirection={"column"} margin={"auto"} alignItems={"center"} justifyContent={"center"} width={"100%"} height={"100vh"} backgroundColor={'#ABC0C0'}>
             <Grid height={"100%"} width={"90%"} borderRadius={"10px"} padding={"10px"} paddingTop={"50px"} paddingX={"50px"} paddingBottom={"50px"} display={"flex"} position={"relative"} m={"2%"} justifyContent={"right"} item xs={4} spacing={5} alignSelf={"center"} backgroundColor={'white'}>
-                            
-                <Box sx={{fontFamily:'shabnam', direction:'rtl', minWidth: 300 }}>
-                <Card variant="outlined">{card}</Card>
-                </Box>
+                      
+                      
+    <Box sx={{ minWidth: 275 }}>
+      <Card variant="outlined">{card}</Card>
+    </Box>
+
+    
 
 
             </Grid>
+
+            
+    <Box sx={{ height: 320, transform: 'translateZ(0px)', flexGrow: 1 }}>
+      <SpeedDial
+        ariaLabel="SpeedDial basic example"
+        sx={{ position: 'absolute', bottom: 16, right: 16 }}
+        icon={<SpeedDialIcon />}
+      >
+        {actions.map((action) => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipTitle={action.name}
+          />
+        ))}
+      </SpeedDial>
+    </Box>
         </Grid>    
+
+        
         </>
     );
 }
