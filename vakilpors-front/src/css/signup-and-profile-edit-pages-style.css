@@ -177,8 +177,7 @@
 	width: 100%;
     padding: 11.5px 15px;
     border: 1px solid #e5e5e5;
-    border-top-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+	border-radius: 5px 15px 5px 15px;
     appearance: unset;
     -moz-appearance: unset;
     -webkit-appearance: unset;
