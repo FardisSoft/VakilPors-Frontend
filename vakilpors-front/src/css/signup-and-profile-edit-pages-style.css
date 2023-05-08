@@ -1,4 +1,3 @@
-
 .page-content {
 	width: 100%;
 	margin:  0 auto;
@@ -16,7 +15,7 @@
 	-moz-align-items: center;
 	-webkit-align-items: center;
 }
-.form-v4-content-ForEdit  {
+.form-v4-content  {
 	background: #fff;
 	width: 850px;
 	border-radius: 10px;
@@ -35,13 +34,13 @@
 	display: -webkit-flex;
 	font-family: 'shabnam', 'yekan';
 }
-.form-v4-content-ForEdit h2 {
+.form-v4-content h2 {
 	font-weight: 700;
 	font-size: 30px;
 	padding: 6px 0 0;
 	margin-bottom: 34px;
 }
-.form-v4-content-ForEdit .form-left {
+.form-v4-content .form-left {
 	background: #012780;
 	border-top-left-radius: 10px;
 	border-bottom-left-radius: 10px;
@@ -50,13 +49,13 @@
 	width: 50%;
 	color: #fff;
 }
-.form-v4-content-ForEdit .form-left p {
+.form-v4-content .form-left p {
 	font-size: 15px;
 	font-weight: 300;
 	line-height: 1.5;
 	color: #fff;
 }
-.form-v4-content-ForEdit .form-left .account {
+.form-v4-content .form-left .account {
 	background: #fff;
 	border-top-left-radius: 5px;
 	border-bottom-right-radius: 5px;
@@ -79,41 +78,41 @@
     -o-outline: none;
     -ms-outline: none;
 }
-.form-v4-content-ForEdit .form-left .account:hover {
+.form-v4-content .form-left .account:hover {
 	background: #e5e5e5;
 }
-.form-v4-content-ForEdit .form-left .form-left-last input {
+.form-v4-content .form-left .form-left-last input {
 	padding: 8px;
 }
-.form-v4-content-ForEdit .form-detail {
+.form-v4-content .form-detail {
     padding: 20px 40px;
 	position: relative;
 	width: 100%;
 }
-.form-v4-content-ForEdit .form-detail h2 {
+.form-v4-content .form-detail h2 {
 	color: #012780;
 }
-.form-v4-content-ForEdit .form-detail .form-group {
+.form-v4-content .form-detail .form-group {
 	display: flex;
 	display: -webkit-flex;
 	margin:  0 -8px;
 }
-.form-v4-content-ForEdit .form-detail .form-row {
+.form-v4-content .form-detail .form-row {
 	width: 100%;
 	position: relative;
 }
-.form-v4-content-ForEdit .form-detail .form-group .form-row.form-row-1 {
+.form-v4-content .form-detail .form-group .form-row.form-row-1 {
 	width: 50%;
 	padding: 0 8px;
 }
-.form-v4-content-ForEdit .form-detail label {
+.form-v4-content .form-detail label {
 	font-weight: 600;
 	font-size: 15px;
 	color: #666;
 	display: block;
 	margin-bottom: 8px;
 }
-.form-v4-content-ForEdit .form-detail .form-row label.valid {
+.form-v4-content .form-detail .form-row label.valid {
     position: absolute;
     top: 50%;
 	left: 2vw;
@@ -131,7 +130,7 @@
     -webkit-border-radius: 50%;
     background: #53c83c;
 }
-.form-v4-content-ForEdit .form-detail .form-row label.valid::after {
+.form-v4-content .form-detail .form-row label.valid::after {
 	content: "";
     position: absolute;
     left: 5px;
@@ -146,7 +145,7 @@
     -moz-transform: rotate(45deg);
     transform: rotate(45deg);
 }
-.form-v4-content-ForEdit .form-detail .form-row label.error {
+.form-v4-content .form-detail .form-row label.error {
 	padding-left: 0;
 	margin-left: 0;
     display: block;
@@ -156,7 +155,7 @@
     background: none;
     color: red;
 }
-.form-v4-content-ForEdit .form-detail .form-row label.error::after {
+.form-v4-content .form-detail .form-row label.error::after {
     content: "\f343";
     font-family: 'LineAwesome';
     position: absolute;
@@ -171,12 +170,12 @@
     font-size: 18px;
     font-weight: 900;
 }
-.form-v4-content-ForEdit .form-detail .input-text {
+.form-v4-content .form-detail .input-text {
 	margin-bottom: 27px;
 }
-.form-v4-content-ForEdit .form-detail input {
+.form-v4-content .form-detail input {
 	width: 100%;
-    padding: 25px 15px;
+    padding: 11.5px 15px;
     border: 1px solid #e5e5e5;
     border-top-left-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -199,18 +198,18 @@
     -o-box-sizing: border-box;
     -ms-box-sizing: border-box;
 }
-.form-v4-content-ForEdit .form-detail .form-row input:focus {
+.form-v4-content .form-detail .form-row input:focus {
 	border: 1px solid #53c83c;
 }
-.form-v4-content-ForEdit .form-detail .form-checkbox {
+.form-v4-content .form-detail .form-checkbox {
 	margin-top: 1px;
 	position: relative;
 }
-.form-v4-content-ForEdit .form-detail .form-checkbox input {
+.form-v4-content .form-detail .form-checkbox input {
 	position: absolute;
     opacity: 0;
 }
-.form-v4-content-ForEdit .form-detail .form-checkbox .checkmark {
+.form-v4-content .form-detail .form-checkbox .checkmark {
 	position: absolute;
     top: 13px;
     left: 0;
@@ -219,7 +218,7 @@
     border: 1px solid #ccc;
     cursor: pointer;
 }
-.form-v4-content-ForEdit .form-detail .form-checkbox .checkmark::after {
+.form-v4-content .form-detail .form-checkbox .checkmark::after {
 	content: "";
     position: absolute;
     left: 5px;
@@ -235,21 +234,21 @@
     transform: rotate(45deg);
     display: none;
 }
-.form-v4-content-ForEdit .form-detail .form-checkbox input:checked ~ .checkmark::after {
+.form-v4-content .form-detail .form-checkbox input:checked ~ .checkmark::after {
     display: block;
 }
-.form-v4-content-ForEdit .form-detail .form-checkbox p {
+.form-v4-content .form-detail .form-checkbox p {
     margin-left: 34px;
     color: #333;
     font-size: 14px;
     font-weight: 600;
 }
-.form-v4-content-ForEdit .form-detail .form-checkbox .text {
+.form-v4-content .form-detail .form-checkbox .text {
 	font-weight: 700;
 	color: #3786bd;
 	text-decoration: underline;
 }
-.form-v4-content-ForEdit .form-detail .register {
+.form-v4-content .form-detail .register {
 	background: #012780;
 	border-top-left-radius: 5px;
 	border-bottom-right-radius: 5px;
@@ -261,16 +260,16 @@
 	font-weight: 700;
 	font-size: 15px;
 }
-.form-v4-content-ForEdit .form-detail .register:hover {
+.form-v4-content .form-detail .register:hover {
 	background: #2f73a3;
 }
-.form-v4-content-ForEdit .form-detail .form-row-last input {
+.form-v4-content .form-detail .form-row-last input {
 	padding: 12.5px;
 }
 
 /* Responsive */
-@media screen and (max-width: 5000px) {
-	.form-v4-content-ForEdit {
+@media screen and (max-width: 990px) {
+	.form-v4-content {
 		margin: 180px 20px;
 		flex-direction:  column;
 		-o-flex-direction:  column;
@@ -278,21 +277,21 @@
 		-moz-flex-direction:  column;
 		-webkit-flex-direction:  column;
 	}
-	.form-v4-content-ForEdit .form-left {
+	.form-v4-content .form-left {
 		width: auto;
 		border-top-right-radius: 10px;
 		border-bottom-left-radius: 0;
 	}
-	.form-v4-content-ForEdit .form-detail {
+	.form-v4-content .form-detail {
 		padding: 30px 20px 30px 20px;
 	    width: auto;
 	}
 }
 @media screen and (max-width: 890px) {
-	.form-v4-content-ForEdit {
+	.form-v4-content {
 		width: auto;
 	}
-	.form-v4-content-ForEdit .form-detail .form-group {
+	.form-v4-content .form-detail .form-group {
 		flex-direction: column;
 		-o-flex-direction:  column;
 		-ms-flex-direction:  column;
@@ -300,7 +299,7 @@
 		-webkit-flex-direction:  column;
 		margin: 0;
 	}
-	.form-v4-content-ForEdit .form-detail .form-group .form-row.form-row-1 {
+	.form-v4-content .form-detail .form-group .form-row.form-row-1 {
 		width: 100%;
 		padding:  0;
 	}
