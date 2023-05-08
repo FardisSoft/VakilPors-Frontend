@@ -6,7 +6,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from "../../context/AuthProvider";
-import smilinglawyer from '../../assests/images/lawyer_smiler.jpg';
+import lawOnline from '../../assests/images/law-online.jpg';
 
 // mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
@@ -104,7 +104,7 @@ const Login = () => {
           alignItems: "center",
           justifyContent: "center",
           height: "100vh",
-          backgroundImage:`url(${smilinglawyer})`,
+          backgroundImage:`url(${lawOnline})`,
           backgroundRepeat:'no-repeat',
           backgroundSize:'cover',
           backgroundPosition:'center',
