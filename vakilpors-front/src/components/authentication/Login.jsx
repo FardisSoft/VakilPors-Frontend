@@ -52,7 +52,7 @@ const Login = () => {
     const showSuccesMessage = (payam) => {
         toast.success(payam, {
             position: "bottom-right",
-            autoClose: 1000,
+            autoClose: 3000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -77,7 +77,7 @@ const Login = () => {
             const success = await login(phoneNumber, password);
             if(success === "success"){
                 showSuccesMessage("با موفقیت وارد شدید.");
-                await delay(1000);
+                await delay(3000);
                 navigate("/");
             }
             else{
