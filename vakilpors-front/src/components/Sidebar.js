@@ -286,7 +286,6 @@ const Sidebar = (props) => {
           ))}
           {refUserRole.current && <ListItem disablePadding>
             <ListItemButton onClick={logoutHandler}>
-            <ToastContainer />
             
               <ListItemIcon>
                 <LogoutOutlined color="primary" />
@@ -301,6 +300,7 @@ const Sidebar = (props) => {
         <DrawerHeader/>
         <props.component/>
       </Main>
+      <ToastContainer />
     </Box>
     </ThemeProvider>
   );
