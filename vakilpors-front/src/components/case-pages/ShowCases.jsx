@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthProvider";
@@ -27,7 +27,7 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 
-
+import jwt from 'jwt-decode';
 
 
 import Box from '@mui/material/Box';
@@ -93,10 +93,40 @@ const card = (
     </React.Fragment>
   );
 
-  
+
+
 
 
 const ShowCases = () => {
+
+
+  const { getAccessToken } = useAuth();
+
+
+  
+  useEffect(() => {
+    const GetCases = async () => {
+  
+      const token = await getAccessToken();
+      if(token){
+        const tokenData = jwt(token);
+        const 
+          url = BASE_API_ROUTE + `Document/GetDocumentsByUserId?userId=${tokenData.uid}`;
+
+        try {
+          const response = await axios.get(url,{headers: {Authorization: `Bearer ${token}`}});
+          console.log('response : ',response);
+        } catch (error) {
+            console.log('error : ',error);
+        }
+      }
+    };
+    GetCases();
+  }, []);
+
+  
+
+
 
 
     return(
