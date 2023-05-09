@@ -15,6 +15,8 @@ import AdbIcon from '@mui/icons-material/Adb';
 const pages = ['امتیاز', '(الف تا ی)حروف الفبا', '(ی تا الف)حروف الفبا'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
+
+
 const Sort = () => {
 
 

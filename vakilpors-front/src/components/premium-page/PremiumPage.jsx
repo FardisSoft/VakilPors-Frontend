@@ -19,7 +19,7 @@ const PremiumPage = () => {
   const { getAccessToken } = useAuth();
   const [gettransactions, settransactions] = useState([]);
   const [getsub, setsub] = useState([]);
-  const [maxIdData, setMaxIdData] = useState([]);
+
   const [getamountdetail, setamountdetail] = useState({
     amount: "",
     description: "خرید اشتراک ماهانه"
@@ -48,7 +48,6 @@ const PremiumPage = () => {
           setsub(getsubstatus.data.data);
           settransactions(premiumdetail.data);
           setpremiumdetail(response.data.data);
-          handleFindMaxId();
         } catch (error) {
           console.log('error : ', error);
         }
@@ -84,21 +83,6 @@ const PremiumPage = () => {
 
 
 
-
-  const handleFindMaxId = () => {
-    let maxId = -Infinity;
-    let maxIdItem = null;
-
-    gettransactions.forEach((item) => {
-      if (item.id > maxId && item.isSuccess === true) {
-        maxId = item.id;
-        maxIdItem = item;
-      }
-    });
-
-    setMaxIdData(maxIdItem);
-  }
-
   return (
     <div class="container">
       <div classNameName="col-12">
@@ -125,8 +109,8 @@ const PremiumPage = () => {
               </div>
               <div className="col-12 col-md-6 mt-4 mt-md-0">
                 <div className="expire shadow-sm text-center bg-white" id="untilexpire">
-                  <CircularProgress variant="determinate" value={getsub.remainingDays} size="6rem" />
-                  <h4 className="mt-4 text-dark mb-0 font-weight-bold">تعداد روزهای باقی مانده : {getsub.remainingDays}</h4>
+                  <CircularProgress variant="determinate" value={getsub.remainingDays  < 100 ? getsub.remainingDays : 100} size="6rem" />
+                  <h4 className="mt-4 text-dark mb-0 font-weight-bold">تعداد روزهای باقی مانده : {getsub.remainingDays  < 100 ? getsub.remainingDays : "رایگان"}</h4>
                   <div className="d-flex justify-content-between mt-3">
                     <span>نوع سرویس</span>
                     <span>
@@ -136,12 +120,11 @@ const PremiumPage = () => {
                   <div className="d-flex justify-content-between mt-3">
                     <span>آخرین خرید:</span>
                     <span>
-                      {getsub.id}
-
+                      {getsub.premiumName}
                     </span>
                   </div>
                   <div className="d-flex justify-content-between mt-3">
-                    <span>تاریخ شروع:</span>
+                    <span>تاریخ پایان:</span>
                       <div>
                           <div key={getsub.id}>
                               <span>
@@ -149,7 +132,6 @@ const PremiumPage = () => {
                               </span>
                           </div>
                     </div>
-
                   </div>
                 </div>
               </div>
@@ -157,9 +139,7 @@ const PremiumPage = () => {
                 <div className="report-box shadow-sm mt-3 bg-white" id="history">
                   <div className="row">
                     <div className="col-12 col-md-6 mt-4 mt-lg-0">
-
                       {gettransactions.map((x) =>
-
                         x.isSuccess === true ?
                           (
                             <>
@@ -175,14 +155,10 @@ const PremiumPage = () => {
                               <p>توضيحات : {x.description}</p>
                               <hr></hr>
                             </>
-
-                          )
-                          :
-                          (
+                          ):(
                             <p></p>
                           )
                       )}
-
                     </div>
                   </div>
                 </div>
@@ -193,14 +169,15 @@ const PremiumPage = () => {
             <div className="buy-account shadow-md bg-white" id="buy">
               <h3 className="text-center font-weight-bold">تمدید اشتراک</h3>
               <br />
-              <span className="error">از تمدید طولانی مدت اکانت خود پرهیز کنید ، پیشنهاد ما تمدید ماهانه میباشد</span>
+              <span className="error">با خرید اشتراک ویژه بهترین ضامن پرونده ات باش!</span>
               <div className="form-group mt-3 psc" id="p_1">
                 <label for="service">انتخاب مدت زمان</label>
 
                 <select className="form-control tamdid" name="amount" value={getamountdetail.amount} onChange={setUserInfo}>
                   <option value=" ">--- انتخاب کنید ---</option>
-                  <option value="300000" >پلاس 1 ساله</option>
-                  <option value="150000">پلاس 3 ماهه</option>
+                  <option value="20000" >برنزی </option>
+                  <option value="30000">نقره ای</option>
+                  <option value="50000">طلایی</option>
                 </select>
 
               </div>

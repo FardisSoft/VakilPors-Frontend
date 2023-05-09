@@ -53,6 +53,7 @@ root.render(
               <Route path="/ResponseTransaction" element={<ResponseTransaction />}/>
               <Route path="/new-case" element={<AddNewCase />}/>
               <Route path="/show-cases" element={<ShowCases />}/>
+              <Route path="/payment/verify" element={<ResponseTransaction />}/>
               
 
 
