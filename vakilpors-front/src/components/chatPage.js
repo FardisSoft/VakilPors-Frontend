@@ -577,7 +577,7 @@ const ChatPage = () => {
             {/* show messages */}
             <Grid container direction={'column'} height={{xs:'auto',md:'85%'}} >
             {/* border={'1px solid grey'} borderRadius={2} */}
-              <Grid height={{xs:'auto',md:'85%'}} sx={{ flex: '0 0 auto', overflow: 'overlay'}}>
+              <Grid height={{xs:'auto',md:'100%'}} sx={{ flex: '0 0 auto', overflow: 'overlay'}}>
                 {refChats.current && refChats.current[getChatIndexByChatId(refSelectedChat.current)].chatMessages.map((message,index) => renderMessage(message,index))}
               </Grid>
             </Grid>
