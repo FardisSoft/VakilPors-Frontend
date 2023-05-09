@@ -185,12 +185,12 @@ const AddNewCase = () => {
     
     const data = new FormData();
     data.append('MaximumBudget', MaximumBudget);
-    data.append('UserId', '');
+    // data.append('UserId', '');
     data.append('MinimumBudget', MinimumBudget);
     data.append('FileUrl', '');
     data.append('Title', Title);
     data.append('DocumentCategory', DocumentCategory);
-    data.append('Id', '');
+    // data.append('Id', '');
     data.append('File', File);
     data.append('Description', Description);
 
