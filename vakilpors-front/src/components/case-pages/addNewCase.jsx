@@ -20,10 +20,7 @@ import { Paper } from "@mui/material";
 import LooksOneIcon from '@mui/icons-material/LooksOne';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import useStateRef from 'react-usestateref';
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import ReactDOM from 'react-dom';
-import {Editor, EditorState} from 'draft-js';
-import 'draft-js/dist/Draft.css';
 import { MuiFileInput } from 'mui-file-input'
 
 import Box from '@mui/material/Box';
@@ -235,7 +232,7 @@ const AddNewCase = () => {
 
             <Typography variant="h4" sx={{fontFamily: "shabnam"}} padding={4}>افزودن پرونده جدید</Typography>
                 <hr></hr>
-                
+
 
 
 
