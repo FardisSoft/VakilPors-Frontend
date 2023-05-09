@@ -43,14 +43,6 @@ const AddNewCase = () => {
 
 
   const [getdetail, setdetail, refdetail] = useStateRef({});
-
-  const [text, setText] = useState('');
-
-  const handleTextChange = (event) => {
-    const textValue = event.target.value;
-    setText(textValue);
-
-  };
   
 
 
@@ -220,6 +212,16 @@ const AddNewCase = () => {
     );
   };
 
+
+  const handleCreateCase = () => {
+
+  };
+
+  
+  const setCaseInfo = () => {
+    
+  };
+
     return (
         <>
         <Helmet>
@@ -261,8 +263,9 @@ const AddNewCase = () => {
                 <input
                   className="input100"
                   type="text"
-                  name="case.name"
-                  // onChange={setUserInfo}
+                  name="Title"
+                  value={refdetail.current.Title}
+                  onChange={setCaseInfo}
                   margin="normal" />
                 </div>
 
@@ -284,8 +287,9 @@ const AddNewCase = () => {
                     width: '100%',
                     minHeight: '200px'
                   }} 
-                  value={text} 
-                  onChange={handleTextChange}
+                  name="text"
+                  value={refdetail.current.text}
+                  onChange={setCaseInfo}
                 />
               </div>
               <br></br>
@@ -311,6 +315,9 @@ const AddNewCase = () => {
                       id="outlined-adornment-amount"
                       startAdornment={<InputAdornment position="start">تومان</InputAdornment>}
                       label="Amount"
+                      value={refdetail.current.minBudget}
+                      name="minBudget"
+                      onChange={setCaseInfo}
                     />
                   </FormControl>
                 </div>
@@ -324,6 +331,9 @@ const AddNewCase = () => {
                       id="outlined-adornment-amount"
                       startAdornment={<InputAdornment position="start">تومان</InputAdornment>}
                       label="Amount"
+                      value={refdetail.current.maxBudget}
+                      name="maxBudget"
+                      onChange={setCaseInfo}
                     />
                   </FormControl>
                 </div>
@@ -331,7 +341,7 @@ const AddNewCase = () => {
 
               <br></br>
               <br></br>
-              <button type="submit" class="btn btn-p-primary btn-lg btn-block" id="create-new-project">
+              <button onClick={handleCreateCase} type="submit" class="btn btn-p-primary btn-lg btn-block" id="create-new-project">
               ایجاد پرونده  
               </button>
 
