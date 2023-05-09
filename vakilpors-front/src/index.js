@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from './context/AuthProvider';
+
+import App from './App';
 import Login from './components/authentication/Login'
 import Register from './components/authentication/Register';
 import Policy from './components/Policy';
@@ -20,10 +21,9 @@ import ForgotPassword from './components/authentication/ForgotPassword';
 import ResetPassword from './components/authentication/ResetPassword';
 import ActivationAccount from './components/authentication/ActivationAccount';
 import ChatPage from './components/chatPage';
-
+import Rate from './components/Rate';
 import PremiumPage from './components/premium-page/PremiumPage';
 import ResponseTransaction from './components/premium-page/ResponseTransaction';
-
 import AddNewCase from './components/case-pages/addNewCase';
 import ShowCases from './components/case-pages/ShowCases';
 
@@ -54,6 +54,7 @@ root.render(
               <Route path="/new-case" element={<AddNewCase />}/>
               <Route path="/show-cases" element={<ShowCases />}/>
               <Route path="/payment/verify" element={<ResponseTransaction />}/>
+              <Route path="/Rate/:LawyerId" element={<Sidebar component={Rate}/>}/>
               
 
 

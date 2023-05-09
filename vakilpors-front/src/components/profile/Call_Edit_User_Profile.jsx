@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import useStateRef from 'react-usestateref';
 import { Button } from '@mui/material';
 import { MuiFileInput } from 'mui-file-input'
-import '../../css/edit_profiles_style.css';
+import '../../css/signup-and-profile-edit-pages-style.css';
 import { Helmet } from 'react-helmet-async';
 import jwt from 'jwt-decode';
 import axios from 'axios';
@@ -75,7 +75,7 @@ const Call_Edit_User_Profile = () => {
         <title>edit user profile</title>
       </Helmet>
       <div className="page-content" >
-        <div className="form-v4-content-ForEdit">
+        <div className="form-v4-content">
           <div className="form-left">
             <h2>ویرایش اطلاعات کاربری</h2>
             <p className="text-1">{descriptionUser}</p>
@@ -130,7 +130,7 @@ const Call_Edit_User_Profile = () => {
             <div className="form-group">
               <div className="form-row form-row-1">
                 <label style={{ position: "relative", top: "5px" }}><p>عکس پروفایل</p></label>
-                <MuiFileInput fullWidth margin='10px' value={refdetail.current.profileImage} onChange={handleAvatarChange} />
+                <MuiFileInput fullWidth margin='10px' value={refdetail.current.profileImage} inputProps={{style: {padding: "20px 10px"}}} onChange={handleAvatarChange} />
               </div>
             </div>
             <div className="form-row-last">

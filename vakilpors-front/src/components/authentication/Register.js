@@ -4,9 +4,8 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { BASE_API_ROUTE } from '../../Constants';
-import '../../css/signup-page-main-style.css';
+import '../../css/signup-and-profile-edit-pages-style.css';
 import { FaEye } from 'react-icons/fa';
-import { useAuth } from "../../context/AuthProvider";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -17,8 +16,6 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [policyChecked, setPolicyChecked] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
-    const [errorColor, setErrorColor] = useState("red");
     const [isRevealPwd, setIsRevealPwd] = useState(false);
 
     const descriptionUser = "به وکیل پرس خوش آمدید! اینجا می‌توانید هر سوال حقوقی که دارید را بپرسید! همینطور می‌توانید پرونده‌هایتان را قرار دهید تا وکیلی که می‌خواهید وکالت پرونده شما را قبول کند !";
@@ -32,7 +29,6 @@ const Register = () => {
     const [roleTitle, setRoleTitle] = useState(roleTitleLawyer);
     const [description, setDescription] = useState(descriptionUser);
 
-    const { login } = useAuth();
     const navigate = useNavigate();
 
     const handleRoleChanger = () => {
@@ -55,8 +51,6 @@ const Register = () => {
             rtl:true,
             });
     };
-
-
     const showSuccesMessage = (message) => {
         toast.success(message, {
             position: "bottom-right",
@@ -79,40 +73,40 @@ const Register = () => {
 
     const validateForm = () => {
         if(name === ""){
-            setErrorMessage("نام و نام خانوادگی خود را وارد کنید");
+            showErrorMessage("نام و نام خانوادگی خود را وارد کنید");
             return false;
         }
         if(phoneNumber === ""){
-            setErrorMessage("شماره موبایل خود را وارد کنید");
+            showErrorMessage("شماره موبایل خود را وارد کنید");
             return false;
         }
         if(!/^\d+$/.test(phoneNumber)){ // only digit
-            setErrorMessage("شماره موبایل خود را به صورت صحیح وارد کنید");
+            showErrorMessage("شماره موبایل خود را به صورت صحیح وارد کنید");
             return false;
         }
         if(email === ""){
-            setErrorMessage("ایمیل خود را وارد کنید");
+            showErrorMessage("ایمیل خود را وارد کنید");
             return false;
         }
         if(!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)){
-            setErrorMessage("ایمیل خود را به صورت صحیح وارد کنید");
+            showErrorMessage("ایمیل خود را به صورت صحیح وارد کنید");
             return false;
         }
         if(password === ""){
-            setErrorMessage("رمز خود را وارد کنید");
+            showErrorMessage("رمز خود را وارد کنید");
             return false;
         }
         // password reqirements: length between 6 and 30, only digit and letter, at least one uppercase and one lowercase
         if(!(password.length < 31 && password.length > 5 && /^[A-Za-z0-9]*$/.test(password) &&  /[A-Z]/.test(password) && /[a-z]/.test(password))){ 
-            setErrorMessage("رمز خود را به صورت صحیح وارد کنید ( رمز شما باید بین 6 تا 30 کاراکتر باشد، فقط از اعداد و حروف انگلیسی تشکیل شده باشد و حداقل شامل یک حرف بزرگ و حداقل یک حرف کوچک باشد)");
+            showErrorMessage("رمز خود را به صورت صحیح وارد کنید ( رمز شما باید بین 6 تا 30 کاراکتر باشد، فقط از اعداد و حروف انگلیسی تشکیل شده باشد و حداقل شامل یک حرف بزرگ و حداقل یک حرف کوچک باشد)");
             return false;
         }
         if(password !== confirmPassword){
-            setErrorMessage("رمز با تکرار رمز مطابقت ندارد");
+            showErrorMessage("رمز با تکرار رمز مطابقت ندارد");
             return false;
         }
         if(!policyChecked){
-            setErrorMessage("برای ثبت نام موافقت با شرایط سایت الزامی است");
+            showErrorMessage("برای ثبت نام موافقت با شرایط سایت الزامی است");
             return false;
         }
         return true;
@@ -133,56 +127,32 @@ const Register = () => {
         }
         try{
             const response = await axios.post(url,data);
-            //const success = await login({ "phoneNumber": phoneNumber, "password": password});
-            //if(success === "success"){
-                const url_2 = BASE_API_ROUTE + `Auth/sendactivationcode?phoneNumber=${phoneNumber.trim()}`;
-
-                console.log(url_2);
-
-                try{
-                    const response_2 = await axios.post(url_2);
-                    setErrorMessage('');
-                    showSuccesMessage('ایجاد حساب کاربری با موفقیت انجام شد');
-                    await delay(5000);
-                    navigate(`/Activation_Account/${phoneNumber}`);
-                    console.log(response_2);
-                } catch (error) {
-                    console.log("error darim che errori");
-        
-                    showErrorMessage();
-
-                    console.log(error);
-                }
-
-
-                // setErrorColor("green");
-                // setErrorMessage("ثبت نام با موفقیت انجام شد!");
-                // await delay(1000);
-                // navigate("/");
-            //}
-            /*
-            else{
-                setErrorColor("red");
-                setErrorMessage("ورود با خطا مواجه شد.");
+            showSuccesMessage('ایجاد حساب کاربری با موفقیت انجام شد');
+            const url_2 = BASE_API_ROUTE + `Auth/sendactivationcode?phoneNumber=${phoneNumber.trim()}`;
+            try{
+                const response_2 = await axios.post(url_2);
+                showSuccesMessage('ارسال کد تایید با موفقیت انجام شد');
+                await delay(5000);
+                navigate(`/Activation_Account/${phoneNumber}`);
+            } catch (error) {
+                console.log("error in sending activation code : ",error);
+                showErrorMessage('ارسال کد تایید با خطا مواجه شد');
             }
-            */
         } catch (error) {
             const responseData = error.response.data;
             if (responseData.hasOwnProperty('data')){
                 if ( responseData.data.hasOwnProperty('DuplicateUserName') ){
-                    setErrorMessage("شما قبلا ثبت نام کرده اید! لطفا روی وارد شو کلیک کرده و وارد حساب کاربری خود شوید. ");
+                    showErrorMessage("شما قبلا ثبت نام کرده اید! لطفا روی وارد شو کلیک کرده و وارد حساب کاربری خود شوید. ");
                 }
                 else {
-                    setErrorMessage("ثبت نام با خطا مواجه شد. لطفا دوباره تلاش کنید.");
+                    showErrorMessage("ثبت نام با خطا مواجه شد. لطفا دوباره تلاش کنید.");
                 }
             }
             else {
-                setErrorMessage("ثبت نام با خطا مواجه شد. لطفا دوباره تلاش کنید.");
+                showErrorMessage("ثبت نام با خطا مواجه شد. لطفا دوباره تلاش کنید.");
             }
         }
-    }
-    
-    document.getElementsByTagName('body')[0].classList.add("form-v4");  
+    } 
 
     return (
     <>
@@ -200,7 +170,7 @@ const Register = () => {
                 <label className="container">
                     <p className="text-1">
                     قبلا ثبت نام کردید؟
-                        <Link to="/Login" style={{color: 'var(--bs-link-color)'}}>وارد شوید!</Link>
+                        <Link to="/Login" style={{color: 'lightskyblue', marginRight:'10px'}}>وارد شوید!</Link>
                     </p>
                 </label>
             </div>
@@ -242,13 +212,10 @@ const Register = () => {
                 </div>
                 <div className="form-row-last">
                     <input type="submit" onClick={handleSubmit} name="register" className="register" value="بریم!"/>
-                    {/* for test change submit with Button */}
-                    <ToastContainer />
-
                 </div>
             </form>
-            <ToastContainer/>
         </div>
+        <ToastContainer/>
     </div>
     </>
     );

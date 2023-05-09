@@ -1,8 +1,8 @@
 import React, { useState,useEffect } from 'react';
 import useStateRef from 'react-usestateref';
 import Button from '@mui/material/Button';
-import { MuiFileInput } from 'mui-file-input'
-import '../../css/edit_profiles_style.css';
+import { MuiFileInput } from 'mui-file-input';
+import '../../css/signup-and-profile-edit-pages-style.css';
 import jwt from 'jwt-decode';
 import axios from 'axios';
 import { useAuth } from "../../context/AuthProvider";
@@ -275,7 +275,7 @@ const Call_Edit_Lawyer_Profile = () => {
       <title>edit lawyer page</title>
     </Helmet>
       <div className="page-content" >
-        <div className="form-v4-content-ForEdit">
+        <div className="form-v4-content">
           <div className="form-left">
             <h2>ویرایش اطلاعات کاربری</h2>
             <p className="text-1">{descriptionUser}</p>
@@ -400,21 +400,21 @@ const Call_Edit_Lawyer_Profile = () => {
             <div className="form-group">
               <div className="form-row form-row-1">
                 <label style={{ position: "relative", top: "5px" }}><p>عکس پروفایل</p></label>
-                <MuiFileInput fullWidth margin='10px' value={refdetail.current.user ? refdetail.current.user.profileImage : null} onChange={handleAvatarChange} />
+                <MuiFileInput fullWidth margin='10px' value={refdetail.current.user ? refdetail.current.user.profileImage : null} inputProps={{style: {padding: "20px 10px"}}} onChange={handleAvatarChange} />
               </div>
               <div className="form-row form-row-1">
                 <label style={{ position: "relative", top: "5px" }}><p>عکس پس زمینه پروفایل</p></label>
-                <MuiFileInput fullWidth margin='10px' value={refdetail.current.profileBackgroundPicture} onChange={handleBackGroundChange} />
+                <MuiFileInput fullWidth margin='10px' value={refdetail.current.profileBackgroundPicture} inputProps={{style: {padding: "20px 10px"}}} onChange={handleBackGroundChange} />
               </div>
             </div>
             <div className="form-group">
               <div className="form-row form-row-1">
                 <label style={{ position: "relative", top: "5px" }}><p>کارت ویزیت</p></label>
-                <MuiFileInput fullWidth margin='10px' value={refdetail.current.callingCardImage} onChange={handleCallingCardChange} />
+                <MuiFileInput fullWidth margin='10px' value={refdetail.current.callingCardImage} inputProps={{style: {padding: "20px 10px"}}} onChange={handleCallingCardChange} />
               </div>
               <div className="form-row form-row-1">
                 <label style={{ position: "relative", top: "5px" }}><p>رزومه</p></label>
-                <MuiFileInput fullWidth margin='10px' value={refdetail.current.resume} onChange={handleResumeChange} />
+                <MuiFileInput fullWidth margin='10px' value={refdetail.current.resume} inputProps={{style: {padding: "20px 10px"}}} onChange={handleResumeChange} />
               </div>
             </div>
             <div className="form-row-last">

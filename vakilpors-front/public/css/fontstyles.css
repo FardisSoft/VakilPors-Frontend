@@ -1,11 +1,8 @@
 @font-face {
   font-family: 'MaktabRita-Regular';
-  src: url(../fonts/MaktabRita-Regular.eot);
-  src: url(../fonts/MaktabRita-Regular.eot?#iefix) format('embedded-opentype'),
-       url(../fonts/MaktabRita-Regular.woff2) format('woff2'),
-       url(../fonts/MaktabRita-Regular.woff) format('woff'),
-       url(../fonts/MaktabRita-Regular.ttf) format('truetype'),
-       url(../fonts/MaktabRita-Regular.otf) format('otf');
+  src: url('../fonts/MaktabRita-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
