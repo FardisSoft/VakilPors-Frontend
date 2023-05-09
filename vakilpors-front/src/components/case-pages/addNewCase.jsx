@@ -293,8 +293,10 @@ const AddNewCase = () => {
               <br></br>
               <br></br>
 
-              <div class="circle-icon big bgc-3 tc-white text-bold visible-xs-inline-block flip mr -mt">5</div>
-              <Typography variant="h6" sx={{fontFamily: "shabnam"}} padding={4}>بودجه شما چقدر است ؟  </Typography>
+               <Grid container direction={'row'}>
+               <div display='inline' style={{marginLeft:"10px"}} class="circle-icon big bgc-3 tc-white text-bold flip">5</div>
+              <Typography display='inline' variant="h6" sx={{fontFamily: "shabnam"}}>بودجه شما چقدر است ؟  </Typography>                
+                </Grid>   
 
               <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
                 <div>
