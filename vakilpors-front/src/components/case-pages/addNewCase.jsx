@@ -1,35 +1,23 @@
 import React, { useState } from "react";
 import { Helmet } from 'react-helmet-async';
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthProvider";
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import { Typography } from "@mui/material";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BASE_API_ROUTE } from "../../Constants";
 import axios from "axios";
-import { useParams } from "react-router-dom";
 import { InputAdornment , IconButton} from "@mui/material";
-import { Visibility } from "@mui/icons-material";
-import { VisibilityOff } from "@mui/icons-material";
-import  NewCase from "../case-pages/Newcase.css";
-import { Classes } from "@mui/styles/mergeClasses/mergeClasses";
-import { Paper } from "@mui/material";
-import LooksOneIcon from '@mui/icons-material/LooksOne';
+
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
-import useStateRef from 'react-usestateref';
-import ReactDOM from 'react-dom';
 import { MuiFileInput } from 'mui-file-input'
 
 import Box from '@mui/material/Box';
-import Input from '@mui/material/Input';
-import FilledInput from '@mui/material/FilledInput';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
-import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
+
 
 
 const filter = createFilterOptions();
@@ -38,137 +26,69 @@ const filter = createFilterOptions();
 
 const AddNewCase = () => {
 
-
-  const [getdetail, setdetail, refdetail] = useStateRef({});
-  
+  const { getAccessToken } = useAuth();
 
 
-  const titles = [
+
+  const categories = [
     
-    { title: 'ثبت احوال' },
-    { title: 'بیمه' },
-    { title: 'ملکی' },
-    { title: 'مالیات' },
-    { title: 'شرکت ها' },
-    { title: 'انحصار وراثت' },
-    { title: 'دیوان عدالت اداری' },
-    { title: 'مالکیت معنوی' },
-    { title: 'بین الملل' },
-    { title: 'اداره کار' },
-    { title: 'جرایم اینترنتی' },
-    { title: 'قراردها' },
-    { title: 'وصول مطالبات' },
-    { title: 'خانواده' },
-    { title: 'کیفری (جرائم)' },
-    { title: 'اجرای احکام' },
-    { title: 'جرایم علیه اشخاص' },
-    { title: 'جرایم علیه اموال' },
-    { title: 'جرایم علیه امنیت کشور' },
-    { title: 'اموال و مالکیت' },
-    { title: 'ثبت اسناد' },
-    { title: 'داوری' },
-    { title: 'سربازی و نظام وظیفه' },
+    { category: 'ثبت احوال' },
+    { category: 'بیمه' },
+    { category: 'ملکی' },
+    { category: 'مالیات' },
+    { category: 'شرکت ها' },
+    { category: 'انحصار وراثت' },
+    { category: 'دیوان عدالت اداری' },
+    { category: 'مالکیت معنوی' },
+    { category: 'بین الملل' },
+    { category: 'اداره کار' },
+    { category: 'جرایم اینترنتی' },
+    { category: 'قراردها' },
+    { category: 'وصول مطالبات' },
+    { category: 'خانواده' },
+    { category: 'کیفری (جرائم)' },
+    { category: 'اجرای احکام' },
+    { category: 'جرایم علیه اشخاص' },
+    { category: 'جرایم علیه اموال' },
+    { category: 'جرایم علیه امنیت کشور' },
+    { category: 'اموال و مالکیت' },
+    { category: 'ثبت اسناد' },
+    { category: 'داوری' },
+    { category: 'سربازی و نظام وظیفه' },
     
   ];
 
-  const jobs = [
+  const titles = [
 
-    { job: 'مشاوره حضوری' },
-    { job: 'مشاوره تلفنی' },
-    { job: 'مشاوره آنلاین' },
-    { job: 'وکالت' },
-    { job: 'داوری' },
+    { title: 'مشاوره حضوری' },
+    { title: 'مشاوره تلفنی' },
+    { title: 'مشاوره آنلاین' },
+    { title: 'وکالت' },
+    { title: 'داوری' },
 
   ]
 
-  const handleDescriptChange = (file) => {
-    setdetail({
-      ...refdetail.current,
-      ['Descript']: file,
-    });
-  }
 
+  const [Title, setTitle] = useState('');
+  const [File, setFile] = useState(null);
+  const [MinimumBudget, setMinimumBadget] = useState('');
+  const [MaximumBudget, setMaximumBadget] = useState('');
+  const [Description, setDescription] = useState('');
 
-  const jobLists = () => {
+  const [CaseName, setCaseName] = useState('');
+  const [DocumentCategory, setDocumentCategory] = useState('');
+  
+  const titleLists = () => {
     return (
       <Autocomplete 
-        value={refdetail.current.job}
+        value={Title}
         onChange={(event, newValue) => {
           if (typeof newValue === 'string') {
-            setdetail({
-              ...refdetail.current,
-              ['job']: newValue,
-            });
+            setTitle(newValue)
           } else if (newValue && newValue.inputValue) {
-            setdetail({
-              ...refdetail.current,
-              ['job']: newValue.inputValue,
-            });
-          } else if(newValue && newValue.job) {
-            setdetail({
-              ...refdetail.current,
-              ['job']: newValue.job,
-            });
-          }
-        }}
-        filterOptions={(options, params) => {
-          const filtered = filter(options, params);
-          const { inputValue } = params;
-          const isExisting = options.some((option) => inputValue === option.job);
-          if (inputValue !== '' && !isExisting) {
-            filtered.push({
-              inputValue,
-              job: `Add "${inputValue}"`,
-            });
-          }
-          return filtered;
-        }}
-        selectOnFocus
-        clearOnBlur
-        handleHomeEndKeys
-        id="free-solo-with-text-demo"
-        options={jobs}
-        getOptionLabel={(option) => {
-          // Value selected with enter, right from the input
-          if (typeof option === 'string') {
-            return option;
-          }
-          // Add "xxx" option created dynamically
-          if (option.inputValue) {
-            return option.inputValue;
-          }
-          // Regular option
-          return option.job;
-        }}
-        renderOption={(props, option) => <li {...props}>{option.job}</li>}
-        freeSolo
-        renderInput={(params) => (
-          <TextField sx={{border:"none"}}{...params}/>
-        )}
-      />
-    );
-  }
-    
-  const titleList = () => {
-    return (
-      <Autocomplete
-        value={refdetail.current.title}
-        onChange={(event, newValue) => {
-          if (typeof newValue === 'string') {
-            setdetail({
-              ...refdetail.current,
-              ['title']: newValue,
-            });
-          } else if (newValue && newValue.inputValue) {
-            setdetail({
-              ...refdetail.current,
-              ['title']: newValue.inputValue,
-            });
+            setTitle(newValue.inputValue)
           } else if(newValue && newValue.title) {
-            setdetail({
-              ...refdetail.current,
-              ['title']: newValue.title,
-            });
+            setTitle(newValue.title)
           }
         }}
         filterOptions={(options, params) => {
@@ -207,17 +127,94 @@ const AddNewCase = () => {
         )}
       />
     );
+  }
+    
+  const categoryList = () => {
+    return (
+      <Autocomplete
+        value={DocumentCategory}
+        onChange={(event, newValue) => {
+          if (typeof newValue === 'string') {
+            setDocumentCategory(newValue)
+          } else if (newValue && newValue.inputValue) {
+            setDocumentCategory(newValue.inputValue)
+          } else if(newValue && newValue.category) {
+            setDocumentCategory(newValue.category)
+          }
+        }}
+        filterOptions={(options, params) => {
+          const filtered = filter(options, params);
+          const { inputValue } = params;
+          const isExisting = options.some((option) => inputValue === option.category);
+          if (inputValue !== '' && !isExisting) {
+            filtered.push({
+              inputValue,
+              category: `Add "${inputValue}"`,
+            });
+          }
+          return filtered;
+        }}
+        selectOnFocus
+        clearOnBlur
+        handleHomeEndKeys
+        id="free-solo-with-text-demo"
+        options={categories}
+        getOptionLabel={(option) => {
+          // Value selected with enter, right from the input
+          if (typeof option === 'string') {
+            return option;
+          }
+          // Add "xxx" option created dynamically
+          if (option.inputValue) {
+            return option.inputValue;
+          }
+          // Regular option
+          return option.category;
+        }}
+        renderOption={(props, option) => <li {...props}>{option.category}</li>}
+        freeSolo
+        renderInput={(params) => (
+          <TextField sx={{border:"none"}}{...params}/>
+        )}
+      />
+    );
   };
 
 
-  const handleCreateCase = () => {
+  const handleCreateCase = async () => {
+    
+    const data = new FormData();
+    data.append('MaximumBudget', MaximumBudget);
+    data.append('UserId', '');
+    data.append('MinimumBudget', MinimumBudget);
+    data.append('FileUrl', '');
+    data.append('Title', Title);
+    data.append('DocumentCategory', DocumentCategory);
+    data.append('Id', '');
+    data.append('File', File);
+    data.append('Description', Description);
 
+    console.log({MaximumBudget, MinimumBudget, Title,  DocumentCategory, File, Description, CaseName});
+
+    const token = await getAccessToken();
+    if(token){
+      const url = BASE_API_ROUTE + 'Document/AddDocument';
+      try {
+          const response = await axios.post(url,data,{headers: {Authorization: `Bearer ${token}`}});
+          console.log('response : ', response);
+          
+      } catch (error) {
+          console.log('error : ',error);
+      }
+    }
   };
 
   
   const setCaseInfo = () => {
     
   };
+
+  
 
     return (
         <>
@@ -233,12 +230,9 @@ const AddNewCase = () => {
             <Typography variant="h4" sx={{fontFamily: "shabnam"}} padding={4}>افزودن پرونده جدید</Typography>
                 <hr></hr>
 
-
-
-
                   <div class="circle-icon big bgc-3 tc-white text-bold visible-xs-inline-block flip mr -mt">1</div>
                   <Typography variant="h6" sx={{fontFamily: "shabnam"}} padding={4}>چه کاری می‌خواهید برای شما انجام شود؟</Typography>
-                  {jobLists()}
+                  {titleLists()}
                 
                 <br></br>
                 <br></br>
@@ -246,7 +240,7 @@ const AddNewCase = () => {
                 <div class="circle-icon big bgc-3 tc-white text-bold visible-xs-inline-block flip mr -mt">2</div>
 
                 <Typography variant="h6" sx={{fontFamily: "shabnam"}} padding={4}>پرونده شما در چه زمینه ای است؟</Typography>
-                {titleList()}
+                {categoryList()}
 
 
                 <br></br>
@@ -260,9 +254,8 @@ const AddNewCase = () => {
                 <input
                   className="input100"
                   type="text"
-                  name="Title"
-                  value={refdetail.current.Title}
-                  onChange={setCaseInfo}
+                  value={CaseName}
+                  onChange={(e) => setCaseName(e.target.value)}
                   margin="normal" />
                 </div>
 
@@ -284,9 +277,8 @@ const AddNewCase = () => {
                     width: '100%',
                     minHeight: '200px'
                   }} 
-                  name="text"
-                  value={refdetail.current.text}
-                  onChange={setCaseInfo}
+                  value={Description}
+                  onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
               <br></br>
@@ -295,7 +287,7 @@ const AddNewCase = () => {
               <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
 
                 <label style={{ position: "relative", top: "5px" }}><p>توضیحات پرونده</p></label>
-                <MuiFileInput fullWidth margin='10px' value={refdetail.current.Descript} onChange={handleDescriptChange} />
+                <MuiFileInput fullWidth margin='10px' value={File} onChange={(File) => setFile(File)} />
 
               </div>
               <br></br>
@@ -312,9 +304,8 @@ const AddNewCase = () => {
                       id="outlined-adornment-amount"
                       startAdornment={<InputAdornment position="start">تومان</InputAdornment>}
                       label="Amount"
-                      value={refdetail.current.minBudget}
-                      name="minBudget"
-                      onChange={setCaseInfo}
+                      value={MinimumBudget}
+                      onChange={(e) => setMinimumBadget(e.target.value)}
                     />
                   </FormControl>
                 </div>
@@ -328,9 +319,8 @@ const AddNewCase = () => {
                       id="outlined-adornment-amount"
                       startAdornment={<InputAdornment position="start">تومان</InputAdornment>}
                       label="Amount"
-                      value={refdetail.current.maxBudget}
-                      name="maxBudget"
-                      onChange={setCaseInfo}
+                      value={MaximumBudget}
+                      onChange={(e) => setMaximumBadget(e.target.value)}
                     />
                   </FormControl>
                 </div>
