@@ -280,7 +280,7 @@ const Sidebar = (props) => {
                 <ListItemIcon>
                   <linki.icon color="primary" sx={{ ...( (linki.url == '/' && props.homePage ? true : window.location.href.includes(linki.url) && linki.url != '/') && {color:"white"})}} />
                 </ListItemIcon>
-                <Typography fontFamily="shabnam" sx={{ ...( (linki.url == '/' && props.homePage ? true : window.location.href.includes(linki.url) && linki.url != '/') && {color:"white"})}} >{linki.name}</Typography>
+                <Typography fontFamily="shabnam" sx={{color:'black', ...( (linki.url == '/' && props.homePage ? true : window.location.href.includes(linki.url) && linki.url != '/') && {color:"white"})}} >{linki.name}</Typography>
               </ListItemButton>
             </ListItem>
           ))}
