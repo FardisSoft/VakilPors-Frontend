@@ -49,7 +49,7 @@ const Call_Edit_User_Profile = () => {
     console.log(refdetail.current);
     const formData = new FormData();
     for (const key in refdetail.current) {
-      formData.append(key, refdetail.current[key]);
+      formData.append(key, refdetail.current[key] == null ? '' : refdetail.current[key]);
     }
     try {
       const success = await updateUser(formData);
