@@ -179,7 +179,7 @@ const LawyerPage = () => {
                 <CardContent>
                     <Typography sx={{fontFamily:"shabnam"}}>{name}</Typography>
                     <Typography sx={{fontFamily:"shabnam"}}>{title}</Typography>
-                    <Rating dir="ltr" name="lawyer rating" value={rate} precision={0.5} readOnly/>
+                    <Rating dir="rtl" name="lawyer rating" value={rate} precision={0.05} readOnly/>
                     <Typography sx={{fontSize:"12px", fontFamily:"shabnam"}}> میانگین امتیاز {rate} بر اساس {numberOfRates} نظر </Typography>
                 </CardContent>
             </Grid>
@@ -308,7 +308,7 @@ const LawyerPage = () => {
                     <Grid display="flex" alignItems="flex-start" justifyContent="flex-start" item component={Card} sm>
                         <CardContent>
                             <Typography sx={{fontFamily:"shabnam"}}>{ratei.user.name}</Typography>
-                            <Rating dir="ltr" name="user rating" value={ratei.rateNum} precision={0.5} readOnly/>
+                            <Rating dir="rtl" name="user rating" value={ratei.rateNum} precision={0.5} readOnly/>
                             <Typography sx={{fontFamily:"shabnam"}}>{ratei.comment}</Typography>
                         </CardContent>
                     </Grid>
@@ -318,7 +318,7 @@ const LawyerPage = () => {
     </Stack>
     </CacheProvider>
     </ThemeProvider>
-    </>
+    </> 
     );    
 }
 export default LawyerPage;
