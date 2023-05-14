@@ -1,12 +1,13 @@
 import { Helmet } from 'react-helmet-async';
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Typography, Button } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Grid, Typography, Button } from '@mui/material';
+import landing_page from './assests/images/landing_page.jpeg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    backgroundImage: 'url("/assests/image/landing_page.jpeg")', // replace with your own image file path
+    backgroundImage: `url(${landing_page})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     padding: theme.spacing(12, 0, 8),
@@ -42,10 +43,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LandingPage = () => {
-  const classes = useStyles();
-}
 const App = () => {
+  const classes = useStyles();
   return (
     <>
       <Helmet>
