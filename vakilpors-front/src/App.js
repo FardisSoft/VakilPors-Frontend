@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet-async';
 import React from 'react';
-import { makeStyles } from '@mui/styles';
 import { Grid, Typography, Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import landing_page from './assests/images/default_lawyer_profile_background_picture.jpg';
@@ -23,20 +22,7 @@ const theme = createTheme({
 });
 // mui rtl
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    height: '100vh',
-    backgroundImage: `url(${landing_page})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    padding: theme.spacing(12, 0, 8),
-    boxShadow: 'inset 0 0 0 2000px rgba(0, 0, 0, 0.5)',
-  },
-}));
-
 const App = () => {
-  const classes = useStyles();
   const navigate = useNavigate();
   return (
     <>
@@ -45,7 +31,8 @@ const App = () => {
       </Helmet>
       <ThemeProvider theme={theme}>
       <CacheProvider value={cacheRtl}>
-      <div className={classes.root}>
+      <Grid sx={{flexGrow: 1,height: '100vh',backgroundImage: `url(${landing_page})`,backgroundSize: 'cover',
+                backgroundPosition: 'center',paddingTop:12,boxShadow: 'inset 0 0 0 2000px rgba(0, 0, 0, 0.5)',}}>
       <Grid container justifyContent="start" alignItems="start">
         <Grid item xs={12} sm={8} md={6} sx={{mx: '10px',}}>
           <Typography variant="h2" align="center" sx={{mb:'30px',fontSize: {xs:'30px',sm:'50px'},color: '#fff',textShadow: '2px 2px #000',}}>
@@ -64,7 +51,7 @@ const App = () => {
           </Grid>
         </Grid>
       </Grid>
-    </div>
+    </Grid>
     </CacheProvider>
     </ThemeProvider>
     </>
