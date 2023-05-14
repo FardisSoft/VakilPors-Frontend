@@ -12,7 +12,7 @@ import {Done, Female, Male, CardMembership, LocationOn, Business, VerifiedUser, 
     School, Gavel, CoPresent, QuestionAnswer, ThumbUpAlt, FactCheck, Percent } from '@mui/icons-material';
 import { useParams } from "react-router-dom";
 import jwt from 'jwt-decode';
-import dlpbp from '../../assests/images/default_lawyer_profile_background_picture.jpg'
+import dlpbp from '../../assests/images/default_lawyer_profile_background_picture.jpg';
 
 // mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
@@ -56,7 +56,7 @@ const LawyerPage = () => {
     const { LawyerId } = useParams();
     const [ lawyerUserId, setLawyerUserId] = useState();
     const [ watcherUserId, setWatcherUserId] = useState();
-    const { getAccessToken } = useAuth();
+    const { getAccessToken, refUserRole } = useAuth();
     const navigate = useNavigate();
 
     const handleInitializerWithAPI = (data) => {
@@ -191,10 +191,10 @@ const LawyerPage = () => {
             <Grid sx={{ border: "none", boxShadow: "none" }} display="flex" alignItems="center" justifyContent="center" item component={Card} sm>
                 <CardContent>
                     <Grid container direction={'column'}>
-                        <Button disabled={!(watcherUserId && watcherUserId != lawyerUserId)}
+                        <Button disabled={!(refUserRole.current == "User" && watcherUserId != lawyerUserId)}
                         variant="contained" onClick={handleChatStart} sx={{fontFamily:"shabnam", mb:'10px'}}>
                             درخواست چت آنلاین</Button>
-                        <Button disabled={!(watcherUserId && watcherUserId != lawyerUserId)}
+                        <Button disabled={!(refUserRole.current == "User" && watcherUserId != lawyerUserId)}
                         variant="contained" onClick={handleSendCase} sx={{fontFamily:"shabnam"}}>
                             ارسال پرونده</Button>
                     </Grid>
