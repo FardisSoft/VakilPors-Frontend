@@ -17,6 +17,9 @@ import { ThemeProvider } from '@mui/material/styles';
 const cacheRtl = createCache({
     key: 'muirtl',
     stylisPlugins: [rtlPlugin],
+    typography: {
+        fontFamily: 'shabnam',
+    },
 });
 const theme = createTheme({
     direction: 'rtl',
