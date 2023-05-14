@@ -56,7 +56,7 @@ const Rate = () => {
       const token = await getAccessToken();
       try {
         const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
-        console.log('response in getting rate data : ',response);
+        // console.log('response in getting rate data : ',response);
         setValue(response.data.rateNum);
         setComment(response.data.comment);
       } catch (error) {
@@ -79,6 +79,8 @@ const Rate = () => {
   };
 
   const handleRegister = async () => {
+    if(comment.trim() == '')
+      return;
     const url = BASE_API_ROUTE + (isFirstRate ? `Rate/AddRate?laywer_id=${LawyerId}` : `Rate/UpdateRate?laywer_id=${LawyerId}`);
     const token = await getAccessToken();
     const data = {
@@ -90,7 +92,8 @@ const Rate = () => {
       console.log(url,data);
       const response = await (isFirstRate ? axios.post(url, data, {headers: {Authorization: `Bearer ${token}`}})
         : axios.put(url, data, {headers: {Authorization: `Bearer ${token}`}}));
-      console.log('response in adding/updating rate : ',response);
+      // console.log('response in adding/updating rate : ',response);
+      setIsFirstRate(false);
     } catch (error) {
       console.log('error in adding/updating rate : ',error);
     }
@@ -185,7 +188,7 @@ const Rate = () => {
           <Slide in={show} direction="up">
             <Grid container direction={{xs:'column',sm:'row'}} sx={{ display: "flex", gap: 2, m: 2, justifyContent:"center" }}>
               <Button size={'large'} variant="contained" color="primary" sx={{fontsize:"18px",fontFamily:"shabnam"}} onClick={handleRegister}>
-                ثبت نظر
+                {isFirstRate? 'ثبت نظر' : 'ویرایش نظر' }
               </Button>
               <Button size={'large'} variant="outlined" color="secondary" sx={{fontsize:"18px",fontFamily:"shabnam"}} onClick={handleCancel}>
                 انصراف
