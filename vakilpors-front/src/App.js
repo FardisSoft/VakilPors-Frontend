@@ -4,6 +4,21 @@ import { makeStyles } from '@mui/styles';
 import { Grid, Typography, Button } from '@mui/material';
 import landing_page from './assests/images/landing_page.jpeg';
 
+// mui rtl
+import rtlPlugin from 'stylis-plugin-rtl';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
+import { createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
+const cacheRtl = createCache({
+  key: 'muirtl',
+  stylisPlugins: [rtlPlugin],
+});
+const theme = createTheme({
+  direction: 'rtl',
+});
+// mui rtl
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -50,8 +65,10 @@ const App = () => {
       <Helmet>
         <title>Vakil Pors</title>
       </Helmet>
+      <ThemeProvider theme={theme}>
+      <CacheProvider value={cacheRtl}>
       <div className={classes.root}>
-      <Grid container justify="center">
+      <Grid container justify="center" height={'100vh'}>
         <Grid item xs={12} sm={8} md={6}>
           <Typography variant="h2" align="center" className={classes.title}>
             Find the Right Lawyer for Your Needs
@@ -70,6 +87,8 @@ const App = () => {
         </Grid>
       </Grid>
     </div>
+    </CacheProvider>
+    </ThemeProvider>
     </>
   );
 }
