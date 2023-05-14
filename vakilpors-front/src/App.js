@@ -2,7 +2,8 @@ import { Helmet } from 'react-helmet-async';
 import React from 'react';
 import { makeStyles } from '@mui/styles';
 import { Grid, Typography, Button } from '@mui/material';
-import landing_page from './assests/images/landing_page.jpeg';
+import { useNavigate } from "react-router-dom";
+import landing_page from './assests/images/default_lawyer_profile_background_picture.jpg';
 
 // mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
@@ -16,50 +17,27 @@ const cacheRtl = createCache({
 });
 const theme = createTheme({
   direction: 'rtl',
+  typography: {
+    fontFamily: 'shabnam',
+  },
 });
 // mui rtl
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    height: '100vh',
     backgroundImage: `url(${landing_page})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     padding: theme.spacing(12, 0, 8),
     boxShadow: 'inset 0 0 0 2000px rgba(0, 0, 0, 0.5)',
-    [theme.breakpoints.down('sm')]: {
-      padding: theme.spacing(8, 0, 6),
-    },
-  },
-  title: {
-    fontWeight: 700,
-    color: '#fff',
-    textShadow: '2px 2px #000',
-    marginBottom: theme.spacing(4),
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '3rem',
-    },
-  },
-  subtitle: {
-    color: '#fff',
-    textShadow: '2px 2px #000',
-    marginBottom: theme.spacing(8),
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '1.5rem',
-    },
-  },
-  button: {
-    marginRight: theme.spacing(2),
-    textTransform: 'none',
-    fontSize: '1.2rem',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '1rem',
-    },
   },
 }));
 
 const App = () => {
   const classes = useStyles();
+  const navigate = useNavigate();
   return (
     <>
       <Helmet>
@@ -68,20 +46,20 @@ const App = () => {
       <ThemeProvider theme={theme}>
       <CacheProvider value={cacheRtl}>
       <div className={classes.root}>
-      <Grid container justify="center" height={'100vh'}>
-        <Grid item xs={12} sm={8} md={6}>
-          <Typography variant="h2" align="center" className={classes.title}>
-            Find the Right Lawyer for Your Needs
+      <Grid container justifyContent="start" alignItems="start">
+        <Grid item xs={12} sm={8} md={6} sx={{mx: '10px',}}>
+          <Typography variant="h2" align="center" sx={{mb:'30px',fontSize: {xs:'30px',sm:'50px'},color: '#fff',textShadow: '2px 2px #000',}}>
+            از وکیل پرس بپرس!
           </Typography>
-          <Typography variant="h5" align="center" className={classes.subtitle}>
-            Connect with the top lawyers in your area
+          <Typography variant="h5" align="center" sx={{mb:'30px',fontSize: {xs:'20px',sm:'30px'},color: '#fff',textShadow: '2px 2px #000',}}>
+            گرفتن جواب سوال حقوقی و وکیل برای هر پرونده ای مثل آب خوردن!
           </Typography>
-          <Grid container justify="center">
-            <Button variant="contained" color="primary" className={classes.button}>
-              Browse Lawyers
+          <Grid align='center'>
+            <Button variant="contained" size='large' color="primary" onClick={()=>navigate("/Lawyer-search-page")}>
+              جست و جوی وکلا
             </Button>
-            <Button variant="outlined" color="primary" className={classes.button}>
-              Learn More
+            <Button variant="contained" sx={{ml:'20px'}} size='large' color="primary" onClick={()=>navigate("/Forum")}>
+              چت عمومی
             </Button>
           </Grid>
         </Grid>

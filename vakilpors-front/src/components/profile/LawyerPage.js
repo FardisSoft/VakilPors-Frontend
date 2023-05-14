@@ -175,7 +175,7 @@ const LawyerPage = () => {
             <Grid sx={{backgroundImage:`url(${profileBackgroundPicture?profileBackgroundPicture:dlpbp})`,
             backgroundRepeat:'no-repeat',backgroundSize:'cover',backgroundPosition:'center'}} display="flex" alignItems="center" justifyContent="center" item component={Card} sm>
                 <CardContent>
-                    <StyledBadge overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} variant="dot">
+                    <StyledBadge overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} variant="dot">
                         <Avatar alt="lawyer profile" sx={{ width: 60, height: 60 }} srcSet={profilePicture} />
                     </StyledBadge>
                 </CardContent>
