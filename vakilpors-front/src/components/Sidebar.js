@@ -1,6 +1,6 @@
 import { HomeOutlined, PersonSearchOutlined, ForumOutlined, PolicyOutlined, AppRegistrationOutlined,
        LoginOutlined, LogoutOutlined, ManageAccountsOutlined, AccountCircleOutlined, CallOutlined,
-       Menu, ChevronRight, ChatOutlined, Dashboard } from "@mui/icons-material";
+       Menu, ChevronRight, ChatOutlined, DashboardOutlined } from "@mui/icons-material";
 import React, { useState, useEffect } from 'react';
 import useStateRef from "react-usestateref";
 import { styled } from '@mui/material/styles';
@@ -163,7 +163,7 @@ const Sidebar = (props) => {
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
         {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
-        {name:'داشبورد', icon:Dashboard, url:'/PremiumPage'},
+        {name:'داشبورد', icon:DashboardOutlined, url:'/PremiumPage'},
       ];
       break;
     
