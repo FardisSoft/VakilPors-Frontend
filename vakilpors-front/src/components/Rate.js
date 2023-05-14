@@ -8,6 +8,8 @@ import { useAuth } from "../context/AuthProvider";
 import axios from 'axios';
 import { BASE_API_ROUTE } from '../Constants';
 import smilinglawyer from '../assests/images/lawyer_smiler.jpg';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
@@ -23,6 +25,20 @@ const theme = createTheme({
   direction: 'rtl',
 });
 // mui rtl
+
+const showSuccesMessage = (message) => {
+  toast.success(message, {
+    position: "bottom-right",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    rtl:true,
+  });
+};
 
 const Rate = () => {
   const [value, setValue] = useState(0.0);
@@ -94,6 +110,7 @@ const Rate = () => {
         : axios.put(url, data, {headers: {Authorization: `Bearer ${token}`}}));
       // console.log('response in adding/updating rate : ',response);
       setIsFirstRate(false);
+      showSuccesMessage('نظر شما ثبت شد');
     } catch (error) {
       console.log('error in adding/updating rate : ',error);
     }
@@ -195,6 +212,7 @@ const Rate = () => {
               </Button>
             </Grid>
           </Slide>
+          <ToastContainer/>
         </Grid>
       </Grid>
     </CacheProvider>
