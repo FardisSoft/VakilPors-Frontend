@@ -6,7 +6,7 @@ import { Grid, Typography, Button } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    backgroundImage: 'url("/assets/image/background-image.jpg")', // replace with your own image file path
+    backgroundImage: 'url("/assests/image/landing_page.jpeg")', // replace with your own image file path
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     padding: theme.spacing(12, 0, 8),
