@@ -231,11 +231,12 @@ const Call_Edit_Lawyer_Profile = () => {
     console.log(refdetail.current);
     const formData = new FormData();
     for (const key in refdetail.current) {
-      if(key != 'user')
-        formData.append(key, refdetail.current[key]);
+      if(key != 'user'){
+        formData.append(key, refdetail.current[key] == null ? '' : refdetail.current[key]);
+      }
       if(key == 'user')
         for (const keyUser in refdetail.current['user']){
-          formData.append('user.' + keyUser, refdetail.current['user'][keyUser]);
+          formData.append('user.' + keyUser, refdetail.current['user'][keyUser] == null ? '' : refdetail.current['user'][keyUser]);
         }
     }
     const token = await getAccessToken();
