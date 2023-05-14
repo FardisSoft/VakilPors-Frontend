@@ -14,6 +14,21 @@ import {Done, Female, Male, LooksOne, LooksTwo, Looks3, CardMembership, Location
 import { useParams } from "react-router-dom";
 import jwt from 'jwt-decode';
 
+// mui rtl
+import rtlPlugin from 'stylis-plugin-rtl';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
+import { createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
+const cacheRtl = createCache({
+  key: 'muirtl',
+  stylisPlugins: [rtlPlugin],
+});
+const theme = createTheme({
+  direction: 'rtl',
+});
+// mui rtl
+
 const LawyerPage = () => {
 
     const [profilePicture, setProfilePicture] = useState();
@@ -70,7 +85,6 @@ const LawyerPage = () => {
         setNumberOfAnswers(data.numberOfAnswers);
         setNumberOfLikes(data.numberOfLikes);
         setNumberOfVerifies(data.numberOfVerifies);
-        setRatesList(data.ratesList);
         setOnline(!data.user.isActive); // not exactly the same
     };
 
@@ -81,11 +95,15 @@ const LawyerPage = () => {
                 setWatcherUserId(jwt(token).uid);
             }
             const url = BASE_API_ROUTE + `Lawyer/GetLawyerById?lawyerId=${LawyerId}`;
+            const urlRate = BASE_API_ROUTE + `Rate/GetAllRates?lawyer_id=${LawyerId}`;
             try {
                 const response = await axios.get(url);
-                console.log('response : ',response);
+                const responseRate = await axios.get(urlRate, {headers: {Authorization: `Bearer ${token}`}});
+                console.log('response in getting laywer data : ',response);
+                console.log('response in getting laywer rates : ',responseRate);
                 handleInitializerWithAPI(response.data.data);
                 setLawyerUserId(response.data.data.user.id);
+                setRatesList(responseRate.data);
             } catch (error) {
                 console.log('error : ',error);
             }
@@ -146,6 +164,8 @@ const LawyerPage = () => {
     <Helmet>
         <title>Lawyer Page</title>
     </Helmet>
+    <ThemeProvider theme={theme}>
+    <CacheProvider value={cacheRtl}>
     <Stack spacing={5} maxWidth="100%" margin={2}>
         <Grid container direction={{ xs: 'column', sm: 'row' }} alignItems="stretch">
             <Grid sx={{backgroundImage:`url(${profileBackgroundPicture})`,backgroundRepeat:'no-repeat',backgroundSize:'cover',backgroundPosition:'center'}} display="flex" alignItems="center" justifyContent="center" item component={Card} sm>
@@ -282,13 +302,13 @@ const LawyerPage = () => {
                 <Grid key={index} container direction={{ xs: 'column', sm: 'row' }}>
                     <Grid display="flex" alignItems={{xs:'center',sm:"flex-start"}} justifyContent={{xs:'center',sm:"flex-start"}} item component={Card}>
                         <CardContent>
-                            <Avatar alt="user profile" sx={{ width: 60, height: 60 }} srcSet={ratei.profilePicture} />
+                            <Avatar alt="user profile" sx={{ width: 60, height: 60 }} srcSet={ratei.user.profileImageUrl} />
                         </CardContent>
                     </Grid>
                     <Grid display="flex" alignItems="flex-start" justifyContent="flex-start" item component={Card} sm>
                         <CardContent>
-                            <Typography sx={{fontFamily:"shabnam"}}>{ratei.name}</Typography>
-                            <Rating dir="ltr" name="user rating" value={ratei.rate} precision={0.5} readOnly/>
+                            <Typography sx={{fontFamily:"shabnam"}}>{ratei.user.name}</Typography>
+                            <Rating dir="ltr" name="user rating" value={ratei.rateNum} precision={0.5} readOnly/>
                             <Typography sx={{fontFamily:"shabnam"}}>{ratei.comment}</Typography>
                         </CardContent>
                     </Grid>
@@ -296,6 +316,8 @@ const LawyerPage = () => {
             )}
         </Grid>
     </Stack>
+    </CacheProvider>
+    </ThemeProvider>
     </>
     );    
 }
