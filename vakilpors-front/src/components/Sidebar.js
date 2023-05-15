@@ -16,6 +16,7 @@ import axios from 'axios';
 import { BASE_API_ROUTE } from '../Constants';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Footer from "./Footer";
 
 let drawerWidth = 240;
 
@@ -89,22 +90,21 @@ const Sidebar = (props) => {
 
   const delay = ms => new Promise(
     resolve => setTimeout(resolve, ms)
-);
-
+  );
 
   const showSuccesMessage = (payam) => {
     toast.success(payam, {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        rtl:true,
-        });
-};
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      rtl:true,
+    });
+  };
 
   useEffect(() => {
     const sidebarApi = async () => {
@@ -299,7 +299,9 @@ const Sidebar = (props) => {
       <Main onClick={handleDrawerClose} open={open} sx={{padding:'0 !important'}}>
         <DrawerHeader/>
         <props.component/>
+        <Footer/>
       </Main>
+
       <ToastContainer />
     </Box>
     </ThemeProvider>
