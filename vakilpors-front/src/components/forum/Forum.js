@@ -90,7 +90,8 @@ const Forum = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		createThread();
+		if(thread.trim() != '')
+			createThread();
 		setThread("");
 	};
 
