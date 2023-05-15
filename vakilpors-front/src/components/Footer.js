@@ -4,13 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { Box, Grid, Container } from '@mui/material';
 import { Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-
+import logo from '../assests/images/logoFS.jpg';
 
 const useStyles = makeStyles((theme) => ({
   rootBox: {
     [theme.breakpoints.down('md')]: {
       justifyContent: 'center'
-    }
+    },
   },
   footerNav: {
     display: 'flex',
@@ -39,41 +39,23 @@ const useStyles = makeStyles((theme) => ({
 const Footer = () => {
 
   const navigate = useNavigate();
-
   const classes = useStyles();
 
-  const content = {
-    'brand': { image: 'nereus-assets/img/nereus-light.png', width: 110 },
-    'copy': '© 2020 Nereus All rights reserved.',
-    'link1': 'First Link',
-    'link2': 'Second Link',
-    'link3': 'Third Link',
-    'link4': 'Fourth Link',
-  };
-
-  let brand;
-
-  if (content.brand.image) {
-    brand = <img src={ content.brand.image } alt="" width={ content.brand.width } />;
-  } else {
-    brand = content.brand.text || '';
-  }
-
   return (
-    <footer>
+    <footer style={{backgroundColor: 'rgb(25,118,210)'}}>
       <Container maxWidth="lg">
-        <Box py={6} display="flex" flexWrap="wrap" alignItems="center" className={classes.rootBox}>
+        <Grid py={1} display="flex" flexWrap="wrap" alignItems="center" className={classes.rootBox}>
           <Link href="#" color="inherit" underline="none">
-            {brand}
+            <img src={logo} style={{width:'80px',height:'80px'}}/>
+            Fardis Soft
           </Link>
           <Box component="nav" className={classes.footerNav}>
-            <Link href="#" variant="body1" color="textPrimary" className={classes.footerLink}>{content['link1']}</Link>
-            <Link href="#" variant="body1" color="textPrimary" className={classes.footerLink}>{content['link2']}</Link>
-            <Link href="#" variant="body1" color="textPrimary" className={classes.footerLink}>{content['link3']}</Link>
-            <Link href="#" variant="body1" color="textPrimary" className={classes.footerLink}>{content['link4']}</Link>
+            <Link href="#" variant="body1" color="textPrimary" className={classes.footerLink}>صفحه اصلی</Link>
+            <Link href="#" variant="body1" color="textPrimary" className={classes.footerLink}>شرایط سایت</Link>
+            <Link href="#" variant="body1" color="textPrimary" className={classes.footerLink}>تماس با ما</Link>
           </Box>
-          <Typography color="textSecondary" component="p" variant="caption" gutterBottom={false}>{content['copy']}</Typography>
-        </Box>
+          <Typography color="textSecondary" component="p" variant="caption" gutterBottom={false}>تمامی حقوق برای فردیس سافت محفوظ است.</Typography>
+        </Grid>
       </Container>
     </footer>
   );
