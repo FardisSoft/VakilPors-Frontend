@@ -1,6 +1,6 @@
 import { HomeOutlined, PersonSearchOutlined, ForumOutlined, PolicyOutlined, AppRegistrationOutlined,
        LoginOutlined, LogoutOutlined, ManageAccountsOutlined, AccountCircleOutlined, CallOutlined,
-       Menu, ChevronRight, ChatOutlined, DashboardOutlined, AssignmentOutlined } from "@mui/icons-material";
+       Menu, ChevronRight, ChatOutlined, DashboardOutlined, AssignmentOutlined, WalletOutlined } from "@mui/icons-material";
 import React, { useState, useEffect } from 'react';
 import useStateRef from "react-usestateref";
 import { styled } from '@mui/material/styles';
@@ -165,6 +165,7 @@ const Sidebar = (props) => {
         {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
         {name:'داشبورد', icon:DashboardOutlined, url:'/PremiumPage'},
         {name:'پرونده های من', icon:AssignmentOutlined, url:`/show-cases/${false}`},
+        {name:'کیف پول', icon:WalletOutlined, url:`/wallet`},
       ];
       break;
     
@@ -179,7 +180,7 @@ const Sidebar = (props) => {
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
         {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
         {name:'پرونده های من', icon:AssignmentOutlined, url:`/show-cases/${true}`},
-        
+        {name:'کیف پول', icon:WalletOutlined, url:`/wallet`},
       ];
       break;
     
