@@ -55,6 +55,10 @@ const ShowCases = () => {
     GetCases();
   }, []);
 
+  const handleChooseCase = () => {
+    
+  };
+
   const card = (casei) => {
     return ( 
     <React.Fragment>
@@ -94,6 +98,11 @@ const ShowCases = () => {
           <Button onClick={()=> navigate(`/new-case/edit_${casei.id}`)} sx={{fontFamily: "shabnam", mb:1}} size="small">ویرایش</Button>
         </CardActions>
       }
+      {isLawyer == 'choose' && 
+        <CardActions>
+          <Button onClick={handleChooseCase} sx={{fontFamily: "shabnam", mb:1}} size="small">ارسال</Button>
+        </CardActions>
+      }
     </React.Fragment>
     );
   };
@@ -109,7 +118,7 @@ const ShowCases = () => {
       </Helmet>
       <Grid display={"flex"} minHeight={'100vh'} alignItems={"center"} justifyContent={"center"} width={"100%"} backgroundColor={'#ABC0C0'}>
         <Grid container direction={{xs:'column',md:'row'}} height={"100%"} width={{xs:'100%',sm:"90%"}} borderRadius={"10px"} paddingY={"50px"} paddingX={{xs:'0px',sm:"10px",md:'50px'}} display={"flex"} m={"2%"} backgroundColor={'white'}>        
-          <Grid item xs={12} lg={11}>
+          <Grid item xs={12} lg={(isLawyer == 'false') ? 11 : 12}>
             <Grid container direction={"row"} justifyContent={"right"}>
               {refCases.current.length == 0 ? <Typography sx={{fontFamily: "shabnam", fontSize: 24 }}>{isLawyer == 'true' ? 'هنوز پرونده ای برای شما ارسال نشده است.' : 'شما هنوز پرونده‌ ای ایجاد نکرده اید.'}</Typography>
               : 
