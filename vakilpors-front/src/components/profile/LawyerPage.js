@@ -8,25 +8,37 @@ import { Button, Badge, styled, Avatar, Rating, Typography, Chip } from '@mui/ma
 import { Stack, Grid } from "@mui/material";
 import { Card, CardContent, CardHeader, CardMedia } from "@mui/material";
 import LinkMUI from '@mui/material/Link';
-import {Done, Female, Male, LooksOne, LooksTwo, Looks3, CardMembership, LocationOn, 
-    Business, VerifiedUser, WorkHistory, School, Gavel, CoPresent, QuestionAnswer,
-    ThumbUpAlt, FactCheck, Percent } from '@mui/icons-material';
+import {Done, Female, Male, CardMembership, LocationOn, Business, VerifiedUser, WorkHistory,
+    School, Gavel, CoPresent, QuestionAnswer, ThumbUpAlt, FactCheck, Percent } from '@mui/icons-material';
 import { useParams } from "react-router-dom";
 import jwt from 'jwt-decode';
+import dlpbp from '../../assests/images/default_lawyer_profile_background_picture.jpg';
+
+// mui rtl
+import rtlPlugin from 'stylis-plugin-rtl';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
+import { createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
+const cacheRtl = createCache({
+  key: 'muirtl',
+  stylisPlugins: [rtlPlugin],
+});
+const theme = createTheme({
+  direction: 'rtl',
+});
+// mui rtl
 
 const LawyerPage = () => {
 
     const [profilePicture, setProfilePicture] = useState();
     const [profileBackgroundPicture, setProfileBackgroundPicture] = useState();
-    const [online, setOnline] = useState(false);
     const [name, setName] = useState('');
     const [title, setTitle] = useState('');
     const [rate, setRate] = useState(0);
     const [numberOfRates, setNumberOfRates] = useState(0);
     const [city, setCity] = useState('');
-    // const [grade, setGrade] = useState('');
     const [licenseNumber, setLicenseNumber] = useState('');
-    // const [memberOf, setMemberOf] = useState('');
     const [specialties, setSpecialties] = useState([]);
     const [yearsOfExperience, setYearsOfExperience] = useState(0);
     const [gender, setGender] = useState('');
@@ -44,7 +56,7 @@ const LawyerPage = () => {
     const { LawyerId } = useParams();
     const [ lawyerUserId, setLawyerUserId] = useState();
     const [ watcherUserId, setWatcherUserId] = useState();
-    const { getAccessToken } = useAuth();
+    const { getAccessToken, refUserRole } = useAuth();
     const navigate = useNavigate();
 
     const handleInitializerWithAPI = (data) => {
@@ -52,42 +64,57 @@ const LawyerPage = () => {
         setCallingCard(data.callingCardImageUrl);
         setCity(data.city);
         setEducation(data.education);
-        // setGrade(data.grade == 0 ? 'یک' : data.grade == 1 ? 'دو' : 'سه');
         setLicenseNumber(data.parvandeNo);
-        // setMemberOf(data.memberOf);
         setOfficeAddress(data.officeAddress);
         setProfilePicture(data.user.profileImageUrl);
-        setRate(data.rating);
         setResumeLink(data.resumeLink);
-        setSpecialties(data.specialties ? data.specialties.split('/') : []);
+        setSpecialties((data.specialties && data.specialties!='null') ? data.specialties.split('/') : []);
         setTitle(data.title);
         setYearsOfExperience(data.yearsOfExperience);
         setName(data.user.name);
         setGender(data.gender);
         setProfileBackgroundPicture(data.profileBackgroundPictureUrl);
-        setNumberOfRates(data.numberOfRates);
-        setNumberOfConsultations(data.numbereOfConsulations);
+        setNumberOfConsultations(data.numberOfConsultations);
         setNumberOfAnswers(data.numberOfAnswers);
         setNumberOfLikes(data.numberOfLikes);
         setNumberOfVerifies(data.numberOfVerifies);
-        setRatesList(data.ratesList);
-        setOnline(!data.user.isActive); // not exactly the same
+    };
+
+    // khoda vakili alireza ro .....
+    const calculateRateAverage = (rateslist) => {
+        setNumberOfRates(rateslist.length);
+        let ave = 0.0;
+        rateslist.map((ratei) => {
+            ave = ave + ratei.rateNum;
+        });
+        setRate(rateslist.length == 0 ? 0 : (ave/rateslist.length).toFixed(2));
     };
 
     useEffect(() => {
         const fetchData = async () => {
             const token = await getAccessToken();
-            if(token){
-                setWatcherUserId(jwt(token).uid);
-            }
             const url = BASE_API_ROUTE + `Lawyer/GetLawyerById?lawyerId=${LawyerId}`;
             try {
                 const response = await axios.get(url);
-                console.log('response : ',response);
+                // console.log('response in getting laywer data : ',response);
                 handleInitializerWithAPI(response.data.data);
                 setLawyerUserId(response.data.data.user.id);
             } catch (error) {
-                console.log('error : ',error);
+                console.log('error in getting lawyer data : ',error);
+            }
+            if(token){
+                setWatcherUserId(jwt(token).uid);
+                const urlRate = BASE_API_ROUTE + `Rate/GetAllRates?lawyer_id=${LawyerId}`;
+                try {
+                    const responseRate = await axios.get(urlRate, {headers: {Authorization: `Bearer ${token}`}});
+                    // console.log('response in getting laywer rates : ',responseRate);
+                    setRatesList(responseRate.data);
+                    calculateRateAverage(responseRate.data);
+                } catch (error) {
+                    if(error.response.data.Message != 'NO RATES FOUND!'){
+                        console.log('error in getting lawyer rates : ',error);
+                    }
+                }
             }
         };
         fetchData();
@@ -110,6 +137,10 @@ const LawyerPage = () => {
                 console.log('error in starting chat : ', error);
             }
         }
+    };
+
+    const handleSendCase = () => {
+        navigate(`/show-cases/choose_${LawyerId}`);
     };
 
     const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -146,11 +177,14 @@ const LawyerPage = () => {
     <Helmet>
         <title>Lawyer Page</title>
     </Helmet>
+    <ThemeProvider theme={theme}>
+    <CacheProvider value={cacheRtl}>
     <Stack spacing={5} maxWidth="100%" margin={2}>
         <Grid container direction={{ xs: 'column', sm: 'row' }} alignItems="stretch">
-            <Grid sx={{backgroundImage:`url(${profileBackgroundPicture})`,backgroundRepeat:'no-repeat',backgroundSize:'cover',backgroundPosition:'center'}} display="flex" alignItems="center" justifyContent="center" item component={Card} sm>
+            <Grid sx={{backgroundImage:`url(${profileBackgroundPicture?profileBackgroundPicture:dlpbp})`,
+            backgroundRepeat:'no-repeat',backgroundSize:'cover',backgroundPosition:'center'}} display="flex" alignItems="center" justifyContent="center" item component={Card} sm>
                 <CardContent>
-                    <StyledBadge invisible={!online} overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} variant="dot">
+                    <StyledBadge overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} variant="dot">
                         <Avatar alt="lawyer profile" sx={{ width: 60, height: 60 }} srcSet={profilePicture} />
                     </StyledBadge>
                 </CardContent>
@@ -159,15 +193,20 @@ const LawyerPage = () => {
                 <CardContent>
                     <Typography sx={{fontFamily:"shabnam"}}>{name}</Typography>
                     <Typography sx={{fontFamily:"shabnam"}}>{title}</Typography>
-                    <Rating dir="ltr" name="lawyer rating" value={rate} precision={0.5} readOnly/>
+                    <Rating dir="rtl" name="lawyer rating" value={rate} precision={0.05} readOnly/>
                     <Typography sx={{fontSize:"12px", fontFamily:"shabnam"}}> میانگین امتیاز {rate} بر اساس {numberOfRates} نظر </Typography>
                 </CardContent>
             </Grid>
             <Grid sx={{ border: "none", boxShadow: "none" }} display="flex" alignItems="center" justifyContent="center" item component={Card} sm>
                 <CardContent>
-                    <Button disabled={!(watcherUserId && watcherUserId != lawyerUserId)}
-                    variant="contained" onClick={handleChatStart} sx={{fontFamily:"shabnam"}}>
-                        درخواست چت آنلاین</Button>
+                    <Grid container direction={'column'}>
+                        <Button disabled={!(refUserRole.current == "User" && watcherUserId != lawyerUserId)}
+                        variant="contained" onClick={handleChatStart} sx={{fontFamily:"shabnam", mb:'10px'}}>
+                            درخواست چت آنلاین</Button>
+                        <Button disabled={!(refUserRole.current == "User" && watcherUserId != lawyerUserId)}
+                        variant="contained" onClick={handleSendCase} sx={{fontFamily:"shabnam"}}>
+                            ارسال پرونده</Button>
+                    </Grid>
                 </CardContent>
             </Grid>
         </Grid>
@@ -175,27 +214,19 @@ const LawyerPage = () => {
             <Grid item component={Card} sm>
                 <CardContent>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam" }} color="text.secondary">
-                        {gender === "مرد" ? <Male color="primary" sx={{ml:1}}/> : <Female color="primary" sx={{ml:1}}/>}
+                        {gender === "مرد" ? <Male color="primary" sx={{mr:1,position:'relative',top:3}}/> : ( gender === "زن" ? <Female color="primary" sx={{mr:1,position:'relative',top:3}}/> : <><Female color="primary" sx={{mr:-1}}/><Male color="primary" sx={{mr:1,position:'relative',top:3}}/></>)}
                         جنسیت : {gender}
                     </Typography>
-                    {/* <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        {grade === "یک" ? <LooksOne color="primary" sx={{ml:1}}/> : grade === "دو" ? <LooksTwo color="primary" sx={{ml:1}}/> : <Looks3 color="primary" sx={{ml:1}}/>}
-                        پایه : {grade}
-                    </Typography> */}
-                    {/* <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <CardMembership color="primary" sx={{ml:1}}/>
-                        عضو : {memberOf}
-                    </Typography> */}
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <CardMembership color="primary" sx={{ml:1}}/>
+                        <CardMembership color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         عنوان : {title}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <LocationOn color="primary" sx={{ml:1}}/>
+                        <LocationOn color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         شهر : {city}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <Business color="primary" sx={{ml:1}}/>
+                        <Business color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         ادرس دفتر : {officeAddress}
                     </Typography>
                 </CardContent>
@@ -203,45 +234,45 @@ const LawyerPage = () => {
             <Grid item component={Card} sm>
                 <CardContent>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam" }} color="text.secondary">
-                        <VerifiedUser color="primary" sx={{ml:1}}/>
+                        <VerifiedUser color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         شماره پروانه : {licenseNumber}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <WorkHistory color="primary" sx={{ml:1}}/>
+                        <WorkHistory color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         سابقه کار : {yearsOfExperience} سال
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <School color="primary" sx={{ml:1}}/>
+                        <School color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         تحصیلات : {education}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <Gavel color="primary" sx={{ml:1}}/>
+                        <Gavel color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         تخصص ها  
                     </Typography>
-                    {specialties.map((special,index) => <Chip key={index} dir="ltr" sx={{ m: 0.1, fontFamily:"shabnam"  }} label={special} icon={<Done/>} color="info"/>)}
+                    {specialties.map((special,index) => <Chip key={index} dir="rtl" sx={{ m: 0.1, fontFamily:"shabnam"  }} label={special} icon={<Done/>} color="info"/>)}
                 </CardContent>
             </Grid>
             <Grid item component={Card} sm>
                 <CardContent>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam" }} color="text.secondary">
-                        <CoPresent color="primary" sx={{ml:1}}/>
+                        <CoPresent color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         تعداد مشاوره ها : {numberOfConsultations}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <QuestionAnswer color="primary" sx={{ml:1}}/>
+                        <QuestionAnswer color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         تعداد پاسخ ها به سوالات : {numberOfAnswers}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <ThumbUpAlt color="primary" sx={{ml:1}}/>
+                        <ThumbUpAlt color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         تعداد لایک ها : {numberOfLikes}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <FactCheck color="primary" sx={{ml:1}}/>
+                        <FactCheck color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         تعداد پاسخ های تایید شده : {numberOfVerifies}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <Percent color="primary" sx={{ml:1}}/>
-                        درصد پاسخ های تایید شده : {((numberOfVerifies/numberOfAnswers).toFixed(2))*100} %
+                        <Percent color="primary" sx={{mr:1,position:'relative',top:3}}/>
+                        درصد پاسخ های تایید شده : {numberOfAnswers!=0 ? ((numberOfVerifies/numberOfAnswers).toFixed(2))*100 : 0} %
                     </Typography>
                 </CardContent>
             </Grid>
@@ -267,7 +298,7 @@ const LawyerPage = () => {
                         <Typography sx={{ fontFamily:"shabnam", fontWeight:"bold" }} color="text.secondary">
                             رزومه
                         </Typography>
-                        <Typography sx={{ mr:4, fontFamily:"shabnam", fontWeight:"bold" }} color="text.secondary">
+                        <Typography sx={{ ml:4, fontFamily:"shabnam", fontWeight:"bold" }} color="text.secondary">
                             <LinkMUI href={resumeLink}>دانلود رزومه</LinkMUI>
                         </Typography>
                     </Grid>
@@ -282,13 +313,13 @@ const LawyerPage = () => {
                 <Grid key={index} container direction={{ xs: 'column', sm: 'row' }}>
                     <Grid display="flex" alignItems={{xs:'center',sm:"flex-start"}} justifyContent={{xs:'center',sm:"flex-start"}} item component={Card}>
                         <CardContent>
-                            <Avatar alt="user profile" sx={{ width: 60, height: 60 }} srcSet={ratei.profilePicture} />
+                            <Avatar alt="user profile" sx={{ width: 60, height: 60 }} srcSet={ratei.user.profileImageUrl} />
                         </CardContent>
                     </Grid>
                     <Grid display="flex" alignItems="flex-start" justifyContent="flex-start" item component={Card} sm>
                         <CardContent>
-                            <Typography sx={{fontFamily:"shabnam"}}>{ratei.name}</Typography>
-                            <Rating dir="ltr" name="user rating" value={ratei.rate} precision={0.5} readOnly/>
+                            <Typography sx={{fontFamily:"shabnam"}}>{ratei.user.name}</Typography>
+                            <Rating dir="rtl" name="user rating" value={ratei.rateNum} precision={0.5} readOnly/>
                             <Typography sx={{fontFamily:"shabnam"}}>{ratei.comment}</Typography>
                         </CardContent>
                     </Grid>
@@ -296,7 +327,9 @@ const LawyerPage = () => {
             )}
         </Grid>
     </Stack>
-    </>
+    </CacheProvider>
+    </ThemeProvider>
+    </> 
     );    
 }
 export default LawyerPage;

@@ -1,0 +1,94 @@
+.pb\+\+\+ {
+    padding-bottom: 24px !important;
+}
+
+
+.circle-icon.big {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+    padding: 6px;
+}
+
+.mr {
+    margin-left: 6px !important;
+    margin-right: auto !important;
+}
+
+.circle-icon {
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    text-align: center;
+    padding: 3px;
+    position: relative;
+}
+
+.text-bold {
+    font-weight: bold !important;
+}
+
+.-mt {
+    margin-top: -3px !important;
+}
+
+.bgc-3 {
+    background-color: #690 !important;
+}
+.tc-white {
+    color: #fff !important;
+}
+
+
+.trumbowyg-box, .trumbowyg-editor {
+    display: block;
+    position: relative;
+    border: 2px solid #ddd;
+    border-radius: 3px;
+    min-height: 150px;
+}
+
+
+.select-wrapper input.select-dropdown {
+    position: relative;
+    cursor: pointer;
+    background-color: transparent;
+    border-radius: 3px !important;
+    border: 2px solid #ddd;
+    box-shadow: none !important;
+    outline: none !important;
+    height: 34px;
+    line-height: 3rem;
+    width: 100%;
+    margin: 0 0 6px 0;
+    padding: 6px 12px;
+    display: block;
+}
+
+
+.btn-p-primary {
+    color: #fff;
+    background-color: #ed9c28 !important;
+    border-color: #ed9c28 !important;
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+.btn-lg, .btn-group-lg>.btn {
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.33333;
+    border-radius: 3px;
+}
+
+.full-width {
+    width: 100% !important;
+}
+
+.autocomplete-textfield .MuiInputBase-input {
+    font-family: 'shabnam';
+}

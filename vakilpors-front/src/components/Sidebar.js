@@ -1,6 +1,6 @@
 import { HomeOutlined, PersonSearchOutlined, ForumOutlined, PolicyOutlined, AppRegistrationOutlined,
        LoginOutlined, LogoutOutlined, ManageAccountsOutlined, AccountCircleOutlined, CallOutlined,
-       Menu, ChevronRight, ChatOutlined, Dashboard } from "@mui/icons-material";
+       Menu, ChevronRight, ChatOutlined, DashboardOutlined, AssignmentOutlined, WalletOutlined } from "@mui/icons-material";
 import React, { useState, useEffect } from 'react';
 import useStateRef from "react-usestateref";
 import { styled } from '@mui/material/styles';
@@ -16,6 +16,7 @@ import axios from 'axios';
 import { BASE_API_ROUTE } from '../Constants';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Footer from "./Footer";
 
 let drawerWidth = 240;
 
@@ -89,22 +90,21 @@ const Sidebar = (props) => {
 
   const delay = ms => new Promise(
     resolve => setTimeout(resolve, ms)
-);
-
+  );
 
   const showSuccesMessage = (payam) => {
     toast.success(payam, {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        rtl:true,
-        });
-};
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      rtl:true,
+    });
+  };
 
   useEffect(() => {
     const sidebarApi = async () => {
@@ -163,7 +163,9 @@ const Sidebar = (props) => {
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
         {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
-        {name:'داشبورد', icon:Dashboard, url:'/PremiumPage'},
+        {name:'داشبورد', icon:DashboardOutlined, url:'/PremiumPage'},
+        {name:'پرونده های من', icon:AssignmentOutlined, url:`/show-cases/${false}`},
+        {name:'کیف پول', icon:WalletOutlined, url:`/wallet`},
       ];
       break;
     
@@ -177,6 +179,8 @@ const Sidebar = (props) => {
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
         {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
+        {name:'پرونده های من', icon:AssignmentOutlined, url:`user-send-cases/${refLawyerID.current}`},
+        {name:'کیف پول', icon:WalletOutlined, url:`/wallet`},
       ];
       break;
     
@@ -280,13 +284,12 @@ const Sidebar = (props) => {
                 <ListItemIcon>
                   <linki.icon color="primary" sx={{ ...( (linki.url == '/' && props.homePage ? true : window.location.href.includes(linki.url) && linki.url != '/') && {color:"white"})}} />
                 </ListItemIcon>
-                <Typography fontFamily="shabnam" sx={{ ...( (linki.url == '/' && props.homePage ? true : window.location.href.includes(linki.url) && linki.url != '/') && {color:"white"})}} >{linki.name}</Typography>
+                <Typography fontFamily="shabnam" sx={{color:'black', ...( (linki.url == '/' && props.homePage ? true : window.location.href.includes(linki.url) && linki.url != '/') && {color:"white"})}} >{linki.name}</Typography>
               </ListItemButton>
             </ListItem>
           ))}
           {refUserRole.current && <ListItem disablePadding>
             <ListItemButton onClick={logoutHandler}>
-            <ToastContainer />
             
               <ListItemIcon>
                 <LogoutOutlined color="primary" />
@@ -300,7 +303,10 @@ const Sidebar = (props) => {
       <Main onClick={handleDrawerClose} open={open} sx={{padding:'0 !important'}}>
         <DrawerHeader/>
         <props.component/>
+        <Footer/>
       </Main>
+
+      <ToastContainer />
     </Box>
     </ThemeProvider>
   );

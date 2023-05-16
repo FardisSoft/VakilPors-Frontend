@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from './context/AuthProvider';
+
+import App from './App';
 import Login from './components/authentication/Login'
 import Register from './components/authentication/Register';
 import Policy from './components/Policy';
@@ -20,11 +21,13 @@ import ForgotPassword from './components/authentication/ForgotPassword';
 import ResetPassword from './components/authentication/ResetPassword';
 import ActivationAccount from './components/authentication/ActivationAccount';
 import ChatPage from './components/chatPage';
-
+import Rate from './components/Rate';
 import PremiumPage from './components/premium-page/PremiumPage';
 import ResponseTransaction from './components/premium-page/ResponseTransaction';
-
-
+import AddNewCase from './components/case-pages/addNewCase';
+import ShowCases from './components/case-pages/ShowCases';
+import Wallet from './components/premium-page/Wallet';
+import UserSendCases from './components/case-pages/UserSendCases';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -49,8 +52,13 @@ root.render(
               <Route path="/Activation_Account/:phoneNumber" element={<Sidebar component={ActivationAccount}/>}/>
               <Route path="/chatPage" element={<Sidebar component={ChatPage}/>}/>
               <Route path="/PremiumPage" element={<Sidebar component={PremiumPage}/>}/>
+              <Route path="/ResponseTransaction" element={<ResponseTransaction />}/>
+              <Route path="/new-case/:func" element={<Sidebar component={AddNewCase}/>}/>
+              <Route path="/show-cases/:isLawyer" element={<Sidebar component={ShowCases}/>}/>
+              <Route path="/user-send-cases/:LawyerId" element={<Sidebar component={UserSendCases}/>}/>
               <Route path="/payment/verify" element={<ResponseTransaction />}/>
-              
+              <Route path="/Rate/:LawyerId" element={<Sidebar component={Rate}/>}/>
+              <Route path="/wallet" element={<Sidebar component={Wallet}/>}/>
 
           </Routes>
         </AuthProvider>
