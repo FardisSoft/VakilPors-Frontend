@@ -301,49 +301,27 @@ const AddNewCase = () => {
         <Grid container direction={'row'} marginBottom={'20px'}>
           <div display='inline' style={{marginLeft:"10px"}} class="circle-icon big bgc-3 tc-white text-bold flip">6</div>
           <Typography display='inline' variant="h6" sx={{fontFamily: "shabnam"}}>بودجه شما چقدر است ؟  </Typography>                
-        </Grid>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-          {/* <div> */}
-            <FormControl fullWidth sx={{ m: 1 }}>
-              <InputLabel htmlFor="outlined-adornment-amount">حداقل</InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-amount"
-                startAdornment={<InputAdornment position="start">تومان</InputAdornment>}
-                label="Amount"
-                value={MinimumBudget}
-                onChange={(e) => setMinimumBadget(e.target.value)}
-              />
-            </FormControl>
-            {/* <TextField
-              label="شماره موبایل"
-              type="text"
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              variant="outlined"
-              inputProps={{ dir: "rtl", style: { fontFamily:"shabnam", fontSize: "17px",color:"black",} }}
-              InputLabelProps={{ align: "right", dir: "rtl", style: { fontFamily:"shabnam", fontSize: "17px",color:"black",} }}
-              sx={{
-                width: {xs:'100%',sm:'80%'},
-                padding: 0,
-                backgroundColor: 'rgba(255,255,255,0.5)',
-                mb: '10px',
-                borderRadius:"5px",
-              }}/> */}
-          {/* </div> */}
-        </Box>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-          <div>
-            <FormControl fullWidth sx={{ m: 1 }}>
-              <InputLabel htmlFor="outlined-adornment-amount">حداکثر</InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-amount"
-                startAdornment={<InputAdornment position="start">تومان</InputAdornment>}
-                label="Amount"
-                value={MaximumBudget}
-                onChange={(e) => setMaximumBadget(e.target.value)}
-              />
-            </FormControl>
-          </div>
-        </Box>
+        </Grid>   
+        <TextField
+          label="حداقل"
+          type="text"
+          value={MinimumBudget}
+          onChange={(e) => setMinimumBadget(e.target.value)}
+          variant="outlined"
+          inputProps={{ dir: "rtl", style: { fontFamily:"shabnam", fontSize: "15px",color:"black",} }}
+          InputLabelProps={{ align: "right", dir: "rtl", style: { fontFamily:"shabnam", fontSize: "15px",color:"black",} }}
+          startAdornment={<InputAdornment position="start">تومان</InputAdornment>}
+          sx={{width:{xs:'100%',sm:'50%'},mb:'10px'}}/>
+        <TextField
+          label="حداکثر"
+          type="text"
+          value={MaximumBudget}
+          onChange={(e) => setMaximumBadget(e.target.value)}
+          variant="outlined"
+          inputProps={{ dir: "rtl", style: { fontFamily:"shabnam", fontSize: "15px",color:"black",} }}
+          InputLabelProps={{ align: "right", dir: "rtl", style: { fontFamily:"shabnam", fontSize: "15px",color:"black",} }}
+          startAdornment={<InputAdornment position="start">تومان</InputAdornment>}
+          sx={{width:{xs:'100%',sm:'50%'}}}/>
         <br></br>
         <br></br>
         <button onClick={() => {isEdit ? handleEditCase() : handleCreateCase()}} class="btn btn-p-primary btn-lg btn-block" id="create-new-project">
