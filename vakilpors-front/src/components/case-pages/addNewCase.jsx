@@ -34,6 +34,7 @@ const AddNewCase = () => {
   const [isEdit, setisEdit] = useState(false); 
   const [Title, setTitle] = useState('');
   const [File, setFile] = useState(null);
+  const [FileURL, setFileURL] = useState('');
   const [MinimumBudget, setMinimumBadget] = useState('');
   const [MaximumBudget, setMaximumBadget] = useState('');
   const [Description, setDescription] = useState('');
@@ -60,6 +61,7 @@ const AddNewCase = () => {
           setCaseName(response.data.data.caseName);
           setDescription(response.data.data.description);
           setDocumentCategory(response.data.data.documentCategory);
+          setFileURL(response.data.data.fileUrl);
         }
         catch (error) {
           console.log("error in Getting Document Data!!! : ",error);
@@ -235,12 +237,10 @@ const AddNewCase = () => {
   const handleCreateCase = async () => {
     const data = new FormData();
     data.append('MaximumBudget', MaximumBudget);
-    // data.append('UserId', '');
     data.append('MinimumBudget', MinimumBudget);
     data.append('FileUrl', '');
     data.append('Title', Title);
     data.append('DocumentCategory', DocumentCategory);
-    // data.append('Id', '');
     data.append('File', File);
     data.append('Description', Description);
     data.append('caseName', caseName);
@@ -265,13 +265,11 @@ const AddNewCase = () => {
     const data = new FormData();
     data.append('MaximumBudget', MaximumBudget);
     data.append('MinimumBudget', MinimumBudget);
-    data.append('FileUrl', '');
+    data.append('FileUrl', FileURL);
     data.append('Title', Title);
     data.append('DocumentCategory', DocumentCategory);
     data.append('Id', DocumentId);
-    if(File != null){
-      data.append('File', File);
-    }
+    data.append('File', File);
     data.append('Description', Description);
     data.append('caseName', caseName);
     

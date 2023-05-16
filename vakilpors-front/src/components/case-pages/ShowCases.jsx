@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from 'react-helmet-async';
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import useStateRef from 'react-usestateref';
 import { useAuth } from "../../context/AuthProvider";
 import { BASE_API_ROUTE } from "../../Constants";
 import axios from "axios";
 import jwt from 'jwt-decode';
-import { Grid, TextField, Button, Typography, Card, CardActions, CardContent } from '@mui/material';
+import { Box, Grid, Button, Typography, Card, CardActions, CardContent, IconButton } from '@mui/material';
+import { DownloadForOfflineOutlined, } from '@mui/icons-material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
  
@@ -45,22 +46,33 @@ const ShowCases = () => {
     <React.Fragment>
       <CardContent>
         <Typography sx={{fontFamily: "shabnam", fontSize: 14 }} color="text.secondary" gutterBottom>
-          {casei.title}
+          عنوان : {casei.title}
         </Typography>
-        <Typography sx={{fontFamily: "shabnam"}} variant="h5" component="div">
-          {casei.caseName}
+        <Typography sx={{fontFamily: "shabnam", mb: 1}} variant="h5" component="div">
+          نام : {casei.caseName}
         </Typography>
-        <Typography sx={{fontFamily: "shabnam", mb: 1.5 }} color="text.secondary">
-          {casei.documentCategory}
+        <Typography sx={{fontFamily: "shabnam", mb: 1 }} color="text.secondary">
+          گروه : {casei.documentCategory}
         </Typography>
-        <Typography sx={{fontFamily: "shabnam"}} variant="body2"> 
-          حداقل بودجه :{casei.minimumBudget} تومان
+        <Typography sx={{fontFamily: "shabnam", mb: 1}} variant="body2"> 
+          حداقل بودجه : {casei.minimumBudget} تومان
           <br />
           حداکثر بودجه : {casei.maximumBudget} تومان
         </Typography>
+        <Typography sx={{fontFamily: "shabnam", mb: 1 }} color="text.secondary">
+          توضیحات : {casei.description}
+        </Typography>
+        <Box backgroundColor={'lightblue'} borderRadius={2}>
+          <IconButton size="small">
+            <a href={casei.fileUrl} download={'download'}>
+              <DownloadForOfflineOutlined />
+              <span style={{marginLeft:"10px",fontSize:'15px'}}>{'دانلود فایل'}</span>
+            </a>
+          </IconButton>
+        </Box>
       </CardContent>
       <CardActions>
-        <Button onClick={()=> navigate(`/new-case/edit_${casei.id}`)} sx={{fontFamily: "shabnam"}} size="small">ویرایش</Button>
+        <Button onClick={()=> navigate(`/new-case/edit_${casei.id}`)} sx={{fontFamily: "shabnam", mb:1}} size="small">ویرایش</Button>
       </CardActions>
     </React.Fragment>
     );
@@ -78,7 +90,7 @@ const ShowCases = () => {
       <Grid display={"flex"} flexDirection={"column"} margin={"auto"} alignItems={"center"} justifyContent={"center"} width={"100%"} height={"100vh"} backgroundColor={'#ABC0C0'}>
         <Grid height={"100%"} width={"90%"} borderRadius={"10px"} padding={"10px"} paddingTop={"50px"} paddingX={"50px"} paddingBottom={"50px"} display={"flex"} position={"relative"} m={"2%"} justifyContent={"right"} item xs={4} spacing={5} alignSelf={"center"} backgroundColor={'white'}>        
           <Grid container direction={"row"}  sx={{ minWidth: 275 }}>
-            {refCases.current.length == 0 ? <Typography sx={{fontFamily: "shabnam", fontSize: 24 }}>شما هنوز پرونده ای ندارید.</Typography>
+            {refCases.current.length == 0 ? <Typography sx={{fontFamily: "shabnam", fontSize: 24 }}>{isLawyer == 'true' ? 'هنوز پرونده ای برای شما ارسال نشده است.' : 'شما هنوز پرونده‌ ای ایجاد نکرده اید.'}</Typography>
             : refCases.current.map((casei) => <Card sx={{mx:"10px" ,height: "300px"}} variant="outlined">{card(casei)}</Card>)
             }
           </Grid>
