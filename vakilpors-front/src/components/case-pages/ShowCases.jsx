@@ -55,6 +55,33 @@ const ShowCases = () => {
     GetCases();
   }, []);
 
+  const showErrorMessage = (errorMessage) => {
+    toast.error(errorMessage, {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      rtl:true,
+    });
+  };
+  const showSuccesMessage = (payam) => {
+    toast.success(payam, {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      rtl:true,
+    });
+  };
+
   const handleChooseCase = async (docId) => {
     const token = await getAccessToken();
     if(token){
@@ -65,9 +92,11 @@ const ShowCases = () => {
       }
       try {
         const response = await axios.post(url, data, {headers: {Authorization: `Bearer ${token}`}});
-        console.log('response in GrantAccessToLawyer : ',response);
+        // console.log('response in GrantAccessToLawyer : ',response);
+        showSuccesMessage('پرونده مورد نظر با موفقیت برای وکیل مورد نظر ارسال شد.');
       } catch (error) {
         console.log('error in GrantAccessToLawyer : ',error);
+        showErrorMessage('خطا در ارسال پرونده');
       }
     }
   };
