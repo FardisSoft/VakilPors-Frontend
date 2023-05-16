@@ -19,7 +19,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import { Navigate, useParams } from "react-router-dom";
-import "./Newcase.css"
+import '../../css/Newcase.css';
 
 
 
