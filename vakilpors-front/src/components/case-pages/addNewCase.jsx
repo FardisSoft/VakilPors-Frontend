@@ -137,7 +137,7 @@ const AddNewCase = () => {
         )}
       />
     );
-  }
+  };
     
   const categoryList = () => {
     return (
@@ -181,10 +181,10 @@ const AddNewCase = () => {
           // Regular option
           return option.category;
         }}
-        renderOption={(props, option) => <li {...props}>{option.category}</li>}
+        renderOption={(props, option) => <li {...props} style={{fontFamily:'shabnam'}}>{option.category}</li>}
         freeSolo
         renderInput={(params) => (
-          <TextField sx={{border:"none"}}{...params}/>
+          <TextField className="autocomplete-textfield" sx={{border:"none"}}{...params}/>
         )}
       />
     );
@@ -250,7 +250,7 @@ const AddNewCase = () => {
     </Helmet>
     <Grid display={"flex"} flexDirection={"column"} margin={"auto"} alignItems={"center"} justifyContent={"center"} width={"100%"} height={"100%"} backgroundColor={'#ABC0C0'}>
       <Grid flexDirection={'column'} height={"100%"}  width={"80%"} borderRadius={"10px"} padding={"10px"} paddingTop={"50px"} paddingX={"50px"} paddingBottom={"50px"} display={"flex"} position={"relative"} m={"2%"} justifyContent={"center"} item xs={4} spacing={5} alignSelf={"center"} backgroundColor={'white'}>
-        <Typography variant="h4" sx={{fontFamily: "shabnam"}} padding={4}>{isEdit ? "ویرایش پرونده" : "افزودن پرونده جدید"}</Typography>
+        <Typography variant="h4" sx={{fontFamily: "shabnam"}} padding={1}>{isEdit ? "ویرایش پرونده" : "افزودن پرونده جدید"}</Typography>
         <hr></hr>
         <Grid container direction={'row'} marginBottom={'20px'}>
           <div display='inline' style={{marginLeft:"10px"}} class="circle-icon big bgc-3 tc-white text-bold flip">1</div>
@@ -259,55 +259,49 @@ const AddNewCase = () => {
         {titleLists()}
         <br></br>
         <br></br>
-        <Grid container direction={'row'}>
+        <Grid container direction={'row'} marginBottom={'20px'}>
           <div display='inline' style={{marginLeft:"10px"}} class="circle-icon big bgc-3 tc-white text-bold flip">2</div>
-          <Typography variant="h6" sx={{fontFamily: "shabnam"}} padding={4}>پرونده شما در چه زمینه ای است؟</Typography>
+          <Typography variant="h6" sx={{fontFamily: "shabnam"}}>پرونده شما در چه زمینه ای است؟</Typography>
         </Grid>
         {categoryList()}
         <br></br>
         <br></br>
-        <Grid container direction={'row'}>
+        <Grid container direction={'row'} marginBottom={'20px'}>
           <div display='inline' style={{marginLeft:"10px"}} class="circle-icon big bgc-3 tc-white text-bold flip">3</div>
-          <label style={{ position: "relative", top: "5px" }}><p>نام پرونده</p></label>
+          <Typography variant="h6" sx={{fontFamily: "shabnam"}}>نام پرونده</Typography>
         </Grid>
-        <div style={{ border: '1px solid #ccc', borderRadius: '5px' }}>
-          <input
-            className="input100"
-            type="text"
-            value={caseName}
-            onChange={(e) => setCaseName(e.target.value)}
-            margin="normal" />
-        </div>
+        <TextField
+          type="text"
+          value={caseName}
+          onChange={(e) => setCaseName(e.target.value)}
+          variant="outlined"
+          inputProps={{style: { fontFamily:"shabnam"}}}/>
         <br></br>
         <br></br>
-        <Grid container direction={'row'}>
+        <Grid container direction={'row'} marginBottom={'20px'}>
           <div display='inline' style={{marginLeft:"10px"}} class="circle-icon big bgc-3 tc-white text-bold flip">4</div>
-          <Typography variant="h6" sx={{fontFamily: "shabnam"}} padding={4}>پرونده خود را توضیح دهید : </Typography>
+          <Typography variant="h6" sx={{fontFamily: "shabnam"}}>پرونده خود را توضیح دهید : </Typography>
         </Grid>
-        <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
-          <textarea 
-            style={{ 
-              fontSize: '18px', 
-              lineHeight: '1.5',
-              width: '100%',
-              minHeight: '200px'
-            }} 
+        <TextField
+            multiline
+            rows={7}
             value={Description}
             onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
+            variant="outlined"
+            inputProps={{style: {fontFamily:"shabnam"}}}/>
         <br></br>
         <br></br> 
-        <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
-          <label style={{ position: "relative", top: "5px" }}><p>توضیحات پرونده</p></label>
-          <MuiFileInput fullWidth margin='10px' value={File} onChange={(File) => setFile(File)} />
-        </div>
-        <br></br>
-        <br></br>
-        <Grid container direction={'row'}>
+        <Grid container direction={'row'} marginBottom={'20px'}>
           <div display='inline' style={{marginLeft:"10px"}} class="circle-icon big bgc-3 tc-white text-bold flip">5</div>
+          <Typography variant="h6" sx={{fontFamily: "shabnam"}}>اپلود فایل پرونده</Typography>
+        </Grid>
+        <MuiFileInput fullWidth margin='10px' value={File} onChange={(File) => setFile(File)} />
+        <br></br>
+        <br></br>
+        <Grid container direction={'row'} marginBottom={'20px'}>
+          <div display='inline' style={{marginLeft:"10px"}} class="circle-icon big bgc-3 tc-white text-bold flip">6</div>
           <Typography display='inline' variant="h6" sx={{fontFamily: "shabnam"}}>بودجه شما چقدر است ؟  </Typography>                
-        </Grid>   
+        </Grid>
         <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
           <div>
             <FormControl fullWidth sx={{ m: 1 }}>
@@ -338,7 +332,7 @@ const AddNewCase = () => {
         </Box>
         <br></br>
         <br></br>
-        <button onClick={() => {isEdit ? handleEditCase() : handleCreateCase()}} type="submit" class="btn btn-p-primary btn-lg btn-block" id="create-new-project">
+        <button onClick={() => {isEdit ? handleEditCase() : handleCreateCase()}} class="btn btn-p-primary btn-lg btn-block" id="create-new-project">
           {isEdit ? "ویرایش پرونده" : "ایجاد پرونده"} 
         </button>
       </Grid>
