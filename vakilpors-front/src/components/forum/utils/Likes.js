@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
+import Badge from '@mui/material/Badge';
 import { useAuth } from "../../../context/AuthProvider";
 import axios from 'axios';
 import { BASE_API_ROUTE } from "../../../Constants";
-import Badge from '@mui/material/Badge';
 
 const Likes = ({ threadOrComment, IsThread }) => {
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Grid, Rating, Avatar, TextField, Typography, Slide, Button, Paper } from '@mui/material';
+import { Grid, Rating, Avatar, TextField, Typography, Slide, Button } from '@mui/material';
 import { Card, CardContent } from "@mui/material";
 import { Helmet } from 'react-helmet-async';
 import { useParams } from "react-router-dom";
@@ -8,6 +8,8 @@ import { useAuth } from "../context/AuthProvider";
 import axios from 'axios';
 import { BASE_API_ROUTE } from '../Constants';
 import smilinglawyer from '../assests/images/lawyer_smiler.jpg';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
@@ -24,10 +26,25 @@ const theme = createTheme({
 });
 // mui rtl
 
+const showSuccesMessage = (message) => {
+  toast.success(message, {
+    position: "bottom-right",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    rtl:true,
+  });
+};
+
 const Rate = () => {
   const [value, setValue] = useState(0.0);
   const [comment, setComment] = useState("");
   const [show, setShow] = useState(false);
+  const [isFirstRate, setIsFirstRate] = useState(false);
 
   const [name, setName] = useState('');
   const [profilePicture, setProfilePicture] = useState();
@@ -42,15 +59,31 @@ const Rate = () => {
     const getLawyerData = async () => {
       const url = BASE_API_ROUTE + `Lawyer/GetLawyerById?lawyerId=${LawyerId}`;
       try {
-          const response = await axios.get(url);
-          setName(response.data.data.user.name);
-          setProfileBackgroundPicture(response.data.data.profileBackgroundPictureUrl);
-          setProfilePicture(response.data.data.user.profileImageUrl);
+        const response = await axios.get(url);
+        setName(response.data.data.user.name);
+        setProfileBackgroundPicture(response.data.data.profileBackgroundPictureUrl);
+        setProfilePicture(response.data.data.user.profileImageUrl);
       } catch (error) {
-          console.log('error : ',error);
+        console.log('error in getting lawyer data : ',error);
+      }
+    };
+    const getRateData = async () => {
+      const url = BASE_API_ROUTE + `Rate/GetRate?laywer_id=${LawyerId}`;
+      const token = await getAccessToken();
+      try {
+        const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
+        // console.log('response in getting rate data : ',response);
+        setValue(response.data.rateNum);
+        setComment(response.data.comment);
+      } catch (error) {
+        if(error.response.data == 'Not found!!'){
+          setIsFirstRate(true);
+        }
+        console.log('error in getting rate data : ',error);
       }
     };
     getLawyerData();
+    getRateData();
   }, []);
 
   const handleChange = (event) => {
@@ -61,8 +94,26 @@ const Rate = () => {
     setComment(event.target.value);
   };
 
-  const handleRegister = () => {
-    
+  const handleRegister = async () => {
+    if(comment.trim() == '')
+      return;
+    const url = BASE_API_ROUTE + (isFirstRate ? `Rate/AddRate?laywer_id=${LawyerId}` : `Rate/UpdateRate?laywer_id=${LawyerId}`);
+    const token = await getAccessToken();
+    const data = {
+      "id": 0,
+      "comment": comment,
+      "rateNum": Number(value)
+    };
+    try {
+      console.log(url,data);
+      const response = await (isFirstRate ? axios.post(url, data, {headers: {Authorization: `Bearer ${token}`}})
+        : axios.put(url, data, {headers: {Authorization: `Bearer ${token}`}}));
+      // console.log('response in adding/updating rate : ',response);
+      setIsFirstRate(false);
+      showSuccesMessage('نظر شما ثبت شد');
+    } catch (error) {
+      console.log('error in adding/updating rate : ',error);
+    }
   };
 
   const handleCancel = () => {
@@ -154,13 +205,14 @@ const Rate = () => {
           <Slide in={show} direction="up">
             <Grid container direction={{xs:'column',sm:'row'}} sx={{ display: "flex", gap: 2, m: 2, justifyContent:"center" }}>
               <Button size={'large'} variant="contained" color="primary" sx={{fontsize:"18px",fontFamily:"shabnam"}} onClick={handleRegister}>
-                ثبت نظر
+                {isFirstRate? 'ثبت نظر' : 'ویرایش نظر' }
               </Button>
               <Button size={'large'} variant="outlined" color="secondary" sx={{fontsize:"18px",fontFamily:"shabnam"}} onClick={handleCancel}>
                 انصراف
               </Button>
             </Grid>
           </Slide>
+          <ToastContainer/>
         </Grid>
       </Grid>
     </CacheProvider>

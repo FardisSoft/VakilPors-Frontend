@@ -26,6 +26,7 @@ import PremiumPage from './components/premium-page/PremiumPage';
 import ResponseTransaction from './components/premium-page/ResponseTransaction';
 import AddNewCase from './components/case-pages/addNewCase';
 import ShowCases from './components/case-pages/ShowCases';
+import Wallet from './components/premium-page/Wallet';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -55,8 +56,7 @@ root.render(
               <Route path="/show-cases/:isLawyer" element={<Sidebar component={ShowCases}/>}/>
               <Route path="/payment/verify" element={<ResponseTransaction />}/>
               <Route path="/Rate/:LawyerId" element={<Sidebar component={Rate}/>}/>
-              
-
+              <Route path="/wallet" element={<Wallet/>}/>
 
           </Routes>
         </AuthProvider>
