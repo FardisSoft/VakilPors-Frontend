@@ -69,6 +69,33 @@ const AddNewCase = () => {
     getDocData();
   },[]);
 
+  const showErrorMessage = (errorMessage) => {
+    toast.error(errorMessage, {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      rtl:true,
+    });
+  };
+  const showSuccesMessage = (payam) => {
+    toast.success(payam, {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      rtl:true,
+    });
+  };
+
   const categories = [
     { category: 'ثبت احوال' },
     { category: 'بیمه' },
@@ -226,8 +253,10 @@ const AddNewCase = () => {
       try {
           const response = await axios.post(url,data,{headers: {Authorization: `Bearer ${token}`}});
           // console.log('response in adding doc : ', response);
+          showSuccesMessage('پرونده با موفقیت ایجاد شد.');
       } catch (error) {
           console.log('error in adding doc : ',error);
+          showErrorMessage('ایجاد پرونده با خطا مواجه شد');
       }
     }
   };
@@ -252,8 +281,10 @@ const AddNewCase = () => {
       try {
           const response = await axios.post(url,data,{headers: {Authorization: `Bearer ${token}`}});
           // console.log('response in updating Document : ', response);
+          showSuccesMessage('پرونده با موفقیت ویرایش شد.');
       } catch (error) {
           console.log('error in updating Document : ',error);
+          showErrorMessage('ویرایش پرونده با خطا مواجه شد');
       }
     }
   };
