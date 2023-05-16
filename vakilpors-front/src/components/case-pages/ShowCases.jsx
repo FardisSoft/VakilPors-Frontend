@@ -51,13 +51,13 @@ const ShowCases = () => {
     const token = await getAccessToken();
     if(token){
       const tokenData = jwt(token);
-      const url = BASE_API_ROUTE + ( isLawyer == 'true' ? `Document/GetDocumentsThatLawyerHasAccessToByUserId` : `Document/GetDocumentsByUserId?userId=${tokenData.uid}`); 
+      const url = BASE_API_ROUTE + ( isLawyer.split('_')[0] == 'true' ? `Document/GetDocumentsThatLawyerHasAccessToByUserId` : `Document/GetDocumentsByUserId?userId=${tokenData.uid}`); 
       const Data = {
-        "userId": tokenData.uid,
-        "lawyerId": 0
+        "userId": isLawyer.split('_')[1],
+        "lawyerId": isLawyer.split('_')[2]
       }
       try {
-        const response = await (isLawyer == 'true'? axios.post(url, Data, {headers: {Authorization: `Bearer ${token}`}}) : axios.get(url,{headers: {Authorization: `Bearer ${token}`}}));
+        const response = await (isLawyer.split('_')[0] == 'true' ? axios.post(url, Data, {headers: {Authorization: `Bearer ${token}`}}) : axios.get(url,{headers: {Authorization: `Bearer ${token}`}}));
         setCases(response.data.data);
         // response.data.data.map(async (casei) => {
         //   const lawyers = await getLawyersThatHaveAccessToDoc(casei.id);
@@ -204,7 +204,7 @@ const ShowCases = () => {
         <Grid container direction={{xs:'column',md:'row'}} height={"100%"} width={{xs:'100%',sm:"90%"}} borderRadius={"10px"} paddingY={"50px"} paddingX={{xs:'0px',sm:"10px",md:'50px'}} display={"flex"} m={"2%"} backgroundColor={'white'}>        
           <Grid item xs={12} lg={(isLawyer == 'false') ? 11 : 12}>
             <Grid container direction={"row"} justifyContent={"right"}>
-              {refCases.current.length == 0 ? <Typography sx={{fontFamily: "shabnam", fontSize: 24 }}>{isLawyer == 'true' ? 'هنوز پرونده ای برای شما ارسال نشده است.' : 'شما هنوز پرونده‌ ای ایجاد نکرده اید.'}</Typography>
+              {refCases.current.length == 0 ? <Typography sx={{fontFamily: "shabnam", fontSize: 24 }}>{isLawyer.split('_')[0] == 'true' ? 'هنوز پرونده ای برای شما ارسال نشده است.' : 'شما هنوز پرونده‌ ای ایجاد نکرده اید.'}</Typography>
               : 
                 refCases.current.map((casei) => 
                 <Grid item xs={12} sm={6} md={4} lg={3}>
