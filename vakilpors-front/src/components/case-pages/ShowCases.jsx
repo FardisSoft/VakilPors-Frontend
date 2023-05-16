@@ -82,7 +82,9 @@ const ShowCases = () => {
             : refCases.current.map((casei) => <Card sx={{mx:"10px" ,height: "300px"}} variant="outlined">{card(casei)}</Card>)
             }
           </Grid>
-          <Button onClick={ClickNewCase} sx={{fontFamily: "shabnam"}} variant="contained">افزودن پرونده</Button>
+          {isLawyer == 'false' &&
+            <Button onClick={ClickNewCase} sx={{fontFamily: "shabnam"}} variant="contained">افزودن پرونده</Button>
+          }
         </Grid>
       </Grid>
       </>
