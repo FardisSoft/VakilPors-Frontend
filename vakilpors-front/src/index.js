@@ -56,7 +56,7 @@ root.render(
               <Route path="/show-cases/:isLawyer" element={<Sidebar component={ShowCases}/>}/>
               <Route path="/payment/verify" element={<ResponseTransaction />}/>
               <Route path="/Rate/:LawyerId" element={<Sidebar component={Rate}/>}/>
-              <Route path="/wallet" element={<Wallet/>}/>
+              <Route path="/wallet" element={<Sidebar component={Wallet}/>}/>
 
           </Routes>
         </AuthProvider>
