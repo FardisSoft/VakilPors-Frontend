@@ -10,7 +10,7 @@ const ContactUs = () => {
 	return (
 		<>
 		<Helmet>
-			<title>Contact Us</title>
+			<title>تماس با ما</title>
 		</Helmet>
 
 		<div style={{display: 'flex',
