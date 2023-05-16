@@ -78,9 +78,9 @@ const ShowCases = () => {
       <Grid display={"flex"} flexDirection={"column"} margin={"auto"} alignItems={"center"} justifyContent={"center"} width={"100%"} height={"100vh"} backgroundColor={'#ABC0C0'}>
         <Grid height={"100%"} width={"90%"} borderRadius={"10px"} padding={"10px"} paddingTop={"50px"} paddingX={"50px"} paddingBottom={"50px"} display={"flex"} position={"relative"} m={"2%"} justifyContent={"right"} item xs={4} spacing={5} alignSelf={"center"} backgroundColor={'white'}>        
           <Grid container direction={"row"}  sx={{ minWidth: 275 }}>
-            {refCases.current && refCases.current.map((casei) => 
-              <Card sx={{mx:"10px" ,height: "300px"}} variant="outlined">{card(casei)}</Card>
-            )}
+            {refCases.current.length == 0 ? <Typography sx={{fontFamily: "shabnam", fontSize: 24 }}>شما هنوز پرونده ای ندارید.</Typography>
+            : refCases.current.map((casei) => <Card sx={{mx:"10px" ,height: "300px"}} variant="outlined">{card(casei)}</Card>)
+            }
           </Grid>
           <Button onClick={ClickNewCase} sx={{fontFamily: "shabnam"}} variant="contained">افزودن پرونده</Button>
         </Grid>
