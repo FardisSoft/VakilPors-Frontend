@@ -7,10 +7,24 @@ import { useAuth } from "../../context/AuthProvider";
 import { BASE_API_ROUTE } from "../../Constants";
 import axios from "axios";
 import jwt from 'jwt-decode';
-import { Box, Grid, Button, Typography, Card, CardActions, CardContent, IconButton } from '@mui/material';
+import { Box, Grid, Button, Typography, Card, CardActions, CardContent, IconButton, styled } from '@mui/material';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { DownloadForOfflineOutlined, } from '@mui/icons-material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+const HtmlTooltip = styled (({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} arrow/>
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: '#f5f5f9',
+    color: 'rgba(0, 0, 0, 0.87)',
+    maxWidth: 300,
+    fontSize: '15px',
+    border: '1px solid #dadde9',
+    fontFamily: 'shabnam',
+  },
+}));
  
 const ShowCases = () => {
 
@@ -60,9 +74,11 @@ const ShowCases = () => {
           حداکثر بودجه : {casei.maximumBudget} تومان
         </Typography>
         <Grid item xs={12} sx={{overflow:'hidden', width: '200px'}}>
-              <Typography fontFamily="shabnam" fontSize="13px" sx={{whiteSpace: 'nowrap',marginBottom: 1,padding: '2px',borderRadius: '7px',textOverflow: 'ellipsis',overflow: 'hidden',}}>
-                توضیحات : {casei.description}
-              </Typography>
+          <HtmlTooltip title={<React.Fragment>{casei.description}</React.Fragment>}>
+            <Typography fontFamily="shabnam" fontSize="13px" sx={{whiteSpace: 'nowrap',marginBottom: 1,padding: '2px',borderRadius: '7px',textOverflow: 'ellipsis',overflow: 'hidden',}}>
+              توضیحات : {casei.description}
+            </Typography>
+          </HtmlTooltip>
         </Grid>
         <Box backgroundColor={'lightblue'} borderRadius={2}>
           <IconButton size="small">
