@@ -11,6 +11,21 @@ import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import { MuiFileInput } from 'mui-file-input'
 import '../../css/Newcase.css';
 
+// mui rtl
+import rtlPlugin from 'stylis-plugin-rtl';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
+import { createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
+const cacheRtl = createCache({
+    key: 'muirtl',
+    stylisPlugins: [rtlPlugin],
+});
+const theme = createTheme({
+    direction: 'rtl',
+});
+// mui rtl
+
 const filter = createFilterOptions();
 
 const AddNewCase = () => {
@@ -248,6 +263,8 @@ const AddNewCase = () => {
     <Helmet>
         <title>{isEdit ? "ویرایش پرونده" : "افزودن پرونده"}</title> 
     </Helmet>
+    <ThemeProvider theme={theme}>
+    <CacheProvider value={cacheRtl}>
     <Grid display={"flex"} flexDirection={"column"} alignItems={"center"} justifyContent={"center"} width={"100%"} backgroundColor={'#ABC0C0'}>
       <Grid flexDirection={'column'} width={"80%"} borderRadius={"10px"} paddingY={"40px"} paddingX={"50px"} m={'2%'} display={"flex"} justifyContent={"center"} alignSelf={"center"} backgroundColor={'white'}>
         <Typography variant="h4" sx={{fontFamily: "shabnam"}} paddingY={2}>{isEdit ? "ویرایش پرونده" : "افزودن پرونده جدید"}</Typography>
@@ -303,24 +320,22 @@ const AddNewCase = () => {
           <Typography display='inline' variant="h6" sx={{fontFamily: "shabnam"}}>بودجه شما چقدر است ؟  </Typography>                
         </Grid>   
         <TextField
-          label="حداقل"
+          label="حداقل (تومان)"
           type="text"
           value={MinimumBudget}
           onChange={(e) => setMinimumBadget(e.target.value)}
           variant="outlined"
           inputProps={{ dir: "rtl", style: { fontFamily:"shabnam", fontSize: "15px",color:"black",} }}
           InputLabelProps={{ align: "right", dir: "rtl", style: { fontFamily:"shabnam", fontSize: "15px",color:"black",} }}
-          startAdornment={<InputAdornment position="start">تومان</InputAdornment>}
           sx={{width:{xs:'100%',sm:'50%'},mb:'10px'}}/>
         <TextField
-          label="حداکثر"
+          label="حداکثر (تومان)"
           type="text"
           value={MaximumBudget}
           onChange={(e) => setMaximumBadget(e.target.value)}
           variant="outlined"
-          inputProps={{ dir: "rtl", style: { fontFamily:"shabnam", fontSize: "15px",color:"black",} }}
+          inputProps={{ dir: "rtl", style: { fontFamily:"shabnam", fontSize: "15px",color:"black",}}}
           InputLabelProps={{ align: "right", dir: "rtl", style: { fontFamily:"shabnam", fontSize: "15px",color:"black",} }}
-          startAdornment={<InputAdornment position="start">تومان</InputAdornment>}
           sx={{width:{xs:'100%',sm:'50%'}}}/>
         <br></br>
         <br></br>
@@ -329,6 +344,8 @@ const AddNewCase = () => {
         </button>
       </Grid>
     </Grid>
+    </CacheProvider>
+    </ThemeProvider>
     </>
   );
 }
