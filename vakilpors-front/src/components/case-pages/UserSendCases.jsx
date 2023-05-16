@@ -4,13 +4,33 @@ import { useParams } from "react-router-dom";
 import { Typography, Grid, TextField } from "@mui/material";
 
 const UserSendCases = () => {
+
+  const [users, setUsers] = useState([]);
+  const { LawyerId } = useParams();
+
+  useEffect(() => {
+    const getUsers = async () => {
+      const url =  BASE_API_ROUTE + `Document/GetUsersThatLawyerHasAccessToTheirDocuments?lawyerId=${LawyerId}`;
+      const token = await getAccessToken();
+      try{
+        const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
+        console.log("success in Getting users : ",response);
+        // setUsers(response.data.data);
+      }
+      catch (error) {
+        console.log("error in Getting users : ",error);
+      }
+    };
+    getUsers();
+  },[]);
+
   return (
     <>
     <Helmet>
       <title>کاربران ارسال کننده پرونده</title>
     </Helmet>
     <Grid>
-      
+
     </Grid>
     </>
   );
