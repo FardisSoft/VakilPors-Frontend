@@ -5,6 +5,7 @@ import FmdGoodIcon from '@mui/icons-material/FmdGood'; // location icon
 import PhoneIcon from '@mui/icons-material/Phone'; // Phone icon
 import EmailIcon from '@mui/icons-material/Email'; // Email Icon
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice'; // Post icon
+import { IconButton } from "@mui/material";
 
 const ContactUs = () => {
 	return (
@@ -29,14 +30,13 @@ const ContactUs = () => {
 						backgroundColor: '#fffbf5',
 						borderRadius: '25px',
 						alignItems: 'center'}}>
-
-				<p style={{fontSize: 15, color: '#444cc6'}}>آدرس : تهران - تهران - دانشگاه علم و صنعت</p>
-				<p style={{fontSize: 15, color: '#444cc6'}}>تلفن گویا : 77240540</p>
-				<p style={{fontSize: 15, color: '#444cc6'}}>ایمیل : pub@iust.ac.ir</p>
-				<p style={{fontSize: 15, color: '#444cc6'}}>کد پستی : 1684613114 <br/><br/></p>
-				<p style={{fontSize: 22, color: '#000000', alignSelf: 'center'}}>مکان</p>
+				<FmdGoodIcon></FmdGoodIcon>
+				<p style={{fontSize: 15, color: '#444cc6'}}>استان تهران - شهر تهران - نارمک - خیابان حیدرخانی - دانشگاه علم و صنعت ایران - دانشکده مهندسی کامپیوتر</p>
 				<p style={{fontsize: 15, color: '#444cc6'}}> <a href="https://goo.gl/maps/BVieC2q9PMVLP5UV9">نمایش در Google Maps</a></p>
-				
+				<PhoneIcon></PhoneIcon>
+				<p style={{fontSize: 15, color: '#444cc6'}}>021-77240540</p>
+				<EmailIcon></EmailIcon>
+				<p style={{fontSize: 15, color: '#444cc6'}}>pub@iust.ac.ir</p>				
 			</div>
 		</div>
 		</>
