@@ -555,8 +555,8 @@ const ChatPage = () => {
           <List sx={{height: '100%', flex: {xs:'0 0 auto', md:'1 0 0'}, overflow: 'overlay'}}>
             {refChats.current.map((chat) => (
               <ListItem sx={{cursor:'pointer',...(refSelectedChat.current === chat.id && {backgroundColor:'skyblue',borderRadius:2})}} key={chat.id} onClick={() => handleChatSelect(chat.id)} >
-                <ListItemAvatar>
-                  <Avatar src={chat.users[getUserIndex(chat.id)].profileImageUrl} alt={chat.users[getUserIndex(chat.id)].name} />
+                <ListItemAvatar onClick={() => navigate(`/LawyerPage/${chat.users[getUserIndex(chat.id)].lawyerId}`)}>
+                  <Avatar src={chat.users[getUserIndex(chat.id)].profileImageUrl} alt={chat.users[getUserIndex(chat.id)].name}/>
                 </ListItemAvatar>
                 <ListItemText primaryTypographyProps={{ fontFamily: 'shabnam' }} primary={chat.users[getUserIndex(chat.id)].name} />
                 { (refUserRole.current === "User" && chat.users[getUserIndex(chat.id)].lawyerId != null && chat.chatMessages.length > 9) && <IconButton size="small" onClick={() => handleRateClick(chat.users[getUserIndex(chat.id)].lawyerId)}>
