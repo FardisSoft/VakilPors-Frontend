@@ -44,17 +44,17 @@ const ChatPage = () => {
 
   const showErrorMessage = (errorMessage) => {
     toast.error(errorMessage, {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        rtl:true,
-        });
-};
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      rtl:true,
+    });
+  };
 
   const getUserIndex = (chatId) => {
     return refChats.current[getChatIndexByChatId(chatId)].users[0].id == refUser.current.id ? 1 : 0;
@@ -546,7 +546,7 @@ const ChatPage = () => {
         {/* show user him/herself info */}
         {refUser.current && <Grid display="flex" flexDirection="column" alignItems="center" justifyContent={'center'} padding={1} border={'1px solid grey'} borderRadius={2}>
           <Avatar src={refUser.current.profileImageUrl} alt={refUser.current.name} />
-          <Typography>{refUser.current.name}</Typography>
+          <Typography fontFamily={'shabnam'}>{refUser.current.name}</Typography>
         </Grid>}
 
         {/* show chats (persons that user has chatted with) */}
@@ -558,7 +558,7 @@ const ChatPage = () => {
                 <ListItemAvatar>
                   <Avatar src={chat.users[getUserIndex(chat.id)].profileImageUrl} alt={chat.users[getUserIndex(chat.id)].name} />
                 </ListItemAvatar>
-                <ListItemText primary={chat.users[getUserIndex(chat.id)].name} />
+                <ListItemText primaryTypographyProps={{ fontFamily: 'shabnam' }} primary={chat.users[getUserIndex(chat.id)].name} />
                 { (refUserRole.current === "User" && chat.users[getUserIndex(chat.id)].lawyerId != null && chat.chatMessages.length > 9) && <IconButton size="small" onClick={() => handleRateClick(chat.users[getUserIndex(chat.id)].lawyerId)}>
                   <RateReview />
                 </IconButton>}
@@ -604,6 +604,7 @@ const ChatPage = () => {
                 onChange={handleInputChange}
                 onKeyDown={handleEnter}
                 InputProps={{
+                  dir: "rtl", style: { fontFamily:"shabnam", fontSize: "15px",color:"black",},
                   endAdornment: (
                     <InputAdornment position="end">
                       {isEditActive ? <>
