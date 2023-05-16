@@ -7,10 +7,24 @@ import { useAuth } from "../../context/AuthProvider";
 import { BASE_API_ROUTE } from "../../Constants";
 import axios from "axios";
 import jwt from 'jwt-decode';
-import { Box, Grid, Button, Typography, Card, CardActions, CardContent, IconButton } from '@mui/material';
+import { Box, Grid, Button, Typography, Card, CardActions, CardContent, IconButton, styled } from '@mui/material';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { DownloadForOfflineOutlined, } from '@mui/icons-material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+const HtmlTooltip = styled (({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} arrow/>
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: '#f5f5f9',
+    color: 'rgba(0, 0, 0, 0.87)',
+    maxWidth: 300,
+    fontSize: '15px',
+    border: '1px solid #dadde9',
+    fontFamily: 'shabnam',
+  },
+}));
  
 const ShowCases = () => {
 
@@ -41,6 +55,52 @@ const ShowCases = () => {
     GetCases();
   }, []);
 
+  const showErrorMessage = (errorMessage) => {
+    toast.error(errorMessage, {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      rtl:true,
+    });
+  };
+  const showSuccesMessage = (payam) => {
+    toast.success(payam, {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      rtl:true,
+    });
+  };
+
+  const handleChooseCase = async (docId) => {
+    const token = await getAccessToken();
+    if(token){
+      const url = BASE_API_ROUTE + 'Document/GrantAccessToLawyer';
+      const data = {
+        "lawyerId": isLawyer.split('_')[1], // or number
+        "documentId": docId,
+      }
+      try {
+        const response = await axios.post(url, data, {headers: {Authorization: `Bearer ${token}`}});
+        // console.log('response in GrantAccessToLawyer : ',response);
+        showSuccesMessage('پرونده مورد نظر با موفقیت برای وکیل مورد نظر ارسال شد.');
+      } catch (error) {
+        console.log('error in GrantAccessToLawyer : ',error);
+        showErrorMessage('خطا در ارسال پرونده');
+      }
+    }
+  };
+
   const card = (casei) => {
     return ( 
     <React.Fragment>
@@ -60,9 +120,11 @@ const ShowCases = () => {
           حداکثر بودجه : {casei.maximumBudget} تومان
         </Typography>
         <Grid item xs={12} sx={{overflow:'hidden', width: '200px'}}>
-              <Typography fontFamily="shabnam" fontSize="13px" sx={{whiteSpace: 'nowrap',marginBottom: 1,padding: '2px',borderRadius: '7px',textOverflow: 'ellipsis',overflow: 'hidden',}}>
-                توضیحات : {casei.description}
-              </Typography>
+          <HtmlTooltip title={<React.Fragment>{casei.description}</React.Fragment>}>
+            <Typography fontFamily="shabnam" fontSize="13px" sx={{whiteSpace: 'nowrap',marginBottom: 1,padding: '2px',borderRadius: '7px',textOverflow: 'ellipsis',overflow: 'hidden',}}>
+              توضیحات : {casei.description}
+            </Typography>
+          </HtmlTooltip>
         </Grid>
         <Box backgroundColor={'lightblue'} borderRadius={2}>
           <IconButton size="small">
@@ -73,9 +135,16 @@ const ShowCases = () => {
           </IconButton>
         </Box>
       </CardContent>
-      <CardActions>
-        <Button onClick={()=> navigate(`/new-case/edit_${casei.id}`)} sx={{fontFamily: "shabnam", mb:1}} size="small">ویرایش</Button>
-      </CardActions>
+      {isLawyer == 'false' && 
+        <CardActions>
+          <Button onClick={()=> navigate(`/new-case/edit_${casei.id}`)} sx={{fontFamily: "shabnam", mb:1}} size="small">ویرایش</Button>
+        </CardActions>
+      }
+      {isLawyer.split('_')[0] == 'choose' && 
+        <CardActions>
+          <Button variant="contained" onClick={()=>handleChooseCase(casei.id)} sx={{fontFamily: "shabnam", mb:1, width:'100%'}} size="large">ارسال</Button>
+        </CardActions>
+      }
     </React.Fragment>
     );
   };
@@ -89,15 +158,24 @@ const ShowCases = () => {
       <Helmet>
           <title>پرونده های من</title>
       </Helmet>
-      <Grid display={"flex"} flexDirection={"column"} margin={"auto"} alignItems={"center"} justifyContent={"center"} width={"100%"} height={"100vh"} backgroundColor={'#ABC0C0'}>
-        <Grid height={"100%"} width={"90%"} borderRadius={"10px"} paddingTop={"50px"} paddingX={"50px"} paddingBottom={"50px"} display={"flex"} position={"relative"} m={"2%"} justifyContent={"right"} item xs={4} spacing={5} alignSelf={"center"} backgroundColor={'white'}>        
-          <Grid container direction={"row"}>
-            {refCases.current.length == 0 ? <Typography sx={{fontFamily: "shabnam", fontSize: 24 }}>{isLawyer == 'true' ? 'هنوز پرونده ای برای شما ارسال نشده است.' : 'شما هنوز پرونده‌ ای ایجاد نکرده اید.'}</Typography>
-            : refCases.current.map((casei) => <Card sx={{m:"10px" ,height: "300px"}} variant="outlined">{card(casei)}</Card>)
-            }
+      <Grid display={"flex"} minHeight={'100vh'} alignItems={"center"} justifyContent={"center"} width={"100%"} backgroundColor={'#ABC0C0'}>
+        <Grid container direction={{xs:'column',md:'row'}} height={"100%"} width={{xs:'100%',sm:"90%"}} borderRadius={"10px"} paddingY={"50px"} paddingX={{xs:'0px',sm:"10px",md:'50px'}} display={"flex"} m={"2%"} backgroundColor={'white'}>        
+          <Grid item xs={12} lg={(isLawyer == 'false') ? 11 : 12}>
+            <Grid container direction={"row"} justifyContent={"right"}>
+              {refCases.current.length == 0 ? <Typography sx={{fontFamily: "shabnam", fontSize: 24 }}>{isLawyer == 'true' ? 'هنوز پرونده ای برای شما ارسال نشده است.' : 'شما هنوز پرونده‌ ای ایجاد نکرده اید.'}</Typography>
+              : 
+                refCases.current.map((casei) => 
+                <Grid item xs={12} sm={6} md={4} lg={3}>
+                  <Card sx={{m:"10px"}} variant="outlined">{card(casei)}</Card>
+                </Grid>
+                )
+              }
+            </Grid>
           </Grid>
           {isLawyer == 'false' &&
-            <Button onClick={ClickNewCase} sx={{fontFamily: "shabnam", m:'10px'}} variant="contained">افزودن پرونده</Button>
+            <Grid item xs={12} lg={1} display={'flex'} alignItems={'center'} justifyContent={'center'} p={'10px'}>
+              <Button onClick={ClickNewCase} sx={{width:'90%',height:'100%',fontFamily: "shabnam"}} variant="contained">افزودن پرونده</Button>
+            </Grid>
           }
         </Grid>
       </Grid>
