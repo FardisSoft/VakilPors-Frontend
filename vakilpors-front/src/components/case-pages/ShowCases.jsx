@@ -89,15 +89,24 @@ const ShowCases = () => {
       <Helmet>
           <title>پرونده های من</title>
       </Helmet>
-      <Grid display={"flex"} flexDirection={"column"} margin={"auto"} alignItems={"center"} justifyContent={"center"} width={"100%"} height={"100vh"} backgroundColor={'#ABC0C0'}>
-        <Grid height={"100%"} width={"90%"} borderRadius={"10px"} paddingTop={"50px"} paddingX={"50px"} paddingBottom={"50px"} display={"flex"} position={"relative"} m={"2%"} justifyContent={"right"} item xs={4} spacing={5} alignSelf={"center"} backgroundColor={'white'}>        
-          <Grid container direction={"row"}>
-            {refCases.current.length == 0 ? <Typography sx={{fontFamily: "shabnam", fontSize: 24 }}>{isLawyer == 'true' ? 'هنوز پرونده ای برای شما ارسال نشده است.' : 'شما هنوز پرونده‌ ای ایجاد نکرده اید.'}</Typography>
-            : refCases.current.map((casei) => <Card sx={{m:"10px" ,height: "300px"}} variant="outlined">{card(casei)}</Card>)
-            }
+      <Grid display={"flex"} alignItems={"center"} justifyContent={"center"} width={"100%"} backgroundColor={'#ABC0C0'}>
+        <Grid container direction={{xs:'column',md:'row'}} height={"100%"} width={{xs:'100%',sm:"90%"}} borderRadius={"10px"} paddingY={"50px"} paddingX={{xs:'0px',sm:"10px",md:'50px'}} display={"flex"} m={"2%"} backgroundColor={'white'}>        
+          <Grid item xs={12} lg={11}>
+            <Grid container direction={"row"} justifyContent={"right"}>
+              {refCases.current.length == 0 ? <Typography sx={{fontFamily: "shabnam", fontSize: 24 }}>{isLawyer == 'true' ? 'هنوز پرونده ای برای شما ارسال نشده است.' : 'شما هنوز پرونده‌ ای ایجاد نکرده اید.'}</Typography>
+              : 
+                refCases.current.map((casei) => 
+                <Grid item xs={12} sm={6} md={4} lg={3}>
+                  <Card sx={{m:"10px"}} variant="outlined">{card(casei)}</Card>
+                </Grid>
+                )
+              }
+            </Grid>
           </Grid>
           {isLawyer == 'false' &&
-            <Button onClick={ClickNewCase} sx={{fontFamily: "shabnam", m:'10px'}} variant="contained">افزودن پرونده</Button>
+            <Grid item xs={12} lg={1} display={'flex'} alignItems={'center'} justifyContent={'center'} p={'10px'}>
+              <Button onClick={ClickNewCase} sx={{width:'90%',height:'100%',fontFamily: "shabnam"}} variant="contained">افزودن پرونده</Button>
+            </Grid>
           }
         </Grid>
       </Grid>
