@@ -66,7 +66,7 @@ const ShowCases = () => {
         </Grid>
         <Box backgroundColor={'lightblue'} borderRadius={2}>
           <IconButton size="small">
-            <a href={casei.fileUrl} download={'download'}>
+            <a href={casei.fileUrl == 'null' ? null : casei.fileUrl} download={'download'}>
               <DownloadForOfflineOutlined />
               <span style={{marginLeft:"10px",fontSize:'15px'}}>{'دانلود فایل'}</span>
             </a>
