@@ -55,8 +55,21 @@ const ShowCases = () => {
     GetCases();
   }, []);
 
-  const handleChooseCase = () => {
-    
+  const handleChooseCase = async (docId) => {
+    const token = await getAccessToken();
+    if(token){
+      const url = BASE_API_ROUTE + 'Document/GrantAccessToLawyer';
+      const data = {
+        "lawyerId": isLawyer.split('_')[1], // or number
+        "documentId": docId,
+      }
+      try {
+        const response = await axios.post(url, data, {headers: {Authorization: `Bearer ${token}`}});
+        console.log('response in GrantAccessToLawyer : ',response);
+      } catch (error) {
+        console.log('error in GrantAccessToLawyer : ',error);
+      }
+    }
   };
 
   const card = (casei) => {
@@ -98,9 +111,9 @@ const ShowCases = () => {
           <Button onClick={()=> navigate(`/new-case/edit_${casei.id}`)} sx={{fontFamily: "shabnam", mb:1}} size="small">ویرایش</Button>
         </CardActions>
       }
-      {isLawyer == 'choose' && 
+      {isLawyer.split('_')[0] == 'choose' && 
         <CardActions>
-          <Button onClick={handleChooseCase} sx={{fontFamily: "shabnam", mb:1}} size="small">ارسال</Button>
+          <Button variant="contained" onClick={()=>handleChooseCase(casei.id)} sx={{fontFamily: "shabnam", mb:1, width:'100%'}} size="large">ارسال</Button>
         </CardActions>
       }
     </React.Fragment>
