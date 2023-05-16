@@ -26,6 +26,8 @@ import PremiumPage from './components/premium-page/PremiumPage';
 import ResponseTransaction from './components/premium-page/ResponseTransaction';
 import AddNewCase from './components/case-pages/addNewCase';
 import ShowCases from './components/case-pages/ShowCases';
+import Wallet from './components/premium-page/Wallet';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -50,10 +52,10 @@ root.render(
               <Route path="/Activation_Account/:phoneNumber" element={<Sidebar component={ActivationAccount}/>}/>
               <Route path="/chatPage" element={<Sidebar component={ChatPage}/>}/>
               <Route path="/PremiumPage" element={<Sidebar component={PremiumPage}/>}/>
-              <Route path="/ResponseTransaction" element={<ResponseTransaction />}/>
               <Route path="/new-case" element={<AddNewCase />}/>
               <Route path="/show-cases" element={<ShowCases />}/>
               <Route path="/payment/verify" element={<ResponseTransaction />}/>
+              <Route path="/wallet" element={<Wallet/>}/>
               <Route path="/Rate/:LawyerId" element={<Sidebar component={Rate}/>}/>
               
 

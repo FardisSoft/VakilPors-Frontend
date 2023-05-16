@@ -166,8 +166,8 @@ const Register = () => {
                 <p className="text-1">{description}</p>
                 <div className="form-left-last">
                     <input type="submit" onClick={handleRoleChanger} name="account" className="account" value={roleTitle}/>
-                </div> 
-                <label>
+                </div>
+                <label className="container">
                     <p className="text-1">
                     قبلا ثبت نام کردید؟
                         <Link to="/Login" style={{color: 'lightskyblue', marginRight:'10px'}}>وارد شوید!</Link>
@@ -205,7 +205,7 @@ const Register = () => {
                     </div>
                 </div>
                 <div className="form-checkbox">
-                    <label><p>با <Link to="/Policy" className="text">شرایط</Link> سایت موافقم</p>
+                    <label className="container"><p>با <Link to="/Policy" className="text">شرایط</Link> سایت موافقم</p>
                         <input type="checkbox" name="checkbox" checked={policyChecked} onChange={(e) => setPolicyChecked(e.target.checked)}/>
                         <span className="checkmark"></span>
                     </label>

@@ -2,16 +2,15 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import '../../../css/forum.css';
 
-const Comments = ({ threadId, userId }) => {
-
+const Comments = ({ numberOfComments, threadId, userId }) => {
 	const navigate = useNavigate();
 
 	const handleAddComment = () => {
 		navigate(`/Replies/${threadId}/${userId}`);
 	};
-
 	return (
 		<div className='likes__container'>
+			
 			<svg
 				xmlns='http://www.w3.org/2000/svg'
 				viewBox='0 0 24 24'
@@ -25,6 +24,13 @@ const Comments = ({ threadId, userId }) => {
 					clipRule='evenodd'
 				/>
 			</svg>
+			{
+			/*	
+			<p style={{ color: "#434242" }}>
+				{numberOfComments === 0 ? "" : numberOfComments}
+			</p>
+			*/
+			}
 		</div>
 	);
 };

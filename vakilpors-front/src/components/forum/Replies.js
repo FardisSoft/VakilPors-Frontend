@@ -7,6 +7,7 @@ import moment from 'moment';
 import { Typography, IconButton, Grid } from "@mui/material";
 import Likes from "./utils/Likes";
 import { Delete, Edit, TaskAlt } from '@mui/icons-material';
+import Badge from '@mui/material/Badge';
 
 const Replies = () => {
 	const [replyList, setReplyList] = useState([]);
@@ -19,33 +20,13 @@ const Replies = () => {
 	const { threadId, userId } = useParams();
 	const { getAccessToken } = useAuth(); 
 
-	const fetchReplies = async () => {
-		const token = await getAccessToken();
-		if(token){
-			const url = BASE_API_ROUTE + `Thread/GetThreadWithComments?threadId=${threadId}`;
-			try{
-				const response = await axios.get(url,{headers: {Authorization: `Bearer ${token}`}});
-				// console.log('fetch reply response : ',response);
-				setTitle(response.data.data.thread.title);
-				setIsSelfThread(response.data.data.thread.user.userId === Number(userId));
-				setReplyList(response.data.data.comments);
-			} catch (error) {
-				console.log('fetch reply error : ',error);
-			}
-		}
-	}
-	
-	useEffect(() => {
-	  fetchReplies();
-	}, [threadId]);
-
 	const addReply = async () => {
 		const token = await getAccessToken();
 		if(token){
 			const url = BASE_API_ROUTE + "ThreadComment/CreateComment";
 			const data = {
 					"id": 0, // It doesn't matter what it is
-					"text": reply.trim(),
+					"text": reply,
 					"likeCount": 0, // It doesn't matter what it is
 					"userId": 0, // It doesn't matter what it is
 					"threadId": Number(threadId),
@@ -69,6 +50,26 @@ const Replies = () => {
 		setReply("");
 	};
 
+	const fetchReplies = async () => {
+		const token = await getAccessToken();
+		if(token){
+			const url = BASE_API_ROUTE + `Thread/GetThreadWithComments?threadId=${threadId}`;
+			try{
+				const response = await axios.get(url,{headers: {Authorization: `Bearer ${token}`}});
+				console.log('fetch reply response : ',response);
+				setTitle(response.data.data.thread.title);
+				setIsSelfThread(response.data.data.thread.user.userId === Number(userId));
+				setReplyList(response.data.data.comments);
+			} catch (error) {
+				console.log('fetch reply error : ',error);
+			}
+		}
+	}
+	
+	useEffect(() => {
+	  fetchReplies();
+	}, [threadId]);
+
 	const handleDeleteClick = async (commentId) => {
 		const token = await getAccessToken();
 		if(token){
@@ -84,7 +85,7 @@ const Replies = () => {
 
 	const handleEditReply = async () => {
 		if(reply.trim() == ''){
-			// alert('لطفا متن جدید کامنت را وارد کنید و سپس دکمه ویرایش را بزنید');
+			alert('لطفا متن جدید کامنت را وارد کنید و سپس دکمه ویرایش را بزنید')
 			return;
 		}
 		const token = await getAccessToken();
@@ -131,8 +132,9 @@ const Replies = () => {
 	};
 
 	return (
-		<div className='replies'>
+		<main className='replies'>
 			<h1 className='repliesTitle'>{title}</h1>
+
 			<div className='modal__content'>
 				<label htmlFor='reply'>به این موضوع نظر بدهید</label>
 				<textarea
@@ -149,34 +151,37 @@ const Replies = () => {
 					{isEditActive && <button style={{display:'inline'}} className='modalBtn' onClick={handleCancelEdit}>انصراف</button>}
 				</Grid>
 			</div>
+
 			<div className='thread__container'>
 				{replyList.map((reply) => (
 					<div className='thread__item' key={reply.id}>
 						{/* {console.log(reply.user.isPremium)} */}
 						<p style={{color: '#071e22'}}>
-							{reply.isSetAsAnswer && <TaskAlt sx={{
-								color:'green',
-								backgroundColor:'lightgreen',
-								borderRadius: '12px',
-								padding:'1px',
-								width: '27px',
-								marginLeft: '10px',
-							...(reply.user.isLawyer && {
-								color : 'lightyellow',
-								backgroundColor:'gold',
-							}),
-							//   ...(reply.user.isPremium && {
-							// 	color : 'purple',
-							// 	backgroundColor:'gold',
-							//   }),
-							}}/>}
-							{reply.text}
+						{reply.isSetAsAnswer && <TaskAlt sx={{
+							color:'green',
+							backgroundColor:'lightgreen',
+							borderRadius: '12px',
+							padding:'1px',
+							width: '27px',
+							marginLeft: '10px',
+						...(reply.user.isLawyer && {
+							color : 'lightyellow',
+							backgroundColor:'gold',
+						  }),
+						//   ...(reply.user.isPremium && {
+						// 	color : 'purple',
+						// 	backgroundColor:'gold',
+						//   }),
+						}}/>}
+						{reply.text}
+
 						</p>
+
 						<div className='react__container_1_1'>
 							<Likes
-								threadOrComment={reply}
-								IsThread={false}
-							/>
+									threadOrComment={reply}
+									IsThread={false}
+								/>
 							{(reply.user.userId === Number(userId) && !reply.isSetAsAnswer) && <>
 								<IconButton size="large" onClick={() => handleEditClick(reply.id,reply.text)}>
 									<Edit />
@@ -189,17 +194,20 @@ const Replies = () => {
 								<IconButton size="large" onClick={() => handleSetAsAnswerClick(reply.id)}>
 									<TaskAlt />
 								</IconButton>}
+
+
+								
 							<div className="react__container">
 								<p style={{color:'#071e22'}}> 
 									<Typography sx={{marginRight:'5px', fontSize: '15px', fontFamily: 'shabnam', ml: '10px'}}>توسط {reply.user.name} </Typography>
-								</p>
+									</p>
 								<Typography sx={{fontSize:'10px'}}>{moment(reply.createDate).format('MMM D YYYY, h:mm A')}</Typography>
 							</div>
 						</div>
 					</div>
 				))}
 			</div>
-		</div>
+		</main>
 	);
 };
 
