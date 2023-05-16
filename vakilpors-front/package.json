@@ -38,6 +38,7 @@
     "react-usestateref": "^1.0.8",
     "styled-components": "^5.3.9",
     "stylis-plugin-rtl": "^2.1.1",
+    "typed.js": "^2.0.16",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
