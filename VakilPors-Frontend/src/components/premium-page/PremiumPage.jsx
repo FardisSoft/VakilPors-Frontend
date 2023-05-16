@@ -21,10 +21,11 @@ const PremiumPage = () => {
   const { getAccessToken } = useAuth();
   const [gettransactions, settransactions] = useState([]);
   const [getsub, setsub] = useState([]);
-
+  const [getbalance, setbalance] = useState([]);
   const [getamountdetail, setamountdetail] = useState({
     amount: "",
-    description: "خرید اشتراک ماهانه"
+    description: "خرید اشتراک ماهانه",
+    premiumPlan: ""
   });
 
 
@@ -36,7 +37,6 @@ const PremiumPage = () => {
         const url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
         try {
           const response = await axios.get(url);
-          // console.log('response in getting user data : ', response);
           const headers = {
             'Content-Type': 'application/json',
             'Authorization': "Bearer " + token
@@ -44,10 +44,14 @@ const PremiumPage = () => {
           const premiumdetail = await axios.get(BASE_API_ROUTE + `Wallet/GetTransactions`, {
             headers: headers
           });
+          const balance = await axios.get(BASE_API_ROUTE + `Wallet/GetBalance`, {
+            headers: headers
+          });
           const getsubstatus = await axios.get(BASE_API_ROUTE + `Premium/GetSubscriptionStatus`, {
             headers: headers
           });
           setsub(getsubstatus.data.data);
+          setbalance(balance.data);
           settransactions(premiumdetail.data);
           setpremiumdetail(response.data.data);
         } catch (error) {
@@ -57,6 +61,20 @@ const PremiumPage = () => {
     };
     fetchData();
   }, []);
+
+
+
+
+  async function activateSubscription(premiumPlan) {
+
+    const url = `https://api.fardissoft.ir/Premium/ActivateSubscription?PremiumPlan=${premiumPlan}`;
+    const token = await getAccessToken();
+    if (token) {
+      const response = await axios.post(url, '', { headers: { Authorization: `Bearer ${token}` } });
+      console.log("response : ", response);
+    }
+  }
+
 
 
   const payroll = async () => {
@@ -76,13 +94,35 @@ const PremiumPage = () => {
     window.location.replace(response.data.paymentUrl);
   }
 
-  const setUserInfo = (event) => {
+  const setamount = (event) => {
     setamountdetail({
       ...getamountdetail,
       [event.target.name]: event.target.value,
     });
   };
 
+
+  const handleTrasaction = () => {
+
+    if (getbalance >= getamountdetail.amount) {
+      switch (getamountdetail.amount) {
+        case "20000":
+          activateSubscription("bronze");
+          break;
+        case "30000":
+          activateSubscription("silver");
+          break;
+        case "50000":
+          activateSubscription("gold");
+          break;
+      }
+      window.location.reload();
+
+    }
+    else {
+      payroll();
+    }
+  }
 
 
   return (
@@ -128,13 +168,16 @@ const PremiumPage = () => {
                     </div>
                     <div className="d-flex justify-content-between mt-3">
                       <span>تاریخ پایان:</span>
-                      <div>
+                      {getsub == "Free" ? (
                         <div key={getsub.id}>
                           <span>
                             {Moment(getsub.expireDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(getsub.expireDate).format('HH:mm')}
                           </span>
                         </div>
-                      </div>
+
+                      ) : (
+                        <p>نا محدود</p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -143,17 +186,23 @@ const PremiumPage = () => {
                     <div className="row">
 
                       {gettransactions.map((x) =>
-                        <>
-                          <div class="col-3 my-2" style={{ border: "1px solid", borderColor: "#ABC0C0", borderTopLeftRadius: "5px", borderBottomRightRadius: "5px" }}>
-                            <label>مبلغ :</label>
-                            <p style={{textAlign : "center"}}>{x.amount} تومان </p>
-                            <p>{Moment(x.date).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(x.date).format('HH:mm')}</p>
-                            <p> {x.description}</p>
-                          </div>
-                          <div class="col-1">
-
-                          </div>
-                        </>
+                        x.isSuccess ?
+                          (
+                            <>
+                              <div class="col-3 my-2" style={{ border: "1px solid", borderColor: "#ABC0C0", borderTopLeftRadius: "5px", borderBottomRightRadius: "5px" }}>
+                                <label>مبلغ :</label>
+                                <p style={{ textAlign: "center" }}>{x.amount} تومان </p>
+                                <p>{Moment(x.date).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(x.date).format('HH:mm')}</p>
+                                <p> {x.description}</p>
+                              </div>
+                              <div class="col-1">
+                              </div>
+                            </>
+                          )
+                          :
+                          (
+                            <p></p>
+                          )
                       )}
                     </div>
                   </div>
@@ -168,9 +217,9 @@ const PremiumPage = () => {
                 <div className="form-group mt-3 psc" id="p_1">
                   <label for="service">انتخاب مدت زمان</label>
 
-                  <select className="form-control tamdid" name="amount" value={getamountdetail.amount} onChange={setUserInfo}>
+                  <select className="form-control tamdid" name="amount" value={getamountdetail.amount} onChange={setamount}>
                     <option value=" ">--- انتخاب کنید ---</option>
-                    <option value="20000" >برنزی </option>
+                    <option value="20000">برنزی </option>
                     <option value="30000">نقره ای</option>
                     <option value="50000">طلایی</option>
                   </select>
@@ -185,12 +234,17 @@ const PremiumPage = () => {
                     </div>
                   </div>
                 </div>
-
                 <br />
+                <div className="d-flex justify-content-between mt-3">
+                  <span>موجودی كيف پول</span>
+                  <p>{getbalance}</p>
+                </div>
                 <div className="d-flex justify-content-between mt-3">
                   <span>میزان تخفیف</span>
                   <span id="discount">-</span>
                 </div>
+
+
                 <div className="d-flex justify-content-between mt-3">
                   <span>مبلغ سرویس</span>
                   <span id="prices">{getamountdetail.amount} تومان
@@ -206,16 +260,16 @@ const PremiumPage = () => {
                   <label for="service">انتخاب درگاه پرداخت</label>
                   <select className="form-control" name="gateway" id="gateway">
                     <option value="panispaynet">زرین پال</option>
-                  </select> </div>
+                  </select>
+                </div>
                 <div className="text-center mt-5">
-                  <button className="btn btn-primary px-5 text-lg w-100" onClick={payroll}>پرداخت</button>
+                  <button className="btn btn-primary px-5 text-lg w-100" onClick={handleTrasaction}>خرید</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
     </>
   );
 }

@@ -114,23 +114,7 @@ function ResponseTransaction(props) {
 
 
 
-  const [premiumPlan, setPremiumPlan] = useState("gold");
-
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-    const data = await activateSubscription(premiumPlan);
-    console.log(data);
-  };
-
-  async function activateSubscription(premiumPlan) {
-   
-    const url = `https://api.fardissoft.ir/Premium/ActivateSubscription?PremiumPlan=${premiumPlan}`;
-    const token = await getAccessToken();
-    if (token) {
-      const response = await axios.post(url, '',{headers: {Authorization: `Bearer ${token}`}});
-   console.log("response : ",response);
-    }
-  }
+  
 
 
 
@@ -155,10 +139,8 @@ function ResponseTransaction(props) {
 
           )}
           <br></br>
-          <button onClick={activateSubscription}>
-            <Link to="/PremiumPage">
-              بازگشت به صفحه اصلی
-            </Link>
+          <button >
+          <Link to="/Premium">بازگشت به صفحه اصلی</Link>
           </button>
 
 
