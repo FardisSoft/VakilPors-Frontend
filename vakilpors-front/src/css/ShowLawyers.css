@@ -11,7 +11,6 @@
     position: absolute;
     left: -135px;
     top: 80px;
-    background: url('') no-repeat left top;
     background-size: 400px 522px;
     width: 400px;
     height: 522px;
@@ -53,7 +52,6 @@
     margin-bottom: 30px;
     overflow: hidden;
     -webkit-border-radius: 5px;
-    -webkit-border-top-left-radius: 55px;
     -moz-border-radius: 5px;
     -moz-border-radius-topleft: 55px;
     border-radius: 5px;
