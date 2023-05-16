@@ -45,9 +45,9 @@ const Footer = () => {
           <img src={logo} style={{width:'80px',height:'80px'}}/>
           <Typography>Fardis Soft</Typography>
           <Box component="nav" className={classes.footerNav}>
-            <Link to={'/'} className={classes.footerLink}>صفحه اصلی</Link>
-            <Link to={'/Policy'} className={classes.footerLink}>شرایط سایت</Link>
-            <Link to={'/contactUs'} className={classes.footerLink}>تماس با ما</Link>
+            <Link to={'/'} className={classes.footerLink}><Typography color={'white'}>صفحه اصلی</Typography></Link>
+            <Link to={'/Policy'} className={classes.footerLink}><Typography color={'white'}>شرایط سایت</Typography></Link>
+            <Link to={'/contactUs'} className={classes.footerLink}><Typography color={'white'}>تماس با ما</Typography></Link>
           </Box>
           <Typography fontFamily={'shabnam'} color="textSecondary" component="p" variant="caption" gutterBottom={false}>تمامی حقوق برای Fardis Soft محفوظ است.</Typography>
         </Grid>
