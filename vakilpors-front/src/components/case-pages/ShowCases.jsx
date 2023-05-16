@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from 'react-helmet-async';
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthProvider";
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
@@ -18,6 +18,8 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 
 import jwt from 'jwt-decode';
+
+
 
  
 const ShowCases = () => {
@@ -94,6 +96,13 @@ const card = (casei) => {
 };
   
 
+const ClickNewCase = () => {
+  navigate('/new-case/add');
+
+
+
+};
+
 
     return(
         <>
@@ -109,7 +118,7 @@ const card = (casei) => {
                 <Card sx={{mx:"10px" ,height: "300px"}} variant="outlined">{card(casei)}</Card>
                 )}
               </Grid>
-
+              <Button onClick={ClickNewCase} sx={{fontFamily: "shabnam"}} variant="contained">افزودن پرونده</Button>
             </Grid>
         </Grid>    
 

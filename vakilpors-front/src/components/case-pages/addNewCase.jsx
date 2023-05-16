@@ -18,7 +18,7 @@ import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import "./Newcase.css"
 
 
@@ -311,26 +311,38 @@ const AddNewCase = () => {
             <Typography variant="h4" sx={{fontFamily: "shabnam"}} padding={4}>{isEdit ? "ویرایش پرونده" : "افزودن پرونده جدید"}</Typography>
                 <hr></hr>
 
-                  <div class="circle-icon big bgc-3 tc-white text-bold visible-xs-inline-block flip mr -mt">1</div>
-                  <Typography variant="h6" sx={{fontFamily: "shabnam"}} padding={4}>چه کاری می‌خواهید برای شما انجام شود؟</Typography>
+                <Grid container direction={'row'}>
+
+                <div display='inline' style={{marginLeft:"10px"}} class="circle-icon big bgc-3 tc-white text-bold flip">1</div>
+                <Typography variant="h6" sx={{fontFamily: "shabnam"}} padding={4}>چه کاری می خواهید برای شما انجام شود؟</Typography>
+
+                </Grid>
+
+
                   {titleLists()}
                 
                 <br></br>
                 <br></br>
 
-                <div class="circle-icon big bgc-3 tc-white text-bold visible-xs-inline-block flip mr -mt">2</div>
+                <Grid container direction={'row'}>
+
+                <div display='inline' style={{marginLeft:"10px"}} class="circle-icon big bgc-3 tc-white text-bold flip">2</div>
 
                 <Typography variant="h6" sx={{fontFamily: "shabnam"}} padding={4}>پرونده شما در چه زمینه ای است؟</Typography>
+                </Grid>
                 {categoryList()}
+                
 
 
                 <br></br>
                 <br></br>
 
-                <div class="circle-icon big bgc-3 tc-white text-bold visible-xs-inline-block flip mr -mt">3</div>
-
+                <Grid container direction={'row'}>
+                <div display='inline' style={{marginLeft:"10px"}} class="circle-icon big bgc-3 tc-white text-bold flip">3</div>
 
                 <label style={{ position: "relative", top: "5px" }}><p>نام پرونده</p></label>
+                </Grid>
+
                 <div style={{ border: '1px solid #ccc', borderRadius: '5px' }}>
                 <input
                   className="input100"
@@ -341,13 +353,14 @@ const AddNewCase = () => {
                 </div>
 
                 <br></br>
-                <br></br>
+              <br></br>
 
-              
-                <div class="circle-icon big bgc-3 tc-white text-bold visible-xs-inline-block flip mr -mt">4</div>
 
+
+              <Grid container direction={'row'}>
+                <div display='inline' style={{marginLeft:"10px"}} class="circle-icon big bgc-3 tc-white text-bold flip">4</div>
                 <Typography variant="h6" sx={{fontFamily: "shabnam"}} padding={4}>پرونده خود را توضیح دهید : </Typography>
-
+              </Grid>
 
 
                 <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
