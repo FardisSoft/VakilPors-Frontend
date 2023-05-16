@@ -59,9 +59,11 @@ const ShowCases = () => {
           <br />
           حداکثر بودجه : {casei.maximumBudget} تومان
         </Typography>
-        <Typography sx={{fontFamily: "shabnam", mb: 1 }} color="text.secondary">
-          توضیحات : {casei.description}
-        </Typography>
+        <Grid item xs={12} sx={{overflow:'hidden', width: '200px'}}>
+              <Typography fontFamily="shabnam" fontSize="13px" sx={{whiteSpace: 'nowrap',marginBottom: 1,padding: '2px',borderRadius: '7px',textOverflow: 'ellipsis',overflow: 'hidden',}}>
+                توضیحات : {casei.description}
+              </Typography>
+        </Grid>
         <Box backgroundColor={'lightblue'} borderRadius={2}>
           <IconButton size="small">
             <a href={casei.fileUrl} download={'download'}>
