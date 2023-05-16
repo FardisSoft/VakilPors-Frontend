@@ -67,7 +67,6 @@ const LawyerPage = () => {
         setLicenseNumber(data.parvandeNo);
         setOfficeAddress(data.officeAddress);
         setProfilePicture(data.user.profileImageUrl);
-        setRate(data.rating);
         setResumeLink(data.resumeLink);
         setSpecialties((data.specialties && data.specialties!='null') ? data.specialties.split('/') : []);
         setTitle(data.title);
@@ -75,11 +74,20 @@ const LawyerPage = () => {
         setName(data.user.name);
         setGender(data.gender);
         setProfileBackgroundPicture(data.profileBackgroundPictureUrl);
-        setNumberOfRates(data.numberOfRates);
         setNumberOfConsultations(data.numberOfConsultations);
         setNumberOfAnswers(data.numberOfAnswers);
         setNumberOfLikes(data.numberOfLikes);
         setNumberOfVerifies(data.numberOfVerifies);
+    };
+
+    // khoda vakili alireza ro .....
+    const calculateRateAverage = (rateslist) => {
+        setNumberOfRates(rateslist.length);
+        let ave = 0.0;
+        rateslist.map((ratei) => {
+            ave = ave + ratei.rateNum;
+        });
+        setRate((ave/rateslist.length).toFixed(2));
     };
 
     useEffect(() => {
@@ -101,6 +109,7 @@ const LawyerPage = () => {
                     const responseRate = await axios.get(urlRate, {headers: {Authorization: `Bearer ${token}`}});
                     // console.log('response in getting laywer rates : ',responseRate);
                     setRatesList(responseRate.data);
+                    calculateRateAverage(responseRate.data);
                 } catch (error) {
                     if(error.response.data.Message != 'NO RATES FOUND!'){
                         console.log('error in getting lawyer rates : ',error);
@@ -205,19 +214,19 @@ const LawyerPage = () => {
             <Grid item component={Card} sm>
                 <CardContent>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam" }} color="text.secondary">
-                        {gender === "مرد" ? <Male color="primary" sx={{mr:1,position:'relative',top:6}}/> : ( gender === "زن" ? <Female color="primary" sx={{mr:1,position:'relative',top:6}}/> : <><Female color="primary" sx={{mr:-1}}/><Male color="primary" sx={{mr:1,position:'relative',top:6}}/></>)}
+                        {gender === "مرد" ? <Male color="primary" sx={{mr:1,position:'relative',top:3}}/> : ( gender === "زن" ? <Female color="primary" sx={{mr:1,position:'relative',top:3}}/> : <><Female color="primary" sx={{mr:-1}}/><Male color="primary" sx={{mr:1,position:'relative',top:3}}/></>)}
                         جنسیت : {gender}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <CardMembership color="primary" sx={{mr:1,position:'relative',top:6}}/>
+                        <CardMembership color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         عنوان : {title}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <LocationOn color="primary" sx={{mr:1,position:'relative',top:6}}/>
+                        <LocationOn color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         شهر : {city}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <Business color="primary" sx={{mr:1,position:'relative',top:6}}/>
+                        <Business color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         ادرس دفتر : {officeAddress}
                     </Typography>
                 </CardContent>
@@ -225,44 +234,44 @@ const LawyerPage = () => {
             <Grid item component={Card} sm>
                 <CardContent>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam" }} color="text.secondary">
-                        <VerifiedUser color="primary" sx={{mr:1,position:'relative',top:6}}/>
+                        <VerifiedUser color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         شماره پروانه : {licenseNumber}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <WorkHistory color="primary" sx={{mr:1,position:'relative',top:6}}/>
+                        <WorkHistory color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         سابقه کار : {yearsOfExperience} سال
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <School color="primary" sx={{mr:1,position:'relative',top:6}}/>
+                        <School color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         تحصیلات : {education}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <Gavel color="primary" sx={{mr:1,position:'relative',top:6}}/>
+                        <Gavel color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         تخصص ها  
                     </Typography>
-                    {specialties.map((special,index) => <Chip key={index} dir="ltr" sx={{ m: 0.1, fontFamily:"shabnam"  }} label={special} icon={<Done/>} color="info"/>)}
+                    {specialties.map((special,index) => <Chip key={index} dir="rtl" sx={{ m: 0.1, fontFamily:"shabnam"  }} label={special} icon={<Done/>} color="info"/>)}
                 </CardContent>
             </Grid>
             <Grid item component={Card} sm>
                 <CardContent>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam" }} color="text.secondary">
-                        <CoPresent color="primary" sx={{mr:1,position:'relative',top:6}}/>
+                        <CoPresent color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         تعداد مشاوره ها : {numberOfConsultations}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <QuestionAnswer color="primary" sx={{mr:1,position:'relative',top:6}}/>
+                        <QuestionAnswer color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         تعداد پاسخ ها به سوالات : {numberOfAnswers}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <ThumbUpAlt color="primary" sx={{mr:1,position:'relative',top:6}}/>
+                        <ThumbUpAlt color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         تعداد لایک ها : {numberOfLikes}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <FactCheck color="primary" sx={{mr:1,position:'relative',top:6}}/>
+                        <FactCheck color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         تعداد پاسخ های تایید شده : {numberOfVerifies}
                     </Typography>
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
-                        <Percent color="primary" sx={{mr:1,position:'relative',top:6}}/>
+                        <Percent color="primary" sx={{mr:1,position:'relative',top:3}}/>
                         درصد پاسخ های تایید شده : {numberOfAnswers!=0 ? ((numberOfVerifies/numberOfAnswers).toFixed(2))*100 : 0} %
                     </Typography>
                 </CardContent>
