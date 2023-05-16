@@ -93,7 +93,7 @@ const Forum = () => {
 	return (
 		<>
 			<Helmet>
-              <title>Forum</title>
+              <title>فروم</title>
           	</Helmet>
 			<div className='home'>
 				<h2 className='homeTitle'>یک موضوع جدید ایجاد کنید یا موضوع مورد نظر خود را از لیست پایین انتخاب کنید</h2>

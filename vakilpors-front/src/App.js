@@ -27,7 +27,7 @@ const App = () => {
   return (
     <>
       <Helmet>
-        <title>Vakil Pors</title>
+        <title>وکیل پرس</title>
       </Helmet>
       <ThemeProvider theme={theme}>
       <CacheProvider value={cacheRtl}>
@@ -46,7 +46,7 @@ const App = () => {
               جست و جوی وکلا
             </Button>
             <Button variant="contained" sx={{ml:'20px'}} size='large' color="primary" onClick={()=>navigate("/Forum")}>
-              چت عمومی
+              فروم عمومی
             </Button>
           </Grid>
         </Grid>
