@@ -11,7 +11,7 @@ const UserSendCases = () => {
   const [users, setUsers] = useState([]);
   const { LawyerId } = useParams();
   const { getAccessToken } = useAuth();
-  const { navigate } = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getUsers = async () => {
@@ -37,7 +37,7 @@ const UserSendCases = () => {
     <Grid container display={'flex'} minHeight={'100vh'}>
       {users.map( (user,index) =>
         <Grid key={index} container direction={{ xs: 'column', sm: 'row' }}>
-          <Grid onClick={() => navigate(`/show-cases/true_${user.id}`)} display="flex" alignItems={{xs:'center',sm:"flex-start"}} justifyContent={{xs:'center',sm:"flex-start"}} item component={Card}>
+          <Grid onClick={() => navigate(`/show-cases/true_${user.id}`)} display="flex" alignItems={{xs:'center',sm:"flex-start"}} justifyContent={{xs:'center',sm:"flex-start"}} item component={Card} sx={{cursor:'pointer'}}>
             <CardContent>
               <Avatar alt="user profile" sx={{ width: 60, height: 60 }} srcSet={user.profileImageUrl} />
               <Typography sx={{fontFamily:"shabnam"}}>{user.name}</Typography>
