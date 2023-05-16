@@ -248,11 +248,11 @@ const AddNewCase = () => {
     <Helmet>
         <title>{isEdit ? "ویرایش پرونده" : "افزودن پرونده"}</title> 
     </Helmet>
-    <Grid display={"flex"} flexDirection={"column"} margin={"auto"} alignItems={"center"} justifyContent={"center"} width={"100%"} height={"100%"} backgroundColor={'#ABC0C0'}>
-      <Grid flexDirection={'column'} height={"100%"}  width={"80%"} borderRadius={"10px"} padding={"10px"} paddingTop={"50px"} paddingX={"50px"} paddingBottom={"50px"} display={"flex"} position={"relative"} m={"2%"} justifyContent={"center"} item xs={4} spacing={5} alignSelf={"center"} backgroundColor={'white'}>
-        <Typography variant="h4" sx={{fontFamily: "shabnam"}} padding={1}>{isEdit ? "ویرایش پرونده" : "افزودن پرونده جدید"}</Typography>
+    <Grid display={"flex"} flexDirection={"column"} alignItems={"center"} justifyContent={"center"} width={"100%"} backgroundColor={'#ABC0C0'}>
+      <Grid flexDirection={'column'} width={"80%"} borderRadius={"10px"} paddingY={"40px"} paddingX={"50px"} m={'2%'} display={"flex"} justifyContent={"center"} alignSelf={"center"} backgroundColor={'white'}>
+        <Typography variant="h4" sx={{fontFamily: "shabnam"}} paddingY={2}>{isEdit ? "ویرایش پرونده" : "افزودن پرونده جدید"}</Typography>
         <hr></hr>
-        <Grid container direction={'row'} marginBottom={'20px'}>
+        <Grid container direction={'row'} marginY={'20px'}>
           <div display='inline' style={{marginLeft:"10px"}} class="circle-icon big bgc-3 tc-white text-bold flip">1</div>
           <Typography variant="h6" sx={{fontFamily: "shabnam"}}>چه کاری می خواهید برای شما انجام شود؟</Typography>
         </Grid>
@@ -303,7 +303,7 @@ const AddNewCase = () => {
           <Typography display='inline' variant="h6" sx={{fontFamily: "shabnam"}}>بودجه شما چقدر است ؟  </Typography>                
         </Grid>
         <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-          <div>
+          {/* <div> */}
             <FormControl fullWidth sx={{ m: 1 }}>
               <InputLabel htmlFor="outlined-adornment-amount">حداقل</InputLabel>
               <OutlinedInput
@@ -314,7 +314,21 @@ const AddNewCase = () => {
                 onChange={(e) => setMinimumBadget(e.target.value)}
               />
             </FormControl>
-          </div>
+            {/* <TextField
+              label="شماره موبایل"
+              type="text"
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              variant="outlined"
+              inputProps={{ dir: "rtl", style: { fontFamily:"shabnam", fontSize: "17px",color:"black",} }}
+              InputLabelProps={{ align: "right", dir: "rtl", style: { fontFamily:"shabnam", fontSize: "17px",color:"black",} }}
+              sx={{
+                width: {xs:'100%',sm:'80%'},
+                padding: 0,
+                backgroundColor: 'rgba(255,255,255,0.5)',
+                mb: '10px',
+                borderRadius:"5px",
+              }}/> */}
+          {/* </div> */}
         </Box>
         <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
           <div>
