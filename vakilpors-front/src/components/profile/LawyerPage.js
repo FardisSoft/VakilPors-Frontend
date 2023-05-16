@@ -87,7 +87,7 @@ const LawyerPage = () => {
         rateslist.map((ratei) => {
             ave = ave + ratei.rateNum;
         });
-        setRate((ave/rateslist.length).toFixed(2));
+        setRate(rateslist.length == 0 ? 0 : (ave/rateslist.length).toFixed(2));
     };
 
     useEffect(() => {
