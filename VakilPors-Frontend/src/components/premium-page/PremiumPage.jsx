@@ -4,7 +4,7 @@ import { useAuth } from "../../context/AuthProvider";
 import { CircularProgress } from '@mui/material';
 import axios from 'axios';
 import '../../css/premium-page.css';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { BASE_API_ROUTE } from '../../Constants';
 import Moment from 'moment-jalaali';
 import { Container, Grid, Box, Paper, Button } from '@mui/material';
@@ -24,7 +24,7 @@ const PremiumPage = () => {
   const [getbalance, setbalance] = useState([]);
   const [getamountdetail, setamountdetail] = useState({
     amount: "",
-    description: "خرید اشتراک ماهانه",
+    description: "شارژ کیف پول",
     premiumPlan: ""
   });
 
@@ -116,7 +116,6 @@ const PremiumPage = () => {
           activateSubscription("gold");
           break;
       }
-      window.location.reload();
 
     }
     else {
@@ -168,7 +167,7 @@ const PremiumPage = () => {
                     </div>
                     <div className="d-flex justify-content-between mt-3">
                       <span>تاریخ پایان:</span>
-                      {getsub == "Free" ? (
+                      {getsub === "Free" ? (
                         <div key={getsub.id}>
                           <span>
                             {Moment(getsub.expireDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(getsub.expireDate).format('HH:mm')}
@@ -189,10 +188,13 @@ const PremiumPage = () => {
                         x.isSuccess ?
                           (
                             <>
-                              <div class="col-3 my-2" style={{ border: "1px solid", borderColor: "#ABC0C0", borderTopLeftRadius: "5px", borderBottomRightRadius: "5px" }}>
+                            
+                              <div class="col-3 my-2" style={{ border: "1px solid", borderColor: "#ABC0C0", borderTopLeftRadius: "5px", borderBottomRightRadius: "5px", }}>
                                 <label>مبلغ :</label>
                                 <p style={{ textAlign: "center" }}>{x.amount} تومان </p>
+                                <label>تاریخ خریداری بسته :</label>
                                 <p>{Moment(x.date).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(x.date).format('HH:mm')}</p>
+                                <label>توضیحات :</label>
                                 <p> {x.description}</p>
                               </div>
                               <div class="col-1">

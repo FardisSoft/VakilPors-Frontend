@@ -110,14 +110,6 @@ function ResponseTransaction(props) {
 
   }
 
-
-
-
-
-  
-
-
-
   return (
     <>
       <Helmet>
@@ -140,10 +132,8 @@ function ResponseTransaction(props) {
           )}
           <br></br>
           <button >
-          <Link to="/Premium">بازگشت به صفحه اصلی</Link>
+          <Link to="/PremiumPage">بازگشت به صفحه اصلی</Link>
           </button>
-
-
           <ToastContainer />
 
         </Grid>
