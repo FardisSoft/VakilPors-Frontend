@@ -32,27 +32,28 @@ const ShowCases = () => {
   const { getAccessToken } = useAuth();
   const navigate = useNavigate();
   const { isLawyer } = useParams();
+
+  const getCases = async () => {
+    const token = await getAccessToken();
+    if(token){
+      const tokenData = jwt(token);
+      const url = BASE_API_ROUTE + ( isLawyer == 'true' ? `Document/GetDocumentsThatLawyerHasAccessToByUserId` : `Document/GetDocumentsByUserId?userId=${tokenData.uid}`); 
+      const Data = {
+        "userId": tokenData.uid,
+        "lawyerId": 0
+      }
+      try {
+        const response = await (isLawyer == 'true'? axios.post(url, Data, {headers: {Authorization: `Bearer ${token}`}}) : axios.get(url,{headers: {Authorization: `Bearer ${token}`}}));
+        setCases(response.data.data);
+        // console.log('response in getDocument : ',response);
+      } catch (error) {
+        console.log('error in getDocument : ',error);
+      }
+    }
+  };
   
   useEffect(() => {
-    const GetCases = async () => {
-      const token = await getAccessToken();
-      if(token){
-        const tokenData = jwt(token);
-        const url = BASE_API_ROUTE + ( isLawyer == 'true' ? `Document/GetDocumentsThatLawyerHasAccessToByUserId` : `Document/GetDocumentsByUserId?userId=${tokenData.uid}`); 
-        const Data = {
-          "userId": tokenData.uid,
-          "lawyerId": 0
-        }
-        try {
-          const response = await (isLawyer == 'true'? axios.post(url, Data, {headers: {Authorization: `Bearer ${token}`}}) : axios.get(url,{headers: {Authorization: `Bearer ${token}`}}));
-          setCases(response.data.data);
-          // console.log('response in getDocument : ',response);
-        } catch (error) {
-          console.log('error in getDocument : ',error);
-        }
-      }
-    };
-    GetCases();
+    getCases();
   }, []);
 
   const showErrorMessage = (errorMessage) => {
@@ -101,6 +102,22 @@ const ShowCases = () => {
     }
   };
 
+  const handleDeleteCase = async (docId) => {
+    const token = await getAccessToken();
+    if(token){
+      const url = BASE_API_ROUTE + `Document/DeleteDocument?documentId=${docId}`;
+      try {
+        const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
+        // console.log('response in deleting case : ',response);
+        getCases();
+        showSuccesMessage('پرونده مورد نظر با موفقیت حذف شد.');
+      } catch (error) {
+        console.log('error in deleting case : ',error);
+        showErrorMessage('خطا در حذف پرونده');
+      }
+    }
+  };
+
   const card = (casei) => {
     return ( 
     <React.Fragment>
@@ -138,6 +155,7 @@ const ShowCases = () => {
       {isLawyer == 'false' && 
         <CardActions>
           <Button onClick={()=> navigate(`/new-case/edit_${casei.id}`)} sx={{fontFamily: "shabnam", mb:1}} size="small">ویرایش</Button>
+          <Button onClick={()=>handleDeleteCase(casei.id)} sx={{fontFamily: "shabnam", mb:1}} size="small">حذف</Button>
         </CardActions>
       }
       {isLawyer.split('_')[0] == 'choose' && 
