@@ -88,3 +88,7 @@
 .full-width {
     width: 100% !important;
 }
+
+.autocomplete-textfield .MuiInputBase-input {
+    font-family: 'shabnam';
+}

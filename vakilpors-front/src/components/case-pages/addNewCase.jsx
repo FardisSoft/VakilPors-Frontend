@@ -130,10 +130,10 @@ const AddNewCase = () => {
           // Regular option
           return option.title;
         }}
-        renderOption={(props, option) => <li {...props}>{option.title}</li>}
+        renderOption={(props, option) => <li {...props} style={{fontFamily:'shabnam'}}>{option.title}</li>}
         freeSolo
         renderInput={(params) => (
-          <TextField sx={{border:"none"}}{...params}/>
+          <TextField className="autocomplete-textfield" sx={{border:"none"}}{...params}/>
         )}
       />
     );
@@ -252,9 +252,9 @@ const AddNewCase = () => {
       <Grid flexDirection={'column'} height={"100%"}  width={"80%"} borderRadius={"10px"} padding={"10px"} paddingTop={"50px"} paddingX={"50px"} paddingBottom={"50px"} display={"flex"} position={"relative"} m={"2%"} justifyContent={"center"} item xs={4} spacing={5} alignSelf={"center"} backgroundColor={'white'}>
         <Typography variant="h4" sx={{fontFamily: "shabnam"}} padding={4}>{isEdit ? "ویرایش پرونده" : "افزودن پرونده جدید"}</Typography>
         <hr></hr>
-        <Grid container direction={'row'}>
+        <Grid container direction={'row'} marginBottom={'20px'}>
           <div display='inline' style={{marginLeft:"10px"}} class="circle-icon big bgc-3 tc-white text-bold flip">1</div>
-          <Typography variant="h6" sx={{fontFamily: "shabnam"}} padding={4}>چه کاری می خواهید برای شما انجام شود؟</Typography>
+          <Typography variant="h6" sx={{fontFamily: "shabnam"}}>چه کاری می خواهید برای شما انجام شود؟</Typography>
         </Grid>
         {titleLists()}
         <br></br>
