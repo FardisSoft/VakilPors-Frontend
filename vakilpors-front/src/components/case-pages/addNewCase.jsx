@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Helmet } from 'react-helmet-async';
 import { useAuth } from "../../context/AuthProvider";
 import Grid from '@mui/material/Grid';
@@ -13,10 +13,13 @@ import { InputAdornment , IconButton} from "@mui/material";
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import { MuiFileInput } from 'mui-file-input'
 
+
 import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import { useParams } from "react-router-dom";
+import "./Newcase.css"
 
 
 
@@ -27,6 +30,60 @@ const filter = createFilterOptions();
 const AddNewCase = () => {
 
   const { getAccessToken } = useAuth();
+  const { func } = useParams();
+
+  const [DocumentId, setDocumentId] = useState();
+
+  const [isEdit, setisEdit] = useState(false);
+  
+  const [Title, setTitle] = useState('');
+  const [File, setFile] = useState(null);
+  const [MinimumBudget, setMinimumBadget] = useState('');
+  const [MaximumBudget, setMaximumBadget] = useState('');
+  const [Description, setDescription] = useState('');
+
+  const [caseName, setCaseName] = useState('');
+  const [DocumentCategory, setDocumentCategory] = useState('');
+
+  useEffect(() => {
+    const apiHandling = async () => {
+
+      if(func.split('_')[0] == "edit"){
+        setisEdit(true);
+      }
+      setDocumentId(func.split('_')[1]);
+  
+
+
+      if(func.split('_')[0] == "edit"){
+        const url =  BASE_API_ROUTE + `Document/GetDocumentById?documentId=${func.split('_')[1]}`;
+        const token = await getAccessToken();
+        try{
+          console.log(url,token);
+          const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
+          
+          console.log("success in Gettin Document Data!!! : ",response);
+
+          setTitle(response.data.data.title);
+          setMinimumBadget(response.data.data.minimumBudget);
+          setMaximumBadget(response.data.data.maximumBudget);
+          setCaseName(response.data.data.caseName);
+          setDescription(response.data.data.description);
+          setDocumentCategory(response.data.data.documentCategory);
+          setFile(response.data.data.fileUrl);
+        }
+        catch (error) {
+          console.log("error in Gettin Document Data!!! : ",error);
+        }
+      }
+
+    }
+    
+
+    apiHandling();
+  },[]
+
+  );
 
 
 
@@ -69,14 +126,7 @@ const AddNewCase = () => {
   ]
 
 
-  const [Title, setTitle] = useState('');
-  const [File, setFile] = useState(null);
-  const [MinimumBudget, setMinimumBadget] = useState('');
-  const [MaximumBudget, setMaximumBadget] = useState('');
-  const [Description, setDescription] = useState('');
 
-  const [CaseName, setCaseName] = useState('');
-  const [DocumentCategory, setDocumentCategory] = useState('');
   
   const titleLists = () => {
     return (
@@ -193,8 +243,9 @@ const AddNewCase = () => {
     // data.append('Id', '');
     data.append('File', File);
     data.append('Description', Description);
+    data.append('caseName', caseName);
 
-    console.log({MaximumBudget, MinimumBudget, Title,  DocumentCategory, File, Description, CaseName});
+    console.log({MaximumBudget, MinimumBudget, Title,  DocumentCategory, File, Description, caseName});
 
     const token = await getAccessToken();
     if(token){
@@ -209,9 +260,39 @@ const AddNewCase = () => {
     }
   };
 
-  
-  const setCaseInfo = () => {
+  const handleEditCase = async () => {
+    // console.log("oomad inja");
     
+    const data = new FormData();
+    data.append('MaximumBudget', MaximumBudget);
+    // data.append('UserId', '');
+    data.append('MinimumBudget', MinimumBudget);
+    data.append('FileUrl', '');
+    data.append('Title', Title);
+    data.append('DocumentCategory', DocumentCategory);
+    data.append('Id', DocumentId);
+    if(File != null){
+      data.append('File', File);
+    }
+    data.append('Description', Description);
+    data.append('caseName', caseName);
+
+    console.log({MaximumBudget, MinimumBudget, Title,  DocumentCategory, File, Description, caseName});
+
+    
+    const token = await getAccessToken();
+    if(token){
+      const url = BASE_API_ROUTE + 'Document/UpdateDocument';
+      try {
+          const response = await axios.post(url,data,{headers: {Authorization: `Bearer ${token}`}});
+          console.log('response in updating Document : ', response);
+          
+      } catch (error) {
+          console.log('error in updating Document : ',error);
+      }
+    }
+
+
   };
 
   
@@ -219,7 +300,7 @@ const AddNewCase = () => {
     return (
         <>
         <Helmet>
-           <title>افزودن پرونده</title> 
+           <title>{isEdit ? "ویرایش پرونده" : "افزودن پرونده"}</title> 
         </Helmet>
 
 
@@ -227,7 +308,7 @@ const AddNewCase = () => {
     <Grid display={"flex"} flexDirection={"column"} margin={"auto"} alignItems={"center"} justifyContent={"center"} width={"100%"} height={"100%"} backgroundColor={'#ABC0C0'}>
         <Grid flexDirection={'column'} height={"100%"}  width={"80%"} borderRadius={"10px"} padding={"10px"} paddingTop={"50px"} paddingX={"50px"} paddingBottom={"50px"} display={"flex"} position={"relative"} m={"2%"} justifyContent={"center"} item xs={4} spacing={5} alignSelf={"center"} backgroundColor={'white'}>
 
-            <Typography variant="h4" sx={{fontFamily: "shabnam"}} padding={4}>افزودن پرونده جدید</Typography>
+            <Typography variant="h4" sx={{fontFamily: "shabnam"}} padding={4}>{isEdit ? "ویرایش پرونده" : "افزودن پرونده جدید"}</Typography>
                 <hr></hr>
 
                   <div class="circle-icon big bgc-3 tc-white text-bold visible-xs-inline-block flip mr -mt">1</div>
@@ -254,7 +335,7 @@ const AddNewCase = () => {
                 <input
                   className="input100"
                   type="text"
-                  value={CaseName}
+                  value={caseName}
                   onChange={(e) => setCaseName(e.target.value)}
                   margin="normal" />
                 </div>
@@ -330,8 +411,8 @@ const AddNewCase = () => {
 
               <br></br>
               <br></br>
-              <button onClick={handleCreateCase} type="submit" class="btn btn-p-primary btn-lg btn-block" id="create-new-project">
-              ایجاد پرونده  
+              <button onClick={() => {isEdit ? handleEditCase() : handleCreateCase()}} type="submit" class="btn btn-p-primary btn-lg btn-block" id="create-new-project">
+              {isEdit ? "ویرایش پرونده" : "ایجاد پرونده"} 
               </button>
 
         </Grid>

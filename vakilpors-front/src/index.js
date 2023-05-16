@@ -51,8 +51,8 @@ root.render(
               <Route path="/chatPage" element={<Sidebar component={ChatPage}/>}/>
               <Route path="/PremiumPage" element={<Sidebar component={PremiumPage}/>}/>
               <Route path="/ResponseTransaction" element={<ResponseTransaction />}/>
-              <Route path="/new-case" element={<Sidebar component={AddNewCase}/>}/>
-              <Route path="/show-cases" element={<Sidebar component={ShowCases}/>}/>
+              <Route path="/new-case/:func" element={<Sidebar component={AddNewCase}/>}/>
+              <Route path="/show-cases/:isLawyer" element={<Sidebar component={ShowCases}/>}/>
               <Route path="/payment/verify" element={<ResponseTransaction />}/>
               <Route path="/Rate/:LawyerId" element={<Sidebar component={Rate}/>}/>
               
