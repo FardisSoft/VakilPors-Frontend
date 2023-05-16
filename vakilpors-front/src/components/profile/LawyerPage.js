@@ -140,7 +140,7 @@ const LawyerPage = () => {
     };
 
     const handleSendCase = () => {
-        navigate('/show-cases/choose');
+        navigate(`/show-cases/choose_${LawyerId}`);
     };
 
     const StyledBadge = styled(Badge)(({ theme }) => ({
