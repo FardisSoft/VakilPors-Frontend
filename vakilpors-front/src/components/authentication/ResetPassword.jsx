@@ -119,7 +119,7 @@ const ForgotPassword = () => {
     return (
         <>
         <Helmet>
-            <title>Reset Password</title>
+            <title>تغییر رمز</title>
         </Helmet>
         <ThemeProvider theme={theme}>
         <CacheProvider value={cacheRtl}>
