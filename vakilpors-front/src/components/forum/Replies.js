@@ -133,6 +133,9 @@ const Replies = () => {
 				setReply('');
 			} catch (error) {
 				console.log('update reply error : ',error);
+				if(error.response.data.hasOwnProperty('Message') && error.response.data.Message == 'This message is detected as a spam and can not be shown.'){
+					showErrorMessage('نظر شما حاوی تبلیغات غیر مجاز است.');
+				}
 			}
 		}
 	};
