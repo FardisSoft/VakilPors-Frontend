@@ -109,7 +109,7 @@ const Call_Edit_Lawyer_Profile = () => {
         id="controllable-states-demo"
         options={genders}
         renderOption={(props, option) => <li {...props} style={{fontFamily:'shabnam'}}>{option}</li>}
-        renderInput={(params) => <TextField id='genderList' {...params} />}
+        renderInput={(params) => <TextField className='NoBorder' {...params} />}
       />
     );
   }
@@ -165,10 +165,10 @@ const Call_Edit_Lawyer_Profile = () => {
           // Regular option
           return option.title;
         }}
-        renderOption={(props, option) => <li {...props}>{option.title}</li>}
+        renderOption={(props, option) => <li {...props} style={{fontFamily:'shabnam'}} >{option.title}</li>}
         freeSolo
         renderInput={(params) => (
-          <TextField sx={{border:"none"}}{...params}/>
+          <TextField className='NoBorder' {...params}/>
         )}
       />
     );
