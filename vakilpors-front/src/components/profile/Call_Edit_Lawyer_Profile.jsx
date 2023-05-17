@@ -18,6 +18,8 @@ const filter = createFilterOptions();
 const Call_Edit_Lawyer_Profile = () => {
   const { getAccessToken } = useAuth();
   const [getdetail, setdetail, refdetail] = useStateRef({});
+  const [gender, setGender] = useState('');
+  const [title, setTitle] = useState('');
   const descriptionUser = "کاربر گرامی ! در این قسمت می توانید تمامی اطلاعات کاربری خود را بروزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";  
   const [defaultTakhasos, setDefaultTakhasos, refDefaultTakhasos] = useStateRef([]);
 
@@ -121,8 +123,9 @@ const Call_Edit_Lawyer_Profile = () => {
   const genderList = () => {
     return (
       <Autocomplete
-        value={refdetail.current.gender}
+        value={gender}
         onChange={(event, newValue) => {
+          setGender(newValue);
           setdetail({
             ...refdetail.current,
             ['gender']: newValue,
@@ -139,19 +142,22 @@ const Call_Edit_Lawyer_Profile = () => {
   const titleList = () => {
     return (
       <Autocomplete
-        value={refdetail.current.title}
+        value={title}
         onChange={(event, newValue) => {
           if (typeof newValue === 'string') {
+            setTitle(newValue);
             setdetail({
               ...refdetail.current,
               ['title']: newValue,
             });
           } else if (newValue && newValue.inputValue) {
+            setTitle(newValue.inputValue);
             setdetail({
               ...refdetail.current,
               ['title']: newValue.inputValue,
             });
           } else if(newValue && newValue.title) {
+            setTitle(newValue.title);
             setdetail({
               ...refdetail.current,
               ['title']: newValue.title,
@@ -237,6 +243,8 @@ const Call_Edit_Lawyer_Profile = () => {
           const response = await axios.get(url);
           // console.log('response in getting lawyer data : ', response);
           setdetail(response.data.data);
+          setGender(response.data.data.gender);
+          setTitle(response.data.data.title);
           getDefaultTakhasos();
         } catch (error) {
           console.log('error in getting lawyer data : ', error);
@@ -251,7 +259,7 @@ const Call_Edit_Lawyer_Profile = () => {
 
   const updateuser = async (event) => {
     event.preventDefault();
-    console.log(refdetail.current);
+    // console.log(refdetail.current);
     const formData = new FormData();
     for (const key in refdetail.current) {
       if(key != 'user'){
