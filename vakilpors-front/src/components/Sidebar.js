@@ -14,8 +14,7 @@ import { useAuth } from "../context/AuthProvider";
 import jwt from 'jwt-decode';
 import axios from 'axios';
 import { BASE_API_ROUTE } from '../Constants';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import Footer from "./Footer";
 
 let drawerWidth = 240;
@@ -306,7 +305,6 @@ const Sidebar = (props) => {
         <Footer/>
       </Main>
 
-      <ToastContainer />
     </Box>
     </ThemeProvider>
   );
