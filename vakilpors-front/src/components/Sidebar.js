@@ -179,7 +179,7 @@ const Sidebar = (props) => {
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
         {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
-        {name:'پرونده های من', icon:AssignmentOutlined, url:`user-send-cases/${refLawyerID.current}`},
+        {name:'پرونده های من', icon:AssignmentOutlined, url:`/user-send-cases/${refLawyerID.current}`},
         {name:'کیف پول', icon:WalletOutlined, url:`/wallet`},
       ];
       break;
