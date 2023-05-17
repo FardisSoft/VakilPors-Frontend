@@ -95,7 +95,7 @@ const Sidebar = (props) => {
   const showSuccesMessage = (payam) => {
     toast.success(payam, {
       position: "bottom-right",
-      autoClose: 5000,
+      autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -206,7 +206,7 @@ const Sidebar = (props) => {
 
   const logoutHandler = async () => {
     showSuccesMessage('شما از حساب کاربری خود خارج شدید.')
-    await delay(5000);
+    await delay(3000);
     logout();
     navigate('/Login');
   }
