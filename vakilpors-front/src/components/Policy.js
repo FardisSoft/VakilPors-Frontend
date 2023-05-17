@@ -6,7 +6,7 @@ const Policy = () => {
   return (
     <>
     <Helmet>
-     <title>قوانین</title>
+     <title>قوانین سایت</title>
     </Helmet>
     <Grid container sx={{padding: "50px 0", marginTop: "90px", margin: "16px",display:"flex",justifyContent:"center",alignItems:"center"}}> 
       <Grid container width={{xs:'100%',md:'80%'}} direction={'column'}>
