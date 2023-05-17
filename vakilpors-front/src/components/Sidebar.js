@@ -111,7 +111,6 @@ const Sidebar = (props) => {
   
       window.addEventListener('resize', updateSize);
 
-      // console.log("az too sidebar : ",refUserRole);
       const token = await getAccessToken();
       if(token){
         const tokenData = jwt(token);
@@ -127,10 +126,10 @@ const Sidebar = (props) => {
           if(refUserRole.current === "Vakil"){
             setLawyerID(response.data.data.id);
           }
-          console.log('response : ',response);
+          // console.log('response in getting user data : ',response);
           handleAPI(response.data.data);
         } catch (error) {
-            console.log('error : ',error);
+            console.log('error in getting user data : ',error);
         }
       }
       if(!token){
