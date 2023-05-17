@@ -8,8 +8,7 @@ import { useAuth } from "../context/AuthProvider";
 import axios from 'axios';
 import { BASE_API_ROUTE } from '../Constants';
 import smilinglawyer from '../assests/images/lawyer_smiler.jpg';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 // mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
@@ -212,7 +211,6 @@ const Rate = () => {
               </Button>
             </Grid>
           </Slide>
-          <ToastContainer/>
         </Grid>
       </Grid>
     </CacheProvider>
