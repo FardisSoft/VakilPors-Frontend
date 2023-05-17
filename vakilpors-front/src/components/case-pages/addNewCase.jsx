@@ -5,8 +5,7 @@ import { BASE_API_ROUTE } from "../../Constants";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Typography, Grid, TextField, InputAdornment, IconButton, Box, OutlinedInput, InputLabel, FormControl } from "@mui/material";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import { MuiFileInput } from 'mui-file-input'
 import '../../css/Newcase.css';
