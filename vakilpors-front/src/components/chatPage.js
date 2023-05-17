@@ -4,7 +4,6 @@ import { Avatar, Box, Divider, Grid, IconButton, List, ListItem, ListItemAvatar,
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined, DoneAll, Cancel, Reply, RateReview } from '@mui/icons-material';
 import Moment from 'moment-jalaali';
-import "moment/locale/fa";
 import { Helmet } from 'react-helmet-async';
 import * as signalR from '@microsoft/signalr';
 import { useNavigate } from "react-router-dom";
@@ -12,8 +11,7 @@ import { useAuth } from "../context/AuthProvider";
 import { BASE_API_ROUTE } from '../Constants';
 import axios from 'axios';
 import jwt from 'jwt-decode';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 const StyledTooltip = styled (({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} arrow/>
