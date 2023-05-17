@@ -112,7 +112,7 @@ function ResponseTransaction(props) {
   return (
     <>
       <Helmet>
-        <title>Redirect to premium page</title>
+        <title>نتیجه تراکنش</title>
       </Helmet>
 
       <Grid display={"flex"} flexDirection={"column"} margin={"auto"} alignItems={"center"} justifyContent={"center"} width={"100%"} height={"100vh"} backgroundColor={'#ABC0C0'}>
