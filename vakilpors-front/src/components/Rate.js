@@ -123,7 +123,7 @@ const Rate = () => {
   return (
     <>
     <Helmet>
-      <title>Rate Page</title>
+      <title>نظر</title>
     </Helmet>
     <ThemeProvider theme={theme}>
     <CacheProvider value={cacheRtl}>
