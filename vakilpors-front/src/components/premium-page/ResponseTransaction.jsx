@@ -4,8 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { useNavigate } from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import { Clear } from '@mui/icons-material';
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
@@ -134,8 +133,6 @@ function ResponseTransaction(props) {
           <button >
           <Link to="/PremiumPage">بازگشت به صفحه اصلی</Link>
           </button>
-          <ToastContainer />
-
         </Grid>
       </Grid>
     </>
