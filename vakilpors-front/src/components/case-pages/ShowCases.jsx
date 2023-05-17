@@ -9,6 +9,7 @@ import axios from "axios";
 import jwt from 'jwt-decode';
 import { Box, Grid, Button, Typography, Card, CardActions, CardContent, IconButton, styled } from '@mui/material';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { DownloadForOfflineOutlined, } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 
@@ -28,9 +29,20 @@ const HtmlTooltip = styled (({ className, ...props }) => (
 const ShowCases = () => {
 
   const [Cases, setCases, refCases] = useStateRef([]);
+  const [openDescription, setOpenDescription] = useState(false);
+  const [description, setDescription] = useState('');
   const { getAccessToken } = useAuth();
   const navigate = useNavigate();
   const { isLawyer } = useParams();
+
+  const handleOpenDescription = (des) => {
+    setOpenDescription(true);
+    setDescription(des);
+  };
+
+  const handleCloseDescription = () => {
+    setOpenDescription(false);
+  };
 
   const getLawyersThatHaveAccessToDoc = async (docId) => {
     const token = await getAccessToken();
@@ -158,12 +170,10 @@ const ShowCases = () => {
           <br />
           حداکثر بودجه : {casei.maximumBudget} تومان
         </Typography>
-        <Grid item xs={12} sx={{overflow:'hidden', width: '200px'}}>
-          <HtmlTooltip title={<React.Fragment>{casei.description}</React.Fragment>}>
-            <Typography fontFamily="shabnam" fontSize="13px" sx={{whiteSpace: 'nowrap',marginBottom: 1,padding: '2px',borderRadius: '7px',textOverflow: 'ellipsis',overflow: 'hidden',}}>
-              توضیحات : {casei.description}
-            </Typography>
-          </HtmlTooltip>
+        <Grid item xs={12} sx={{overflow:'hidden', width: '200px', cursor:'pointer'}} onClick={() => handleOpenDescription(casei.description)}>
+          <Typography fontFamily="shabnam" fontSize="13px" sx={{whiteSpace: 'nowrap',marginBottom: 1,padding: '2px',borderRadius: '7px',textOverflow: 'ellipsis',overflow: 'hidden',}}>
+            توضیحات : {casei.description}
+          </Typography>
         </Grid>
         <Box backgroundColor={'lightblue'} borderRadius={2}>
           <IconButton size="small">
@@ -220,6 +230,24 @@ const ShowCases = () => {
           }
         </Grid>
       </Grid>
+      <Dialog
+        open={openDescription}
+        onClose={handleCloseDescription}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          <Typography fontFamily={"shabnam"} fontSize={'19px'}>متن کامل توضیحات:</Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <Typography fontFamily={"shabnam"} fontSize={'17px'}>{description}</Typography>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDescription} autoFocus><Typography fontFamily={"shabnam"} fontSize={'15px'}>بستن</Typography></Button>
+        </DialogActions>
+      </Dialog>
       </>
   );
 }
