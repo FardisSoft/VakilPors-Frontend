@@ -8,10 +8,6 @@ import { Link, Navigate } from 'react-router-dom';
 import { BASE_API_ROUTE } from '../../Constants';
 import Moment from 'moment-jalaali';
 import { Container, Grid, Box, Paper, Button } from '@mui/material';
-import "moment/locale/fa";
-
-
-Moment.locale("fa");
 
 const PremiumPage = () => {
 
