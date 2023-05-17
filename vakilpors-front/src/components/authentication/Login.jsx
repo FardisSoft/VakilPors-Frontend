@@ -95,7 +95,7 @@ const Login = () => {
     return (
         <>
         <Helmet>
-            <title>Login</title>
+            <title>ورود</title>
         </Helmet>
         <ThemeProvider theme={theme}>
         <CacheProvider value={cacheRtl}>
