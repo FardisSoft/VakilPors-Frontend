@@ -108,7 +108,8 @@ const Call_Edit_Lawyer_Profile = () => {
         // }}
         id="controllable-states-demo"
         options={genders}
-        renderInput={(params) => <TextField {...params} />}
+        renderOption={(props, option) => <li {...props} style={{fontFamily:'shabnam'}}>{option}</li>}
+        renderInput={(params) => <TextField id='genderList' {...params} />}
       />
     );
   }
