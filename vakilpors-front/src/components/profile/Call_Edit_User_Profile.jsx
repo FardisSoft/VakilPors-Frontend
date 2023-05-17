@@ -95,7 +95,7 @@ const Call_Edit_User_Profile = () => {
   return (
     <>
       <Helmet>
-        <title>edit user profile</title>
+        <title>ویرایش اطلاعات کاربر</title>
       </Helmet>
       <div className="page-content" >
         <div className="form-v4-content">
