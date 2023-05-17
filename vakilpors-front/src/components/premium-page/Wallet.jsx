@@ -4,6 +4,8 @@ import { BASE_API_ROUTE } from '../../Constants';
 import '../../css/Wallet.css'
 import { useAuth } from "../../context/AuthProvider";
 import axios from 'axios';
+import { Helmet } from 'react-helmet-async';
+
 
 
 const PremiumCard = () => {
@@ -70,6 +72,10 @@ const PremiumCard = () => {
 
 
     return (
+        <>
+        <Helmet>
+            <title>کیف پول</title>
+        </Helmet>
         <div class="col-12">
             <div class="row" id="all">
                 <div class="col-12 col-sm-10 col-md-7 col-xl-5 mx-auto ">
@@ -155,6 +161,7 @@ const PremiumCard = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 }
 
