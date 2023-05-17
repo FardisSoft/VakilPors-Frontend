@@ -117,30 +117,26 @@ const Call_Edit_Lawyer_Profile = () => {
         multiple
         id="tags-outlined"
         options={specialtieses}
+        filterSelectedOptions
         getOptionLabel={(option) => option.title}
+        getOptionSelected={(option, value) => option.title === value.title}
+        filterOptions={(options, state) =>
+          options.filter(
+            (option) =>
+              !specialties.find(
+                (valueOption) => valueOption.title === option.title
+              )
+          )
+        }
         defaultValue={specialties}
         value={specialties}
-        onChange={(event, newValue) => {
-          if (typeof newValue === 'string') {
-            setSpecialties({
-              title: newValue,
-            });
-          } else if (newValue && newValue.inputValue) {
-            // Create a new value from the user input
-            setSpecialties({
-              title: newValue.inputValue,
-            });
-          } else {
-            setSpecialties(newValue);
-          }
-        }}
+        onChange={(event, newValue) => setSpecialties(newValue)}
         renderTags={(value, getTagProps) =>
           value.map((option, index) => (
             <Chip variant="filled" color='primary' dir="rtl" sx={{ fontFamily:"shabnam" }} label={option.title} {...getTagProps({ index })} />
           ))
         }
         renderOption={(props, option) => <li {...props} style={{fontFamily:'shabnam'}}>{option.title}</li>}
-        filterSelectedOptions
         renderInput={(params) => (
           <TextField className='NoBorder' {...params} placeholder="تخصص ها"/>
         )}
