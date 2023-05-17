@@ -11,16 +11,42 @@ import { Helmet } from 'react-helmet-async';
 import TextField from '@mui/material/TextField';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import { BASE_API_ROUTE } from '../../Constants';
+import { toast } from 'react-toastify';
 
 const filter = createFilterOptions();
 
 const Call_Edit_Lawyer_Profile = () => {
   const { getAccessToken } = useAuth();
   const [getdetail, setdetail, refdetail] = useStateRef({});
-  const [errorMessage, setErrorMessage] = useState("");
-  const [errorColor, setErrorColor] = useState("red");
   const descriptionUser = "کاربر گرامی ! در این قسمت می توانید تمامی اطلاعات کاربری خود را بروزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";  
   const [defaultTakhasos, setDefaultTakhasos, refDefaultTakhasos] = useStateRef([]);
+
+  const showErrorMessage = (errorMessage) => {
+    toast.error(errorMessage, {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      rtl:true,
+    });
+  };
+  const showSuccesMessage = (payam) => {
+    toast.success(payam, {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      rtl:true,
+    });
+  };
 
   const titles = [
     { title: 'وکیل پایه یک دادگستری' },
@@ -71,7 +97,7 @@ const Call_Edit_Lawyer_Profile = () => {
     }
     setDefaultTakhasos(tt);
     // console.log(refDefaultTakhasos.current);
-  }
+  };
 
   const specialtiesList = () => { 
     return (
@@ -90,7 +116,7 @@ const Call_Edit_Lawyer_Profile = () => {
         )}
       />
     );
-  }
+  };
 
   const genderList = () => {
     return (
@@ -102,17 +128,13 @@ const Call_Edit_Lawyer_Profile = () => {
             ['gender']: newValue,
           });
         }}
-        // inputValue={refdetail.current.gender}
-        // onInputChange={(event, newInputValue) => {
-        //   setInputValue(newInputValue);
-        // }}
         id="controllable-states-demo"
         options={genders}
         renderOption={(props, option) => <li {...props} style={{fontFamily:'shabnam'}}>{option}</li>}
         renderInput={(params) => <TextField className='NoBorder' {...params} />}
       />
     );
-  }
+  };
 
   const titleList = () => {
     return (
@@ -213,11 +235,11 @@ const Call_Edit_Lawyer_Profile = () => {
         const url = BASE_API_ROUTE + `Lawyer/GetLawyerByUserId?userId=${tokenData.uid}`;
         try {
           const response = await axios.get(url);
-          console.log('response : ', response);
+          // console.log('response in getting lawyer data : ', response);
           setdetail(response.data.data);
           getDefaultTakhasos();
         } catch (error) {
-          console.log('error : ', error);
+          console.log('error in getting lawyer data : ', error);
         }
       }
       if(!token){
@@ -245,13 +267,11 @@ const Call_Edit_Lawyer_Profile = () => {
       const tokenData = jwt(token);
       try {
           const success = await updateLawyer(formData);
-          console.log("success",success);
-          setErrorMessage("اطلاعات شما با موفقیت تغییر کرد.");
-          setErrorColor("green");
+          // console.log("success in updating lawyer data : ",success);
+          showSuccesMessage("اطلاعات شما با موفقیت تغییر کرد.");
       } catch (error) {
-          console.log('error : ',error);
-          setErrorMessage("تغییر اطلاعات با خطا مواجه شد.");
-          setErrorColor("red");
+          console.log('error in updating lawyer data : ',error);
+          showErrorMessage("تغییر اطلاعات با خطا مواجه شد.");
       }
     }
   };
@@ -296,8 +316,7 @@ const Call_Edit_Lawyer_Profile = () => {
                   margin="normal" />
               </div>
               <div className="form-row form-row-1">
-
-              <label style={{ position: "relative", top: "5px" }}><p>ایمیل</p></label>
+                <label style={{ position: "relative", top: "5px" }}><p>ایمیل</p></label>
                 <input
                   className="input100"
                   type="text"
@@ -305,7 +324,6 @@ const Call_Edit_Lawyer_Profile = () => {
                   value={refdetail.current.user ? refdetail.current.user.email : ''}
                   onChange={setUserInfo}
                   margin="normal" />
-
               </div>
             </div>
             <div className="form-group">
@@ -423,7 +441,6 @@ const Call_Edit_Lawyer_Profile = () => {
               <Button sx={{marginTop:'20px', fontFamily:'shabnam'}} type="submit" variant="contained" color="primary" onClick={updateuser}>
                 ثبت اطلاعات
               </Button>
-              <label style={{marginTop:'20px'}} className="container"><p className="text" style={{color:errorColor}}>{errorMessage}</p></label>
             </div>
           </form>
         </div>
