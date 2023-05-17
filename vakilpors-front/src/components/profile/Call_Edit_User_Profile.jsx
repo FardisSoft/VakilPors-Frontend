@@ -9,14 +9,40 @@ import axios from 'axios';
 import { useAuth } from "../../context/AuthProvider";
 import { updateUser } from '../../services/userService';
 import { BASE_API_ROUTE } from '../../Constants';
+import { toast } from 'react-toastify';
 
 const Call_Edit_User_Profile = () => {
 
+  const [getdetail, setdetail, refdetail] = useStateRef({});
   const { getAccessToken } = useAuth();
   const descriptionUser = "کاربر گرامی ! در این قسمت می توانید تمامی اطلاعات کاربری خود را بروزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";
-  const [errorMessage, setErrorMessage] = useState("");
-  const [errorColor, setErrorColor] = useState("red");
-  const [getdetail, setdetail, refdetail] = useStateRef({});
+
+  const showErrorMessage = (errorMessage) => {
+    toast.error(errorMessage, {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      rtl:true,
+    });
+  };
+  const showSuccesMessage = (payam) => {
+    toast.success(payam, {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      rtl:true,
+    });
+  };
   
   const handleAvatarChange = (file) => {
     setdetail({
@@ -33,10 +59,10 @@ const Call_Edit_User_Profile = () => {
         const url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
         try { 
           const response = await axios.get(url);
-          console.log('response : ', response);
+          // console.log('response in getting user data : ', response);
           setdetail(response.data.data);
         } catch (error) {
-          console.log('error : ', error);
+          console.log('error in getting user data : ', error);
         }
       }
     };
@@ -46,19 +72,16 @@ const Call_Edit_User_Profile = () => {
 
   const updateuser = async (event) => {
     event.preventDefault();
-    console.log(refdetail.current);
     const formData = new FormData();
     for (const key in refdetail.current) {
       formData.append(key, refdetail.current[key] == null ? '' : refdetail.current[key]);
     }
     try {
       const success = await updateUser(formData);
-      setErrorMessage("اطلاعات شما با موفقیت تغییر کرد.");
-      setErrorColor("green");
+      showSuccesMessage("اطلاعات شما با موفقیت تغییر کرد.");
     } catch (error) {
-        console.log('error : ',error);
-        setErrorMessage("تغییر اطلاعات با خطا مواجه شد.");
-        setErrorColor("red");
+      console.log('error in updating user data : ',error);
+      showErrorMessage("تغییر اطلاعات با خطا مواجه شد.");
     }
   };
 
@@ -137,7 +160,6 @@ const Call_Edit_User_Profile = () => {
               <Button sx={{marginTop:'20px',fontFamily:'shabnam'}} type="submit" variant="contained" color="primary"  onClick={updateuser}>
                 ثبت اطلاعات
               </Button>
-              <label className="container" style={{marginTop:'20px'}}><p className="text" style={{color:errorColor}}>{errorMessage}</p></label>
             </div>
           </form>
         </div>
