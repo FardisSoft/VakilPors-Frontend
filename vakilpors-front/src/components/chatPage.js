@@ -586,7 +586,9 @@ const ChatPage = () => {
             {refChats.current.map((chat) => (
               <ListItem sx={{cursor:'pointer',...(refSelectedChat.current === chat.id && {backgroundColor:'skyblue',borderRadius:2})}} key={chat.id} onClick={() => handleChatSelect(chat.id)} >
                 <ListItemAvatar onClick={() => {if(chat.users[getUserIndex(chat.id)].lawyerId != null) navigate(`/LawyerPage/${chat.users[getUserIndex(chat.id)].lawyerId}`);}}>
-                  <Avatar src={chat.users[getUserIndex(chat.id)].profileImageUrl} alt={chat.users[getUserIndex(chat.id)].name}/>
+                  {chat.users[getUserIndex(chat.id)].lawyerId != null ? <StyledTooltip title={<React.Fragment>مشاهده پروفایل</React.Fragment>}>
+                    <Avatar src={chat.users[getUserIndex(chat.id)].profileImageUrl} alt={chat.users[getUserIndex(chat.id)].name}/>
+                  </StyledTooltip> : <Avatar src={chat.users[getUserIndex(chat.id)].profileImageUrl} alt={chat.users[getUserIndex(chat.id)].name}/>}
                 </ListItemAvatar>
                 <ListItemText primaryTypographyProps={{ fontFamily: 'shabnam' }} primary={chat.users[getUserIndex(chat.id)].name} />
                 { (refUserRole.current === "User" && chat.users[getUserIndex(chat.id)].lawyerId != null && chat.chatMessages.length > 9) && 
