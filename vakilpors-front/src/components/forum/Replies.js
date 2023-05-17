@@ -7,8 +7,7 @@ import moment from 'moment';
 import { Typography, IconButton, Grid } from "@mui/material";
 import Likes from "./utils/Likes";
 import { Delete, Edit, TaskAlt } from '@mui/icons-material';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 const Replies = () => {
 	const [replyList, setReplyList] = useState([]);
