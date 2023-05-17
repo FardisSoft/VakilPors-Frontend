@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 
 const PremiumCard = () => {
@@ -67,7 +66,6 @@ const onClick3 = async () => {
               <li>چت آنلاین با وکلای درخواستی</li>
             </ul>
             <button onClick={onClick1} type="button" class="btn btn-lg btn-block btn-outline-primary"><Link to="/PremiumPage">خرید</Link></button>
-            <ToastContainer />
           </div>
         </div>
         <div class="col-4 card mb-4 box-shadow" style={{borderTopRightRadius : "20px", borderBottomLeftRadius : "20px"}}>
@@ -83,7 +81,6 @@ const onClick3 = async () => {
               <li>چت آنلاین با وکلای درخواستی</li>
             </ul>
             <button onClick={onClick2} type="button" class="btn btn-lg btn-block btn-outline-primary"><Link to="/PremiumPage">خرید</Link></button>
-            <ToastContainer />
           </div>
         </div>
         <div class="col-4 card mb-4 box-shadow" style={{borderTopRightRadius : "20px", borderBottomLeftRadius : "20px"}}>
@@ -99,7 +96,6 @@ const onClick3 = async () => {
               <li>چت آنلاین با وکلای درخواستی</li>
             </ul>
             <button onClick={onClick3} type="button" class="btn btn-lg btn-block btn-outline-primary"><Link to="/PremiumPage">خرید</Link></button>
-            <ToastContainer />
           </div>
         </div>
       </div>
