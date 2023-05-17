@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import jwt from 'jwt-decode';
+import { Helmet } from 'react-helmet-async';
 import { useAuth } from "../../context/AuthProvider";
 import { CircularProgress } from '@mui/material';
 import axios from 'axios';
@@ -8,10 +9,6 @@ import { Link, Navigate } from 'react-router-dom';
 import { BASE_API_ROUTE } from '../../Constants';
 import Moment from 'moment-jalaali';
 import { Container, Grid, Box, Paper, Button } from '@mui/material';
-import "moment/locale/fa";
-
-
-Moment.locale("fa");
 
 const PremiumPage = () => {
 
@@ -126,6 +123,9 @@ const PremiumPage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>داشبورد</title>
+      </Helmet>
       <div class="container">
         <div classNameName="col-12">
           <div className="row" id="all">

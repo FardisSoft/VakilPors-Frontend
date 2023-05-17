@@ -95,7 +95,7 @@ const Sidebar = (props) => {
   const showSuccesMessage = (payam) => {
     toast.success(payam, {
       position: "bottom-right",
-      autoClose: 5000,
+      autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -111,7 +111,6 @@ const Sidebar = (props) => {
   
       window.addEventListener('resize', updateSize);
 
-      // console.log("az too sidebar : ",refUserRole);
       const token = await getAccessToken();
       if(token){
         const tokenData = jwt(token);
@@ -127,10 +126,10 @@ const Sidebar = (props) => {
           if(refUserRole.current === "Vakil"){
             setLawyerID(response.data.data.id);
           }
-          console.log('response : ',response);
+          // console.log('response in getting user data : ',response);
           handleAPI(response.data.data);
         } catch (error) {
-            console.log('error : ',error);
+            console.log('error in getting user data : ',error);
         }
       }
       if(!token){
@@ -179,7 +178,7 @@ const Sidebar = (props) => {
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
         {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
-        {name:'پرونده های من', icon:AssignmentOutlined, url:`user-send-cases/${refLawyerID.current}`},
+        {name:'پرونده های من', icon:AssignmentOutlined, url:`/user-send-cases/${refLawyerID.current}`},
         {name:'کیف پول', icon:WalletOutlined, url:`/wallet`},
       ];
       break;
@@ -207,7 +206,7 @@ const Sidebar = (props) => {
 
   const logoutHandler = async () => {
     showSuccesMessage('شما از حساب کاربری خود خارج شدید.')
-    await delay(5000);
+    await delay(3000);
     logout();
     navigate('/Login');
   }

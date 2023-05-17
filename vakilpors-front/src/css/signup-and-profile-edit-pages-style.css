@@ -109,7 +109,10 @@
 	font-size: 15px;
 	color: #666;
 	display: block;
-	margin-bottom: 8px;
+}
+.form-v4-content .form-detail label p {
+	margin-bottom: 15px;
+	margin-top: 15px;
 }
 .form-v4-content .form-detail .form-row label.valid {
     position: absolute;
@@ -175,8 +178,6 @@
 .form-v4-content .form-detail input {
 	width: 100%;
     padding: 11.5px 15px;
-    border: 1px solid #e5e5e5;
-	border-radius: 5px 15px 5px 15px;
     appearance: unset;
     -moz-appearance: unset;
     -webkit-appearance: unset;
@@ -195,6 +196,10 @@
     -webkit-box-sizing: border-box;
     -o-box-sizing: border-box;
     -ms-box-sizing: border-box;
+}
+.form-v4-content .form-detail input:not(.NoBorder input) {
+	border: 1px solid #e5e5e5;
+	border-radius: 5px 15px 5px 15px;
 }
 .form-v4-content .form-detail .form-row input:focus {
 	border: 1px solid #53c83c;

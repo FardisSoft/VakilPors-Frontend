@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
 import { BASE_API_ROUTE } from "../../Constants";
 import { useAuth } from "../../context/AuthProvider";
-import moment from 'moment';
+import Moment from 'moment-jalaali';
 import { Typography, IconButton, Grid } from "@mui/material";
 import Likes from "./utils/Likes";
 import { Delete, Edit, TaskAlt } from '@mui/icons-material';
+import { toast } from 'react-toastify';
 
 const Replies = () => {
 	const [replyList, setReplyList] = useState([]);
@@ -39,6 +41,33 @@ const Replies = () => {
 	  fetchReplies();
 	}, [threadId]);
 
+	const showErrorMessage = (message) => {
+        toast.error(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            rtl:true,
+        });
+    };
+    const showSuccesMessage = (message) => {
+        toast.success(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            rtl:true,
+        });
+    };
+
 	const addReply = async () => {
 		const token = await getAccessToken();
 		if(token){
@@ -58,6 +87,9 @@ const Replies = () => {
 				fetchReplies();
 			} catch (error) {
 				console.log('add reply error : ',error);
+				if(error.response.data.hasOwnProperty('Message') && error.response.data.Message == 'This message is detected as a spam and can not be shown.'){
+					showErrorMessage('نظر شما حاوی تبلیغات غیر مجاز است.');
+				}
 			}
 		}
 	};
@@ -101,6 +133,9 @@ const Replies = () => {
 				setReply('');
 			} catch (error) {
 				console.log('update reply error : ',error);
+				if(error.response.data.hasOwnProperty('Message') && error.response.data.Message == 'This message is detected as a spam and can not be shown.'){
+					showErrorMessage('نظر شما حاوی تبلیغات غیر مجاز است.');
+				}
 			}
 		}
 	};
@@ -131,6 +166,10 @@ const Replies = () => {
 	};
 
 	return (
+		<>
+		<Helmet>
+              <title>بحث در تاپیک</title>
+        </Helmet>
 		<div className='replies'>
 			<h1 className='repliesTitle'>{title}</h1>
 			<div className='modal__content'>
@@ -193,13 +232,16 @@ const Replies = () => {
 								<p style={{color:'#071e22'}}> 
 									<Typography sx={{marginRight:'5px', fontSize: '15px', fontFamily: 'shabnam', ml: '10px'}}>توسط {reply.user.name} </Typography>
 								</p>
-								<Typography sx={{fontSize:'10px'}}>{moment(reply.createDate).format('MMM D YYYY, h:mm A')}</Typography>
+								<Typography sx={{fontSize:'13px', fontFamily:'shabnam'}}>
+									{Moment(reply.createDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(reply.createDate).format('HH:mm')}
+								</Typography>
 							</div>
 						</div>
 					</div>
 				))}
 			</div>
 		</div>
+		</>
 	);
 };
 

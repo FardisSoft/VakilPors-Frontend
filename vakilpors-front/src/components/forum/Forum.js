@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useStateRef from "react-usestateref";
 import { Helmet } from 'react-helmet-async';
-import moment from 'moment';
+import Moment from 'moment-jalaali';
 import { Typography, IconButton, Badge } from "@mui/material";
 import { Delete } from '@mui/icons-material';
 import '../../css/forum.css';
@@ -133,7 +133,9 @@ const Forum = () => {
 								</IconButton>}
 								<p>
 									تاریخ ایجاد
-									<Typography>{moment(thread.createDate).format('MMM D YYYY, h:mm A')}</Typography>
+									<Typography fontFamily={'shabnam'} fontSize={'14px'}>
+										{Moment(thread.createDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(thread.createDate).format('HH:mm')}
+									</Typography>
 									ایجاد شده توسط
 									<Typography sx={{fontSize: '15px', fontFamily: 'shabnam', ml: '10px'}}>{thread.user.name} </Typography>
 								</p>

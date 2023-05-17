@@ -7,8 +7,7 @@ import Slide from '@mui/material/Slide';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Typography } from "@mui/material";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import { BASE_API_ROUTE } from "../../Constants";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -117,7 +116,7 @@ const ActivationAccount = () => {
     return (
     <>
     <Helmet>
-        <title>Activation Acoount</title>
+        <title>فعالسازی حساب</title>
     </Helmet>
     <ThemeProvider theme={theme}>
     <CacheProvider value={cacheRtl}>
@@ -196,7 +195,6 @@ const ActivationAccount = () => {
                     </Button>
                 </Grid>
             </Slide>
-            <ToastContainer />
         </Grid>
     </Grid>
     </CacheProvider>

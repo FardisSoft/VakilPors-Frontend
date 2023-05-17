@@ -175,7 +175,7 @@ const LawyerPage = () => {
     return (
     <>
     <Helmet>
-        <title>Lawyer Page</title>
+        <title>پروفایل عمومی وکیل</title>
     </Helmet>
     <ThemeProvider theme={theme}>
     <CacheProvider value={cacheRtl}>
