@@ -474,7 +474,7 @@ const ChatPage = () => {
               <Typography fontFamily="shabnam" fontSize="13px" sx={{whiteSpace: 'nowrap',cursor: 'pointer',marginBottom: '2px',padding: '2px',border: '3px solid lightblue',backgroundColor: 'lightblue',borderRadius: '7px',textOverflow: 'ellipsis',overflow: 'hidden',}}
                onClick={() => goToReply(chatIndex, messageReplyIndex)}>
                 در پاسخ به
-                {' : ' + ( refChats.current[chatIndex].chatMessages[messageReplyIndex].isDeleted ? 'This message was deleted' : refChats.current[chatIndex].chatMessages[messageReplyIndex].message )}
+                {' : ' + ( refChats.current[chatIndex].chatMessages[messageReplyIndex].isDeleted ? 'This message was deleted' : refChats.current[chatIndex].chatMessages[messageReplyIndex].isFile ? 'فایل' : refChats.current[chatIndex].chatMessages[messageReplyIndex].message )}
               </Typography>
             </Grid>
           </Grid>}
@@ -589,7 +589,7 @@ const ChatPage = () => {
                 <Grid item xs={12} sx={{overflow:'hidden', width: '200px'}}>
                   <Typography fontFamily="shabnam" fontSize="13px" sx={{whiteSpace: 'nowrap',cursor: 'pointer',marginBottom: '2px',padding: '2px',border: '3px solid lightblue',backgroundColor: 'lightblue',borderRadius: '7px',textOverflow: 'ellipsis',overflow: 'hidden',}}>
                     در پاسخ به
-                    {' : ' + ( replyActiveMessage.isDeleted ? 'This message was deleted' : replyActiveMessage.message )}
+                    {' : ' + ( replyActiveMessage.isDeleted ? 'This message was deleted' : replyActiveMessage.isFile ? 'فایل' : replyActiveMessage.message )}
                   </Typography>
                 </Grid>
               </Grid>}
