@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import useStateRef from "react-usestateref";
 import { Helmet } from 'react-helmet-async';
 import Moment from 'moment-jalaali';
-import "moment/locale/fa";
 import { Typography, IconButton, Badge } from "@mui/material";
 import { Delete } from '@mui/icons-material';
 import '../../css/forum.css';
