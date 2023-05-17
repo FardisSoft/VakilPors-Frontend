@@ -88,7 +88,7 @@ const ForgotPassword = () => {
     return (
         <>
         <Helmet>
-            <title>Forgot Password</title>
+            <title>فراموشی رمز</title>
         </Helmet>
         <ThemeProvider theme={theme}>
         <CacheProvider value={cacheRtl}>
