@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
 import { BASE_API_ROUTE } from "../../Constants";
 import { useAuth } from "../../context/AuthProvider";
@@ -165,6 +166,10 @@ const Replies = () => {
 	};
 
 	return (
+		<>
+		<Helmet>
+              <title>بحث در تاپیک</title>
+        </Helmet>
 		<div className='replies'>
 			<h1 className='repliesTitle'>{title}</h1>
 			<div className='modal__content'>
@@ -236,6 +241,7 @@ const Replies = () => {
 				))}
 			</div>
 		</div>
+		</>
 	);
 };
 
