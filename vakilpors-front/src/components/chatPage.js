@@ -565,7 +565,7 @@ const ChatPage = () => {
   return (
     <>
     <Helmet>
-      <title>Chat Page</title>
+      <title>چت آنلاین</title>
     </Helmet>
 
     <Grid container direction={{ xs: 'column', md: 'row' }} height={{xs:'auto', md:'calc(100vh - 65px)'}} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', display:'flex', justifyContent:'space-around', alignItems:'stretch'}}>
