@@ -156,7 +156,7 @@ const Register = () => {
     return (
     <>
     <Helmet>
-        <title>Sign Up</title>
+        <title>ثبت نام</title>
     </Helmet>
     <div className="page-content" >
         <div className="form-v4-content">
