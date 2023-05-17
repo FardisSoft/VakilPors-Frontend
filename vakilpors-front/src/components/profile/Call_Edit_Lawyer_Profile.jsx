@@ -1,17 +1,30 @@
 import React, { useState,useEffect } from 'react';
 import useStateRef from 'react-usestateref';
-import Button from '@mui/material/Button';
+import { Helmet } from 'react-helmet-async';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+import { Button, Chip, TextField } from '@mui/material';
 import { MuiFileInput } from 'mui-file-input';
 import '../../css/signup-and-profile-edit-pages-style.css';
 import jwt from 'jwt-decode';
 import axios from 'axios';
+import { BASE_API_ROUTE } from '../../Constants';
 import { useAuth } from "../../context/AuthProvider";
 import { updateLawyer } from '../../services/userService';
-import { Helmet } from 'react-helmet-async';
-import TextField from '@mui/material/TextField';
-import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
-import { BASE_API_ROUTE } from '../../Constants';
 import { toast } from 'react-toastify';
+
+// mui rtl
+import rtlPlugin from 'stylis-plugin-rtl';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+const cacheRtl = createCache({
+  key: 'muirtl',
+  stylisPlugins: [rtlPlugin],
+});
+const theme = createTheme({
+  direction: 'rtl',
+});
+// mui rtl
 
 const filter = createFilterOptions();
 
@@ -20,8 +33,8 @@ const Call_Edit_Lawyer_Profile = () => {
   const [getdetail, setdetail, refdetail] = useStateRef({});
   const [gender, setGender] = useState('');
   const [title, setTitle] = useState('');
+  const [specialties, setSpecialties] = useState([]);
   const descriptionUser = "کاربر گرامی ! در این قسمت می توانید تمامی اطلاعات کاربری خود را بروزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";  
-  const [defaultTakhasos, setDefaultTakhasos, refDefaultTakhasos] = useStateRef([]);
 
   const showErrorMessage = (errorMessage) => {
     toast.error(errorMessage, {
@@ -88,35 +101,52 @@ const Call_Edit_Lawyer_Profile = () => {
     { title: 'سربازی و نظام وظیفه' },
   ];
 
-  const getDefaultTakhasos = () => {
+  const getDefaultTakhasos = (data) => {
     const tt = [];
-    if(refdetail.current && refdetail.current.specialties){
-      const tempList = refdetail.current.specialties.split('/');
-      
-      tempList.map((temp) => {
-        tt.push({title: temp});
-      });
-    }
-    setDefaultTakhasos(tt);
-    // console.log(refDefaultTakhasos.current);
+    data.split('/').map((temp) => {
+      tt.push({title: temp});
+    });
+    setSpecialties(tt);
   };
 
-  const specialtiesList = () => { 
+  const specialtiesList = () => {
     return (
+      <ThemeProvider theme={theme}>
+      <CacheProvider value={cacheRtl}>
       <Autocomplete
         multiple
         id="tags-outlined"
         options={specialtieses}
         getOptionLabel={(option) => option.title}
-        defaultValue={refDefaultTakhasos.current}
+        defaultValue={specialties}
+        value={specialties}
+        onChange={(event, newValue) => {
+          if (typeof newValue === 'string') {
+            setSpecialties({
+              title: newValue,
+            });
+          } else if (newValue && newValue.inputValue) {
+            // Create a new value from the user input
+            setSpecialties({
+              title: newValue.inputValue,
+            });
+          } else {
+            setSpecialties(newValue);
+          }
+        }}
+        renderTags={(value, getTagProps) =>
+          value.map((option, index) => (
+            <Chip variant="filled" color='primary' dir="rtl" sx={{ fontFamily:"shabnam" }} label={option.title} {...getTagProps({ index })} />
+          ))
+        }
+        renderOption={(props, option) => <li {...props} style={{fontFamily:'shabnam'}}>{option.title}</li>}
         filterSelectedOptions
         renderInput={(params) => (
-          <TextField
-            {...params}
-            placeholder="تخصص ها"
-          />
+          <TextField className='NoBorder' {...params} placeholder="تخصص ها"/>
         )}
       />
+      </CacheProvider>
+      </ThemeProvider>
     );
   };
 
@@ -245,13 +275,10 @@ const Call_Edit_Lawyer_Profile = () => {
           setdetail(response.data.data);
           setGender(response.data.data.gender);
           setTitle(response.data.data.title);
-          getDefaultTakhasos();
+          getDefaultTakhasos(response.data.data.specialties);
         } catch (error) {
           console.log('error in getting lawyer data : ', error);
         }
-      }
-      if(!token){
-        // alert("شما باید ابتدا وارد حساب کاربری خود شوید.");
       }
     };
     fetchData();
@@ -259,10 +286,9 @@ const Call_Edit_Lawyer_Profile = () => {
 
   const updateuser = async (event) => {
     event.preventDefault();
-    // console.log(refdetail.current);
     const formData = new FormData();
     for (const key in refdetail.current) {
-      if(key != 'user'){
+      if(key != 'user' && key != 'specialties'){
         formData.append(key, refdetail.current[key] == null ? '' : refdetail.current[key]);
       }
       if(key == 'user')
@@ -270,6 +296,11 @@ const Call_Edit_Lawyer_Profile = () => {
           formData.append('user.' + keyUser, refdetail.current['user'][keyUser] == null ? '' : refdetail.current['user'][keyUser]);
         }
     }
+    let specialtiesString = '';
+    specialties.map((takh) => {
+      specialtiesString = specialtiesString == '' ? takh.title : ( specialtiesString + '/' + takh.title );
+    });
+    formData.append('specialties', specialtiesString);
     const token = await getAccessToken();
     if(token){
       const tokenData = jwt(token);
@@ -381,14 +412,7 @@ const Call_Edit_Lawyer_Profile = () => {
             <div className="form-group">
               <div className="form-row">
                 <label style={{ position: "relative", top: "5px" }}><p>تخصص ها</p></label>
-                <input
-                  className="input100"
-                  type="text"
-                  name="specialties"
-                  value={refdetail.current.specialties}
-                  onChange={setUserInfo}
-                  margin="normal" />
-                {/* {specialtiesList()} */}
+                {specialtiesList()}
               </div>
             </div>
             <div className="form-group">
