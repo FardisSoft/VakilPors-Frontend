@@ -109,7 +109,10 @@
 	font-size: 15px;
 	color: #666;
 	display: block;
-	margin-bottom: 8px;
+}
+.form-v4-content .form-detail label p {
+	margin-bottom: 15px;
+	margin-top: 15px;
 }
 .form-v4-content .form-detail .form-row label.valid {
     position: absolute;
