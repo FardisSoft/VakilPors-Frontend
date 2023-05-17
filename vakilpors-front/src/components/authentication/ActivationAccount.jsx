@@ -116,7 +116,7 @@ const ActivationAccount = () => {
     return (
     <>
     <Helmet>
-        <title>Activation Acoount</title>
+        <title>فعالسازی حساب</title>
     </Helmet>
     <ThemeProvider theme={theme}>
     <CacheProvider value={cacheRtl}>
