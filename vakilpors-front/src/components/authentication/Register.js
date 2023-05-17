@@ -6,8 +6,7 @@ import axios from 'axios';
 import { BASE_API_ROUTE } from '../../Constants';
 import '../../css/signup-and-profile-edit-pages-style.css';
 import { FaEye } from 'react-icons/fa';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 const Register = () => {
     const [name, setName] = useState("");
@@ -215,7 +214,6 @@ const Register = () => {
                 </div>
             </form>
         </div>
-        <ToastContainer/>
     </div>
     </>
     );
