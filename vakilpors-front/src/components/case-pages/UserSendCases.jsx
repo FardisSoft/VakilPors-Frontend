@@ -19,7 +19,7 @@ const UserSendCases = () => {
       const token = await getAccessToken();
       try{
         const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
-        console.log("success in Getting users : ",response);
+        // console.log("success in Getting users : ",response);
         setUsers(response.data.data);
       }
       catch (error) {
