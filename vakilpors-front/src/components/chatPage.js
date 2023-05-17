@@ -283,11 +283,11 @@ const ChatPage = () => {
     if(!activeChats.includes(chatId)){
       setActiveChats([...activeChats,chatId]);
       addToChat(chatId);
-      const chatIndex = getChatIndexByChatId(chatId);
-      const numberOfMessages = refChats.current[chatIndex].chatMessages.length;
-      if(numberOfMessages > 0 && refChats.current[chatIndex].chatMessages[numberOfMessages - 1].sender.id != refUser.current.id){
-        readChatMessage(chatId);
-      }
+    }
+    const chatIndex = getChatIndexByChatId(chatId);
+    const numberOfMessages = refChats.current[chatIndex].chatMessages.length;
+    if(numberOfMessages > 0 && refChats.current[chatIndex].chatMessages[numberOfMessages - 1].sender.id != refUser.current.id){
+      readChatMessage(chatId);
     }
     showLastMessage();
   };
