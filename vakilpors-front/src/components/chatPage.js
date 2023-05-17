@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import useStateRef from 'react-usestateref';
-import { Avatar, Box, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, TextField, InputAdornment, Typography, Tooltip } from '@mui/material';
+import { Avatar, Box, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, TextField, InputAdornment, Typography, styled } from '@mui/material';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined, DoneAll, Cancel, Reply, RateReview } from '@mui/icons-material';
 import Moment from 'moment-jalaali';
 import "moment/locale/fa";
@@ -13,6 +14,19 @@ import axios from 'axios';
 import jwt from 'jwt-decode';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+const StyledTooltip = styled (({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} arrow/>
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: '#f5f5f9',
+    color: 'rgba(0, 0, 0, 0.87)',
+    maxWidth: 300,
+    fontSize: '15px',
+    border: '1px solid #dadde9',
+    fontFamily: 'shabnam',
+  },
+}));
 
 const ChatPage = () => {
   const [selectedChat, setSelectedChat, refSelectedChat] = useStateRef(null);
@@ -432,8 +446,10 @@ const ChatPage = () => {
     const chatIndex = getChatIndexByChatId(refSelectedChat.current);
     const messageIndex = refChats.current[chatIndex].chatMessages.findIndex((messag) => messag.id === message.id);
     let messageReplyIndex = null;
+    let messageReplyContent = '';
     if(message.replyId){
       messageReplyIndex = refChats.current[chatIndex].chatMessages.findIndex((messag) => messag.id === message.replyId);
+      messageReplyContent = refChats.current[chatIndex].chatMessages[messageReplyIndex].isDeleted ? 'This message was deleted' : refChats.current[chatIndex].chatMessages[messageReplyIndex].isFile ? 'فایل' : refChats.current[chatIndex].chatMessages[messageReplyIndex].message;
     }
     const isCurrentUser = message.sender.id === refUser.current.id;
     const isDeleted = message.isDeleted;
@@ -472,11 +488,13 @@ const ChatPage = () => {
           { messageReplyIndex != null &&
           <Grid container justifyContent="flex-start" borderBottom="1px solid gray" marginBottom="10px">
             <Grid item xs={12} sx={{overflow:'hidden', width: '200px'}}>
-              <Typography fontFamily="shabnam" fontSize="13px" sx={{whiteSpace: 'nowrap',cursor: 'pointer',marginBottom: '2px',padding: '2px',border: '3px solid lightblue',backgroundColor: 'lightblue',borderRadius: '7px',textOverflow: 'ellipsis',overflow: 'hidden',}}
-               onClick={() => goToReply(chatIndex, messageReplyIndex)}>
-                در پاسخ به
-                {' : ' + ( refChats.current[chatIndex].chatMessages[messageReplyIndex].isDeleted ? 'This message was deleted' : refChats.current[chatIndex].chatMessages[messageReplyIndex].isFile ? 'فایل' : refChats.current[chatIndex].chatMessages[messageReplyIndex].message )}
-              </Typography>
+              <StyledTooltip title={<React.Fragment>{messageReplyContent}</React.Fragment>}>
+                <Typography fontFamily="shabnam" fontSize="13px" sx={{whiteSpace: 'nowrap',cursor: 'pointer',marginBottom: '2px',padding: '2px',border: '3px solid lightblue',backgroundColor: 'lightblue',borderRadius: '7px',textOverflow: 'ellipsis',overflow: 'hidden',}}
+                onClick={() => goToReply(chatIndex, messageReplyIndex)}>
+                  در پاسخ به
+                  {' : ' + (messageReplyContent) }
+                </Typography>
+              </StyledTooltip>
             </Grid>
           </Grid>}
 
@@ -509,25 +527,34 @@ const ChatPage = () => {
           {/* icons and date */}
           <Grid container direction={'row'} display={'flex'} justifyContent={'flex-start'}>
             {!isCurrentUser && 
-              <Tooltip title="پاسخ دادن">
+              <StyledTooltip title={<React.Fragment>پاسخ دادن</React.Fragment>}>
                 <IconButton size="small" onClick={() => handleReplyClick(message)}>
                   <Reply />
                 </IconButton>
-              </Tooltip>}
+              </StyledTooltip>}
             {!isCurrentUser || isDeleted ? null : (
               <>
               {!isFile && <>
-              <IconButton size="small" onClick={() => handleEditClick(message)}>
-                <Edit />
-                <ToastContainer />
-              </IconButton>
-              <IconButton size="small" onClick={() => handleDeleteClick(message)}>
-                <Delete />
-              </IconButton></>}
+              <StyledTooltip title={<React.Fragment>ویرایش پیام</React.Fragment>}>
+                <IconButton size="small" onClick={() => handleEditClick(message)}>
+                  <Edit />
+                </IconButton>
+              </StyledTooltip>
+              <StyledTooltip title={<React.Fragment>حذف پیام</React.Fragment>}>
+                <IconButton size="small" onClick={() => handleDeleteClick(message)}>
+                  <Delete />
+                </IconButton>
+              </StyledTooltip></>}
               </>
             )}
-            { (isEdited && !isDeleted) && <Typography fontSize={'13px'} marginRight={'10px'} position={'relative'} top={'7px'}>edited</Typography>}
-            {isRead && <IconButton size="small" sx={{cursor:'default !important'}}> <DoneAll /> </IconButton>}
+            { (isEdited && !isDeleted) && 
+            <StyledTooltip title={<React.Fragment>این پیام ویرایش شده است</React.Fragment>}>
+              <Typography fontSize={'13px'} marginRight={'10px'} position={'relative'} top={'7px'}>edited</Typography>
+            </StyledTooltip>}
+            {isRead && 
+            <StyledTooltip title={<React.Fragment>این پیام خوانده شده است</React.Fragment>}>
+              <IconButton size="small" sx={{cursor:'default !important'}}> <DoneAll /> </IconButton>
+            </StyledTooltip>}
             <Typography fontFamily={'shabnam'} marginRight={'15px'} fontSize={'13px'} position={'relative'} top={'9px'}>
               {Moment(message.sendTime).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(message.sendTime).format('HH:mm')}
             </Typography>
@@ -562,9 +589,12 @@ const ChatPage = () => {
                   <Avatar src={chat.users[getUserIndex(chat.id)].profileImageUrl} alt={chat.users[getUserIndex(chat.id)].name}/>
                 </ListItemAvatar>
                 <ListItemText primaryTypographyProps={{ fontFamily: 'shabnam' }} primary={chat.users[getUserIndex(chat.id)].name} />
-                { (refUserRole.current === "User" && chat.users[getUserIndex(chat.id)].lawyerId != null && chat.chatMessages.length > 9) && <IconButton size="small" onClick={() => handleRateClick(chat.users[getUserIndex(chat.id)].lawyerId)}>
-                  <RateReview />
-                </IconButton>}
+                { (refUserRole.current === "User" && chat.users[getUserIndex(chat.id)].lawyerId != null && chat.chatMessages.length > 9) && 
+                <StyledTooltip title={<React.Fragment>نظر دادن</React.Fragment>}>
+                  <IconButton size="small" onClick={() => handleRateClick(chat.users[getUserIndex(chat.id)].lawyerId)}>
+                    <RateReview />
+                  </IconButton>
+                </StyledTooltip>}
               </ListItem>
             ))}
           </List>
@@ -611,27 +641,39 @@ const ChatPage = () => {
                   endAdornment: (
                     <InputAdornment position="end">
                       {isEditActive ? <>
+                      <StyledTooltip title={<React.Fragment>ویرایش پیام</React.Fragment>}>
                       <IconButton size="small" onClick={handleEditMessage}>
                         <Edit />
                       </IconButton>
+                      </StyledTooltip>
+                      <StyledTooltip title={<React.Fragment>انصراف</React.Fragment>}>
                       <IconButton size="small" onClick={handleCancelEditMessage}>
                         <Cancel />
                       </IconButton>
+                      </StyledTooltip>
                       </> : isReplyActive ? <>
+                      <StyledTooltip title={<React.Fragment>ارسال پاسخ</React.Fragment>}>
                       <IconButton size="small" onClick={handleReplyMessage}>
                         <Reply />
                       </IconButton>
+                      </StyledTooltip>
+                      <StyledTooltip title={<React.Fragment>انصراف</React.Fragment>}>
                       <IconButton size="small" onClick={handleCancelReplyMessage}>
                         <Cancel />
                       </IconButton>
+                      </StyledTooltip>
                       </> : <>
+                      <StyledTooltip title={<React.Fragment>ارسال فایل</React.Fragment>}>
                       <IconButton size="small" component="label">
                         <AttachFile />
                         <input type="file" style={{ display: 'none' }} onChange={handleAttachFileClick} />
                       </IconButton>
+                      </StyledTooltip>
+                      <StyledTooltip title={<React.Fragment>ارسال پیام</React.Fragment>}>
                       <IconButton size="small" onClick={handleSendClick}>
                         <Send />
                       </IconButton>
+                      </StyledTooltip>
                       </>}
                     </InputAdornment>
                   ),}}
