@@ -7,6 +7,8 @@ import moment from 'moment';
 import { Typography, IconButton, Grid } from "@mui/material";
 import Likes from "./utils/Likes";
 import { Delete, Edit, TaskAlt } from '@mui/icons-material';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Replies = () => {
 	const [replyList, setReplyList] = useState([]);
@@ -39,6 +41,33 @@ const Replies = () => {
 	  fetchReplies();
 	}, [threadId]);
 
+	const showErrorMessage = (message) => {
+        toast.error(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            rtl:true,
+        });
+    };
+    const showSuccesMessage = (message) => {
+        toast.success(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            rtl:true,
+        });
+    };
+
 	const addReply = async () => {
 		const token = await getAccessToken();
 		if(token){
@@ -58,6 +87,9 @@ const Replies = () => {
 				fetchReplies();
 			} catch (error) {
 				console.log('add reply error : ',error);
+				if(error.response.data.hasOwnProperty('Message') && error.response.data.Message == 'This message is detected as a spam and can not be shown.'){
+					showErrorMessage('نظر شما حاوی تبلیغات غیر مجاز است.');
+				}
 			}
 		}
 	};
