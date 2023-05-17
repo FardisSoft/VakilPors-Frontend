@@ -155,7 +155,7 @@ const Rate = () => {
             <Grid container width={{xs:'100%',sm:'80%'}} alignItems="stretch">
               <Grid sx={{backgroundColor:'rgba(0,0,0,0)',backgroundImage:`url(${profileBackgroundPicture})`,backgroundRepeat:'no-repeat',backgroundSize:'cover',backgroundPosition:'center'}} display="flex" alignItems="center" justifyContent="center" item component={Card} xs>
                 <CardContent>
-                  <Avatar alt={name} sx={{ width: 60, height: 60 }} src={profilePicture} />
+                  <Avatar alt={name} sx={{ width: 80, height: 80 }} src={profilePicture} />
                 </CardContent>
               </Grid>
             </Grid>
@@ -193,11 +193,12 @@ const Rate = () => {
             // color: "rgb(25,117,210)",
             color:"black",
            } }}
-            InputLabelProps={{ align: "right", dir: "rtl" }}
+            InputLabelProps={{ align: "right", dir: "rtl", style: { fontFamily:"shabnam", fontSize: "17px", color:"black", } }}
             sx={{
               width: {xs:'100%',sm:'80%'},
-              padding: 0,
+              padding: 1,
               backgroundColor: 'rgba(255,255,255,0.5)',
+              borderRadius: '0 0 7px 7px',
               // ":focus-within":{padding:0},
             }}/>
           </Slide>
