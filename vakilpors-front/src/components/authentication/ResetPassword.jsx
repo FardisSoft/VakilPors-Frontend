@@ -3,8 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { useNavigate } from "react-router-dom";
 import Button from '@mui/material/Button';
 import { Typography, Grid, TextField, Slide } from "@mui/material";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import { BASE_API_ROUTE } from "../../Constants";
 import axios from "axios";
 import { InputAdornment , IconButton} from "@mui/material";
@@ -229,7 +228,6 @@ const ForgotPassword = () => {
                         </Button>
                     </Grid>
                 </Slide>
-                <ToastContainer />
             </Grid>
         </Grid>
         </CacheProvider>
