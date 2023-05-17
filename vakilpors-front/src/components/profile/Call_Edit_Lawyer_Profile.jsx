@@ -329,7 +329,7 @@ const Call_Edit_Lawyer_Profile = () => {
   return (
     <>
     <Helmet>
-      <title>edit lawyer page</title>
+      <title>ویرایش اطلاعات وکیل</title>
     </Helmet>
       <div className="page-content" >
         <div className="form-v4-content">
