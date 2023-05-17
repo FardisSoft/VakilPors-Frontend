@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import useStateRef from 'react-usestateref';
 import { Avatar, Box, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, TextField, InputAdornment, Typography, Tooltip } from '@mui/material';
 import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined, DoneAll, Cancel, Reply, RateReview } from '@mui/icons-material';
-import moment from 'moment';
+import Moment from 'moment-jalaali';
+import "moment/locale/fa";
 import { Helmet } from 'react-helmet-async';
 import * as signalR from '@microsoft/signalr';
 import { useNavigate } from "react-router-dom";
@@ -527,7 +528,9 @@ const ChatPage = () => {
             )}
             { (isEdited && !isDeleted) && <Typography fontSize={'13px'} marginRight={'10px'} position={'relative'} top={'7px'}>edited</Typography>}
             {isRead && <IconButton size="small" sx={{cursor:'default !important'}}> <DoneAll /> </IconButton>}
-            <Typography marginRight={'15px'} fontSize={'13px'} position={'relative'} top={'7px'}>{moment(message.sendTime).format('MMM D YYYY, h:mm A')}</Typography>
+            <Typography fontFamily={'shabnam'} marginRight={'15px'} fontSize={'13px'} position={'relative'} top={'9px'}>
+              {Moment(message.sendTime).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(message.sendTime).format('HH:mm')}
+            </Typography>
           </Grid>
         </Grid>
       </Grid>
