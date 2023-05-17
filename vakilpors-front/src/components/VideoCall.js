@@ -125,7 +125,7 @@ const VideoCall = () => {
   return (
     <>
     <Helmet>
-      <title>Video Call Page</title>
+      <title>تماس تصویری</title>
     </Helmet>
     <Grid ref={videoRef} sx={{
       display: 'grid',
