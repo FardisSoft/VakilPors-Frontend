@@ -31,28 +31,40 @@ const PremiumPage = () => {
       const token = await getAccessToken();
       if (token) {
         const tokenData = jwt(token);
-        const url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer " + token
+        };
         try {
+          const url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
           const response = await axios.get(url);
-          const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': "Bearer " + token
-          };
+          setpremiumdetail(response.data.data);
+        } catch (err) {
+          console.log('error in getting user data : ',err);
+        }
+        try {
           const premiumdetail = await axios.get(BASE_API_ROUTE + `Wallet/GetTransactions`, {
             headers: headers
           });
+          settransactions(premiumdetail.data);
+        } catch (err) {
+          console.log('error in getting Transactions : ',err);
+        }
+        try {
           const balance = await axios.get(BASE_API_ROUTE + `Wallet/GetBalance`, {
             headers: headers
           });
+          setbalance(balance.data);
+        } catch (err) {
+          console.log('error in getting Balance : ',err);
+        }
+        try {
           const getsubstatus = await axios.get(BASE_API_ROUTE + `Premium/GetSubscriptionStatus`, {
             headers: headers
           });
           setsub(getsubstatus.data.data);
-          setbalance(balance.data);
-          settransactions(premiumdetail.data);
-          setpremiumdetail(response.data.data);
-        } catch (error) {
-          console.log('error : ', error);
+        } catch (err) {
+          console.log('error in getting SubscriptionStatus : ', err);
         }
       }
     };
@@ -62,33 +74,37 @@ const PremiumPage = () => {
 
 
 
-  async function activateSubscription(premiumPlan) {
+  const activateSubscription = async (premiumPlan) => {
 
-    const url = `https://api.fardissoft.ir/Premium/ActivateSubscription?PremiumPlan=${premiumPlan}`;
+    const url = BASE_API_ROUTE + `Premium/ActivateSubscription?PremiumPlan=${premiumPlan}`;
     const token = await getAccessToken();
     if (token) {
-      const response = await axios.post(url, '', { headers: { Authorization: `Bearer ${token}` } });
-      console.log("response : ", response);
+      try {
+        const response = await axios.post(url, '', { headers: { Authorization: `Bearer ${token}` } });
+        console.log('response in Premium/ActivateSubscription : ',response);
+      } catch (err) {
+        console.log('error in Premium/ActivateSubscription : ',err);
+      }
     }
   }
 
 
 
   const payroll = async () => {
-    const url = BASE_API_ROUTE + "Payment/request";
-    const data = {
-      "amount": getamountdetail.amount,
-      "description": getamountdetail.description
+    const token = await getAccessToken();
+		if(token){
+      const url = BASE_API_ROUTE + "Payment/request";
+      const data = {
+        "amount": getamountdetail.amount,
+        "description": getamountdetail.description
+      }
+      try {
+        const response = await axios.post(url, data, { headers: { Authorization: `Bearer ${token}` } });
+        window.location.replace(response.data.paymentUrl);
+      } catch (err) {
+        console.log('error in Payment/request : ',err);
+      }
     }
-    console.log(data);
-    const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': "Bearer " + localStorage.getItem("accessToken")
-    }
-    const response = await axios.post(url, data, {
-      headers: headers
-    });
-    window.location.replace(response.data.paymentUrl);
   }
 
   const setamount = (event) => {
