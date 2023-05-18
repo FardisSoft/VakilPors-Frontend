@@ -1,16 +1,10 @@
-import { makeStyles } from '@mui/styles';
-import { CheckCircleOutline } from '@mui/icons-material';
+import React, {useEffect} from "react";
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from "react-router-dom";
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
+import { makeStyles } from '@mui/styles';
+import { CheckCircleOutline, Clear } from '@mui/icons-material';
+import { Grid, Button, Typography } from '@mui/material';
 import { toast } from 'react-toastify';
-import { Clear } from '@mui/icons-material';
-import { Link } from "react-router-dom";
-import React, { useState } from "react";
-import axios from 'axios';
-import { useAuth } from '../../context/AuthProvider';
-
 
 const useStyles = makeStyles({
   confirmationContainer: {
@@ -46,26 +40,13 @@ const useStyles = makeStyles({
   },
 });
 
-function ResponseTransaction(props) {
+function ResponseTransaction() {
 
   const classes = useStyles();
-  let { amount, referenceId } = props;
-  const queryParameters = new URLSearchParams(window.location.search)
-  const ReferenceId = queryParameters.get("ReferenceId")
-  const success = queryParameters.get("WasSuccessful")
-  const { getAccessToken } = useAuth();
-
-
-  const icon = success ? (
-    <CheckCircleOutline className={classes.successIcon} />
-  ) : (
-    <Clear className={classes.errorIcon} />
-  );
-
-  const confirmationMessage = success
-    ? "تراکنش با موفقیت انجام شد!"
-    : "تراکنش با خطا مواجه شد!";
-
+  const navigate = useNavigate();
+  const queryParameters = new URLSearchParams(window.location.search);
+  const ReferenceId = queryParameters.get("ReferenceId");
+  const success = queryParameters.get("WasSuccessful");
 
   const delay = ms => new Promise(
     resolve => setTimeout(resolve, ms)
@@ -74,7 +55,7 @@ function ResponseTransaction(props) {
   const showSuccesMessage = (successMessage) => {
     toast.success(successMessage, {
       position: "bottom-right",
-      autoClose: 5000,
+      autoClose: 7000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -88,7 +69,7 @@ function ResponseTransaction(props) {
   const showErrorMessage = (errorMessage) => {
     toast.error(errorMessage, {
       position: "bottom-right",
-      autoClose: 5000,
+      autoClose: 7000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -99,22 +80,42 @@ function ResponseTransaction(props) {
     });
   };
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    const handleThisPage = async () => {
+      const show = () => {
+        success ? showSuccesMessage('تراکنش موفق. در حال انتقال به کیف پول...')
+        : showErrorMessage('تراکنش ناموفق. در حال انتقال به کیف پول...');
+      }
+      const go = async () => {
+        if(success) {
+          await delay(7000);
+          navigate('/wallet');
+        }
+        if(!success) {
+          await delay(7000);
+          navigate('/wallet');
+        }
+      };
+      show();
+      await delay(100);
+      await go();
+    };
+    handleThisPage();
+  }, []);
 
-  const directTo = async () => {
+  const icon = success ? (
+    <CheckCircleOutline className={classes.successIcon} />
+  ) : (
+    <Clear className={classes.errorIcon} />
+  );
 
-    showSuccesMessage('بازگشت به صفحه اصلی...');
-    await delay(5000);
-    navigate('/PremiumPage');
-
-  }
+  const confirmationMessage = success ? "تراکنش با موفقیت انجام شد!" : "تراکنش با خطا مواجه شد!";
 
   return (
     <>
       <Helmet>
         <title>نتیجه تراکنش</title>
       </Helmet>
-
       <Grid display={"flex"} flexDirection={"column"} margin={"auto"} alignItems={"center"} justifyContent={"center"} width={"100%"} height={"100vh"} backgroundColor={'#ABC0C0'}>
         <Grid alignItems={"center"} margin={"auto"} height={"100%"} width={"60%"} flexDirection={'column'} borderRadius={"10px"} padding={"5px"} paddingTop={"5px"} paddingX={"5px"} paddingBottom={"5px"} display={"flex"} position={"relative"} m={"3%"} justifyContent={"center"} item xs={4} spacing={5} alignSelf={"center"} backgroundColor={'white'}>
           <hr></hr>
@@ -127,12 +128,11 @@ function ResponseTransaction(props) {
               شماره پیگیری: {ReferenceId} <br></br>
               ok ? {success}
             </div>
-
           )}
           <br></br>
-          <button >
-          <Link to="/">بازگشت به صفحه اصلی</Link>
-          </button>
+          <Button onClick={()=>navigate('/wallet')}>
+            <Typography fontFamily={'shabnam'}>کیف پول</Typography>
+          </Button>
         </Grid>
       </Grid>
     </>
