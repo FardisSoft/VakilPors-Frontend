@@ -131,7 +131,7 @@ function ResponseTransaction(props) {
           )}
           <br></br>
           <button >
-          <Link to="/PremiumPage">بازگشت به صفحه اصلی</Link>
+          <Link to="/">بازگشت به صفحه اصلی</Link>
           </button>
         </Grid>
       </Grid>
