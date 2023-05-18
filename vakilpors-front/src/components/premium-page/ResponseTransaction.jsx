@@ -81,26 +81,19 @@ function ResponseTransaction() {
   };
 
   useEffect(() => {
-    const handleThisPage = async () => {
-      const show = () => {
-        success ? showSuccesMessage('تراکنش موفق. در حال انتقال به کیف پول...')
-        : showErrorMessage('تراکنش ناموفق. در حال انتقال به کیف پول...');
+    const go = async () => {
+      if(success) {
+        showSuccesMessage('تراکنش موفق. در حال انتقال به کیف پول...');
+        await delay(7000);
+        navigate('/wallet');
       }
-      const go = async () => {
-        if(success) {
-          await delay(7000);
-          navigate('/wallet');
-        }
-        if(!success) {
-          await delay(7000);
-          navigate('/wallet');
-        }
-      };
-      show();
-      await delay(100);
-      await go();
-    };
-    handleThisPage();
+      if(!success) {
+        showErrorMessage('تراکنش ناموفق. در حال انتقال به کیف پول...');
+        await delay(7000);
+        navigate('/wallet');
+      }
+    }
+    go();
   }, []);
 
   const icon = success ? (
