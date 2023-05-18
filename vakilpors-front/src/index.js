@@ -28,6 +28,7 @@ import AddNewCase from './components/case-pages/addNewCase';
 import ShowCases from './components/case-pages/ShowCases';
 import Wallet from './components/premium-page/Wallet';
 import UserSendCases from './components/case-pages/UserSendCases';
+import NotFound from './components/NotFound';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -58,6 +59,7 @@ root.render(
               <Route path="/payment/verify" element={<ResponseTransaction />}/>
               <Route path="/Rate/:LawyerId" element={<Sidebar component={Rate}/>}/>
               <Route path="/wallet" element={<Sidebar component={Wallet}/>}/>
+              <Route path="*" element={<NotFound/>}/>
 
           </Routes>
         </AuthProvider>
