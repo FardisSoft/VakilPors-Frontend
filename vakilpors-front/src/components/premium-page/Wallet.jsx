@@ -6,60 +6,51 @@ import { useAuth } from "../../context/AuthProvider";
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
 
-
-
 const PremiumCard = () => {
 
-    const { refUserRole, refIsLoggedIn, getAccessToken, logout } = useAuth();
-
+    const { refUserRole, getAccessToken } = useAuth();
     const [getamountdetail, setamountdetail] = useState({
         amount: "",
         description: "شارژ کیف پول"
     });
     const [getbalance, setbalance] = useState([]);
 
-
-
     useEffect(() => {
         const fetchData = async () => {
             const token = await getAccessToken();
             if (token) {
-                ; try {
+                try {
                     const headers = {
                         'Content-Type': 'application/json',
                         'Authorization': "Bearer " + token
                     };
-
                     const balance = await axios.get(BASE_API_ROUTE + `Wallet/GetBalance`, {
                         headers: headers
                     });
                     setbalance(balance.data);
-
                 } catch (error) {
-                    console.log('error : ', error);
+                    console.log('error in getting Balance : ', error);
                 }
             }
         };
         fetchData();
     }, []);
 
-
     const payroll = async () => {
-        const url = BASE_API_ROUTE + "Payment/request";
-        const data = {
-            "amount": getamountdetail.amount,
-            "description": getamountdetail.description
+        const token = await getAccessToken();
+		if(token){
+            const url = BASE_API_ROUTE + "Payment/request";
+            const data = {
+                "amount": getamountdetail.amount,
+                "description": getamountdetail.description
+            }
+            try {
+                const response = await axios.post(url, data, { headers: { Authorization: `Bearer ${token}` } });
+                window.location.replace(response.data.paymentUrl);
+            } catch (err) {
+                console.log('error in Payment/request : ',err);
+            }
         }
-        console.log(data);
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': "Bearer " + localStorage.getItem("accessToken")
-        }
-        const response = await axios.post(url, data, {
-            headers: headers
-        });
-        window.location.replace(response.data.paymentUrl);
-
     }
 
     const setpayroll = (event) => {
@@ -68,8 +59,6 @@ const PremiumCard = () => {
             [event.target.name]: event.target.value,
         });
     };
-
-
 
     return (
         <>
