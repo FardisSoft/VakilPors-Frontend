@@ -10,7 +10,7 @@ function ResponseTransaction() {
   const navigate = useNavigate();
   const queryParameters = new URLSearchParams(window.location.search);
   const ReferenceId = queryParameters.get("ReferenceId");
-  const success = queryParameters.get("WasSuccessful");
+  const success = queryParameters.get("WasSuccessful") == 'True';
 
   const delay = ms => new Promise(
     resolve => setTimeout(resolve, ms)
