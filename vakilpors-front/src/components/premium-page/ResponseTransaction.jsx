@@ -44,21 +44,21 @@ function ResponseTransaction() {
     });
   };
 
-  // useEffect(() => {
-  //   const go = async () => {
-  //     if(success) {
-  //       showSuccesMessage('تراکنش موفق. در حال انتقال به کیف پول...');
-  //       await delay(7000);
-  //       navigate('/wallet');
-  //     }
-  //     if(!success) {
-  //       showErrorMessage('تراکنش ناموفق. در حال انتقال به کیف پول...');
-  //       await delay(7000);
-  //       navigate('/wallet');
-  //     }
-  //   }
-  //   go();
-  // }, []);
+  useEffect(() => {
+    const go = async () => {
+      if(success) {
+        showSuccesMessage('تراکنش موفق. در حال انتقال به کیف پول...');
+        await delay(7000);
+        navigate('/wallet');
+      }
+      if(!success) {
+        showErrorMessage('تراکنش ناموفق. در حال انتقال به کیف پول...');
+        await delay(7000);
+        navigate('/wallet');
+      }
+    }
+    go();
+  }, []);
 
   return (
     <>
