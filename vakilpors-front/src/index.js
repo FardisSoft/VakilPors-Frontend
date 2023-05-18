@@ -52,7 +52,6 @@ root.render(
               <Route path="/Activation_Account/:phoneNumber" element={<Sidebar component={ActivationAccount}/>}/>
               <Route path="/chatPage" element={<Sidebar component={ChatPage}/>}/>
               <Route path="/PremiumPage" element={<Sidebar component={PremiumPage}/>}/>
-              <Route path="/ResponseTransaction" element={<ResponseTransaction />}/>
               <Route path="/new-case/:func" element={<Sidebar component={AddNewCase}/>}/>
               <Route path="/show-cases/:isLawyer" element={<Sidebar component={ShowCases}/>}/>
               <Route path="/user-send-cases/:LawyerId" element={<Sidebar component={UserSendCases}/>}/>
