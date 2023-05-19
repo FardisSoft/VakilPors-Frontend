@@ -37,7 +37,7 @@ const VideoCall = () => {
   const startCall = (token) => {
 
     setConnection( new signalR.HubConnectionBuilder()
-      .withUrl(BASE_API_ROUTE + "meeting",{
+      .withUrl(BASE_API_ROUTE + "meetingHub",{
         accessTokenFactory: () => token,
         withCredentials: false,
       })
@@ -53,7 +53,7 @@ const VideoCall = () => {
         try {
           await connection.start();
           console.log("SignalR Connected.");
-          await connection.invoke('JoinRoom', roomId, userId);
+          await connection.invoke('JoinMeeting', roomId, userId);
         } catch (err) {
           console.log('error in connecting SignalR : ',err);
         }
@@ -75,7 +75,7 @@ const VideoCall = () => {
       setLocalStream(stream);
     });
 
-    connection.on('user-connected',id => {
+    connection.on('UserConnected',id => {
       if(userId === id) return;
       console.log('user connected : ',id);
       connectNewUser(id, localStream);
