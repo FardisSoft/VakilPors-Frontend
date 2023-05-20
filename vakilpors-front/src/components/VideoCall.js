@@ -63,20 +63,6 @@ const VideoCall = () => {
       start();
     });
 
-    const myVideo = document.createElement('video');
-    myVideo.muted = true;
-    myVideo.style.width = '100%';
-    myVideo.style.height = '100%';
-    myVideo.style.objectFit = 'cover';
-
-    navigator.mediaDevices.getUserMedia({
-      audio : true,
-      video : true,
-    }).then(stream => {
-      addVideoStream(myVideo,stream);
-      setLocalStream(stream);
-    });
-
     refConnection.current.on('UserConnected',id => {
       console.log('user connected : ',id);
       if(refUserId.current === id) return;
@@ -124,6 +110,26 @@ const VideoCall = () => {
         [userId] : call
       });
     };
+
+    const connectMe = async () => {
+      const myVideo = document.createElement('video');
+      myVideo.muted = true;
+      myVideo.style.width = '100%';
+      myVideo.style.height = '100%';
+      myVideo.style.objectFit = 'cover';
+
+      // console.log( await navigator.mediaDevices.enumerateDevices());
+
+      navigator.mediaDevices.getUserMedia({
+        audio : true,
+        video : true,
+      }).then(stream => {
+        addVideoStream(myVideo,stream);
+        setLocalStream(stream);
+      }).catch(err => console.log('error in getting camera and microphone : ',err));
+    };
+
+    connectMe();
 
   };
 
