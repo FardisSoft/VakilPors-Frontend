@@ -30,13 +30,13 @@ import Wallet from './components/premium-page/Wallet';
 import UserSendCases from './components/case-pages/UserSendCases';
 import NotFound from './components/NotFound';
 import VideoCall from './components/VideoCall';
+import VerifyLawyers from './components/VerifyLawyers';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-// useEffect
+// useEffect staticits ip send
 
 root.render(
-  // staticits ip send
   <React.StrictMode>
     <HelmetProvider>
      <BrowserRouter>
@@ -65,9 +65,9 @@ root.render(
               <Route path="/Rate/:LawyerId" element={<Sidebar component={Rate}/>}/>
               <Route path="/wallet" element={<Sidebar component={Wallet}/>}/>
               <Route path="/videoCall" element={<Sidebar component={VideoCall}/>}/>
+              <Route path="/VerifyLawyers" element={<Sidebar component={VerifyLawyers}/>}/>
 
               <Route path="*" element={<NotFound/>}/>
-
           </Routes>
         </AuthProvider>
       </BrowserRouter>
