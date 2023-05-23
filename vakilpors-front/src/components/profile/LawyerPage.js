@@ -9,7 +9,7 @@ import { Stack, Grid } from "@mui/material";
 import { Card, CardContent, CardHeader, CardMedia } from "@mui/material";
 import LinkMUI from '@mui/material/Link';
 import {Done, Female, Male, CardMembership, LocationOn, Business, VerifiedUser, WorkHistory,
-    School, Gavel, CoPresent, QuestionAnswer, ThumbUpAlt, FactCheck, Percent } from '@mui/icons-material';
+    School, Gavel, CoPresent, QuestionAnswer, ThumbUpAlt, FactCheck, Percent, Verified } from '@mui/icons-material';
 import { useParams } from "react-router-dom";
 import jwt from 'jwt-decode';
 import dlpbp from '../../assests/images/default_lawyer_profile_background_picture.jpg';
@@ -52,6 +52,7 @@ const LawyerPage = () => {
     const [callingCard, setCallingCard] = useState();
     const [resumeLink, setResumeLink] = useState('');
     const [ratesList, setRatesList] = useState([]);
+    const [isVerified, setIsVerified] = useState(false);
 
     const { LawyerId } = useParams();
     const [ lawyerUserId, setLawyerUserId] = useState();
@@ -78,6 +79,7 @@ const LawyerPage = () => {
         setNumberOfAnswers(data.numberOfAnswers);
         setNumberOfLikes(data.numberOfLikes);
         setNumberOfVerifies(data.numberOfVerifies);
+        setIsVerified(data.isAuthorized);
     };
 
     // khoda vakili alireza ro .....
@@ -128,10 +130,9 @@ const LawyerPage = () => {
         }
         else{
             const url = BASE_API_ROUTE + `Chat/StartChat?recieverUserId=${lawyerUserId}`;
-            console.log(url);
             try { 
                 const response = await axios.post(url,'', {headers: {Authorization: `Bearer ${token}`}});
-                console.log('response in starting chat : ', response);
+                // console.log('response in starting chat : ', response);
                 navigate("/chatPage");
             } catch (error) {
                 console.log('error in starting chat : ', error);
@@ -213,6 +214,10 @@ const LawyerPage = () => {
         <Grid container direction={{ xs: 'column', sm: 'row' }} alignItems="stretch">
             <Grid item component={Card} sm>
                 <CardContent>
+                    {isVerified && <Typography sx={{ mb: 1.5, fontFamily:"shabnam"  }} color="text.secondary">
+                        <Verified color="primary" sx={{mr:1,position:'relative',top:3}}/>
+                        تایید شده توسط وکیل پرس
+                    </Typography>}
                     <Typography sx={{ mb: 1.5, fontFamily:"shabnam" }} color="text.secondary">
                         {gender === "مرد" ? <Male color="primary" sx={{mr:1,position:'relative',top:3}}/> : ( gender === "زن" ? <Female color="primary" sx={{mr:1,position:'relative',top:3}}/> : <><Female color="primary" sx={{mr:-1}}/><Male color="primary" sx={{mr:1,position:'relative',top:3}}/></>)}
                         جنسیت : {gender}
