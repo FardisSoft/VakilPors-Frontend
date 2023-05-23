@@ -1,6 +1,6 @@
 import { HomeOutlined, PersonSearchOutlined, ForumOutlined, PolicyOutlined, AppRegistrationOutlined,
        LoginOutlined, LogoutOutlined, ManageAccountsOutlined, AccountCircleOutlined, CallOutlined,
-       Menu, ChevronRight, ChatOutlined, DashboardOutlined, AssignmentOutlined, WalletOutlined } from "@mui/icons-material";
+       Menu, ChevronRight, ChatOutlined, DashboardOutlined, AssignmentOutlined, WalletOutlined, AssignmentTurnedInOutlined } from "@mui/icons-material";
 import React, { useState, useEffect } from 'react';
 import useStateRef from "react-usestateref";
 import { styled } from '@mui/material/styles';
@@ -182,6 +182,18 @@ const Sidebar = (props) => {
         {name:'کیف پول', icon:WalletOutlined, url:`/wallet`},
       ];
       break;
+
+      case "Admin":
+        tempLinks = [
+          {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
+          {name:'تایید مدارک وکلا', icon:AssignmentTurnedInOutlined, url:'/VerifyLawyers'},
+          {name:'جست و جوی وکلا', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
+          {name:'فروم', icon:ForumOutlined, url:'/Forum'},
+          {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
+          {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
+          {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
+        ];
+        break;
     
     default:
       console.log("wrong user role");
