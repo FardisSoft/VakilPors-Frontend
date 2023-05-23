@@ -27,7 +27,16 @@ const VerifyLawyers = () => {
   }, []);
 
   const handleVerify = async (lawyerId) => {
-    
+    const token = await getAccessToken();
+    if(token){
+      const url = BASE_API_ROUTE + '';
+      try {
+        const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
+        console.log('response in verifing lawyer : ',response);
+      } catch (error) {
+        console.log('error in verifing lawyer : ',error);
+      }
+    }
   };
 
   return (
