@@ -292,7 +292,7 @@ const LawyerPage = () => {
             </Grid>
             <Grid container direction="column" display="flex" sx={{ minWidth:215 }} justifyContent="center" item component={Card} sm>
                 <CardHeader titleTypographyProps={{ m:0, fontFamily:"shabnam", fontWeight:"bold", fontSize:"16px", color:"grayText" }} title="کارت ویزیت "/>
-                <CardMedia image={callingCard || "https://www.vuescript.com/wp-content/uploads/2018/11/Show-Loader-During-Image-Loading-vue-load-image.png"} sx={{ alignSelf:"center", height: 120, width: 215 }} title="کارت ویزیت"/>
+                <CardMedia image={callingCard || "https://www.vuescript.com/wp-content/uploads/2018/11/Show-Loader-During-Image-Loading-vue-load-image.png"} sx={{ alignSelf:"center", height: 167, width: 300 }} title="کارت ویزیت"/>
                 <CardContent >
                     <Grid container direction="row">
                         <Typography sx={{ fontFamily:"shabnam", fontWeight:"bold" }} color="text.secondary">
