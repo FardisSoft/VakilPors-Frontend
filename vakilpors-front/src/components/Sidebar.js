@@ -183,17 +183,17 @@ const Sidebar = (props) => {
       ];
       break;
 
-      case "Admin":
-        tempLinks = [
-          {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
-          {name:'تایید مدارک وکلا', icon:AssignmentTurnedInOutlined, url:'/VerifyLawyers'},
-          {name:'جست و جوی وکلا', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
-          {name:'فروم', icon:ForumOutlined, url:'/Forum'},
-          {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
-          {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
-          {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
-        ];
-        break;
+    case "Admin":
+      tempLinks = [
+        {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
+        {name:'تایید مدارک وکلا', icon:AssignmentTurnedInOutlined, url:'/VerifyLawyers'},
+        {name:'جست و جوی وکلا', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
+        {name:'فروم', icon:ForumOutlined, url:'/Forum'},
+        {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
+        {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
+        {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
+      ];
+      break;
     
     default:
       console.log("wrong user role");
@@ -281,7 +281,7 @@ const Sidebar = (props) => {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        { refUserRole.current && <Grid container direction="column" display="flex" alignItems="center" justifyContent="center" sx={{mt:2,mb:2}}>
+        { (refUserRole.current && refUserRole.current != 'Admin') && <Grid container direction="column" display="flex" alignItems="center" justifyContent="center" sx={{mt:2,mb:2}}>
           <StyledBadge invisible={!online} overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} variant="dot">
             <Avatar alt="profile picture" sx={{ width: 60, height: 60 }} srcSet={profilePicture} />
           </StyledBadge>
@@ -301,7 +301,6 @@ const Sidebar = (props) => {
           ))}
           {refUserRole.current && <ListItem disablePadding>
             <ListItemButton onClick={logoutHandler}>
-            
               <ListItemIcon>
                 <LogoutOutlined color="primary" />
               </ListItemIcon>
