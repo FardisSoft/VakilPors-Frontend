@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
@@ -38,8 +38,6 @@ import VideoCall from './components/VideoCall';
 import VerifyLawyers from './components/VerifyLawyers';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-
-// useEffect staticits ip send
 
 root.render(
   <React.StrictMode>

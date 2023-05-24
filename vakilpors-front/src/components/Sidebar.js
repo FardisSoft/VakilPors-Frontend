@@ -113,6 +113,15 @@ const Sidebar = (props) => {
 
       const token = await getAccessToken();
       if(token && refUserRole.current != 'Admin'){
+        // staticits ip send
+        const urlIp = BASE_API_ROUTE + 'Statistics/AddVisit';
+        try {
+          const response = await axios.get(urlIp, {headers: {Authorization: `Bearer ${token}`}});
+          console.log('response in sending IP : ',response);
+        } catch (error) {
+          console.log('error in sending IP : ',error);
+        }
+        // rest
         const tokenData = jwt(token);
         let url = "";
         if(refUserRole.current === "User"){
@@ -129,7 +138,7 @@ const Sidebar = (props) => {
           // console.log('response in getting user data : ',response);
           handleAPI(response.data.data);
         } catch (error) {
-            console.log('error in getting user data : ',error);
+          console.log('error in getting user data : ',error);
         }
       }
       if(!token){
