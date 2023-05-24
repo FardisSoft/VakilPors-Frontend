@@ -234,6 +234,10 @@ const AddNewCase = () => {
   };
 
   const handleCreateCase = async () => {
+    if(MaximumBudget <= MinimumBudget){
+      showErrorMessage('مقدار حداکثر بودجه باید بیشتر از حداقل آن باشد.');
+      return;
+    }
     const data = new FormData();
     data.append('MaximumBudget', MaximumBudget);
     data.append('MinimumBudget', MinimumBudget);
@@ -261,6 +265,10 @@ const AddNewCase = () => {
   };
 
   const handleEditCase = async () => {
+    if(MaximumBudget <= MinimumBudget){
+      showErrorMessage('مقدار حداکثر بودجه باید بیشتر از حداقل آن باشد.');
+      return;
+    }
     const data = new FormData();
     data.append('MaximumBudget', MaximumBudget);
     data.append('MinimumBudget', MinimumBudget);

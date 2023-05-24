@@ -1,0 +1,32 @@
+/* Set scrollbar width and height */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 2px;
+}
+
+/* Set scrollbar width using scrollbar-width property */
+/* div::-webkit-scrollbar {
+  width: 2px;
+} */
+
+/* Set scrollbar width using scrollbar-width property in all browsers */
+div {
+  scrollbar-width: thin;
+  scrollbar-color: #3c0b84 transparent;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 10px;
+}
+
+/* Hide scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+/* Show scrollbar thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #3882f2;
+  border-radius: 10px;
+}

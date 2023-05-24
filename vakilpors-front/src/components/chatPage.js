@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import useStateRef from 'react-usestateref';
 import { Avatar, Box, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, TextField, InputAdornment, Typography, styled } from '@mui/material';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
-import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined, DoneAll, Cancel, Reply, RateReview } from '@mui/icons-material';
+import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined, DoneAll, Cancel, Reply, RateReview, VideoCall } from '@mui/icons-material';
 import Moment from 'moment-jalaali';
 import { Helmet } from 'react-helmet-async';
 import * as signalR from '@microsoft/signalr';
@@ -436,6 +436,11 @@ const ChatPage = () => {
     navigate(`/Rate/${lawyerId}`);
   };
 
+  const handleCallClick = (userId) => {
+    // start call with user Id
+    navigate('/videoCall');
+  };
+
 ///////////////////////////////////////////////////////////// components
 
   const renderMessage = (message,index) => {
@@ -589,10 +594,16 @@ const ChatPage = () => {
                   </StyledTooltip> : <Avatar src={chat.users[getUserIndex(chat.id)].profileImageUrl} alt={chat.users[getUserIndex(chat.id)].name}/>}
                 </ListItemAvatar>
                 <ListItemText primaryTypographyProps={{ fontFamily: 'shabnam' }} primary={chat.users[getUserIndex(chat.id)].name} />
-                { (refUserRole.current === "User" && chat.users[getUserIndex(chat.id)].lawyerId != null && chat.chatMessages.length > 9) && 
+                { (refUserRole.current === "User" && chat.users[getUserIndex(chat.id)].lawyerId != null && chat.chatMessages.length > 2) && 
                 <StyledTooltip title={<React.Fragment>نظر دادن</React.Fragment>}>
                   <IconButton size="small" onClick={() => handleRateClick(chat.users[getUserIndex(chat.id)].lawyerId)}>
                     <RateReview />
+                  </IconButton>
+                </StyledTooltip>}
+                {chat.chatMessages.length > 2 && 
+                <StyledTooltip title={<React.Fragment>تماس تصویری</React.Fragment>}>
+                  <IconButton size="small" onClick={() => handleCallClick(chat.users[getUserIndex(chat.id)].id)}>
+                    <VideoCall />
                   </IconButton>
                 </StyledTooltip>}
               </ListItem>

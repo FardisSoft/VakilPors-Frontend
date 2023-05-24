@@ -259,6 +259,13 @@ const Call_Edit_Lawyer_Profile = () => {
     });
   }
 
+  const handleMelliCardChange = (file) => {
+    // setdetail({
+    //   ...refdetail.current,
+    //   ['resume']: file,
+    // });
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       const token = await getAccessToken();
@@ -463,6 +470,12 @@ const Call_Edit_Lawyer_Profile = () => {
               <div className="form-row form-row-1">
                 <label style={{ position: "relative", top: "5px" }}><p>رزومه</p></label>
                 <MuiFileInput fullWidth margin='10px' value={refdetail.current.resume} inputProps={{style: {padding: "20px 10px"}}} onChange={handleResumeChange} />
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="form-row">
+                <label style={{ position: "relative", top: "5px" }}><p>کارت ملی (کارت ملی شما در پروفایل شما نمایش داده نخواهد شد و تنها جهت احراز هویت شما توسط ادمین مورد بررسی قرار می گیرد)</p></label>
+                <MuiFileInput fullWidth margin='10px' value={refdetail.current.resume} inputProps={{style: {padding: "20px 10px"}}} onChange={handleMelliCardChange} />
               </div>
             </div>
             <div className="form-row-last">

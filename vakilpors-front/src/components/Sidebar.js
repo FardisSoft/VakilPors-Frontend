@@ -1,6 +1,6 @@
 import { HomeOutlined, PersonSearchOutlined, ForumOutlined, PolicyOutlined, AppRegistrationOutlined,
        LoginOutlined, LogoutOutlined, ManageAccountsOutlined, AccountCircleOutlined, CallOutlined,
-       Menu, ChevronRight, ChatOutlined, DashboardOutlined, AssignmentOutlined, WalletOutlined } from "@mui/icons-material";
+       Menu, ChevronRight, ChatOutlined, DashboardOutlined, AssignmentOutlined, WalletOutlined, AssignmentTurnedInOutlined } from "@mui/icons-material";
 import React, { useState, useEffect } from 'react';
 import useStateRef from "react-usestateref";
 import { styled } from '@mui/material/styles';
@@ -112,7 +112,7 @@ const Sidebar = (props) => {
       window.addEventListener('resize', updateSize);
 
       const token = await getAccessToken();
-      if(token){
+      if(token && refUserRole.current != 'Admin'){
         const tokenData = jwt(token);
         let url = "";
         if(refUserRole.current === "User"){
@@ -180,6 +180,16 @@ const Sidebar = (props) => {
         {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
         {name:'پرونده های من', icon:AssignmentOutlined, url:`/user-send-cases/${refLawyerID.current}`},
         {name:'کیف پول', icon:WalletOutlined, url:`/wallet`},
+      ];
+      break;
+
+    case "Admin":
+      tempLinks = [
+        {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
+        {name:'تایید مدارک وکلا', icon:AssignmentTurnedInOutlined, url:'/VerifyLawyers'},
+        {name:'جست و جوی وکلا', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
+        {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
+        {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
       ];
       break;
     
@@ -269,7 +279,7 @@ const Sidebar = (props) => {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        { refUserRole.current && <Grid container direction="column" display="flex" alignItems="center" justifyContent="center" sx={{mt:2,mb:2}}>
+        { (refUserRole.current && refUserRole.current != 'Admin') && <Grid container direction="column" display="flex" alignItems="center" justifyContent="center" sx={{mt:2,mb:2}}>
           <StyledBadge invisible={!online} overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} variant="dot">
             <Avatar alt="profile picture" sx={{ width: 60, height: 60 }} srcSet={profilePicture} />
           </StyledBadge>
@@ -289,7 +299,6 @@ const Sidebar = (props) => {
           ))}
           {refUserRole.current && <ListItem disablePadding>
             <ListItemButton onClick={logoutHandler}>
-            
               <ListItemIcon>
                 <LogoutOutlined color="primary" />
               </ListItemIcon>
