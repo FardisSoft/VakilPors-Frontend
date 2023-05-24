@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import { Box, Grid, Container, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import logo from '../assests/images/logoFS.jpg';
+import logo from '../assests/images/logoFS_blueback.jpg';
 
 const useStyles = makeStyles((theme) => ({
   rootBox: {

@@ -5,6 +5,11 @@ import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from './context/AuthProvider';
 
+import './css/public/bootstrap.min.css';
+import './css/public/bootstrap.rtl.min.css';
+import './css/public/fontstyles.css';
+import './css/public/scrollbar.css';
+
 import App from './App';
 import Login from './components/authentication/Login'
 import Register from './components/authentication/Register';
@@ -39,7 +44,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <HelmetProvider>
-     <BrowserRouter>
+      <BrowserRouter>
         <AuthProvider>
           <Routes>
             <Route path="/" element={<Sidebar component={App} homePage={true}/>} />
