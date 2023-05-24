@@ -112,7 +112,7 @@ const Sidebar = (props) => {
       window.addEventListener('resize', updateSize);
 
       const token = await getAccessToken();
-      if(token){
+      if(token && refUserRole.current != 'Admin'){
         const tokenData = jwt(token);
         let url = "";
         if(refUserRole.current === "User"){
