@@ -188,10 +188,8 @@ const Sidebar = (props) => {
         {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
         {name:'تایید مدارک وکلا', icon:AssignmentTurnedInOutlined, url:'/VerifyLawyers'},
         {name:'جست و جوی وکلا', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
-        {name:'فروم', icon:ForumOutlined, url:'/Forum'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
-        {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
       ];
       break;
     
