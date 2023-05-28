@@ -14,8 +14,7 @@ const VideoCall = () => {
   const [userId, setUserId, refUserId] = useStateRef(null);
   const [localStream, setLocalStream, refLocalStream] = useStateRef(null);
   const [peers, setPeers, refPeers] = useStateRef({});
-  const videoRef = useRef(null);
-
+  const [videoStreams, setVideoStreams, refVideoStreams] = useStateRef([]);
   const { getAccessToken } = useAuth();
 
   useEffect( () => {
@@ -29,6 +28,10 @@ const VideoCall = () => {
   }, []);
 
   const startCall = (token) => {
+
+    const getVideoIndexByUserId = (userId) => {
+      return refVideoStreams.current.findIndex((videoStream) => videoStream.userId == userId);
+    };
 
     setConnection( new signalR.HubConnectionBuilder()
       .withUrl(BASE_API_ROUTE + "meetingHub",{
@@ -66,7 +69,7 @@ const VideoCall = () => {
     refConnection.current.on('UserConnected',id => {
       console.log('user connected : ',id);
       if(refUserId.current === id) return;
-      connectNewUser(id, refLocalStream.current);
+      connectNewUser(id);
     });
 
     refConnection.current.on('UserDisconnected',id => {
@@ -76,34 +79,18 @@ const VideoCall = () => {
 
     myPeer.on('call', call => {
       call.answer(refLocalStream.current);
-      const userVideo = document.createElement('video');
-      userVideo.style.width = '100%';
-      userVideo.style.height = '100%';
-      userVideo.style.objectFit = 'cover';
       call.on('stream', userVideoStream => {
-        addVideoStream(userVideo, userVideoStream);
+        setVideoStreams([...refVideoStreams.current, {'ref':null, 'src':userVideoStream, 'func':'call', 'userId':refUserId.current}]);
       });
     });
 
-    const addVideoStream = (video, stream) => {
-      video.srcObject = stream;
-      video.addEventListener('loadedmetadata', () => {
-        video.play();
-      });
-      videoRef.current.appendChild(video);
-    };
-
-    const connectNewUser = (userId, localStream) => {
-      const userVideo = document.createElement('video');
-      userVideo.style.width = '100%';
-      userVideo.style.height = '100%';
-      userVideo.style.objectFit = 'cover';
-      const call = myPeer.call(userId, localStream);
+    const connectNewUser = (userId) => {
+      const call = myPeer.call(userId, refLocalStream.current);
       call.on('stream', userVideoStream => {
-        addVideoStream(userVideo, userVideoStream);
+        setVideoStreams([...refVideoStreams.current, {'ref':null, 'src':userVideoStream, 'func':'newu', 'userId':userId}]);
       });
       call.on('close', () => {
-        userVideo.remove();
+        refVideoStreams.current[getVideoIndexByUserId(userId)].ref.remove();
       });
       setPeers({
         ...refPeers.current,
@@ -112,19 +99,11 @@ const VideoCall = () => {
     };
 
     const connectMe = async () => {
-      const myVideo = document.createElement('video');
-      myVideo.muted = true;
-      myVideo.style.width = '100%';
-      myVideo.style.height = '100%';
-      myVideo.style.objectFit = 'cover';
-
-      // console.log( await navigator.mediaDevices.enumerateDevices());
-
       navigator.mediaDevices.getUserMedia({
         audio : true,
         video : true,
       }).then(stream => {
-        addVideoStream(myVideo,stream);
+        setVideoStreams([...refVideoStreams.current, {'ref':null, 'src':stream, 'func':'self', 'userId':refUserId.current}]);
         setLocalStream(stream);
       }).catch(err => console.log('error in getting camera and microphone : ',err));
     };
@@ -138,13 +117,27 @@ const VideoCall = () => {
     <Helmet>
       <title>تماس تصویری</title>
     </Helmet>
-    <Grid ref={videoRef} sx={{
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, 300px)',
-      gridAutoRows: '300px',
-      gap: '25px',
-    }}>
+    <Grid display={"flex"} flexDirection={"column"} minHeight={'100vh'} alignItems={"center"} justifyContent={"center"} width={"100%"} backgroundColor={'#ABC0C0'}>
+      <Grid display={"flex"} flexDirection={{xs:'column',sm:'row'}} width={{xs:'97%',sm:"90%"}} borderRadius={"10px"} paddingY={"40px"} paddingX={{xs:'10px',sm:"20px",md:'50px'}} m={'2%'} justifyContent={"center"} alignSelf={"center"} backgroundColor={'white'}
+        sx={{
+        display: 'grid',
+        gridTemplateColumns: {xs:'repeat(auto-fit, 200)',sm:'repeat(auto-fit, 300)',md:'repeat(auto-fit, 400)'},
+        gridAutoRows: {xs:'200',sm:'300',md:'400'},
+        gap: '25px',}}
+      >
+        {refVideoStreams.current.map((videoStream,index) => {
+          videoStream.ref = React.createRef();
+          return <video key={index} muted={(videoStream.func == 'self')} ref={videoStream.ref}
+           width={{xs:'200',sm:'300',md:'400'}} height={{xs:'200',sm:'300',md:'400'}} 
+           src={URL.createObjectURL(videoStream.src)} 
+           style={{objectFit:'cover'}}
+          //  onLoadedMetadata={(video)=>{video.play();}}
+           controls>
 
+          </video>
+        })}
+        {console.log(refVideoStreams.current)}
+      </Grid>
     </Grid>
     </>
   );
