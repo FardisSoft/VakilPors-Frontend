@@ -302,7 +302,7 @@ const AddNewCase = () => {
     <ThemeProvider theme={theme}>
     <CacheProvider value={cacheRtl}>
     <Grid display={"flex"} flexDirection={"column"} alignItems={"center"} justifyContent={"center"} width={"100%"} backgroundColor={'#ABC0C0'}>
-      <Grid flexDirection={'column'} width={"80%"} borderRadius={"10px"} paddingY={"40px"} paddingX={"50px"} m={'2%'} display={"flex"} justifyContent={"center"} alignSelf={"center"} backgroundColor={'white'}>
+      <Grid display={"flex"} flexDirection={'column'} width={{xs:'97%',sm:"90%"}} borderRadius={"10px"} paddingY={"40px"} paddingX={{xs:'10px',sm:"20px",md:'50px'}} m={'2%'} justifyContent={"center"} alignSelf={"center"} backgroundColor={'white'}>
         <Typography variant="h4" sx={{fontFamily: "shabnam"}} paddingY={2}>{isEdit ? "ویرایش پرونده" : "افزودن پرونده جدید"}</Typography>
         <hr></hr>
         <Grid container direction={'row'} marginY={'20px'}>
@@ -336,12 +336,12 @@ const AddNewCase = () => {
           <Typography variant="h6" sx={{fontFamily: "shabnam"}}>پرونده خود را توضیح دهید : </Typography>
         </Grid>
         <TextField
-            multiline
-            rows={7}
-            value={Description}
-            onChange={(e) => setDescription(e.target.value)}
-            variant="outlined"
-            inputProps={{style: {fontFamily:"shabnam"}}}/>
+          multiline
+          rows={7}
+          value={Description}
+          onChange={(e) => setDescription(e.target.value)}
+          variant="outlined"
+          inputProps={{style: {fontFamily:"shabnam"}}}/>
         <br></br>
         <br></br> 
         <Grid container direction={'row'} marginBottom={'20px'}>
