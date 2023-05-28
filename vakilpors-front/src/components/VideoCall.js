@@ -77,9 +77,12 @@ const VideoCall = () => {
     myPeer.on('call', call => {
       call.answer(refLocalStream.current);
       const userVideo = document.createElement('video');
-      userVideo.style.width = '100%';
-      userVideo.style.height = '100%';
+      userVideo.style.width = window.innerWidth < 576 ? '90%' : '40%';
+      userVideo.style.height = window.innerWidth < 576 ? '60%' : '50%';
       userVideo.style.objectFit = 'cover';
+      userVideo.style.margin = '12px';
+      userVideo.style.borderRadius = '10px';
+
       call.on('stream', userVideoStream => {
         addVideoStream(userVideo, userVideoStream);
       });
@@ -95,9 +98,12 @@ const VideoCall = () => {
 
     const connectNewUser = (userId, localStream) => {
       const userVideo = document.createElement('video');
-      userVideo.style.width = '100%';
-      userVideo.style.height = '100%';
+      userVideo.style.width = window.innerWidth < 576 ? '90%' : '40%';
+      userVideo.style.height = window.innerWidth < 576 ? '60%' : '50%';
       userVideo.style.objectFit = 'cover';
+      userVideo.style.margin = '12px';
+      userVideo.style.borderRadius = '10px';
+
       const call = myPeer.call(userId, localStream);
       call.on('stream', userVideoStream => {
         addVideoStream(userVideo, userVideoStream);
@@ -114,9 +120,11 @@ const VideoCall = () => {
     const connectMe = async () => {
       const myVideo = document.createElement('video');
       myVideo.muted = true;
-      myVideo.style.width = '100%';
-      myVideo.style.height = '100%';
+      myVideo.style.width = window.innerWidth < 576 ? '90%' : '40%';
+      myVideo.style.height = window.innerWidth < 576 ? '60%' : '50%';
       myVideo.style.objectFit = 'cover';
+      myVideo.style.margin = '12px';
+      myVideo.style.borderRadius = '10px';
 
       navigator.mediaDevices.getUserMedia({
         audio : true,
@@ -137,15 +145,7 @@ const VideoCall = () => {
       <title>تماس تصویری</title>
     </Helmet>
     <Grid display={"flex"} flexDirection={"column"} minHeight={'100vh'} alignItems={"center"} justifyContent={"center"} width={"100%"} backgroundColor={'#ABC0C0'}>
-      <Grid display={"flex"} flexDirection={{xs:'column',sm:'row'}} width={{xs:'97%',sm:"90%"}} borderRadius={"10px"} paddingY={"40px"} paddingX={{xs:'10px',sm:"20px",md:'50px'}} m={'2%'} justifyContent={"center"} alignSelf={"center"} backgroundColor={'white'}
-        ref={videoRef} sx={{
-        display: 'grid',
-        // gridTemplateColumns: {xs:'repeat(auto-fit, 200px)',sm:'repeat(auto-fit, 300px)',md:'repeat(auto-fit, 400px)'},
-        // gridTemplateColumns: {xs:'200px',sm:'300',md:'400'},
-        gridAutoRows: {xs:'200',sm:'300',md:'400'},
-        gap: '25px',
-
-      }}>
+      <Grid ref={videoRef} container direction={{xs:'column', sm:"row"}} display={"flex"} alignItems={"center"} justifyContent={"center"} width={{xs:'97%',sm:"90%"}} borderRadius={"10px"} paddingY={"40px"} paddingX={{xs:'10px',sm:"20px",md:'50px'}} m={'2%'} backgroundColor={'white'}>
       </Grid>
     </Grid>
     </>
