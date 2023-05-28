@@ -114,13 +114,13 @@ const Sidebar = (props) => {
       const token = await getAccessToken();
       if(token && refUserRole.current != 'Admin'){
         // staticits ip send
-        const urlIp = BASE_API_ROUTE + 'Statistics/AddVisit';
-        try {
-          const response = await axios.get(urlIp, {headers: {Authorization: `Bearer ${token}`}});
-          console.log('response in sending IP : ',response);
-        } catch (error) {
-          console.log('error in sending IP : ',error);
-        }
+        // const urlIp = BASE_API_ROUTE + 'Statistics/AddVisit';
+        // try {
+        //   const response = await axios.get(urlIp, {headers: {Authorization: `Bearer ${token}`}});
+        //   console.log('response in sending IP : ',response);
+        // } catch (error) {
+        //   console.log('error in sending IP : ',error);
+        // }
         // rest
         const tokenData = jwt(token);
         let url = "";
