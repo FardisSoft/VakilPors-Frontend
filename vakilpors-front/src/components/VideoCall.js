@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import useStateRef from 'react-usestateref';
+import { useNavigate } from "react-router-dom";
 import Peer from 'peerjs';
-import { Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import { useAuth } from "../context/AuthProvider";
 import { BASE_API_ROUTE } from '../Constants';
 import { Helmet } from 'react-helmet-async';
@@ -17,6 +18,7 @@ const VideoCall = () => {
   const videoRef = useRef(null);
 
   const { getAccessToken } = useAuth();
+  const navigate = useNavigate();
 
   useEffect( () => {
     const doEveryThing = async () => {
@@ -146,6 +148,11 @@ const VideoCall = () => {
     </Helmet>
     <Grid display={"flex"} flexDirection={"column"} minHeight={'100vh'} alignItems={"center"} justifyContent={"center"} width={"100%"} backgroundColor={'#ABC0C0'}>
       <Grid ref={videoRef} container direction={{xs:'column', sm:"row"}} display={"flex"} alignItems={"center"} justifyContent={"center"} width={{xs:'97%',sm:"90%"}} borderRadius={"10px"} paddingY={"40px"} paddingX={{xs:'10px',sm:"20px",md:'50px'}} m={'2%'} backgroundColor={'white'}>
+      </Grid>
+      <Grid>
+        <Button onClick={() => navigate('/')}>
+          end call
+        </Button>
       </Grid>
     </Grid>
     </>
