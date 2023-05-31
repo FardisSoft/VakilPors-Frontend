@@ -578,7 +578,7 @@ const ChatPage = () => {
                 </IconButton>
               </StyledTooltip>
             </>)}
-            { (isEdited && !isDeleted) && 
+            {(isEdited && !isDeleted && !isCall) && 
             <StyledTooltip title={<React.Fragment>این پیام ویرایش شده است</React.Fragment>}>
               <Typography fontSize={'13px'} marginRight={'10px'} position={'relative'} top={'7px'}>edited</Typography>
             </StyledTooltip>}
