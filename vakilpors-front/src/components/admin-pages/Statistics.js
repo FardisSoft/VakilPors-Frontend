@@ -17,7 +17,7 @@ const Statistics = () => {
 				try {
 					const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
 					setStatistics(response.data);
-					console.log('response in getting Statistics : ',response);
+					// console.log('response in getting Statistics : ',response);
 				} catch (error) {
 					console.log('error in getting Statistics : ',error);
 				}
