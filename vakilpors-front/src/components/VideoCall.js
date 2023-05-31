@@ -142,6 +142,11 @@ const VideoCall = () => {
 
   };
 
+  const endCall = () => {
+    refConnection.current.stop();
+    navigate('/');
+  };
+
   return (
     <>
     <Helmet>
@@ -152,7 +157,7 @@ const VideoCall = () => {
       </Grid>
       <Grid>
         <Box backgroundColor='red' width={'44px'} borderRadius={'25px'} padding={'5px'}>
-          <IconButton size="small" onClick={() => navigate('/')}>
+          <IconButton size="small" onClick={endCall}>
             <CallEnd sx={{color:'white'}}/>
           </IconButton>
         </Box>
