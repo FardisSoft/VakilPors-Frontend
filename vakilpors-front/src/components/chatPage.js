@@ -566,14 +566,18 @@ const ChatPage = () => {
                   {'تماس تصویری ورودی'}
                   <Grid container direction={'row'} display={'flex'} justifyContent={'space-around'} backgroundColor={'white'} borderRadius={2} padding={1}>
                     <Box backgroundColor='green' width={'44px'} borderRadius={'25px'} padding={'5px'}>
-                      <IconButton size="small" onClick={handleAnswerCallClick}>
-                        <Call sx={{color:'white'}}/>
-                      </IconButton>
+                      <StyledTooltip title={<React.Fragment>{'پذیرفتن تماس'}</React.Fragment>}>
+                        <IconButton size="small" onClick={handleAnswerCallClick}>
+                          <Call sx={{color:'white'}}/>
+                        </IconButton>
+                      </StyledTooltip>
                     </Box>
                     <Box backgroundColor='red' width={'44px'} borderRadius={'25px'} padding={'5px'}>
-                      <IconButton size="small" onClick={handleRejectCallClick}>
-                        <CallEnd sx={{color:'white'}}/>
-                      </IconButton>
+                      <StyledTooltip title={<React.Fragment>{'رد تماس'}</React.Fragment>}>
+                        <IconButton size="small" onClick={handleRejectCallClick}>
+                          <CallEnd sx={{color:'white'}}/>
+                        </IconButton>
+                      </StyledTooltip>
                     </Box>
                   </Grid>
                 </Grid>
