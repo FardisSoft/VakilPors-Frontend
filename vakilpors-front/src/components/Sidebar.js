@@ -18,6 +18,7 @@ import { BASE_API_ROUTE } from '../Constants';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from "./Footer";
+import logo from '../assests/images/logoFS_blueback.jpg';
 
 let drawerWidth = 240;
 
@@ -295,6 +296,12 @@ const Sidebar = (props) => {
             <Avatar alt="profile picture" sx={{ width: 60, height: 60 }} srcSet={profilePicture} />
           </StyledBadge>
           <Typography sx={{fontFamily:"shabnam", mt:1}}>{name}</Typography>
+        </Grid>}
+        {refUserRole.current == 'Admin' && <Grid container direction="column" display="flex" alignItems="center" justifyContent="center" sx={{mt:2,mb:2}}>
+          <StyledBadge invisible={!online} overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} variant="dot">
+            <Avatar alt="profile picture" sx={{ width: 60, height: 60 }} srcSet={logo} />
+          </StyledBadge>
+          <Typography sx={{fontFamily:"shabnam", mt:1}}>{'ادمین'}</Typography>
         </Grid>}
         <Divider />
         <List sx={{flex: '1 1 auto', overflow: 'overlay'}}>
