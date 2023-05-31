@@ -323,6 +323,7 @@ const ChatPage = () => {
       isFile: false,
       isRead: false,
       isCall: false,
+      callStatus: 0,
       senderId: refUser.current.id,
       chatId: refSelectedChat.current,
       chat: null,
@@ -382,6 +383,7 @@ const ChatPage = () => {
         isFile: true,
         isRead: false,
         isCall: false,
+        callStatus: 0,
         senderId: refUser.current.id,
         chatId: refSelectedChat.current,
         chat: null,
@@ -415,6 +417,7 @@ const ChatPage = () => {
       isFile: false,
       isRead: false,
       isCall: false,
+      callStatus: 0,
       senderId: refUser.current.id,
       chatId: refSelectedChat.current,
       chat: null,
@@ -439,15 +442,31 @@ const ChatPage = () => {
     navigate(`/Rate/${lawyerId}`);
   };
 
-  const handleCallClick = (userId) => {
-    // start call with user Id
-    navigate('/videoCall');
+  const handleCallClick = () => {
+    const newMessage = {
+      id: 0,
+      sender: null,
+      message: '',
+      sendTime: new Date().toISOString(),
+      isDeleted: false,
+      isEdited: false,
+      isFile: false,
+      isRead: false,
+      isCall: true,
+      callStatus: 0,
+      senderId: refUser.current.id,
+      chatId: refSelectedChat.current,
+      chat: null,
+      replyId: null,
+      replyMessage: null,
+    };
+    sendMessage(newMessage);
   };
 
   const handleAnswerCallClick = () => {
     const chat = refChats.current[getChatIndexByChatId(refSelectedChat.current)];
     const thatGuyUserId = chat.users[getUserIndex(chat.id)].id;
-
+    // navigate('/videoCall');
   };
 
   const handleRejectCallClick = () => {
@@ -630,7 +649,7 @@ const ChatPage = () => {
                 </StyledTooltip>}
                 {(chat.chatMessages.length > 2 && refSelectedChat.current === chat.id) && 
                 <StyledTooltip title={<React.Fragment>تماس تصویری</React.Fragment>}>
-                  <IconButton size="small" onClick={() => handleCallClick(chat.users[getUserIndex(chat.id)].id)}>
+                  <IconButton size="small" onClick={handleCallClick}>
                     <VideoCall />
                   </IconButton>
                 </StyledTooltip>}
