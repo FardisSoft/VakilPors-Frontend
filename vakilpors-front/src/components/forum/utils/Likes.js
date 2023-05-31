@@ -33,7 +33,7 @@ const Likes = ({ threadOrComment, IsThread }) => {
 
 	return (
 		<Badge badgeContent={numberOfLikes} color="secondary" anchorOrigin={{vertical: 'top',horizontal: 'left',}}>
-			<div>
+			<div className='likes__container' >
 				<svg
 					style={{
 						...( isCurrentUserLiked &&{
