@@ -18,7 +18,6 @@ import { BASE_API_ROUTE } from '../Constants';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from "./Footer";
-import logo from '../assests/images/logoFS_blueback.jpg';
 
 let drawerWidth = 240;
 
@@ -114,21 +113,20 @@ const Sidebar = (props) => {
       window.addEventListener('resize', updateSize);
 
       const token = await getAccessToken();
-      if(token && refUserRole.current != 'Admin'){
+      if(token){
         // staticits ip send
-        const urlIp = BASE_API_ROUTE + 'Statistics/AddVisit';
-        try {
-          const response = await axios.get(urlIp, {headers: {Authorization: `Bearer ${token}`}});
-          // console.log('response in sending IP : ',response);
-        } catch (error) {
-          console.log('error in sending IP : ',error);
+        if(refUserRole.current != 'Admin'){
+          const urlIp = BASE_API_ROUTE + 'Statistics/AddVisit';
+          try {
+            const response = await axios.get(urlIp, {headers: {Authorization: `Bearer ${token}`}});
+            // console.log('response in sending IP : ',response);
+          } catch (error) {
+            console.log('error in sending IP : ',error);
+          }
         }
         // rest
         const tokenData = jwt(token);
-        let url = "";
-        if(refUserRole.current === "User"){
-          url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
-        }
+        let url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
         if(refUserRole.current === "Vakil"){
           url = BASE_API_ROUTE + `Lawyer/GetLawyerByUserId?userId=${tokenData.uid}`;
         }
@@ -167,15 +165,14 @@ const Sidebar = (props) => {
       tempLinks = [
         {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
         {name:'ویرایش پروفایل', icon:ManageAccountsOutlined, url:'/edit-user'},
-        // {name:'مشاهده پروفایل', icon:ManageAccountsOutlined, url:'/user-display-profile'},        
-        {name:'جست و جوی وکیل', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
+        {name:'جست و جوی وکلا', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
         {name:'فروم', icon:ForumOutlined, url:'/Forum'},
-        {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
-        {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
         {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
         {name:'داشبورد', icon:DashboardOutlined, url:'/PremiumPage'},
         {name:'پرونده های من', icon:AssignmentOutlined, url:`/show-cases/${false}`},
         {name:'کیف پول', icon:WalletOutlined, url:`/wallet`},
+        {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
+        {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
       ];
       break;
     
@@ -186,20 +183,23 @@ const Sidebar = (props) => {
         {name:'مشاهده پروفایل', icon:AccountCircleOutlined, url:`/LawyerPage/${refLawyerID.current}`},
         {name:'جست و جوی وکلا', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
         {name:'فروم', icon:ForumOutlined, url:'/Forum'},
-        {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
-        {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
         {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
         {name:'پرونده های من', icon:AssignmentOutlined, url:`/user-send-cases/${refLawyerID.current}`},
-        {name:'کیف پول', icon:WalletOutlined, url:`/wallet`},
+        {name:'کیف پول', icon:WalletOutlined, url:'/wallet'},
+        {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
+        {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
       ];
       break;
 
     case "Admin":
       tempLinks = [
         {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
+        {name:'ویرایش اطلاعات', icon:ManageAccountsOutlined, url:'/edit-user'},
+        {name:'جست و جوی وکلا', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
+        {name:'فروم', icon:ForumOutlined, url:'/Forum'},
+        {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
         {name:'تایید مدارک وکلا', icon:AssignmentTurnedInOutlined, url:'/VerifyLawyers'},
         {name:'آمار سایت', icon:AssessmentOutlined, url:'/Statistics'},
-        {name:'جست و جوی وکلا', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
       ];
@@ -211,9 +211,9 @@ const Sidebar = (props) => {
   const links = tempLinks;
 
   const handleAPI = (data) => {
-    setProfilePicture(refUserRole.current === "User" ? data.profileImageUrl : data.user.profileImageUrl);
+    setProfilePicture(refUserRole.current === "Vakil" ? data.user.profileImageUrl : data.profileImageUrl);
     setOnline(true);
-    setName(refUserRole.current === "User" ? data.name : data.user.name);
+    setName(refUserRole.current === "Vakil" ? data.user.name : data.name);
   };
 
   const updateSize = () => {
@@ -291,17 +291,11 @@ const Sidebar = (props) => {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        { (refUserRole.current && refUserRole.current != 'Admin') && <Grid container direction="column" display="flex" alignItems="center" justifyContent="center" sx={{mt:2,mb:2}}>
+        { refUserRole.current && <Grid container direction="column" display="flex" alignItems="center" justifyContent="center" sx={{mt:2,mb:2}}>
           <StyledBadge invisible={!online} overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} variant="dot">
             <Avatar alt="profile picture" sx={{ width: 60, height: 60 }} srcSet={profilePicture} />
           </StyledBadge>
           <Typography sx={{fontFamily:"shabnam", mt:1}}>{name}</Typography>
-        </Grid>}
-        {refUserRole.current == 'Admin' && <Grid container direction="column" display="flex" alignItems="center" justifyContent="center" sx={{mt:2,mb:2}}>
-          <StyledBadge invisible={!online} overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} variant="dot">
-            <Avatar alt="profile picture" sx={{ width: 60, height: 60 }} srcSet={logo} />
-          </StyledBadge>
-          <Typography sx={{fontFamily:"shabnam", mt:1}}>{'ادمین'}</Typography>
         </Grid>}
         <Divider />
         <List sx={{flex: '1 1 auto', overflow: 'overlay'}}>
