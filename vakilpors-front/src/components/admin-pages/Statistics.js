@@ -15,7 +15,7 @@ const Statistics = () => {
 			if(token){
 				const url = BASE_API_ROUTE + 'Statistics/GetStatistics';
 				try {
-					const response = await axios.get(url);
+					const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
 					// setStatistics();
 					console.log('response in getting Statistics : ',response);
 				} catch (error) {
