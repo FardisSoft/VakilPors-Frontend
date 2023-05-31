@@ -563,12 +563,16 @@ const ChatPage = () => {
                 ( message.callStatus == 0 ? // wating
                   isCurrentUser ? 'در انتظار پاسخ تماس...' :
                 <Box backgroundColor={'white'} borderRadius={2} padding={1}>
-                  <IconButton size="small" onClick={handleAnswerCallClick}>
-                    <Call color='green'/>
-                  </IconButton>
-                  <IconButton size="small" onClick={handleRejectCallClick}>
-                    <CallEnd color='red'/>
-                  </IconButton>
+                  <Box backgroundColor='green' width={'44px'} borderRadius={'25px'} padding={'5px'}>
+                    <IconButton size="small" onClick={handleAnswerCallClick}>
+                      <Call sx={{color:'white'}}/>
+                    </IconButton>
+                  </Box>
+                  <Box backgroundColor='red' width={'44px'} borderRadius={'25px'} padding={'5px'}>
+                    <IconButton size="small" onClick={handleRejectCallClick}>
+                      <CallEnd sx={{color:'white'}}/>
+                    </IconButton>
+                  </Box>
                 </Box>
                  : message.callStatus == 1 ? 'تماس پذیرفته شد' // accepted
                  : 'تماس پذیرفته نشد' // rejected
