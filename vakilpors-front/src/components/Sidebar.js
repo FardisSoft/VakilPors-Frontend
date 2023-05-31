@@ -197,7 +197,7 @@ const Sidebar = (props) => {
       tempLinks = [
         {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
         {name:'تایید مدارک وکلا', icon:AssignmentTurnedInOutlined, url:'/VerifyLawyers'},
-        {name:'آمار بازدید سایت', icon:AssessmentOutlined, url:'/Statistics'},
+        {name:'آمار سایت', icon:AssessmentOutlined, url:'/Statistics'},
         {name:'جست و جوی وکلا', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
