@@ -184,10 +184,10 @@ const Replies = () => {
 				onChange={(e) => setReply(e.target.value)}
 				inputProps={{ dir: "rtl", style: { fontFamily:"shabnam", fontSize: "15px", color:"black",} }}
 				InputLabelProps={{ align: "right", dir: "rtl", style: { fontFamily:"shabnam", fontSize: "15px", color:"black", } }}
-				sx={{ width: {xs:'100%',md:'80%'}, backgroundColor: 'rgba(255,255,255,0)',}}/>
+				sx={{ width: {xs:'100%',md:'90%'}, backgroundColor: 'rgba(255,255,255,0)',}}/>
 				<Grid display={'flex'} flexDirection={'column'}>
 					<Button variant="contained" sx={{fontFamily:"shabnam", mt: {xs:'10px',md:'0'}}} onClick={isEditActive ? handleEditReply : handleSubmitReply}>{isEditActive ? 'ویرایش' : 'ارسال'}</Button>
-					{isEditActive && <Button variant="contained" sx={{fontFamily:"shabnam", mt: {xs:'10px',md:'0'}}} onClick={handleCancelEdit}>انصراف</Button>}
+					{isEditActive && <Button variant="contained" sx={{fontFamily:"shabnam", mt:'10px'}} onClick={handleCancelEdit}>انصراف</Button>}
 				</Grid>				
 			</Grid>
 			<Grid container direction={'column'} width={'100%'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
@@ -201,7 +201,7 @@ const Replies = () => {
 									borderRadius: '12px',
 									padding:'1px',
 									width: '27px',
-									marginLeft: '10px',
+									marginRight: '10px',
 								...(reply.user.isLawyer && {
 									color : 'lightyellow',
 									backgroundColor:'gold',
@@ -213,7 +213,7 @@ const Replies = () => {
 								}}/>}
 							<Typography sx={{fontSize:'15px', fontFamily:'shabnam'}}>{reply.text}</Typography>
 						</Grid>
-						<Grid display={'flex'} flexDirection={'row'} marginTop={{xs:'10px',sm:'0'}}>
+						<Grid display={'flex'} flexDirection={'row'} marginTop={{xs:'15px',sm:'0'}}>
 							<Likes threadOrComment={reply} IsThread={false}/>
 							{(reply.user.userId === Number(userId) && !reply.isSetAsAnswer) && <>
 								<IconButton size="large" onClick={() => handleEditClick(reply.id,reply.text)}>
@@ -229,7 +229,7 @@ const Replies = () => {
 								</IconButton>}
 						</Grid>
 						<Grid display={'flex'} flexDirection={'row'} marginTop={{xs:'10px',sm:'0'}}>
-							<Typography sx={{marginRight:'5px', fontSize: '15px', fontFamily: 'shabnam', ml: '10px'}}>توسط {reply.user.name} </Typography>
+							<Typography sx={{mr:'10px', fontSize: '15px', fontFamily: 'shabnam'}}>توسط {reply.user.name} </Typography>
 							<Typography sx={{fontSize:'13px', fontFamily:'shabnam'}}>{Moment(reply.createDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(reply.createDate).format('HH:mm')}</Typography>
 						</Grid>
 					</Grid>
