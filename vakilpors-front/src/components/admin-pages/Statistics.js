@@ -1,7 +1,31 @@
 import React, {useState, useEffect} from "react";
 import { Helmet } from 'react-helmet-async';
+import { BASE_API_ROUTE } from "../../Constants";
+import { useAuth } from "../../context/AuthProvider";
+import axios from "axios";
 
 const Statistics = () => {
+
+	const [statistics, setStatistics] = useState();
+	const { getAccessToken } = useAuth();
+
+	useEffect(() => {
+		const getStatistics = async () => {
+			const token = await getAccessToken();
+			if(token){
+				const url = BASE_API_ROUTE + 'Statistics/GetStatistics';
+				try {
+					const response = await axios.get(url);
+					// setStatistics();
+					console.log('response in getting Statistics : ',response);
+				} catch (error) {
+					console.log('error in getting Statistics : ',error);
+				}
+			}
+		};
+		getStatistics();
+	}, []);
+
 	return (
 		<>
 		<Helmet>
