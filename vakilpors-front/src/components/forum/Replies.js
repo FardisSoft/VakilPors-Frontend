@@ -7,7 +7,7 @@ import { useAuth } from "../../context/AuthProvider";
 import Moment from 'moment-jalaali';
 import { Typography, IconButton, Grid, TextField, Button } from "@mui/material";
 import Likes from "./utils/Likes";
-import { Delete, Edit, TaskAlt } from '@mui/icons-material';
+import { Delete, Edit, TaskAlt, WorkspacePremium } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 
 // mui rtl
@@ -229,8 +229,14 @@ const Replies = () => {
 								</IconButton>}
 						</Grid>
 						<Grid display={'flex'} flexDirection={'row'} marginTop={{xs:'10px',sm:'0'}}>
-							<Typography sx={{mr:'10px', fontSize: '15px', fontFamily: 'shabnam'}}>توسط {reply.user.name} </Typography>
-							<Typography sx={{fontSize:'13px', fontFamily:'shabnam'}}>{Moment(reply.createDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(reply.createDate).format('HH:mm')}</Typography>
+							<Typography sx={{mr:'3px', fontSize: '15px', fontFamily: 'shabnam'}}>توسط {reply.user.name} </Typography>
+							{reply.user.isPremium && <WorkspacePremium sx={{color:'purple',
+									backgroundColor:'gold',
+									borderRadius: '12px',
+									padding:'1px',
+									width: '23px',
+									mr:'10px',}}/>}
+							<Typography sx={{ml:'10px', fontSize:'13px', fontFamily:'shabnam'}}>{Moment(reply.createDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(reply.createDate).format('HH:mm')}</Typography>
 						</Grid>
 					</Grid>
 				))}
