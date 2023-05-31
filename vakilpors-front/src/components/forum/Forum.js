@@ -2,15 +2,29 @@ import React, { useEffect, useState } from "react";
 import useStateRef from "react-usestateref";
 import { Helmet } from 'react-helmet-async';
 import Moment from 'moment-jalaali';
-import { Typography, IconButton, Badge } from "@mui/material";
+import { Typography, IconButton, Badge, Grid, TextField, Button } from "@mui/material";
 import { Delete } from '@mui/icons-material';
-import '../../css/forum.css';
 import Likes from "./utils/Likes";
 import Comments from "./utils/Comments";
 import { useAuth } from "../../context/AuthProvider";
 import axios from 'axios';
 import { BASE_API_ROUTE } from "../../Constants";
 import jwt from 'jwt-decode';
+
+// mui rtl
+import rtlPlugin from 'stylis-plugin-rtl';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
+import { createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
+const cacheRtl = createCache({
+  key: 'muirtl',
+  stylisPlugins: [rtlPlugin],
+});
+const theme = createTheme({
+  direction: 'rtl',
+});
+// mui rtl
 
 const Forum = () => {
 	const [thread, setThread] = useState("");
@@ -92,59 +106,47 @@ const Forum = () => {
 
 	return (
 		<>
-			<Helmet>
-              <title>فروم</title>
-          	</Helmet>
-			<div className='home'>
-				<h2 className='homeTitle'>یک موضوع جدید ایجاد کنید یا موضوع مورد نظر خود را از لیست پایین انتخاب کنید</h2>
-				<form className='homeForm'>
-					<div className='home__container'>
-						<label htmlFor='thread'>موضوع جدید <br/></label>
-						<input
-							type='text'
-							name='thread'
-							required
-							value={thread}
-							onChange={(e) => setThread(e.target.value)}
-						/>
-					</div>
-					<button className='homeBtn' onClick={handleSubmit}>ساخت موضوع جدید</button>
-				</form>
-				<div className='thread__container'>
-					{threadList.map((thread) => (
-						<div className='thread__item' key={thread.id} 
-						style={{...(thread.userId == '1' && { backgroundColor:'gold',}),}}>
-							<div className='react__container'>
-								<p style={{color: '#071e22'}}>{thread.title}</p>
-							</div>
-							<div className='react__container_1'>
-								<Likes
-									threadOrComment={thread}
-									IsThread={true}
-								/>
-								<Badge badgeContent={thread.commentCount} color="primary">
-									<Comments
-										threadId={thread.id}
-										userId={refUserId.current}
-									/>
-								</Badge>
-								{(thread.userId == refUserId.current && !thread.hasAnswer) && 
-								<IconButton onClick={() => handleDeleteThread(thread)}>
-									<Delete sx={{color: '#0d6efd'}}/>
-								</IconButton>}
-								<p>
-									تاریخ ایجاد
-									<Typography fontFamily={'shabnam'} fontSize={'14px'}>
-										{Moment(thread.createDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(thread.createDate).format('HH:mm')}
-									</Typography>
-									ایجاد شده توسط
-									<Typography sx={{fontSize: '15px', fontFamily: 'shabnam', ml: '10px'}}>{thread.user.name} </Typography>
-								</p>
-							</div>
-						</div>
-					))}
-				</div>
-			</div>
+		<Helmet>
+			<title>فروم</title>
+		</Helmet>
+		<ThemeProvider theme={theme}>
+    	<CacheProvider value={cacheRtl}>
+		<Grid container direction={'column'} width={'100%'} minHeight={'100vh'} paddingY={'30px'} backgroundColor={'#fffbf5'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+			<Typography fontFamily={'shabnam'} fontSize={'18px'} sx={{mb:'30px'}}>یک تاپیک جدید ایجاد کنید یا تاپیک مورد نظر خود را از لیست پایین انتخاب کنید.</Typography>
+			<Grid container direction={{xs:'column',md:'row'}} width={{xs:'97%',sm:'90%'}} backgroundColor={'#8eb1e5'} display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{mb:'50px', p:'20px', borderRadius:'25px', boxShadow:'0 0 1px 1px #444cc6'}}>
+				<TextField label="تاپیک جدید" multiline rows={2} variant="outlined"
+				value={thread}
+				onChange={(e) => setThread(e.target.value)}
+				inputProps={{ dir: "rtl", style: { fontFamily:"shabnam", fontSize: "15px", color:"black",} }}
+				InputLabelProps={{ align: "right", dir: "rtl", style: { fontFamily:"shabnam", fontSize: "15px", color:"black", } }}
+				sx={{ width: {xs:'100%',md:'80%'}, backgroundColor: 'rgba(255,255,255,0)',}}/>
+				<Button variant="contained" onClick={handleSubmit} sx={{fontFamily:"shabnam", mt: {xs:'10px',md:'0'}}}>ساخت تاپیک جدید</Button>
+			</Grid>
+			<Grid container direction={'column'} width={'100%'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+				{threadList.map((thread) => (
+					<Grid container key={thread.id} direction={{xs:'column',sm:'row'}} width={{xs:'97%',sm:'90%'}} backgroundColor={'#8eb1e5'} display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{mb:'30px', p:'20px', borderRadius:'25px', boxShadow:'0 0 1px 1px #444cc6', 
+					...(thread.userId == '1' && { backgroundColor:'gold',})}}>
+						<Typography sx={{fontSize:'15px', fontFamily:'shabnam'}}>{thread.title}</Typography>
+						<Grid display={'flex'} flexDirection={'row'}>
+							<Likes threadOrComment={thread} IsThread={true}/>
+							<Badge badgeContent={thread.commentCount} color="primary">
+								<Comments threadId={thread.id} userId={refUserId.current}/>
+							</Badge>
+							{(thread.userId == refUserId.current && !thread.hasAnswer) && 
+							<IconButton onClick={() => handleDeleteThread(thread)}>
+								<Delete sx={{color: '#0d6efd'}}/>
+							</IconButton>}
+						</Grid>
+						<Grid display={'flex'} flexDirection={'row'}>
+							<Typography sx={{fontSize: '15px', fontFamily: 'shabnam', mr: '10px'}}>توسط {thread.user.name}</Typography>
+							<Typography fontFamily={'shabnam'} fontSize={'14px'}>{Moment(thread.createDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(thread.createDate).format('HH:mm')}</Typography>
+						</Grid>
+					</Grid>
+				))}
+			</Grid>
+		</Grid>
+		</CacheProvider>
+    	</ThemeProvider>
 		</>
 	);
 };
