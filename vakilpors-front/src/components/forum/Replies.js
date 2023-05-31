@@ -190,7 +190,8 @@ const Replies = () => {
 			</div>
 			<div className='thread__container'>
 				{replyList.map((reply) => (
-					<div className='thread__item' key={reply.id}>
+					<div className='thread__item' key={reply.id}
+					style={{...(reply.user.userId == 1 && { backgroundColor:'gold',}),}}>
 						{/* {console.log(reply.user)} */}
 						<p style={{color: '#071e22'}}>
 							{reply.isSetAsAnswer && <TaskAlt sx={{
