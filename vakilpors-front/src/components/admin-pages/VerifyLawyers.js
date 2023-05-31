@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Typography, Grid, Avatar, Card, CardContent, CardHeader, CardMedia, Button } from "@mui/material";
 import LinkMUI from '@mui/material/Link';
-import { useAuth } from "../context/AuthProvider";
-import { BASE_API_ROUTE } from '../Constants';
+import { useAuth } from "../../context/AuthProvider";
+import { BASE_API_ROUTE } from '../../Constants';
 import axios from 'axios';
 
 const VerifyLawyers = () => {

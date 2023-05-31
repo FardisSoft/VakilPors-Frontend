@@ -35,7 +35,7 @@ import Wallet from './components/premium-page/Wallet';
 import UserSendCases from './components/case-pages/UserSendCases';
 import NotFound from './components/NotFound';
 import VideoCall from './components/VideoCall';
-import VerifyLawyers from './components/VerifyLawyers';
+import VerifyLawyers from './components/admin-pages/VerifyLawyers';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
