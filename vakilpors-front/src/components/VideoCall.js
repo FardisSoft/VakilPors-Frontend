@@ -2,7 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import useStateRef from 'react-usestateref';
 import { useNavigate } from "react-router-dom";
 import Peer from 'peerjs';
-import { Button, Grid } from '@mui/material';
+import { Box, Grid, IconButton } from '@mui/material';
+import { CallEnd } from '@mui/icons-material';
 import { useAuth } from "../context/AuthProvider";
 import { BASE_API_ROUTE } from '../Constants';
 import { Helmet } from 'react-helmet-async';
@@ -150,9 +151,11 @@ const VideoCall = () => {
       <Grid ref={videoRef} container direction={{xs:'column', sm:"row"}} display={"flex"} alignItems={"center"} justifyContent={"center"} width={{xs:'97%',sm:"90%"}} borderRadius={"10px"} paddingY={"40px"} paddingX={{xs:'10px',sm:"20px",md:'50px'}} m={'2%'} backgroundColor={'white'}>
       </Grid>
       <Grid>
-        <Button onClick={() => navigate('/')}>
-          end call
-        </Button>
+        <Box backgroundColor='red' width={'44px'} borderRadius={'25px'} padding={'5px'}>
+          <IconButton size="small" onClick={() => navigate('/')}>
+            <CallEnd sx={{color:'white'}}/>
+          </IconButton>
+        </Box>
       </Grid>
     </Grid>
     </>
