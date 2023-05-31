@@ -111,7 +111,8 @@ const Forum = () => {
 		</Helmet>
 		<ThemeProvider theme={theme}>
     	<CacheProvider value={cacheRtl}>
-		<Grid container direction={'column'} width={'100%'} minHeight={'100vh'} paddingY={'30px'} backgroundColor={'#fffbf5'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+		<Grid container width={'100%'} minHeight={'100vh'} paddingY={'30px'} backgroundColor={'#fffbf5'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+		<Grid container direction={'column'} width={{xs:'100%',md:'90%',lg:'80%'}} display={'flex'} justifyContent={'center'} alignItems={'center'}>
 			<Typography fontFamily={'shabnam'} fontSize={'18px'} sx={{mb:'30px'}}>یک تاپیک جدید ایجاد کنید یا تاپیک مورد نظر خود را از لیست پایین انتخاب کنید.</Typography>
 			<Grid container direction={{xs:'column',md:'row'}} width={{xs:'97%',sm:'90%'}} backgroundColor={'#8eb1e5'} display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{mb:'50px', p:'20px', borderRadius:'25px', boxShadow:'0 0 1px 1px #444cc6'}}>
 				<TextField label="تاپیک جدید" multiline rows={2} variant="outlined"
@@ -144,6 +145,7 @@ const Forum = () => {
 					</Grid>
 				))}
 			</Grid>
+		</Grid>
 		</Grid>
 		</CacheProvider>
     	</ThemeProvider>
