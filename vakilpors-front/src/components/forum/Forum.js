@@ -127,7 +127,7 @@ const Forum = () => {
 					<Grid container key={thread.id} direction={{xs:'column',sm:'row'}} width={{xs:'97%',sm:'90%'}} backgroundColor={'#8eb1e5'} display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{mb:'30px', p:'20px', borderRadius:'25px', boxShadow:'0 0 1px 1px #444cc6', 
 					...(thread.userId == '1' && { backgroundColor:'gold',})}}>
 						<Typography sx={{fontSize:'15px', fontFamily:'shabnam'}}>{thread.title}</Typography>
-						<Grid display={'flex'} flexDirection={'row'}>
+						<Grid display={'flex'} flexDirection={'row'} marginTop={{xs:'10px',sm:'0'}}>
 							<Likes threadOrComment={thread} IsThread={true}/>
 							<Badge badgeContent={thread.commentCount} color="primary">
 								<Comments threadId={thread.id} userId={refUserId.current}/>
@@ -137,7 +137,7 @@ const Forum = () => {
 								<Delete sx={{color: '#0d6efd'}}/>
 							</IconButton>}
 						</Grid>
-						<Grid display={'flex'} flexDirection={'row'}>
+						<Grid display={'flex'} flexDirection={'row'} marginTop={{xs:'10px',sm:'0'}}>
 							<Typography sx={{fontSize: '15px', fontFamily: 'shabnam', mr: '10px'}}>توسط {thread.user.name}</Typography>
 							<Typography fontFamily={'shabnam'} fontSize={'14px'}>{Moment(thread.createDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(thread.createDate).format('HH:mm')}</Typography>
 						</Grid>
