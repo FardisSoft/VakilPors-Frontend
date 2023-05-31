@@ -112,7 +112,8 @@ const Forum = () => {
 				</form>
 				<div className='thread__container'>
 					{threadList.map((thread) => (
-						<div className='thread__item' key={thread.id}>
+						<div className='thread__item' key={thread.id} 
+						style={{...(thread.userId == '1' && { backgroundColor:'gold',}),}}>
 							<div className='react__container'>
 								<p style={{color: '#071e22'}}>{thread.title}</p>
 							</div>
