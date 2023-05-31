@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
@@ -35,11 +35,10 @@ import Wallet from './components/premium-page/Wallet';
 import UserSendCases from './components/case-pages/UserSendCases';
 import NotFound from './components/NotFound';
 import VideoCall from './components/VideoCall';
-import VerifyLawyers from './components/VerifyLawyers';
+import VerifyLawyers from './components/admin-pages/VerifyLawyers';
+import Statistics from './components/admin-pages/Statistics';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-
-// useEffect staticits ip send
 
 root.render(
   <React.StrictMode>
@@ -71,6 +70,7 @@ root.render(
               <Route path="/wallet" element={<Sidebar component={Wallet}/>}/>
               <Route path="/videoCall" element={<Sidebar component={VideoCall}/>}/>
               <Route path="/VerifyLawyers" element={<Sidebar component={VerifyLawyers}/>}/>
+              <Route path="/Statistics" element={<Sidebar component={Statistics}/>}/>
 
               <Route path="*" element={<NotFound/>}/>
           </Routes>

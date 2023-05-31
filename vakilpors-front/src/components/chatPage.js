@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import useStateRef from 'react-usestateref';
 import { Avatar, Box, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, TextField, InputAdornment, Typography, styled } from '@mui/material';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
-import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined, DoneAll, Cancel, Reply, RateReview, VideoCall } from '@mui/icons-material';
+import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined, DoneAll, Cancel, Reply, RateReview, VideoCall, Call, CallEnd } from '@mui/icons-material';
 import Moment from 'moment-jalaali';
 import { Helmet } from 'react-helmet-async';
 import * as signalR from '@microsoft/signalr';
@@ -322,6 +322,8 @@ const ChatPage = () => {
       isEdited: false,
       isFile: false,
       isRead: false,
+      isCall: false,
+      callStatus: 0,
       senderId: refUser.current.id,
       chatId: refSelectedChat.current,
       chat: null,
@@ -380,6 +382,8 @@ const ChatPage = () => {
         isEdited: false,
         isFile: true,
         isRead: false,
+        isCall: false,
+        callStatus: 0,
         senderId: refUser.current.id,
         chatId: refSelectedChat.current,
         chat: null,
@@ -412,6 +416,8 @@ const ChatPage = () => {
       isEdited: false,
       isFile: false,
       isRead: false,
+      isCall: false,
+      callStatus: 0,
       senderId: refUser.current.id,
       chatId: refSelectedChat.current,
       chat: null,
@@ -436,9 +442,37 @@ const ChatPage = () => {
     navigate(`/Rate/${lawyerId}`);
   };
 
-  const handleCallClick = (userId) => {
-    // start call with user Id
-    navigate('/videoCall');
+  const handleCallClick = () => {
+    const newMessage = {
+      id: 0,
+      sender: null,
+      message: '',
+      sendTime: new Date().toISOString(),
+      isDeleted: false,
+      isEdited: false,
+      isFile: false,
+      isRead: false,
+      isCall: true,
+      callStatus: 0,
+      senderId: refUser.current.id,
+      chatId: refSelectedChat.current,
+      chat: null,
+      replyId: null,
+      replyMessage: null,
+    };
+    sendMessage(newMessage);
+  };
+
+  const handleAnswerCallClick = () => {
+    const chat = refChats.current[getChatIndexByChatId(refSelectedChat.current)];
+    const thatGuyUserId = chat.users[getUserIndex(chat.id)].id;
+    // navigate('/videoCall');
+  };
+
+  const handleRejectCallClick = () => {
+    const chat = refChats.current[getChatIndexByChatId(refSelectedChat.current)];
+    const thatGuyUserId = chat.users[getUserIndex(chat.id)].id;
+    
   };
 
 ///////////////////////////////////////////////////////////// components
@@ -459,6 +493,7 @@ const ChatPage = () => {
     const isEdited = message.isEdited;
     const isFile = message.isFile;
     const isRead = message.isRead;
+    const isCall = message.isCall;
     return (
       <Grid ref={messageIndex === refChats.current[chatIndex].chatMessages.length - 1 ? lastMessageRef : null}
         key={message.id} display="flex" flexDirection={isCurrentUser ? "row" : "row-reverse"}>
@@ -511,9 +546,10 @@ const ChatPage = () => {
 
           {/* content */}
           <Grid sx={{ margin: '10px', whiteSpace: 'pre-wrap', wordBreak: 'break-word',}}>
-            <Typography fontFamily={'shabnam'} color={isDeleted ? 'red' : 'black'}>
-              { isDeleted ? 'This message was deleted' : 
-                isFile ? 
+            <Typography fontFamily={'shabnam'} 
+              color={isDeleted ? 'red' : message.callStatus == 1 ? 'green' : message.callStatus == 2 ? 'red' : 'black'}>
+              { isDeleted ? 'This message was deleted'
+                : isFile ? 
                 <Box backgroundColor={'white'} borderRadius={2} padding={1}>
                   <IconButton size="small">
                     <a href={message.message} download={'download'}>
@@ -522,22 +558,45 @@ const ChatPage = () => {
                       <DownloadForOfflineOutlined />
                     </a>
                   </IconButton>
-                </Box>
+                </Box> 
+                : isCall ?
+                ( message.callStatus == 0 ? // wating
+                  isCurrentUser ? 'در انتظار پاسخ تماس...' : 
+                <Grid>
+                  {'تماس تصویری ورودی'}
+                  <Grid container direction={'row'} display={'flex'} justifyContent={'space-around'} backgroundColor={'white'} borderRadius={2} padding={1}>
+                    <Box backgroundColor='green' width={'44px'} borderRadius={'25px'} padding={'5px'}>
+                      <StyledTooltip title={<React.Fragment>{'پذیرفتن تماس'}</React.Fragment>}>
+                        <IconButton size="small" onClick={handleAnswerCallClick}>
+                          <Call sx={{color:'white'}}/>
+                        </IconButton>
+                      </StyledTooltip>
+                    </Box>
+                    <Box backgroundColor='red' width={'44px'} borderRadius={'25px'} padding={'5px'}>
+                      <StyledTooltip title={<React.Fragment>{'رد تماس'}</React.Fragment>}>
+                        <IconButton size="small" onClick={handleRejectCallClick}>
+                          <CallEnd sx={{color:'white'}}/>
+                        </IconButton>
+                      </StyledTooltip>
+                    </Box>
+                  </Grid>
+                </Grid>
+                 : message.callStatus == 1 ? 'تماس پذیرفته شد' // accepted
+                 : 'تماس پذیرفته نشد' // rejected
+                )
                 : message.message }
             </Typography>
           </Grid>
 
           {/* icons and date */}
           <Grid container direction={'row'} display={'flex'} justifyContent={'flex-start'}>
-            {!isCurrentUser && 
+            {(!isCurrentUser && !isCall) && 
               <StyledTooltip title={<React.Fragment>پاسخ دادن</React.Fragment>}>
                 <IconButton size="small" onClick={() => handleReplyClick(message)}>
                   <Reply />
                 </IconButton>
               </StyledTooltip>}
-            {!isCurrentUser || isDeleted ? null : (
-              <>
-              {!isFile && <>
+            {(!isCurrentUser || isDeleted || isCall || isFile) ? null : (<>
               <StyledTooltip title={<React.Fragment>ویرایش پیام</React.Fragment>}>
                 <IconButton size="small" onClick={() => handleEditClick(message)}>
                   <Edit />
@@ -547,10 +606,9 @@ const ChatPage = () => {
                 <IconButton size="small" onClick={() => handleDeleteClick(message)}>
                   <Delete />
                 </IconButton>
-              </StyledTooltip></>}
-              </>
-            )}
-            { (isEdited && !isDeleted) && 
+              </StyledTooltip>
+            </>)}
+            {(isEdited && !isDeleted && !isCall) && 
             <StyledTooltip title={<React.Fragment>این پیام ویرایش شده است</React.Fragment>}>
               <Typography fontSize={'13px'} marginRight={'10px'} position={'relative'} top={'7px'}>edited</Typography>
             </StyledTooltip>}
@@ -600,9 +658,9 @@ const ChatPage = () => {
                     <RateReview />
                   </IconButton>
                 </StyledTooltip>}
-                {chat.chatMessages.length > 2 && 
+                {(chat.chatMessages.length > 2 && refSelectedChat.current === chat.id) && 
                 <StyledTooltip title={<React.Fragment>تماس تصویری</React.Fragment>}>
-                  <IconButton size="small" onClick={() => handleCallClick(chat.users[getUserIndex(chat.id)].id)}>
+                  <IconButton size="small" onClick={handleCallClick}>
                     <VideoCall />
                   </IconButton>
                 </StyledTooltip>}
