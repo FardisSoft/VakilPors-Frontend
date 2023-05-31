@@ -126,7 +126,7 @@ const Forum = () => {
 			<Grid container direction={'column'} width={'100%'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
 				{threadList.map((thread) => (
 					<Grid container key={thread.id} direction={{xs:'column',sm:'row'}} width={{xs:'97%',sm:'90%'}} backgroundColor={'#8eb1e5'} display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{mb:'30px', p:'20px', borderRadius:'25px', boxShadow:'0 0 1px 1px #444cc6', 
-					...(thread.userId == '1' && { backgroundColor:'gold',})}}>
+					...(thread.userId == '1' && { backgroundColor:'lightskyblue',})}}>
 						<Typography sx={{fontSize:'15px', fontFamily:'shabnam'}}>{thread.title}</Typography>
 						<Grid display={'flex'} flexDirection={'row'} marginTop={{xs:'10px',sm:'0'}}>
 							<Likes threadOrComment={thread} IsThread={true}/>
