@@ -215,7 +215,7 @@ const ChatPage = () => {
       setChats(updatedChats);
   };
 
-  const setChatsEditMessage = (message) => {
+  const setChatsEditMessage = async (message) => {
     const chatIndex = getChatIndexByChatId(message.chatId);
     const updatedChatMessages = refChats.current[chatIndex].chatMessages.map((messag) => {
       if (messag.id === message.id) {
@@ -223,6 +223,7 @@ const ChatPage = () => {
           ...messag,
           message: message.message,
           isEdited: true,
+          callStatus: message.callStatus,
         };
       }
       return messag;
@@ -234,6 +235,10 @@ const ChatPage = () => {
     const updatedChats = [...refChats.current];
     updatedChats[chatIndex] = updatedChat;
     setChats(updatedChats);
+    if(message.isCall && message.callStatus == 1){
+      await delay(1000);
+      navigate(`/videoCall/${message.message}`);
+    }
   };
 
 ///////////////////////////////////////////////////////////// Invoke functions
@@ -351,7 +356,6 @@ const ChatPage = () => {
       message: inputText.trim(),
       isEdited: true,
     };
-    delete updatedMessage.ref;
     setInputText('');
     setIsEditActive(false);
     editChatMessage(updatedMessage);
@@ -463,16 +467,28 @@ const ChatPage = () => {
     sendMessage(newMessage);
   };
 
-  const handleAnswerCallClick = () => {
+  const handleAnswerCallClick = (message) => {
     const chat = refChats.current[getChatIndexByChatId(refSelectedChat.current)];
     const thatGuyUserId = chat.users[getUserIndex(chat.id)].id;
-    // navigate('/videoCall');
+    const unicNum = thatGuyUserId + refUser.current.id * 1000000;
+    const hashedRoomId = unicNum.toString(16);
+
+    const updatedMessage = {
+      ...message,
+      message: hashedRoomId,
+      callStatus: 1,
+    };
+    delete updatedMessage.ref;
+    editChatMessage(updatedMessage);
   };
 
-  const handleRejectCallClick = () => {
-    const chat = refChats.current[getChatIndexByChatId(refSelectedChat.current)];
-    const thatGuyUserId = chat.users[getUserIndex(chat.id)].id;
-    
+  const handleRejectCallClick = (message) => {
+    const updatedMessage = {
+      ...message,
+      callStatus: 2,
+    };
+    delete updatedMessage.ref;
+    editChatMessage(updatedMessage);
   };
 
 ///////////////////////////////////////////////////////////// components
@@ -547,7 +563,7 @@ const ChatPage = () => {
           {/* content */}
           <Grid sx={{ margin: '10px', whiteSpace: 'pre-wrap', wordBreak: 'break-word',}}>
             <Typography fontFamily={'shabnam'} 
-              color={isDeleted ? 'red' : message.callStatus == 1 ? 'green' : message.callStatus == 2 ? 'red' : 'black'}>
+              color={(isDeleted || message.callStatus == 2) ? 'red' : message.callStatus == 1 ? 'green' : 'black'}>
               { isDeleted ? 'This message was deleted'
                 : isFile ? 
                 <Box backgroundColor={'white'} borderRadius={2} padding={1}>
@@ -567,14 +583,14 @@ const ChatPage = () => {
                   <Grid container direction={'row'} display={'flex'} justifyContent={'space-around'} backgroundColor={'white'} borderRadius={2} padding={1}>
                     <Box backgroundColor='green' width={'44px'} borderRadius={'25px'} padding={'5px'}>
                       <StyledTooltip title={<React.Fragment>{'پذیرفتن تماس'}</React.Fragment>}>
-                        <IconButton size="small" onClick={handleAnswerCallClick}>
+                        <IconButton size="small" onClick={()=>handleAnswerCallClick(message)}>
                           <Call sx={{color:'white'}}/>
                         </IconButton>
                       </StyledTooltip>
                     </Box>
                     <Box backgroundColor='red' width={'44px'} borderRadius={'25px'} padding={'5px'}>
                       <StyledTooltip title={<React.Fragment>{'رد تماس'}</React.Fragment>}>
-                        <IconButton size="small" onClick={handleRejectCallClick}>
+                        <IconButton size="small" onClick={()=>handleRejectCallClick(message)}>
                           <CallEnd sx={{color:'white'}}/>
                         </IconButton>
                       </StyledTooltip>
@@ -631,7 +647,7 @@ const ChatPage = () => {
       <title>چت آنلاین</title>
     </Helmet>
 
-    <Grid container direction={{ xs: 'column', md: 'row' }} height={{xs:'auto', md:'calc(100vh - 65px)'}} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', display:'flex', justifyContent:'space-around', alignItems:'stretch'}}>
+    <Grid container direction={{ xs: 'column', md: 'row' }} height={{xs:'auto', md:'calc(100vh - 65px)'}} minHeight={{xs:'100vh', md:'calc(100vh - 65px)'}} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', display:'flex', justifyContent:'space-around', alignItems:'stretch'}}>
       <Grid container direction={'column'} width={{ xs: '100%', md: '20%' }} sx={{ borderBottom: { xs: '1px solid grey', md: '0px solid grey' } }}>
         
         {/* show user him/herself info */}

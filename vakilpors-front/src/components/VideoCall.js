@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import useStateRef from 'react-usestateref';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Peer from 'peerjs';
 import { Box, Grid, IconButton } from '@mui/material';
 import { CallEnd } from '@mui/icons-material';
@@ -12,13 +12,13 @@ import * as signalR from '@microsoft/signalr';
 const VideoCall = () => {
 
   const [connection, setConnection, refConnection] = useStateRef(null);
-  const [roomId, setRoomId, refRoomId] = useStateRef(null);
   const [userId, setUserId, refUserId] = useStateRef(null);
   const [localStream, setLocalStream, refLocalStream] = useStateRef(null);
   const [peers, setPeers, refPeers] = useStateRef({});
   const videoRef = useRef(null);
 
   const { getAccessToken } = useAuth();
+  const { roomId } = useParams();
   const navigate = useNavigate();
 
   useEffect( () => {
@@ -49,16 +49,13 @@ const VideoCall = () => {
       const start = async () => {
         try {
           await refConnection.current.start();
-          const url = refConnection.current.connection.transport._webSocket.url;
-          const id = url.match(/id=([^&]+)/);
-          setRoomId(id ? id[1] : null);
-          console.log("SignalR Connected. and room id is : ", refRoomId.current);
+          console.log("SignalR Connected. and room id is : ", roomId);
         } catch (err) {
           console.log('error in connecting SignalR : ',err);
         }
         try {
-          await refConnection.current.invoke('JoinMeeting', refRoomId.current, refUserId.current);
-          console.log('user with userId : ',refUserId.current,' joined meeting with id : ',refRoomId.current);
+          await refConnection.current.invoke('JoinMeeting', roomId, refUserId.current);
+          console.log('user with userId : ',refUserId.current,' joined meeting with id : ',roomId);
         } catch (err) {
           console.log('error in joining room : ',err);
         }
@@ -144,7 +141,7 @@ const VideoCall = () => {
 
   const endCall = () => {
     refConnection.current.stop();
-    navigate('/');
+    navigate('/chatPage');
   };
 
   return (
@@ -155,7 +152,7 @@ const VideoCall = () => {
     <Grid display={"flex"} flexDirection={"column"} minHeight={'100vh'} alignItems={"center"} justifyContent={"center"} width={"100%"} backgroundColor={'#ABC0C0'}>
       <Grid ref={videoRef} container direction={{xs:'column', sm:"row"}} display={"flex"} alignItems={"center"} justifyContent={"center"} width={{xs:'97%',sm:"90%"}} borderRadius={"10px"} paddingY={"40px"} paddingX={{xs:'10px',sm:"20px",md:'50px'}} m={'2%'} backgroundColor={'white'}>
       </Grid>
-      <Grid>
+      <Grid margin={'10px'}>
         <Box backgroundColor='red' width={'44px'} borderRadius={'25px'} padding={'5px'}>
           <IconButton size="small" onClick={endCall}>
             <CallEnd sx={{color:'white'}}/>

@@ -143,7 +143,7 @@ const Sidebar = (props) => {
       }
       if(!token){
         console.log('login required');
-        navigate("/Login");
+        if(!props.homePage) navigate("/Login");
       }
     };
     sidebarApi();
