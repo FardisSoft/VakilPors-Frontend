@@ -141,7 +141,7 @@ const VideoCall = () => {
 
   const endCall = () => {
     refConnection.current.stop();
-    navigate('/');
+    navigate('/chatPage');
   };
 
   return (
