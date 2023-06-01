@@ -163,7 +163,7 @@ const ChatPage = () => {
 
 //////////////////////////////////////////////////////////// setChats - On functions
 
-  const setChatsAddMessage = async (message) => {
+  const setChatsAddMessage = (message) => {
     const chatIndex = getChatIndexByChatId(message.chatId);
     const updatedChat = {
       ...refChats.current[chatIndex],
@@ -175,10 +175,6 @@ const ChatPage = () => {
     showLastMessage();
     if((refSelectedChat.current == message.chatId) && (message.sender.id != refUser.current.id)){
       readChatMessage(message.chatId);
-    }
-    if(message.isCall && message.callStatus == 1){
-      await delay(1000);
-      navigate(`/videoCall/${message.message}`);
     }
   };
 
@@ -219,7 +215,7 @@ const ChatPage = () => {
       setChats(updatedChats);
   };
 
-  const setChatsEditMessage = (message) => {
+  const setChatsEditMessage = async (message) => {
     const chatIndex = getChatIndexByChatId(message.chatId);
     const updatedChatMessages = refChats.current[chatIndex].chatMessages.map((messag) => {
       if (messag.id === message.id) {
@@ -239,6 +235,10 @@ const ChatPage = () => {
     const updatedChats = [...refChats.current];
     updatedChats[chatIndex] = updatedChat;
     setChats(updatedChats);
+    if(message.isCall && message.callStatus == 1){
+      await delay(1000);
+      navigate(`/videoCall/${message.message}`);
+    }
   };
 
 ///////////////////////////////////////////////////////////// Invoke functions
