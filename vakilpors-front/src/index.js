@@ -68,7 +68,7 @@ root.render(
               <Route path="/payment/verify" element={<Sidebar component={ResponseTransaction} />}/>
               <Route path="/Rate/:LawyerId" element={<Sidebar component={Rate}/>}/>
               <Route path="/wallet" element={<Sidebar component={Wallet}/>}/>
-              <Route path="/videoCall" element={<Sidebar component={VideoCall}/>}/>
+              <Route path="/videoCall/:roomId" element={<Sidebar component={VideoCall}/>}/>
               <Route path="/VerifyLawyers" element={<Sidebar component={VerifyLawyers}/>}/>
               <Route path="/Statistics" element={<Sidebar component={Statistics}/>}/>
 
