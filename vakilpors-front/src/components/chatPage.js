@@ -563,7 +563,7 @@ const ChatPage = () => {
           {/* content */}
           <Grid sx={{ margin: '10px', whiteSpace: 'pre-wrap', wordBreak: 'break-word',}}>
             <Typography fontFamily={'shabnam'} 
-              color={isDeleted ? 'red' : message.callStatus == 1 ? 'green' : message.callStatus == 2 ? 'red' : 'black'}>
+              color={(isDeleted || message.callStatus == 2) ? 'red' : message.callStatus == 1 ? 'green' : 'black'}>
               { isDeleted ? 'This message was deleted'
                 : isFile ? 
                 <Box backgroundColor={'white'} borderRadius={2} padding={1}>
