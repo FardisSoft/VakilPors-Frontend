@@ -176,9 +176,9 @@ const ChatPage = () => {
     if((refSelectedChat.current == message.chatId) && (message.sender.id != refUser.current.id)){
       readChatMessage(message.chatId);
     }
-    if(message.isCall){
+    if(message.isCall && message.callStatus == 1){
       await delay(1000);
-      navigate('/videoCall/1');
+      navigate(`/videoCall/${message.message}`);
     }
   };
 
@@ -227,6 +227,7 @@ const ChatPage = () => {
           ...messag,
           message: message.message,
           isEdited: true,
+          callStatus: message.callStatus,
         };
       }
       return messag;
@@ -355,7 +356,6 @@ const ChatPage = () => {
       message: inputText.trim(),
       isEdited: true,
     };
-    delete updatedMessage.ref;
     setInputText('');
     setIsEditActive(false);
     editChatMessage(updatedMessage);
@@ -467,16 +467,28 @@ const ChatPage = () => {
     sendMessage(newMessage);
   };
 
-  const handleAnswerCallClick = () => {
+  const handleAnswerCallClick = (message) => {
     const chat = refChats.current[getChatIndexByChatId(refSelectedChat.current)];
     const thatGuyUserId = chat.users[getUserIndex(chat.id)].id;
-    // navigate('/videoCall');
+    const unicNum = thatGuyUserId + refUser.current.id * 1000000;
+    const hashedRoomId = unicNum.toString(16);
+
+    const updatedMessage = {
+      ...message,
+      message: hashedRoomId,
+      callStatus: 1,
+    };
+    delete updatedMessage.ref;
+    editChatMessage(updatedMessage);
   };
 
-  const handleRejectCallClick = () => {
-    const chat = refChats.current[getChatIndexByChatId(refSelectedChat.current)];
-    const thatGuyUserId = chat.users[getUserIndex(chat.id)].id;
-    
+  const handleRejectCallClick = (message) => {
+    const updatedMessage = {
+      ...message,
+      callStatus: 2,
+    };
+    delete updatedMessage.ref;
+    editChatMessage(updatedMessage);
   };
 
 ///////////////////////////////////////////////////////////// components
@@ -571,14 +583,14 @@ const ChatPage = () => {
                   <Grid container direction={'row'} display={'flex'} justifyContent={'space-around'} backgroundColor={'white'} borderRadius={2} padding={1}>
                     <Box backgroundColor='green' width={'44px'} borderRadius={'25px'} padding={'5px'}>
                       <StyledTooltip title={<React.Fragment>{'پذیرفتن تماس'}</React.Fragment>}>
-                        <IconButton size="small" onClick={handleAnswerCallClick}>
+                        <IconButton size="small" onClick={()=>handleAnswerCallClick(message)}>
                           <Call sx={{color:'white'}}/>
                         </IconButton>
                       </StyledTooltip>
                     </Box>
                     <Box backgroundColor='red' width={'44px'} borderRadius={'25px'} padding={'5px'}>
                       <StyledTooltip title={<React.Fragment>{'رد تماس'}</React.Fragment>}>
-                        <IconButton size="small" onClick={handleRejectCallClick}>
+                        <IconButton size="small" onClick={()=>handleRejectCallClick(message)}>
                           <CallEnd sx={{color:'white'}}/>
                         </IconButton>
                       </StyledTooltip>
