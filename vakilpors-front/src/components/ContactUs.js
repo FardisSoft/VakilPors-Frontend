@@ -67,7 +67,7 @@ const ContactUs = () => {
 						flexDirection: 'column',
 						alignItems: 'flex-start',
 						justifyContent: 'center',
-						padding: '40px 80px',
+						padding: '40px 10%',
 						border: '1px solid blue',
 						backgroundColor: '#fffbf5',
 						borderRadius: '25px',
