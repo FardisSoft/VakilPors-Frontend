@@ -163,7 +163,7 @@ const ChatPage = () => {
 
 //////////////////////////////////////////////////////////// setChats - On functions
 
-  const setChatsAddMessage = (message) => {
+  const setChatsAddMessage = async (message) => {
     const chatIndex = getChatIndexByChatId(message.chatId);
     const updatedChat = {
       ...refChats.current[chatIndex],
@@ -175,6 +175,10 @@ const ChatPage = () => {
     showLastMessage();
     if((refSelectedChat.current == message.chatId) && (message.sender.id != refUser.current.id)){
       readChatMessage(message.chatId);
+    }
+    if(message.isCall){
+      await delay(1000);
+      navigate('/videoCall/1');
     }
   };
 
