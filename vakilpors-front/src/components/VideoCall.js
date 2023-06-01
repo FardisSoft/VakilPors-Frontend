@@ -152,7 +152,7 @@ const VideoCall = () => {
     <Grid display={"flex"} flexDirection={"column"} minHeight={'100vh'} alignItems={"center"} justifyContent={"center"} width={"100%"} backgroundColor={'#ABC0C0'}>
       <Grid ref={videoRef} container direction={{xs:'column', sm:"row"}} display={"flex"} alignItems={"center"} justifyContent={"center"} width={{xs:'97%',sm:"90%"}} borderRadius={"10px"} paddingY={"40px"} paddingX={{xs:'10px',sm:"20px",md:'50px'}} m={'2%'} backgroundColor={'white'}>
       </Grid>
-      <Grid>
+      <Grid margin={'10px'}>
         <Box backgroundColor='red' width={'44px'} borderRadius={'25px'} padding={'5px'}>
           <IconButton size="small" onClick={endCall}>
             <CallEnd sx={{color:'white'}}/>
