@@ -34,7 +34,7 @@ import ShowCases from './components/case-pages/ShowCases';
 import Wallet from './components/premium-page/Wallet';
 import UserSendCases from './components/case-pages/UserSendCases';
 import NotFound from './components/NotFound';
-import VideoCall from './components/VideoCall';
+import VideoCall from './components/video-call/VideoCall';
 import VerifyLawyers from './components/admin-pages/VerifyLawyers';
 import Statistics from './components/admin-pages/Statistics';
 

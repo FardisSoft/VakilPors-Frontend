@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 const Video = ({ stream, muted }) => {
 
-  const refVideo = React.useRef();
+  const refVideo = useRef();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (refVideo.current) {
       refVideo.current.srcObject = stream;
     }

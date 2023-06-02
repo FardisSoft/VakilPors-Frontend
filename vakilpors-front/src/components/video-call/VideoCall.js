@@ -6,8 +6,8 @@ import Peer from 'peerjs';
 import * as signalR from '@microsoft/signalr';
 import { Box, Grid, IconButton } from '@mui/material';
 import { CallEnd } from '@mui/icons-material';
-import { useAuth } from "../context/AuthProvider";
-import { BASE_API_ROUTE } from '../Constants';
+import { useAuth } from "../../context/AuthProvider";
+import { BASE_API_ROUTE } from '../../Constants';
 import Video from './Video';
 
 const VideoCall = () => {
