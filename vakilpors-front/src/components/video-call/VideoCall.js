@@ -154,9 +154,16 @@ const VideoCall = () => {
     </Helmet>
     <Grid display={"flex"} flexDirection={"column"} minHeight={'100vh'} alignItems={"center"} justifyContent={"center"} width={"100%"} backgroundColor={'#ABC0C0'}>
       <Grid container direction={{xs:'column', sm:"row"}} display={"flex"} alignItems={"center"} justifyContent={"center"} width={{xs:'97%',sm:"90%"}} borderRadius={"10px"} paddingY={"40px"} paddingX={{xs:'10px',sm:"20px",md:'50px'}} m={'2%'} backgroundColor={'white'}>
-        {/* {refLocalStream.current && <Video stream={refLocalStream.current} muted={true} />} */}
-        {/* {console.log(refStreams.current)} */}
-        {refStreams.current.map((stream,index) => <Video key={index} stream={stream} muted={index === 0} /> )}
+        <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexWrap: 'wrap',
+              width: '100%',
+              height: '100%'
+        }}>
+          {refStreams.current.map((stream,index) => <Video key={index} stream={stream} muted={index === 0} /> )}
+        </div>
       </Grid>
       <Grid container direction={'row'} margin={'10px'} display={'flex'} justifyContent={'center'}>
         <Box backgroundColor='red' width={'44px'} borderRadius={'25px'} padding={'5px'} marginX={'10px'}>

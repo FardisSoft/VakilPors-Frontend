@@ -17,11 +17,11 @@ const Video = ({ stream, muted }) => {
       playsInline 
       muted={muted}
       style={{
-        width: window.innerWidth < 576 ? '90%' : '40%',
-        height: window.innerWidth < 576 ? '60%' : '50%',
+        width: window.innerWidth < 576 ? (muted ? '50vw' : '70vw') : (muted ? '25vw' : '50vw'),
+        height: window.innerWidth < 576 ? (muted ? '50vw' : '70vw') : (muted ? '25vw' : '50vw'),
         objectFit: 'cover',
         margin: '12px',
-        borderRadius: '10px'
+        borderRadius: '10px',
       }}
     />
   );
