@@ -92,7 +92,7 @@ const VideoCall = () => {
             }
           });
           call.on('close', () => {
-            setStreams(refStreams.current.filter(stream => stream.id !== call.metadata.streamId));
+            setStreams(refStreams.current.filter(stream => stream.id === call.metadata.streamId));
           });
           setPeers({
             ...refPeers.current,
@@ -102,6 +102,7 @@ const VideoCall = () => {
         refConnection.current.on('UserDisconnected',id => {
           console.log('user disconnected : ',id);
           if(refPeers.current[id]) refPeers.current[id].close();
+          setStreams([refLocalStream.current]);
         });
         myPeer.on('call', call => {
           call.answer(refLocalStream.current, {metadata: { streamId: refLocalStream.current.id }});
@@ -124,6 +125,14 @@ const VideoCall = () => {
 
   const endCall = () => {
     refConnection.current.stop();
+    const audioTrack = refLocalStream.current.getAudioTracks()[0];
+    if (audioTrack) {
+      audioTrack.enabled = false;
+    }
+    const videoTrack = refLocalStream.current.getVideoTracks()[0];
+    if (videoTrack) {
+      videoTrack.enabled = false;
+    }
     navigate('/chatPage');
   };
 
