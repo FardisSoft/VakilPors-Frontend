@@ -71,14 +71,14 @@ const VideoCall = () => {
           console.log('user connected : ',id);
           if(refUserId.current === id) return;
           // connect new user
-          const call = myPeer.call(id, refLocalStream.current);
+          const call = myPeer.call(id, refLocalStream.current, {metadata: { streamId: refLocalStream.current.id }});
           call.on('stream', userVideoStream => {
             if (!refStreams.current.some(streame => streame.id === userVideoStream.id)) {
               setStreams([...refStreams.current, userVideoStream]);
             }
           });
           call.on('close', () => {
-            setStreams(refStreams.current.filter(stream => stream.id !== call.peer));
+            setStreams(refStreams.current.filter(stream => stream.id !== call.metadata.streamId));
           });
           setPeers({
             ...refPeers.current,
@@ -90,7 +90,7 @@ const VideoCall = () => {
           if(refPeers.current[id]) refPeers.current[id].close();
         });
         myPeer.on('call', call => {
-          call.answer(refLocalStream.current);
+          call.answer(refLocalStream.current, {metadata: { streamId: refLocalStream.current.id }});
           call.on('stream', userVideoStream => {
             if (!refStreams.current.some(streame => streame.id === userVideoStream.id)) {
               setStreams([...refStreams.current, userVideoStream]);
