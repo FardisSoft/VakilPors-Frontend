@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import useStateRef from 'react-usestateref';
 import { useNavigate, useParams } from "react-router-dom";
 import { Helmet } from 'react-helmet-async';
 import Peer from 'peerjs';
 import * as signalR from '@microsoft/signalr';
 import { Box, Grid, IconButton } from '@mui/material';
-import { CallEnd } from '@mui/icons-material';
+import { CallEnd, Mic, MicOff, Videocam, VideocamOff } from '@mui/icons-material';
 import { useAuth } from "../../context/AuthProvider";
 import { BASE_API_ROUTE } from '../../Constants';
 import Video from './Video';
@@ -17,6 +17,8 @@ const VideoCall = () => {
   const [localStream, setLocalStream, refLocalStream] = useStateRef(null);
   const [peers, setPeers, refPeers] = useStateRef({});
   const [streams, setStreams, refStreams] = useStateRef([]);
+  const [audioMuted, setAudioMuted] = useState(false);
+  const [videoMuted, setVideoMuted] = useState(false);
 
   const { getAccessToken } = useAuth();
   const { roomId } = useParams();
@@ -125,6 +127,22 @@ const VideoCall = () => {
     navigate('/chatPage');
   };
 
+  const handleAudioMute = () => {
+    setAudioMuted(audioMuted => !audioMuted);
+    const audioTrack = refLocalStream.current.getAudioTracks()[0];
+    if (audioTrack) {
+      audioTrack.enabled = !audioTrack.enabled;
+    }
+  };
+  
+  const handleVideoMute = () => {
+    setVideoMuted(videoMuted => !videoMuted);
+    const videoTrack = refLocalStream.current.getVideoTracks()[0];
+    if (videoTrack) {
+      videoTrack.enabled = !videoTrack.enabled;
+    }
+  };
+  
   useUserMedia();
   useSignalRConnection();
   usePeerConnections();
@@ -140,10 +158,20 @@ const VideoCall = () => {
         {/* {console.log(refStreams.current)} */}
         {refStreams.current.map((stream,index) => <Video key={index} stream={stream} muted={index === 0} /> )}
       </Grid>
-      <Grid margin={'10px'}>
-        <Box backgroundColor='red' width={'44px'} borderRadius={'25px'} padding={'5px'}>
+      <Grid container direction={'row'} margin={'10px'} display={'flex'} justifyContent={'center'}>
+        <Box backgroundColor='red' width={'44px'} borderRadius={'25px'} padding={'5px'} marginX={'10px'}>
           <IconButton size="small" onClick={endCall}>
             <CallEnd sx={{color:'white'}}/>
+          </IconButton>
+        </Box>
+        <Box backgroundColor='rgb(25,118,210)' width={'44px'} borderRadius={'25px'} padding={'5px'} marginX={'10px'}>
+          <IconButton size="small" onClick={handleAudioMute}>
+            {audioMuted ? <MicOff sx={{color:'white'}}/> : <Mic sx={{color:'white'}}/>}
+          </IconButton>
+        </Box>
+        <Box backgroundColor='rgb(25,118,210)' width={'44px'} borderRadius={'25px'} padding={'5px'} marginX={'10px'}>
+          <IconButton size="small" onClick={handleVideoMute}>
+            {videoMuted ? <VideocamOff sx={{color:'white'}}/> : <Videocam sx={{color:'white'}}/>}
           </IconButton>
         </Box>
       </Grid>
