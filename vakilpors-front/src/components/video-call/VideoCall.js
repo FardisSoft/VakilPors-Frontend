@@ -31,6 +31,12 @@ const VideoCall = () => {
         setLocalStream(stream);
         setStreams([stream]);
       }).catch(err => console.log('error in getting camera and microphone : ',err));
+
+      // return () => {
+      //   if (refStreams.current) {
+      //     refStreams.current.getTracks().forEach(track => track.stop());
+      //   }
+      // };
     }, []);
   };
 
@@ -54,6 +60,12 @@ const VideoCall = () => {
         }
       };
       if(!refConnection.current) connect();
+
+      // return () => {
+      //   refConnection.current.stop();
+      //   refConnection.current.off('UserConnected');
+      //   refConnection.current.off('UserDisconnected');
+      // };
     }, []);
   };
 
@@ -97,6 +109,13 @@ const VideoCall = () => {
             }
           });
         });
+
+        // return () => {
+        //   Object.values(refPeers.current).forEach(call => call.close());
+        //   myPeer.destroy();
+        //   myPeer.off('open');
+        //   myPeer.off('call');
+        // };
       }
     }, [refConnection.current, refLocalStream.current]);
   };
@@ -118,7 +137,7 @@ const VideoCall = () => {
     <Grid display={"flex"} flexDirection={"column"} minHeight={'100vh'} alignItems={"center"} justifyContent={"center"} width={"100%"} backgroundColor={'#ABC0C0'}>
       <Grid container direction={{xs:'column', sm:"row"}} display={"flex"} alignItems={"center"} justifyContent={"center"} width={{xs:'97%',sm:"90%"}} borderRadius={"10px"} paddingY={"40px"} paddingX={{xs:'10px',sm:"20px",md:'50px'}} m={'2%'} backgroundColor={'white'}>
         {/* {refLocalStream.current && <Video stream={refLocalStream.current} muted={true} />} */}
-        {console.log(refStreams.current)}
+        {/* {console.log(refStreams.current)} */}
         {refStreams.current.map((stream,index) => <Video key={index} stream={stream} muted={index === 0} /> )}
       </Grid>
       <Grid margin={'10px'}>
