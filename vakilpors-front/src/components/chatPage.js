@@ -654,7 +654,7 @@ const ChatPage = () => {
     </Helmet>
 
     <Grid container direction={{ xs: 'column', md: 'row' }} height={{xs:'auto', md:'calc(100vh - 65px)'}} minHeight={{xs:'100vh', md:'calc(100vh - 65px)'}} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', display:'flex', justifyContent:'space-around', alignItems:'stretch'}}>
-      <Grid container direction={'column'} width={{ xs: '100%', md: '20%' }} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', borderBottom: { xs: '1px solid grey', md: '0px solid grey' } }}>
+      <Grid container direction={'column'} width={{ xs: '100%', md: '20%' }} sx={{ backgroundColor: '#0041c2', borderBottom: { xs: '1px solid grey', md: '0px solid grey' } }}>
         
         {/* show user him/herself info */}
         {refUser.current && <Grid display="flex" flexDirection="column" alignItems="center" justifyContent={'center'} padding={1} border={'1px solid grey'} borderRadius={2}>
