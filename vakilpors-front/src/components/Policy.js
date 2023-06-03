@@ -6,17 +6,17 @@ const Policy = () => {
   return (
     <>
     <Helmet>
-     <title>قوانین سایت</title>
+     <title>قوانین</title>
     </Helmet>
-    <Grid container sx={{padding: "50px 0",display:"flex",justifyContent:"center",alignItems:"center"}}> 
-      <Grid container width={{xs:'95%',sm:'90%',md:'80%'}} direction={'column'}>
-        <Grid sx={{ display:"flex",justifyContent:"center",alignItems:"center"}}>
-        <Typography variant="h1" sx={{fontSize:40,fontFamily: "shabnam",color:"darkblue"}}>قوانین وکیل پرس</Typography> 
-        </Grid>
-        <Grid sx={{ display:"flex",justifyContent:"center",alignItems:"center"}}>
-        <Typography variant="h4" sx={{fontSize:20,fontFamily: "shabnam", marginTop: "20px",color:"blue"}}>قوانین مربوط به وکلا</Typography> 
-        </Grid>
-        <Typography variant="body1" sx={{marginTop: "10px",fontFamily: "shabnam"}}>
+    <Grid container sx={{padding: "50px 0", marginTop: "90px", margin: "16px",display:"flex",justifyContent:"center",alignItems:"center"}}> 
+      <Grid container width={{xs:'100%',md:'80%'}} direction={'column'}>
+       <Grid sx={{ display:"flex",justifyContent:"center",alignItems:"center"}}>
+       <Typography variant="h1" sx={{fontSize:40,fontFamily: "shabnam",color:"darkblue"}}>قوانین وکیل پرس</Typography> 
+       </Grid>
+       <Grid sx={{ display:"flex",justifyContent:"center",alignItems:"center"}}>
+       <Typography variant="h4" sx={{fontSize:20,fontFamily: "shabnam", marginTop: "20px",color:"blue"}}>قوانین مربوط به وکلا</Typography> 
+       </Grid>
+       <Typography variant="body1" sx={{marginTop: "10px",fontFamily: "shabnam"}}>
           ۱_ هرگاه از تقصیر وکیل خسارتی به موکل متوجه شود که عرفاً وکیل مسبب آن محسوب می‌گردد مسئول خواهد بود. <br/>
 
           ۲– وکیل باید در تصرفات و اقدامات خود مصلحت موکل را مراعات نماید و از آن چه که موکل بالصراحه به او اختیار داده یا بر حسب قرائن و عرف و عادت داخل اختیار اوست، تجاوز نکند. <br/>

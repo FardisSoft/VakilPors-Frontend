@@ -1,5 +1,5 @@
-import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import React from 'react';
 import { Grid, Typography, Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import landing_page from './assests/images/default_lawyer_profile_background_picture.jpg';

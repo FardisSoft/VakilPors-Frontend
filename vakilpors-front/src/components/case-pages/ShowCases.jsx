@@ -7,150 +7,39 @@ import { useAuth } from "../../context/AuthProvider";
 import { BASE_API_ROUTE } from "../../Constants";
 import axios from "axios";
 import jwt from 'jwt-decode';
-import { Box, Grid, Button, Typography, Card, CardActions, CardContent, IconButton, styled } from '@mui/material';
-import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Box, Grid, Button, Typography, Card, CardActions, CardContent, IconButton } from '@mui/material';
 import { DownloadForOfflineOutlined, } from '@mui/icons-material';
-import { toast } from 'react-toastify';
-
-const HtmlTooltip = styled (({ className, ...props }) => (
-  <Tooltip {...props} classes={{ popper: className }} arrow/>
-))(({ theme }) => ({
-  [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: '#f5f5f9',
-    color: 'rgba(0, 0, 0, 0.87)',
-    maxWidth: 300,
-    fontSize: '15px',
-    border: '1px solid #dadde9',
-    fontFamily: 'shabnam',
-  },
-}));
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
  
 const ShowCases = () => {
 
   const [Cases, setCases, refCases] = useStateRef([]);
-  const [openDescription, setOpenDescription] = useState(false);
-  const [description, setDescription] = useState('');
   const { getAccessToken } = useAuth();
   const navigate = useNavigate();
   const { isLawyer } = useParams();
-
-  const handleOpenDescription = (des) => {
-    setOpenDescription(true);
-    setDescription(des);
-  };
-
-  const handleCloseDescription = () => {
-    setOpenDescription(false);
-  };
-
-  const getLawyersThatHaveAccessToDoc = async (docId) => {
-    const token = await getAccessToken();
-    if(token){
-      const url = BASE_API_ROUTE + `Document/GetLawyersThatHaveAccessToDocument?documentId=${docId}`;
-      try {
-        const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
-        // console.log('response in getLawyersThatHaveAccessToDoc : ',response);
-        return response.data.data;
-      } catch (error) {
-        console.log('error in getLawyersThatHaveAccessToDoc : ',error);
-      }
-    }
-  };
-
-  const getCases = async () => {
-    const token = await getAccessToken();
-    if(token){
-      const tokenData = jwt(token);
-      const url = BASE_API_ROUTE + ( isLawyer.split('_')[0] == 'true' ? `Document/GetDocumentsThatLawyerHasAccessToByUserId` : `Document/GetDocumentsByUserId?userId=${tokenData.uid}`); 
-      const Data = {
-        "userId": isLawyer.split('_')[1],
-        "lawyerId": isLawyer.split('_')[2]
-      }
-      try {
-        const response = await (isLawyer.split('_')[0] == 'true' ? axios.post(url, Data, {headers: {Authorization: `Bearer ${token}`}}) : axios.get(url,{headers: {Authorization: `Bearer ${token}`}}));
-        setCases(response.data.data);
-        // response.data.data.map(async (casei) => {
-        //   const lawyers = await getLawyersThatHaveAccessToDoc(casei.id);
-        //   // setCases
-        //   console.log(casei.id, lawyers);
-        // });
-        // console.log('response in getDocument : ',response);
-      } catch (error) {
-        console.log('error in getDocument : ',error);
-      }
-    }
-  };
   
   useEffect(() => {
-    getCases();
+    const GetCases = async () => {
+      const token = await getAccessToken();
+      if(token){
+        const tokenData = jwt(token);
+        const url = BASE_API_ROUTE + ( isLawyer == 'true' ? `Document/GetDocumentsThatLawyerHasAccessToByUserId` : `Document/GetDocumentsByUserId?userId=${tokenData.uid}`); 
+        const Data = {
+          "userId": tokenData.uid,
+          "lawyerId": 0
+        }
+        try {
+          const response = await (isLawyer == 'true'? axios.post(url, Data, {headers: {Authorization: `Bearer ${token}`}}) : axios.get(url,{headers: {Authorization: `Bearer ${token}`}}));
+          setCases(response.data.data);
+          // console.log('response in getDocument : ',response);
+        } catch (error) {
+          console.log('error in getDocument : ',error);
+        }
+      }
+    };
+    GetCases();
   }, []);
-
-  const showErrorMessage = (errorMessage) => {
-    toast.error(errorMessage, {
-      position: "bottom-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      rtl:true,
-    });
-  };
-  const showSuccesMessage = (payam) => {
-    toast.success(payam, {
-      position: "bottom-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      rtl:true,
-    });
-  };
-
-  const handleChooseCase = async (docId) => {
-    const token = await getAccessToken();
-    if(token){
-      const url = BASE_API_ROUTE + 'Document/GrantAccessToLawyer';
-      const data = {
-        "lawyerId": isLawyer.split('_')[1], // or number
-        "documentId": docId,
-      }
-      try {
-        const response = await axios.post(url, data, {headers: {Authorization: `Bearer ${token}`}});
-        // console.log('response in GrantAccessToLawyer : ',response);
-        showSuccesMessage('پرونده مورد نظر با موفقیت برای وکیل مورد نظر ارسال شد.');
-      } catch (error) {
-        console.log('error in GrantAccessToLawyer : ',error);
-        showErrorMessage('خطا در ارسال پرونده');
-      }
-    }
-  };
-
-  const handleDeleteCase = async (docId) => {
-    const token = await getAccessToken();
-    if(token){
-      const url = BASE_API_ROUTE + `Document/DeleteDocument?documentId=${docId}`;
-      try {
-        const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
-        // console.log('response in deleting case : ',response);
-        getCases();
-        showSuccesMessage('پرونده مورد نظر با موفقیت حذف شد.');
-      } catch (error) {
-        console.log('error in deleting case : ',error);
-        showErrorMessage('خطا در حذف پرونده');
-      }
-    }
-  };
-
-  const showLawyersThatHaveAccessToDoc = (docId) => {
-    return null;
-  };
 
   const card = (casei) => {
     return ( 
@@ -170,10 +59,10 @@ const ShowCases = () => {
           <br />
           حداکثر بودجه : {casei.maximumBudget} تومان
         </Typography>
-        <Grid item xs={12} sx={{overflow:'hidden', width: '200px', cursor:'pointer'}} onClick={() => handleOpenDescription(casei.description)}>
-          <Typography fontFamily="shabnam" fontSize="13px" sx={{whiteSpace: 'nowrap',marginBottom: 1,padding: '2px',borderRadius: '7px',textOverflow: 'ellipsis',overflow: 'hidden',}}>
-            توضیحات : {casei.description}
-          </Typography>
+        <Grid item xs={12} sx={{overflow:'hidden', width: '200px'}}>
+              <Typography fontFamily="shabnam" fontSize="13px" sx={{whiteSpace: 'nowrap',marginBottom: 1,padding: '2px',borderRadius: '7px',textOverflow: 'ellipsis',overflow: 'hidden',}}>
+                توضیحات : {casei.description}
+              </Typography>
         </Grid>
         <Box backgroundColor={'lightblue'} borderRadius={2}>
           <IconButton size="small">
@@ -183,19 +72,10 @@ const ShowCases = () => {
             </a>
           </IconButton>
         </Box>
-        {showLawyersThatHaveAccessToDoc(casei.id)}
       </CardContent>
-      {isLawyer == 'false' && 
-        <CardActions>
-          <Button onClick={()=> navigate(`/new-case/edit_${casei.id}`)} sx={{fontFamily: "shabnam", mb:1}} size="small">ویرایش</Button>
-          <Button onClick={()=>handleDeleteCase(casei.id)} sx={{fontFamily: "shabnam", mb:1}} size="small">حذف</Button>
-        </CardActions>
-      }
-      {isLawyer.split('_')[0] == 'choose' && 
-        <CardActions>
-          <Button variant="contained" onClick={()=>handleChooseCase(casei.id)} sx={{fontFamily: "shabnam", mb:1, width:'100%'}} size="large">ارسال</Button>
-        </CardActions>
-      }
+      <CardActions>
+        <Button onClick={()=> navigate(`/new-case/edit_${casei.id}`)} sx={{fontFamily: "shabnam", mb:1}} size="small">ویرایش</Button>
+      </CardActions>
     </React.Fragment>
     );
   };
@@ -209,11 +89,11 @@ const ShowCases = () => {
       <Helmet>
           <title>پرونده های من</title>
       </Helmet>
-      <Grid display={"flex"} minHeight={'100vh'} alignItems={"center"} justifyContent={"center"} width={"100%"} backgroundColor={'#ABC0C0'}>
+      <Grid display={"flex"} alignItems={"center"} justifyContent={"center"} width={"100%"} backgroundColor={'#ABC0C0'}>
         <Grid container direction={{xs:'column',md:'row'}} height={"100%"} width={{xs:'100%',sm:"90%"}} borderRadius={"10px"} paddingY={"50px"} paddingX={{xs:'0px',sm:"10px",md:'50px'}} display={"flex"} m={"2%"} backgroundColor={'white'}>        
-          <Grid item xs={12} lg={(isLawyer == 'false') ? 11 : 12}>
+          <Grid item xs={12} lg={11}>
             <Grid container direction={"row"} justifyContent={"right"}>
-              {refCases.current.length == 0 ? <Typography sx={{fontFamily: "shabnam", fontSize: 24 }}>{isLawyer.split('_')[0] == 'true' ? 'هنوز پرونده ای برای شما ارسال نشده است.' : 'شما هنوز پرونده‌ ای ایجاد نکرده اید.'}</Typography>
+              {refCases.current.length == 0 ? <Typography sx={{fontFamily: "shabnam", fontSize: 24 }}>{isLawyer == 'true' ? 'هنوز پرونده ای برای شما ارسال نشده است.' : 'شما هنوز پرونده‌ ای ایجاد نکرده اید.'}</Typography>
               : 
                 refCases.current.map((casei) => 
                 <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -230,24 +110,6 @@ const ShowCases = () => {
           }
         </Grid>
       </Grid>
-      <Dialog
-        open={openDescription}
-        onClose={handleCloseDescription}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          <Typography fontFamily={"shabnam"} fontSize={'19px'}>متن کامل توضیحات:</Typography>
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            <Typography fontFamily={"shabnam"} fontSize={'17px'}>{description}</Typography>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDescription} autoFocus><Typography fontFamily={"shabnam"} fontSize={'15px'}>بستن</Typography></Button>
-        </DialogActions>
-      </Dialog>
       </>
   );
 }

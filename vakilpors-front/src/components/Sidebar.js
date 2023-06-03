@@ -1,7 +1,6 @@
 import { HomeOutlined, PersonSearchOutlined, ForumOutlined, PolicyOutlined, AppRegistrationOutlined,
        LoginOutlined, LogoutOutlined, ManageAccountsOutlined, AccountCircleOutlined, CallOutlined,
-       Menu, ChevronRight, ChatOutlined, DashboardOutlined, AssignmentOutlined, WalletOutlined,
-       AssignmentTurnedInOutlined, AssessmentOutlined } from "@mui/icons-material";
+       Menu, ChevronRight, ChatOutlined, DashboardOutlined, AssignmentOutlined, WalletOutlined } from "@mui/icons-material";
 import React, { useState, useEffect } from 'react';
 import useStateRef from "react-usestateref";
 import { styled } from '@mui/material/styles';
@@ -96,7 +95,7 @@ const Sidebar = (props) => {
   const showSuccesMessage = (payam) => {
     toast.success(payam, {
       position: "bottom-right",
-      autoClose: 3000,
+      autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -112,21 +111,14 @@ const Sidebar = (props) => {
   
       window.addEventListener('resize', updateSize);
 
+      // console.log("az too sidebar : ",refUserRole);
       const token = await getAccessToken();
       if(token){
-        // staticits ip send
-        if(refUserRole.current != 'Admin'){
-          const urlIp = BASE_API_ROUTE + 'Statistics/AddVisit';
-          try {
-            const response = await axios.get(urlIp, {headers: {Authorization: `Bearer ${token}`}});
-            // console.log('response in sending IP : ',response);
-          } catch (error) {
-            console.log('error in sending IP : ',error);
-          }
-        }
-        // rest
         const tokenData = jwt(token);
-        let url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
+        let url = "";
+        if(refUserRole.current === "User"){
+          url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
+        }
         if(refUserRole.current === "Vakil"){
           url = BASE_API_ROUTE + `Lawyer/GetLawyerByUserId?userId=${tokenData.uid}`;
         }
@@ -135,15 +127,15 @@ const Sidebar = (props) => {
           if(refUserRole.current === "Vakil"){
             setLawyerID(response.data.data.id);
           }
-          // console.log('response in getting user data : ',response);
+          console.log('response : ',response);
           handleAPI(response.data.data);
         } catch (error) {
-          console.log('error in getting user data : ',error);
+            console.log('error : ',error);
         }
       }
       if(!token){
         console.log('login required');
-        if(!props.homePage) navigate("/Login");
+        navigate("/Login");
       }
     };
     sidebarApi();
@@ -165,14 +157,15 @@ const Sidebar = (props) => {
       tempLinks = [
         {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
         {name:'ویرایش پروفایل', icon:ManageAccountsOutlined, url:'/edit-user'},
-        {name:'جست و جوی وکلا', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
+        // {name:'مشاهده پروفایل', icon:ManageAccountsOutlined, url:'/user-display-profile'},        
+        {name:'جست و جوی وکیل', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
         {name:'فروم', icon:ForumOutlined, url:'/Forum'},
+        {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
+        {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
         {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
         {name:'داشبورد', icon:DashboardOutlined, url:'/PremiumPage'},
         {name:'پرونده های من', icon:AssignmentOutlined, url:`/show-cases/${false}`},
         {name:'کیف پول', icon:WalletOutlined, url:`/wallet`},
-        {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
-        {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
       ];
       break;
     
@@ -183,25 +176,11 @@ const Sidebar = (props) => {
         {name:'مشاهده پروفایل', icon:AccountCircleOutlined, url:`/LawyerPage/${refLawyerID.current}`},
         {name:'جست و جوی وکلا', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
         {name:'فروم', icon:ForumOutlined, url:'/Forum'},
-        {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
-        {name:'پرونده های من', icon:AssignmentOutlined, url:`/user-send-cases/${refLawyerID.current}`},
-        {name:'کیف پول', icon:WalletOutlined, url:'/wallet'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
-      ];
-      break;
-
-    case "Admin":
-      tempLinks = [
-        {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
-        {name:'ویرایش اطلاعات', icon:ManageAccountsOutlined, url:'/edit-user'},
-        {name:'جست و جوی وکلا', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
-        {name:'فروم', icon:ForumOutlined, url:'/Forum'},
         {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
-        {name:'تایید مدارک وکلا', icon:AssignmentTurnedInOutlined, url:'/VerifyLawyers'},
-        {name:'آمار سایت', icon:AssessmentOutlined, url:'/Statistics'},
-        {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
-        {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
+        {name:'پرونده های من', icon:AssignmentOutlined, url:`/show-cases/${true}`},
+        {name:'کیف پول', icon:WalletOutlined, url:`/wallet`},
       ];
       break;
     
@@ -211,9 +190,9 @@ const Sidebar = (props) => {
   const links = tempLinks;
 
   const handleAPI = (data) => {
-    setProfilePicture(refUserRole.current === "Vakil" ? data.user.profileImageUrl : data.profileImageUrl);
+    setProfilePicture(refUserRole.current === "User" ? data.profileImageUrl : data.user.profileImageUrl);
     setOnline(true);
-    setName(refUserRole.current === "Vakil" ? data.user.name : data.name);
+    setName(refUserRole.current === "User" ? data.name : data.user.name);
   };
 
   const updateSize = () => {
@@ -228,7 +207,7 @@ const Sidebar = (props) => {
 
   const logoutHandler = async () => {
     showSuccesMessage('شما از حساب کاربری خود خارج شدید.')
-    await delay(3000);
+    await delay(5000);
     logout();
     navigate('/Login');
   }
@@ -311,6 +290,7 @@ const Sidebar = (props) => {
           ))}
           {refUserRole.current && <ListItem disablePadding>
             <ListItemButton onClick={logoutHandler}>
+            
               <ListItemIcon>
                 <LogoutOutlined color="primary" />
               </ListItemIcon>

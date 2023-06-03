@@ -6,7 +6,8 @@ import Slide from '@mui/material/Slide';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Typography } from "@mui/material";
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { BASE_API_ROUTE } from "../../Constants";
 import axios from "axios";
 import lawOnline from '../../assests/images/law-online.jpg';
@@ -88,7 +89,7 @@ const ForgotPassword = () => {
     return (
         <>
         <Helmet>
-            <title>فراموشی رمز</title>
+            <title>Forgot Password</title>
         </Helmet>
         <ThemeProvider theme={theme}>
         <CacheProvider value={cacheRtl}>
@@ -138,6 +139,7 @@ const ForgotPassword = () => {
                         </Button>
                     </Grid>
                 </Slide>
+                <ToastContainer />
             </Grid>
         </Grid>
         </CacheProvider>

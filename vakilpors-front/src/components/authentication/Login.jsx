@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from 'react-helmet-async';
 import { Grid, TextField, Typography, Slide, Button, InputAdornment, IconButton } from '@mui/material';
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from "../../context/AuthProvider";
 import lawOnline from '../../assests/images/law-online.jpg';
 
@@ -95,7 +96,7 @@ const Login = () => {
     return (
         <>
         <Helmet>
-            <title>ورود</title>
+            <title>Login</title>
         </Helmet>
         <ThemeProvider theme={theme}>
         <CacheProvider value={cacheRtl}>
@@ -185,6 +186,7 @@ const Login = () => {
                         </Typography>
                     </Grid>
                 </Slide>
+                <ToastContainer />
             </Grid>
         </Grid>
         </CacheProvider>

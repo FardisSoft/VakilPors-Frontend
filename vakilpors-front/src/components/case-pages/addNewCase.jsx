@@ -3,9 +3,10 @@ import { Helmet } from 'react-helmet-async';
 import { useAuth } from "../../context/AuthProvider";
 import { BASE_API_ROUTE } from "../../Constants";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { Typography, Grid, TextField, InputAdornment, IconButton, Box, OutlinedInput, InputLabel, FormControl } from "@mui/material";
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import { MuiFileInput } from 'mui-file-input'
 import '../../css/Newcase.css';
@@ -234,10 +235,6 @@ const AddNewCase = () => {
   };
 
   const handleCreateCase = async () => {
-    if(MaximumBudget <= MinimumBudget){
-      showErrorMessage('مقدار حداکثر بودجه باید بیشتر از حداقل آن باشد.');
-      return;
-    }
     const data = new FormData();
     data.append('MaximumBudget', MaximumBudget);
     data.append('MinimumBudget', MinimumBudget);
@@ -265,10 +262,6 @@ const AddNewCase = () => {
   };
 
   const handleEditCase = async () => {
-    if(MaximumBudget <= MinimumBudget){
-      showErrorMessage('مقدار حداکثر بودجه باید بیشتر از حداقل آن باشد.');
-      return;
-    }
     const data = new FormData();
     data.append('MaximumBudget', MaximumBudget);
     data.append('MinimumBudget', MinimumBudget);
@@ -302,7 +295,7 @@ const AddNewCase = () => {
     <ThemeProvider theme={theme}>
     <CacheProvider value={cacheRtl}>
     <Grid display={"flex"} flexDirection={"column"} alignItems={"center"} justifyContent={"center"} width={"100%"} backgroundColor={'#ABC0C0'}>
-      <Grid display={"flex"} flexDirection={'column'} width={{xs:'97%',sm:"90%"}} borderRadius={"10px"} paddingY={"40px"} paddingX={{xs:'10px',sm:"20px",md:'50px'}} m={'2%'} justifyContent={"center"} alignSelf={"center"} backgroundColor={'white'}>
+      <Grid flexDirection={'column'} width={"80%"} borderRadius={"10px"} paddingY={"40px"} paddingX={"50px"} m={'2%'} display={"flex"} justifyContent={"center"} alignSelf={"center"} backgroundColor={'white'}>
         <Typography variant="h4" sx={{fontFamily: "shabnam"}} paddingY={2}>{isEdit ? "ویرایش پرونده" : "افزودن پرونده جدید"}</Typography>
         <hr></hr>
         <Grid container direction={'row'} marginY={'20px'}>
@@ -336,12 +329,12 @@ const AddNewCase = () => {
           <Typography variant="h6" sx={{fontFamily: "shabnam"}}>پرونده خود را توضیح دهید : </Typography>
         </Grid>
         <TextField
-          multiline
-          rows={7}
-          value={Description}
-          onChange={(e) => setDescription(e.target.value)}
-          variant="outlined"
-          inputProps={{style: {fontFamily:"shabnam"}}}/>
+            multiline
+            rows={7}
+            value={Description}
+            onChange={(e) => setDescription(e.target.value)}
+            variant="outlined"
+            inputProps={{style: {fontFamily:"shabnam"}}}/>
         <br></br>
         <br></br> 
         <Grid container direction={'row'} marginBottom={'20px'}>

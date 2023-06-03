@@ -5,11 +5,6 @@ import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from './context/AuthProvider';
 
-import './css/public/bootstrap.min.css';
-import './css/public/bootstrap.rtl.min.css';
-import './css/public/fontstyles.css';
-import './css/public/scrollbar.css';
-
 import App from './App';
 import Login from './components/authentication/Login'
 import Register from './components/authentication/Register';
@@ -32,18 +27,12 @@ import ResponseTransaction from './components/premium-page/ResponseTransaction';
 import AddNewCase from './components/case-pages/addNewCase';
 import ShowCases from './components/case-pages/ShowCases';
 import Wallet from './components/premium-page/Wallet';
-import UserSendCases from './components/case-pages/UserSendCases';
-import NotFound from './components/NotFound';
-import VideoCall from './components/video-call/VideoCall';
-import VerifyLawyers from './components/admin-pages/VerifyLawyers';
-import Statistics from './components/admin-pages/Statistics';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-
 root.render(
   <React.StrictMode>
     <HelmetProvider>
-      <BrowserRouter>
+     <BrowserRouter>
         <AuthProvider>
           <Routes>
             <Route path="/" element={<Sidebar component={App} homePage={true}/>} />
@@ -62,17 +51,13 @@ root.render(
               <Route path="/Activation_Account/:phoneNumber" element={<Sidebar component={ActivationAccount}/>}/>
               <Route path="/chatPage" element={<Sidebar component={ChatPage}/>}/>
               <Route path="/PremiumPage" element={<Sidebar component={PremiumPage}/>}/>
+              <Route path="/ResponseTransaction" element={<ResponseTransaction />}/>
               <Route path="/new-case/:func" element={<Sidebar component={AddNewCase}/>}/>
               <Route path="/show-cases/:isLawyer" element={<Sidebar component={ShowCases}/>}/>
-              <Route path="/user-send-cases/:LawyerId" element={<Sidebar component={UserSendCases}/>}/>
-              <Route path="/payment/verify" element={<Sidebar component={ResponseTransaction} />}/>
+              <Route path="/payment/verify" element={<ResponseTransaction />}/>
               <Route path="/Rate/:LawyerId" element={<Sidebar component={Rate}/>}/>
               <Route path="/wallet" element={<Sidebar component={Wallet}/>}/>
-              <Route path="/videoCall/:roomId" element={<Sidebar component={VideoCall}/>}/>
-              <Route path="/VerifyLawyers" element={<Sidebar component={VerifyLawyers}/>}/>
-              <Route path="/Statistics" element={<Sidebar component={Statistics}/>}/>
 
-              <Route path="*" element={<NotFound/>}/>
           </Routes>
         </AuthProvider>
       </BrowserRouter>

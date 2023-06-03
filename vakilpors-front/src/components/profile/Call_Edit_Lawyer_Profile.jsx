@@ -1,67 +1,26 @@
 import React, { useState,useEffect } from 'react';
 import useStateRef from 'react-usestateref';
-import { Helmet } from 'react-helmet-async';
-import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
-import { Button, Chip, TextField } from '@mui/material';
+import Button from '@mui/material/Button';
 import { MuiFileInput } from 'mui-file-input';
 import '../../css/signup-and-profile-edit-pages-style.css';
 import jwt from 'jwt-decode';
 import axios from 'axios';
-import { BASE_API_ROUTE } from '../../Constants';
 import { useAuth } from "../../context/AuthProvider";
 import { updateLawyer } from '../../services/userService';
-import { toast } from 'react-toastify';
-
-// mui rtl
-import rtlPlugin from 'stylis-plugin-rtl';
-import { CacheProvider } from '@emotion/react';
-import createCache from '@emotion/cache';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-const cacheRtl = createCache({
-  key: 'muirtl',
-  stylisPlugins: [rtlPlugin],
-});
-const theme = createTheme({
-  direction: 'rtl',
-});
-// mui rtl
+import { Helmet } from 'react-helmet-async';
+import TextField from '@mui/material/TextField';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+import { BASE_API_ROUTE } from '../../Constants';
 
 const filter = createFilterOptions();
 
 const Call_Edit_Lawyer_Profile = () => {
   const { getAccessToken } = useAuth();
   const [getdetail, setdetail, refdetail] = useStateRef({});
-  const [gender, setGender] = useState('');
-  const [title, setTitle] = useState('');
-  const [specialties, setSpecialties] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [errorColor, setErrorColor] = useState("red");
   const descriptionUser = "کاربر گرامی ! در این قسمت می توانید تمامی اطلاعات کاربری خود را بروزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";  
-
-  const showErrorMessage = (errorMessage) => {
-    toast.error(errorMessage, {
-      position: "bottom-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      rtl:true,
-    });
-  };
-  const showSuccesMessage = (payam) => {
-    toast.success(payam, {
-      position: "bottom-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      rtl:true,
-    });
-  };
+  const [defaultTakhasos, setDefaultTakhasos, refDefaultTakhasos] = useStateRef([]);
 
   const titles = [
     { title: 'وکیل پایه یک دادگستری' },
@@ -101,89 +60,75 @@ const Call_Edit_Lawyer_Profile = () => {
     { title: 'سربازی و نظام وظیفه' },
   ];
 
-  const getDefaultTakhasos = (data) => {
+  const getDefaultTakhasos = () => {
     const tt = [];
-    data.split('/').map((temp) => {
-      tt.push({title: temp});
-    });
-    setSpecialties(tt);
-  };
+    if(refdetail.current && refdetail.current.specialties){
+      const tempList = refdetail.current.specialties.split('/');
+      
+      tempList.map((temp) => {
+        tt.push({title: temp});
+      });
+    }
+    setDefaultTakhasos(tt);
+    // console.log(refDefaultTakhasos.current);
+  }
 
-  const specialtiesList = () => {
+  const specialtiesList = () => { 
     return (
-      <ThemeProvider theme={theme}>
-      <CacheProvider value={cacheRtl}>
       <Autocomplete
         multiple
         id="tags-outlined"
         options={specialtieses}
-        filterSelectedOptions
         getOptionLabel={(option) => option.title}
-        getOptionSelected={(option, value) => option.title === value.title}
-        filterOptions={(options, state) =>
-          options.filter(
-            (option) =>
-              !specialties.find(
-                (valueOption) => valueOption.title === option.title
-              )
-          )
-        }
-        defaultValue={specialties}
-        value={specialties}
-        onChange={(event, newValue) => setSpecialties(newValue)}
-        renderTags={(value, getTagProps) =>
-          value.map((option, index) => (
-            <Chip variant="filled" color='primary' dir="rtl" sx={{ fontFamily:"shabnam" }} label={option.title} {...getTagProps({ index })} />
-          ))
-        }
-        renderOption={(props, option) => <li {...props} style={{fontFamily:'shabnam'}}>{option.title}</li>}
+        defaultValue={refDefaultTakhasos.current}
+        filterSelectedOptions
         renderInput={(params) => (
-          <TextField className='NoBorder' {...params} placeholder="تخصص ها"/>
+          <TextField
+            {...params}
+            placeholder="تخصص ها"
+          />
         )}
       />
-      </CacheProvider>
-      </ThemeProvider>
     );
-  };
+  }
 
   const genderList = () => {
     return (
       <Autocomplete
-        value={gender}
+        value={refdetail.current.gender}
         onChange={(event, newValue) => {
-          setGender(newValue);
           setdetail({
             ...refdetail.current,
             ['gender']: newValue,
           });
         }}
+        // inputValue={refdetail.current.gender}
+        // onInputChange={(event, newInputValue) => {
+        //   setInputValue(newInputValue);
+        // }}
         id="controllable-states-demo"
         options={genders}
-        renderOption={(props, option) => <li {...props} style={{fontFamily:'shabnam'}}>{option}</li>}
-        renderInput={(params) => <TextField className='NoBorder' {...params} />}
+        renderInput={(params) => <TextField {...params} />}
       />
     );
-  };
+  }
 
   const titleList = () => {
     return (
       <Autocomplete
-        value={title}
+        value={refdetail.current.title}
         onChange={(event, newValue) => {
           if (typeof newValue === 'string') {
-            setTitle(newValue);
             setdetail({
               ...refdetail.current,
               ['title']: newValue,
             });
           } else if (newValue && newValue.inputValue) {
-            setTitle(newValue.inputValue);
             setdetail({
               ...refdetail.current,
               ['title']: newValue.inputValue,
             });
           } else if(newValue && newValue.title) {
-            setTitle(newValue.title);
             setdetail({
               ...refdetail.current,
               ['title']: newValue.title,
@@ -219,10 +164,10 @@ const Call_Edit_Lawyer_Profile = () => {
           // Regular option
           return option.title;
         }}
-        renderOption={(props, option) => <li {...props} style={{fontFamily:'shabnam'}} >{option.title}</li>}
+        renderOption={(props, option) => <li {...props}>{option.title}</li>}
         freeSolo
         renderInput={(params) => (
-          <TextField className='NoBorder' {...params}/>
+          <TextField sx={{border:"none"}}{...params}/>
         )}
       />
     );
@@ -259,13 +204,6 @@ const Call_Edit_Lawyer_Profile = () => {
     });
   }
 
-  const handleMelliCardChange = (file) => {
-    // setdetail({
-    //   ...refdetail.current,
-    //   ['resume']: file,
-    // });
-  }
-
   useEffect(() => {
     const fetchData = async () => {
       const token = await getAccessToken();
@@ -274,14 +212,15 @@ const Call_Edit_Lawyer_Profile = () => {
         const url = BASE_API_ROUTE + `Lawyer/GetLawyerByUserId?userId=${tokenData.uid}`;
         try {
           const response = await axios.get(url);
-          // console.log('response in getting lawyer data : ', response);
+          console.log('response : ', response);
           setdetail(response.data.data);
-          setGender(response.data.data.gender);
-          setTitle(response.data.data.title);
-          getDefaultTakhasos(response.data.data.specialties);
+          getDefaultTakhasos();
         } catch (error) {
-          console.log('error in getting lawyer data : ', error);
+          console.log('error : ', error);
         }
+      }
+      if(!token){
+        // alert("شما باید ابتدا وارد حساب کاربری خود شوید.");
       }
     };
     fetchData();
@@ -289,9 +228,10 @@ const Call_Edit_Lawyer_Profile = () => {
 
   const updateuser = async (event) => {
     event.preventDefault();
+    console.log(refdetail.current);
     const formData = new FormData();
     for (const key in refdetail.current) {
-      if(key != 'user' && key != 'specialties'){
+      if(key != 'user'){
         formData.append(key, refdetail.current[key] == null ? '' : refdetail.current[key]);
       }
       if(key == 'user')
@@ -299,21 +239,18 @@ const Call_Edit_Lawyer_Profile = () => {
           formData.append('user.' + keyUser, refdetail.current['user'][keyUser] == null ? '' : refdetail.current['user'][keyUser]);
         }
     }
-    let specialtiesString = '';
-    specialties.map((takh) => {
-      specialtiesString = specialtiesString == '' ? takh.title : ( specialtiesString + '/' + takh.title );
-    });
-    formData.append('specialties', specialtiesString);
     const token = await getAccessToken();
     if(token){
       const tokenData = jwt(token);
       try {
           const success = await updateLawyer(formData);
-          // console.log("success in updating lawyer data : ",success);
-          showSuccesMessage("اطلاعات شما با موفقیت تغییر کرد.");
+          console.log("success",success);
+          setErrorMessage("اطلاعات شما با موفقیت تغییر کرد.");
+          setErrorColor("green");
       } catch (error) {
-          console.log('error in updating lawyer data : ',error);
-          showErrorMessage("تغییر اطلاعات با خطا مواجه شد.");
+          console.log('error : ',error);
+          setErrorMessage("تغییر اطلاعات با خطا مواجه شد.");
+          setErrorColor("red");
       }
     }
   };
@@ -336,7 +273,7 @@ const Call_Edit_Lawyer_Profile = () => {
   return (
     <>
     <Helmet>
-      <title>ویرایش اطلاعات وکیل</title>
+      <title>edit lawyer page</title>
     </Helmet>
       <div className="page-content" >
         <div className="form-v4-content">
@@ -358,7 +295,8 @@ const Call_Edit_Lawyer_Profile = () => {
                   margin="normal" />
               </div>
               <div className="form-row form-row-1">
-                <label style={{ position: "relative", top: "5px" }}><p>ایمیل</p></label>
+
+              <label style={{ position: "relative", top: "5px" }}><p>ایمیل</p></label>
                 <input
                   className="input100"
                   type="text"
@@ -366,6 +304,7 @@ const Call_Edit_Lawyer_Profile = () => {
                   value={refdetail.current.user ? refdetail.current.user.email : ''}
                   onChange={setUserInfo}
                   margin="normal" />
+
               </div>
             </div>
             <div className="form-group">
@@ -415,7 +354,14 @@ const Call_Edit_Lawyer_Profile = () => {
             <div className="form-group">
               <div className="form-row">
                 <label style={{ position: "relative", top: "5px" }}><p>تخصص ها</p></label>
-                {specialtiesList()}
+                <input
+                  className="input100"
+                  type="text"
+                  name="specialties"
+                  value={refdetail.current.specialties}
+                  onChange={setUserInfo}
+                  margin="normal" />
+                {/* {specialtiesList()} */}
               </div>
             </div>
             <div className="form-group">
@@ -472,16 +418,11 @@ const Call_Edit_Lawyer_Profile = () => {
                 <MuiFileInput fullWidth margin='10px' value={refdetail.current.resume} inputProps={{style: {padding: "20px 10px"}}} onChange={handleResumeChange} />
               </div>
             </div>
-            <div className="form-group">
-              <div className="form-row">
-                <label style={{ position: "relative", top: "5px" }}><p>کارت ملی (کارت ملی شما در پروفایل شما نمایش داده نخواهد شد و تنها جهت احراز هویت شما توسط ادمین مورد بررسی قرار می گیرد)</p></label>
-                <MuiFileInput fullWidth margin='10px' value={refdetail.current.resume} inputProps={{style: {padding: "20px 10px"}}} onChange={handleMelliCardChange} />
-              </div>
-            </div>
             <div className="form-row-last">
               <Button sx={{marginTop:'20px', fontFamily:'shabnam'}} type="submit" variant="contained" color="primary" onClick={updateuser}>
                 ثبت اطلاعات
               </Button>
+              <label style={{marginTop:'20px'}} className="container"><p className="text" style={{color:errorColor}}>{errorMessage}</p></label>
             </div>
           </form>
         </div>

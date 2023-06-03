@@ -53,7 +53,6 @@
     margin-bottom: 30px;
     overflow: hidden;
     -webkit-border-radius: 5px;
-    -webkit-border-top-left-radius: 55px;
     -moz-border-radius: 5px;
     -moz-border-radius-topleft: 55px;
     border-radius: 5px;
@@ -94,7 +93,7 @@
     color: #b0b9be
 }
 .teachers-list .teacher-item > div h2 a:hover{
-    color: #00b3e9
+    color: #012780
 }
 .teachers-list .teacher-item > div span{
     display: block;
@@ -187,7 +186,7 @@
     color: #686e71
 }
 .teacher-profile-content .top-layer .left-col ul li.active a{
-    color: #00b3e9
+    color: #012780
 }
 .teacher-profile-content .top-layer .left-col ul li a:before{
     position: absolute;
@@ -221,7 +220,7 @@
 }
 .teacher-profile-content .top-layer .left-col ul li.active a:after,
 .teacher-profile-content .top-layer .left-col ul li.active a:before{
-    background-color: #00bffe;
+    background-color: #012780;
     opacity: 1
 }
 .teacher-profile-content .profile-content{
@@ -265,14 +264,7 @@
     top: 11px;
     content: ''
 }
-.teacher-profile-content .profile-content #teacher-about h2,
-.teacher-profile-content .profile-content #teacher-about h3{
-    font-size: 18px;
-    font-weight: bold;
-    line-height: 30px;
-    margin: 25px 0 15px;
-    color: #5fb430
-}
+
 .pagination-layer{
     padding: 25px 0
 }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import { Grid, Rating, Avatar, TextField, Typography, Slide, Button } from '@mui/material';
 import { Card, CardContent } from "@mui/material";
 import { Helmet } from 'react-helmet-async';
@@ -7,7 +8,8 @@ import { useAuth } from "../context/AuthProvider";
 import axios from 'axios';
 import { BASE_API_ROUTE } from '../Constants';
 import smilinglawyer from '../assests/images/lawyer_smiler.jpg';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
@@ -50,6 +52,7 @@ const Rate = () => {
 
   const { LawyerId } = useParams();
   const { getAccessToken } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setShow(true);
@@ -102,6 +105,7 @@ const Rate = () => {
       "rateNum": Number(value)
     };
     try {
+      console.log(url,data);
       const response = await (isFirstRate ? axios.post(url, data, {headers: {Authorization: `Bearer ${token}`}})
         : axios.put(url, data, {headers: {Authorization: `Bearer ${token}`}}));
       // console.log('response in adding/updating rate : ',response);
@@ -120,7 +124,7 @@ const Rate = () => {
   return (
     <>
     <Helmet>
-      <title>نظر</title>
+      <title>Rate Page</title>
     </Helmet>
     <ThemeProvider theme={theme}>
     <CacheProvider value={cacheRtl}>
@@ -152,7 +156,7 @@ const Rate = () => {
             <Grid container width={{xs:'100%',sm:'80%'}} alignItems="stretch">
               <Grid sx={{backgroundColor:'rgba(0,0,0,0)',backgroundImage:`url(${profileBackgroundPicture})`,backgroundRepeat:'no-repeat',backgroundSize:'cover',backgroundPosition:'center'}} display="flex" alignItems="center" justifyContent="center" item component={Card} xs>
                 <CardContent>
-                  <Avatar alt={name} sx={{ width: 80, height: 80 }} src={profilePicture} />
+                  <Avatar alt={name} sx={{ width: 60, height: 60 }} src={profilePicture} />
                 </CardContent>
               </Grid>
             </Grid>
@@ -190,12 +194,11 @@ const Rate = () => {
             // color: "rgb(25,117,210)",
             color:"black",
            } }}
-            InputLabelProps={{ align: "right", dir: "rtl", style: { fontFamily:"shabnam", fontSize: "17px", color:"black", } }}
+            InputLabelProps={{ align: "right", dir: "rtl" }}
             sx={{
               width: {xs:'100%',sm:'80%'},
-              padding: 1,
+              padding: 0,
               backgroundColor: 'rgba(255,255,255,0.5)',
-              borderRadius: '0 0 7px 7px',
               // ":focus-within":{padding:0},
             }}/>
           </Slide>
@@ -209,6 +212,7 @@ const Rate = () => {
               </Button>
             </Grid>
           </Slide>
+          <ToastContainer/>
         </Grid>
       </Grid>
     </CacheProvider>

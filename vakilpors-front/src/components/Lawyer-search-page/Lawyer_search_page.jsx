@@ -56,87 +56,88 @@ const Lawyer_search_page = () => {
     };
 
     const handleSortBygrade = () => {
-      const sorted = [...filteredLawyers].sort((a, b) => a.grade - b.grade);
-      setFilteredLawyers(sorted);
+        const sorted = [...filteredLawyers].sort((a, b) => a.grade - b.grade);
+        setFilteredLawyers(sorted);
     }
 
     const handleSortByparvandeNo = () => {
         const sorted = [...filteredLawyers].sort((a, b) => a.parvandeNo - b.parvandeNo);
         setFilteredLawyers(sorted);
-      }
-      
-      const handleSortBylikes = () => {
+    }
+
+    const handleSortBylikes = () => {
         const sorted = [...filteredLawyers].sort((a, b) => a.numberOfLikes - b.numberOfLikes);
         setFilteredLawyers(sorted);
-      }
-      const handleSortByoldest = () => {
+    }
+    const handleSortByoldest = () => {
         const sorted = [...filteredLawyers].sort((a, b) => a.id - b.id);
         setFilteredLawyers(sorted);
-      }
+    }
 
 
     return (
         <>
             <Helmet>
-                <title>جست و جوی وکلا</title>
+                <title>Lawyer Search Page</title>
             </Helmet>
             <div class="Main_contain">
                 <Search LawyerSearch={LawyerSearch} LawyerQuery={LawyerQuery} />
                 <PremiumCard />
                 <AppBar position="relative" style={{ borderBottomRightRadius: "30px", borderBottomLeftRadius: "30px", height: "70px", backgroundColor: "#012780" }}>
                     <Container maxWidth="xl">
-                        <Toolbar  >
+                        <Toolbar >
 
                             <Typography variant="h9">
                                 مرتب سازی بر اساس
                             </Typography>
 
-                            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }}}>
-                            <Button
-                                        onClick={handleSortBygrade}
-                                        sx={{ my: -1, color: 'white', display: 'block'}}>
-                                        امتياز
-                                    </Button>
-                                    <Button
+                            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                                <Button
+                                    onClick={handleSortBygrade}
+                                    sx={{ my: -1, color: 'white', display: 'block',fontFamily : "shabnam"}}>
+                                    امتياز
+                                    
+                                </Button>
+                                <Button
                                     onClick={handleSortByparvandeNo}
-                                        sx={{ my: -1, color: 'white', display: 'block' }}>
-                                        شماره پرونده  
-                                    </Button>
-                                    <Button
-                                       onClick={handleSortBylikes}
-                                        sx={{ my: -1, color: 'white', display: 'block' }}>
-                                        تعداد لايك كاربران
-                                    </Button>
-                                    <Button
-                                       onClick={handleSortByoldest}
-                                        sx={{ my: -1, color: 'white', display: 'block' }}>
-                                        قدیمی ترین وکلای وکیل پرس
-                                    </Button>
+                                    sx={{ my: -1, color: 'white', display: 'block',fontFamily : "shabnam"}}>
+                                    شماره پرونده
+                                </Button>
+                                <Button
+                                    onClick={handleSortBylikes}
+                                    sx={{ my: -1, color: 'white', display: 'block',fontFamily : "shabnam"}}>
+                                    تعداد لايك كاربران
+                                </Button>
+                                <Button
+                                    onClick={handleSortByoldest}
+                                    sx={{ my: -1, color: 'white', display: 'block',fontFamily : "shabnam"}}>
+                                    قدیمی ترین وکلای وکیل پرس
+                                </Button>
                             </Box>
-                            
-                    
+
+
                             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                                    <Button
-                                        onClick={handleSortBygrade}
-                                        sx={{ my: 2, color: 'white', display: 'block'}}>
-                                        امتياز
-                                    </Button>
-                                    <Button
+                                <Button
+                                    onClick={handleSortBygrade}
+                                    sx={{ my: 2, color: 'white', display: 'block',fontFamily : "shabnam"}}>
+                                    امتياز
+                                </Button>
+                                <Button
                                     onClick={handleSortByparvandeNo}
-                                        sx={{ my: 2, color: 'white', display: 'block' }}>
-                                        شماره پرونده  
-                                    </Button>
-                                    <Button
-                                       onClick={handleSortBylikes}
-                                        sx={{ my: 2, color: 'white', display: 'block' }}>
-                                        تعداد لايك كاربران
-                                    </Button>
-                                    <Button
-                                       onClick={handleSortByoldest}
-                                        sx={{ my: 2, color: 'white', display: 'block' }}>
-                                        قدیمی ترین وکلای وکیل پرس
-                                    </Button>
-                                
+                                    sx={{ my: 2, color: 'white', display: 'block' ,fontFamily : "shabnam"}}>
+                                    شماره پرونده
+                                </Button>
+                                <Button
+                                    onClick={handleSortBylikes}
+                                    sx={{ my: 2, color: 'white', display: 'block' ,fontFamily : "shabnam"}}>
+                                    تعداد لايك كاربران
+                                </Button>
+                                <Button
+                                    onClick={handleSortByoldest}
+                                    sx={{ my: 2, color: 'white', display: 'block' ,fontFamily : "shabnam"}}>
+                                    قدیمی ترین وکلای وکیل پرس
+                                </Button>
+
                             </Box>
 
                             <Box sx={{ flexGrow: 0 }}>
@@ -157,7 +158,7 @@ const Lawyer_search_page = () => {
                                         vertical: 'top',
                                         horizontal: 'right',
                                     }}
-                                >   
+                                >
                                 </Menu>
                             </Box>
                         </Toolbar>

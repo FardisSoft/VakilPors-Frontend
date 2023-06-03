@@ -19,6 +19,7 @@
   h1,h2,h3,h4,h5,h6{  font-size: 15px; margin: 0; padding: 0}
   img{max-width: 100%}
   
+  
   /********** Transition ************/
   a,i,input[type="submit"], form button,.landing-layer .main-header nav > ul > li > a:before,
   .landing-layer .main-header nav .responsive-menu,.courses-view .course-col > div .img-layer a:before,
