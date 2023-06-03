@@ -213,30 +213,32 @@ const Replies = () => {
 								}}/>}
 							<Typography sx={{fontSize:'15px', fontFamily:'shabnam'}}>{reply.text}</Typography>
 						</Grid>
-						<Grid display={'flex'} flexDirection={'row'} marginTop={{xs:'15px',sm:'0'}}>
-							<Likes threadOrComment={reply} IsThread={false}/>
-							{(reply.user.userId === Number(userId) && !reply.isSetAsAnswer) && <>
-								<IconButton size="large" onClick={() => handleEditClick(reply.id,reply.text)}>
-									<Edit />
-								</IconButton>
-								<IconButton size="large" onClick={() => handleDeleteClick(reply.id)}>
-									<Delete />
-								</IconButton>
-							</>}
-							{(IsSelfThread && reply.user.userId !== Number(userId) && !reply.isSetAsAnswer) && 
-								<IconButton size="large" onClick={() => handleSetAsAnswerClick(reply.id)}>
-									<TaskAlt />
-								</IconButton>}
-						</Grid>
-						<Grid display={'flex'} flexDirection={'row'} marginTop={{xs:'10px',sm:'0'}}>
-							<Typography sx={{mr:'3px', fontSize: '15px', fontFamily: 'shabnam'}}>توسط {reply.user.name} </Typography>
-							{reply.user.isPremium && <WorkspacePremium sx={{color:'purple',
-									backgroundColor:'gold',
-									borderRadius: '12px',
-									padding:'1px',
-									width: '23px',
-									mr:'10px',}}/>}
-							<Typography sx={{ml:'10px', fontSize:'13px', fontFamily:'shabnam'}}>{Moment(reply.createDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(reply.createDate).format('HH:mm')}</Typography>
+						<Grid display={'flex'} flexDirection={'column'}>
+							<Grid display={'flex'} flexDirection={'row'} justifyContent={'flex-end'} marginTop={{xs:'15px',sm:'0'}}>
+								<Likes threadOrComment={reply} IsThread={false}/>
+								{(reply.user.userId === Number(userId) && !reply.isSetAsAnswer) && <>
+									<IconButton size="large" onClick={() => handleEditClick(reply.id,reply.text)}>
+										<Edit />
+									</IconButton>
+									<IconButton size="large" onClick={() => handleDeleteClick(reply.id)}>
+										<Delete />
+									</IconButton>
+								</>}
+								{(IsSelfThread && reply.user.userId !== Number(userId) && !reply.isSetAsAnswer) && 
+									<IconButton size="large" onClick={() => handleSetAsAnswerClick(reply.id)}>
+										<TaskAlt />
+									</IconButton>}
+							</Grid>
+							<Grid display={'flex'} flexDirection={'row'} marginTop={'10px'}>
+								<Typography sx={{mr:'3px', fontSize: '15px', fontFamily: 'shabnam'}}>توسط {reply.user.name} </Typography>
+								{reply.user.isPremium && <WorkspacePremium sx={{color:'purple',
+										backgroundColor:'gold',
+										borderRadius: '12px',
+										padding:'1px',
+										width: '23px',
+										mr:'10px',}}/>}
+								<Typography sx={{ml:'10px', fontSize:'13px', fontFamily:'shabnam'}}>{Moment(reply.createDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(reply.createDate).format('HH:mm')}</Typography>
+							</Grid>
 						</Grid>
 					</Grid>
 				))}

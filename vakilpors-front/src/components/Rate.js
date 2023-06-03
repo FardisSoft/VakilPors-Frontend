@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
 import { Grid, Rating, Avatar, TextField, Typography, Slide, Button } from '@mui/material';
 import { Card, CardContent } from "@mui/material";
 import { Helmet } from 'react-helmet-async';
@@ -51,7 +50,6 @@ const Rate = () => {
 
   const { LawyerId } = useParams();
   const { getAccessToken } = useAuth();
-  const navigate = useNavigate();
 
   useEffect(() => {
     setShow(true);
@@ -104,7 +102,6 @@ const Rate = () => {
       "rateNum": Number(value)
     };
     try {
-      console.log(url,data);
       const response = await (isFirstRate ? axios.post(url, data, {headers: {Authorization: `Bearer ${token}`}})
         : axios.put(url, data, {headers: {Authorization: `Bearer ${token}`}}));
       // console.log('response in adding/updating rate : ',response);

@@ -10,6 +10,7 @@ import { useAuth } from "../../context/AuthProvider";
 import axios from 'axios';
 import { BASE_API_ROUTE } from "../../Constants";
 import jwt from 'jwt-decode';
+import { toast } from 'react-toastify';
 
 // mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
@@ -51,6 +52,20 @@ const Forum = () => {
 		getThreadList();
 	}, []);
 
+	const showErrorMessage = (message) => {
+        toast.error(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            rtl:true,
+        });
+    };
+
 	const getThreadIndexByThreadId = (threadId) => {
 		return refThreadList.current.findIndex((thread) => thread.id === threadId);
 	};
@@ -78,6 +93,9 @@ const Forum = () => {
 				});
 			} catch (err) {
 				console.log('error in creating thread : ',err);
+				if(err.response.data.hasOwnProperty('Message') && err.response.data.Message == 'This message is detected as a spam and can not be shown.'){
+					showErrorMessage('نظر شما حاوی تبلیغات غیر مجاز است.');
+				}
 			}
 		}
 	};
@@ -128,19 +146,21 @@ const Forum = () => {
 					<Grid container key={thread.id} direction={{xs:'column',sm:'row'}} width={{xs:'97%',sm:'90%'}} backgroundColor={'#8eb1e5'} display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{mb:'30px', p:'20px', borderRadius:'25px', boxShadow:'0 0 1px 1px #444cc6', 
 					...(thread.userId == '1' && { backgroundColor:'lightskyblue',})}}>
 						<Typography sx={{fontSize:'15px', fontFamily:'shabnam'}}>{thread.title}</Typography>
-						<Grid display={'flex'} flexDirection={'row'} marginTop={{xs:'10px',sm:'0'}}>
-							<Likes threadOrComment={thread} IsThread={true}/>
-							<Badge badgeContent={thread.commentCount} color="primary">
-								<Comments threadId={thread.id} userId={refUserId.current}/>
-							</Badge>
-							{(thread.userId == refUserId.current && !thread.hasAnswer) && 
-							<IconButton onClick={() => handleDeleteThread(thread)}>
-								<Delete sx={{color: '#0d6efd'}}/>
-							</IconButton>}
-						</Grid>
-						<Grid display={'flex'} flexDirection={'row'} marginTop={{xs:'10px',sm:'0'}}>
-							<Typography sx={{fontSize: '15px', fontFamily: 'shabnam', mr: '10px'}}>توسط {thread.user.name}</Typography>
-							<Typography fontFamily={'shabnam'} fontSize={'14px'}>{Moment(thread.createDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(thread.createDate).format('HH:mm')}</Typography>
+						<Grid display={'flex'} flexDirection={'column'}>
+							<Grid display={'flex'} flexDirection={'row'} justifyContent={'flex-end'} marginTop={{xs:'10px',sm:'0'}}>
+								<Likes threadOrComment={thread} IsThread={true}/>
+								<Badge badgeContent={thread.commentCount} color="primary">
+									<Comments threadId={thread.id} userId={refUserId.current}/>
+								</Badge>
+								{(thread.userId == refUserId.current && !thread.hasAnswer) && 
+								<IconButton onClick={() => handleDeleteThread(thread)}>
+									<Delete sx={{color: '#0d6efd'}}/>
+								</IconButton>}
+							</Grid>
+							<Grid display={'flex'} flexDirection={'row'} marginTop={'10px'}>
+								<Typography sx={{fontSize: '15px', fontFamily: 'shabnam', mr: '10px'}}>توسط {thread.user.name}</Typography>
+								<Typography fontFamily={'shabnam'} fontSize={'14px'}>{Moment(thread.createDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(thread.createDate).format('HH:mm')}</Typography>
+							</Grid>
 						</Grid>
 					</Grid>
 				))}
