@@ -13,6 +13,7 @@ import axios from 'axios';
 import jwt from 'jwt-decode';
 import { toast } from 'react-toastify';
 
+
 const StyledTooltip = styled (({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} arrow/>
 ))(({ theme }) => ({
@@ -526,7 +527,7 @@ const ChatPage = () => {
           backgroundColor: 'skyblue',
           ...(isCurrentUser && {
             alignSelf: 'flex-end',
-            backgroundColor: 'lightsteelblue',
+            backgroundColor: '#0041c2',
             // color: 'grey',
           }),
           ...(isDeleted && {
@@ -561,7 +562,7 @@ const ChatPage = () => {
           </Grid>
 
           {/* content */}
-          <Grid sx={{ margin: '10px', whiteSpace: 'pre-wrap', wordBreak: 'break-word',}}>
+          <Grid sx={{  whiteSpace: 'pre-wrap', wordBreak: 'break-word',}}>
             <Typography fontFamily={'shabnam'} 
               color={(isDeleted || message.callStatus == 2) ? 'red' : message.callStatus == 1 ? 'green' : 'black'}>
               { isDeleted ? 'This message was deleted'
