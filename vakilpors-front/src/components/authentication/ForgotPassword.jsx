@@ -144,10 +144,10 @@ const ForgotPassword = () => {
                         aria-label="forgot password type"
                         sx={{ margin: '10px 0' }}
                     >
-                        <ToggleButton value="phone" aria-label="phone forgot password">
+                        <ToggleButton sx={{ fontFamily:"shabnam"}} value="phone" aria-label="phone forgot password">
                             با شماره تلفن همراه
                         </ToggleButton>
-                        <ToggleButton value="email" aria-label="email forgot password">
+                        <ToggleButton sx={{ fontFamily:"shabnam"}}   value="email" aria-label="email forgot password">
                             با ایمیل
                         </ToggleButton>
                     </ToggleButtonGroup>
