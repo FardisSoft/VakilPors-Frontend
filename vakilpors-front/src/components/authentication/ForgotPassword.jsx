@@ -147,13 +147,14 @@ const ForgotPassword = () => {
                         <ToggleButton sx={{ fontFamily:"shabnam"}} value="phone" aria-label="phone forgot password">
                             با شماره تلفن همراه
                         </ToggleButton>
-                        <ToggleButton sx={{ fontFamily:"shabnam"}}   value="email" aria-label="email forgot password">
+                        <ToggleButton sx={{ fontFamily:"shabnam"}} value="email" aria-label="email forgot password">
                             با ایمیل
                         </ToggleButton>
                     </ToggleButtonGroup>
                 </Slide>
                 <Slide in={show} direction="right">
                     <TextField
+
                         label={forgotType === 'phone' ? 'شماره تلفن همراه' : 'ایمیل'}
                         variant="outlined"
                         fullWidth
@@ -162,14 +163,14 @@ const ForgotPassword = () => {
                         onChange={(e) => {
                             setPhoneNumber(e.target.value);
                         }}
-                        sx={{ margin: '10px 0' }}
+                        sx={{ margin: '10px 0', fontFamily:"shabnam" }}
                     />
                 </Slide>
                 <Slide in={show} direction="up">
                     <Button
                         variant="contained"
                         size="large"
-                        sx={{ backgroundColor: "rgb(25,117,210)", color: "white", margin: '10px 0' }}
+                        sx={{ backgroundColor: "rgb(25,117,210)", color: "white", margin: '10px 0', fontFamily:"shabnam"}}
                         onClick={handleApi}
                     >
                         درخواست کد فراموشی
