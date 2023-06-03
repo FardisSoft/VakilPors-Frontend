@@ -10,6 +10,7 @@ import { useAuth } from "../../context/AuthProvider";
 import axios from 'axios';
 import { BASE_API_ROUTE } from "../../Constants";
 import jwt from 'jwt-decode';
+import { toast } from 'react-toastify';
 
 // mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
@@ -51,6 +52,20 @@ const Forum = () => {
 		getThreadList();
 	}, []);
 
+	const showErrorMessage = (message) => {
+        toast.error(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            rtl:true,
+        });
+    };
+
 	const getThreadIndexByThreadId = (threadId) => {
 		return refThreadList.current.findIndex((thread) => thread.id === threadId);
 	};
@@ -78,6 +93,9 @@ const Forum = () => {
 				});
 			} catch (err) {
 				console.log('error in creating thread : ',err);
+				if(err.response.data.hasOwnProperty('Message') && err.response.data.Message == 'This message is detected as a spam and can not be shown.'){
+					showErrorMessage('نظر شما حاوی تبلیغات غیر مجاز است.');
+				}
 			}
 		}
 	};
