@@ -641,6 +641,11 @@ const ChatPage = () => {
     );
   };
 
+
+  const WhiteIconButton = styled(IconButton)({
+    color: 'white',
+  });
+
   return (
     <>
     <Helmet>
@@ -648,7 +653,7 @@ const ChatPage = () => {
     </Helmet>
 
     <Grid container direction={{ xs: 'column', md: 'row' }} height={{xs:'auto', md:'calc(100vh - 65px)'}} minHeight={{xs:'100vh', md:'calc(100vh - 65px)'}} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', display:'flex', justifyContent:'space-around', alignItems:'stretch'}}>
-      <Grid container direction={'column'} width={{ xs: '100%', md: '20%' }} sx={{ borderBottom: { xs: '1px solid grey', md: '0px solid grey' } }}>
+      <Grid container direction={'column'} width={{ xs: '100%', md: '20%' }} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', borderBottom: { xs: '1px solid grey', md: '0px solid grey' } }}>
         
         {/* show user him/herself info */}
         {refUser.current && <Grid display="flex" flexDirection="column" alignItems="center" justifyContent={'center'} padding={1} border={'1px solid grey'} borderRadius={2}>
@@ -689,7 +694,11 @@ const ChatPage = () => {
 
       {pageWidth > 1255 && <Divider color='black' orientation="vertical" variant="middle" flexItem/>}
       
-      <Grid height={isReplyActive ? '95%' : '100%'} width={{ xs: '100%', md: '80%' }} maxWidth={1000} sx={{ display: 'flex', flexDirection: 'column'}}>
+      <Grid height={isReplyActive ? '95%' : '100%'} width={{ xs: '100%', md: '80%' }} maxWidth={1000} sx={{
+        backgroundImage: 'url(https://blog.1a23.com/wp-content/uploads/sites/2/2020/02/Desktop.png)',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center', display: 'flex', flexDirection: 'column'}}>
         {refSelectedChat.current ? (
           <>
             {/* show messages */}
@@ -712,57 +721,83 @@ const ChatPage = () => {
                 </Grid>
               </Grid>}
 
-              <TextField sx={{ flexGrow: 1 }}
-                ref={inputRef}
-                variant="outlined"
-                dir='rtl'
-                fullWidth
-                placeholder="پیام خود را بنویسید..."
-                value={inputText}
-                onChange={handleInputChange}
-                onKeyDown={handleEnter}
-                InputProps={{
-                  dir: "rtl", style: { fontFamily:"shabnam", fontSize: "15px",color:"black",},
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      {isEditActive ? <>
-                      <StyledTooltip title={<React.Fragment>ویرایش پیام</React.Fragment>}>
-                      <IconButton size="small" onClick={handleEditMessage}>
-                        <Edit />
-                      </IconButton>
-                      </StyledTooltip>
-                      <StyledTooltip title={<React.Fragment>انصراف</React.Fragment>}>
-                      <IconButton size="small" onClick={handleCancelEditMessage}>
-                        <Cancel />
-                      </IconButton>
-                      </StyledTooltip>
-                      </> : isReplyActive ? <>
-                      <StyledTooltip title={<React.Fragment>ارسال پاسخ</React.Fragment>}>
-                      <IconButton size="small" onClick={handleReplyMessage}>
-                        <Reply />
-                      </IconButton>
-                      </StyledTooltip>
-                      <StyledTooltip title={<React.Fragment>انصراف</React.Fragment>}>
-                      <IconButton size="small" onClick={handleCancelReplyMessage}>
-                        <Cancel />
-                      </IconButton>
-                      </StyledTooltip>
-                      </> : <>
-                      <StyledTooltip title={<React.Fragment>ارسال فایل</React.Fragment>}>
-                      <IconButton size="small" component="label">
-                        <AttachFile />
-                        <input type="file" style={{ display: 'none' }} onChange={handleAttachFileClick} />
-                      </IconButton>
-                      </StyledTooltip>
-                      <StyledTooltip title={<React.Fragment>ارسال پیام</React.Fragment>}>
-                      <IconButton size="small" onClick={handleSendClick}>
-                        <Send />
-                      </IconButton>
-                      </StyledTooltip>
-                      </>}
-                    </InputAdornment>
-                  ),}}
-              />
+
+              <TextField
+    sx={{
+      flexGrow: 1,
+      '& input': {
+        color: 'white',
+      },
+      '& svg': {
+        color: 'white',
+      },
+    }}
+    ref={inputRef}
+    variant="outlined"
+    dir='rtl'
+    fullWidth
+    placeholder="پیام خود را بنویسید..."
+    value={inputText}
+    onChange={handleInputChange}
+    onKeyDown={handleEnter}
+    InputProps={{
+      dir: "rtl",
+      style: {
+        fontFamily: "shabnam",
+        fontSize: "15px",
+        color: "white",
+      },
+      endAdornment: (
+        <InputAdornment position="end">
+          {isEditActive ? (
+            <>
+              <Tooltip title={<React.Fragment>ویرایش پیام</React.Fragment>}>
+                <WhiteIconButton size="small" onClick={handleEditMessage}>
+                  <Edit />
+                </WhiteIconButton>
+              </Tooltip>
+              <Tooltip title={<React.Fragment>انصراف</React.Fragment>}>
+                <WhiteIconButton size="small" onClick={handleCancelEditMessage}>
+                  <Cancel />
+                </WhiteIconButton>
+              </Tooltip>
+            </>
+          ) : isReplyActive ? (
+            <>
+              <Tooltip title={<React.Fragment>ارسال پاسخ</React.Fragment>}>
+                <WhiteIconButton size="small" onClick={handleReplyMessage}>
+                  <Reply />
+                </WhiteIconButton>
+              </Tooltip>
+              <Tooltip title={<React.Fragment>انصراف</React.Fragment>}>
+                <WhiteIconButton size="small" onClick={handleCancelReplyMessage}>
+                  <Cancel />
+                </WhiteIconButton>
+              </Tooltip>
+            </>
+          ) : (
+            <>
+              <Tooltip title={<React.Fragment>ارسال فایل</React.Fragment>}>
+                <WhiteIconButton size="small" component="label">
+                  <AttachFile />
+                  <input type="file" style={{ display: 'none' }} onChange={handleAttachFileClick} />
+                </WhiteIconButton>
+              </Tooltip>
+              <Tooltip title={<React.Fragment>ارسال پیام</React.Fragment>}>
+                <WhiteIconButton size="small" onClick={handleSendClick}>
+                  <Send />
+                </WhiteIconButton>
+              </Tooltip>
+            </>
+          )}
+        </InputAdornment>
+      ),
+    }}
+  />
+
+
+
+
             </Grid>
           </>
         ) : (
