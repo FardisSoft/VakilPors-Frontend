@@ -17,6 +17,9 @@ import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@mui/material/styles';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+
 const cacheRtl = createCache({
     key: 'muirtl',
     stylisPlugins: [rtlPlugin],
@@ -24,27 +27,30 @@ const cacheRtl = createCache({
         fontFamily: 'shabnam',
     },
 });
+
 const theme = createTheme({
     direction: 'rtl',
 });
+
 // mui rtl
 
 const ForgotPassword = () => {
 
-    const [phoneNumber, setPhoneNumber] = useState(''); 
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [forgotType, setForgotType] = useState('phone'); // 'phone' or 'email'
     const [show, setShow] = useState(false);
     const navigate = useNavigate();
 
     const delay = ms => new Promise(
         resolve => setTimeout(resolve, ms)
     );
-    
+
     useEffect(() => {
         setShow(true);
     }, []);
 
     const showErrorMessage = () => {
-        toast.error('شماره تلفن صحیح نمی باشد', {
+        toast.error('شماره تلفن یا ایمیل صحیح نمی باشد', {
             position: "bottom-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -58,7 +64,7 @@ const ForgotPassword = () => {
     };
 
     const showSuccesMessage = () => {
-        toast.success('کد فراموشی رمز به شماره تماس شما ارسال شد', {
+        toast.success(`کد فراموشی رمز به ${forgotType === 'phone' ? 'شماره موبایل' : 'ایمیل'} شما ارسال شد`, {
             position: "bottom-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -72,8 +78,17 @@ const ForgotPassword = () => {
     };
 
     const handleApi = async () => {
-        const url = BASE_API_ROUTE + `Auth/forgetpassword?PhoneNumber=${phoneNumber.trim()}`;
-        try{
+        try {
+            let url = BASE_API_ROUTE + 'Auth/forgetpassword?';
+            if (forgotType === 'phone') {
+                url += `PhoneNumber=${phoneNumber.trim()}&useSms=true`;
+            } else {
+                url += `Email=${encodeURIComponent(phoneNumber.trim())}&useSms=false`;
+            }
+            console.log("urlo bebein::: ");
+            console.log(url);
+
+
             const response = await axios.get(url);
             showSuccesMessage();
             await delay(5000);
@@ -120,23 +135,45 @@ const ForgotPassword = () => {
                     </Grid>
                 </Slide>
                 <Slide in={show} direction="left">
-                    <TextField value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} id="outlined-basic" label="شماره موبایل" variant="outlined" dir="ltr"
-                    inputProps={{ dir: "rtl", style: { fontFamily:"shabnam", fontSize: "17px",color:"black",} }}
-                    InputLabelProps={{ align: "right", dir: "rtl", style: { fontFamily:"shabnam", fontSize: "17px",color:"black",} }}
-                    sx={{
-                    width: {xs:'100%',sm:'80%'},
-                    padding: 0,
-                    backgroundColor: 'rgba(255,255,255,0.5)',
-                    mb: '10px',
-                    borderRadius:"5px",
-                    }}/>
+                    <ToggleButtonGroup
+                        value={forgotType}
+                        exclusive
+                        onChange={(event,option) => {
+                            setForgotType(option);
+                        }}
+                        aria-label="forgot password type"
+                        sx={{ margin: '10px 0' }}
+                    >
+                        <ToggleButton value="phone" aria-label="phone forgot password">
+                            با شماره تلفن همراه
+                        </ToggleButton>
+                        <ToggleButton value="email" aria-label="email forgot password">
+                            با ایمیل
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+                </Slide>
+                <Slide in={show} direction="right">
+                    <TextField
+                        label={forgotType === 'phone' ? 'شماره تلفن همراه' : 'ایمیل'}
+                        variant="outlined"
+                        fullWidth
+                        type={forgotType === 'phone' ? 'tel' : 'email'}
+                        value={phoneNumber}
+                        onChange={(e) => {
+                            setPhoneNumber(e.target.value);
+                        }}
+                        sx={{ margin: '10px 0' }}
+                    />
                 </Slide>
                 <Slide in={show} direction="up">
-                    <Grid container direction={{xs:'column',sm:'row'}} sx={{ display: "flex", m: 2, justifyContent:"center" }}>
-                        <Button size={'large'} variant="contained" color="primary" sx={{fontsize:"18px",fontFamily:"shabnam"}} onClick={handleApi}>
-                            ارسال کد تایید
-                        </Button>
-                    </Grid>
+                    <Button
+                        variant="contained"
+                        size="large"
+                        sx={{ backgroundColor: "rgb(25,117,210)", color: "white", margin: '10px 0' }}
+                        onClick={handleApi}
+                    >
+                        درخواست کد فراموشی
+                    </Button>
                 </Slide>
             </Grid>
         </Grid>
@@ -144,6 +181,6 @@ const ForgotPassword = () => {
         </ThemeProvider>
         </>
     );
-}
+};
 
 export default ForgotPassword;
