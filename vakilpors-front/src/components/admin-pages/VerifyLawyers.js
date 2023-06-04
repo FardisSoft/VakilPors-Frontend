@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
 import { Typography, Grid, Avatar, Card, CardContent, CardHeader, CardMedia, Button } from "@mui/material";
 import LinkMUI from '@mui/material/Link';
 import { useAuth } from "../../context/AuthProvider";
@@ -10,10 +11,14 @@ const VerifyLawyers = () => {
 
   const [lawyers, setLawyers] = useState([]);
 
-  const { getAccessToken } = useAuth();
+  const { refUserRole, getAccessToken } = useAuth();
+  const navigate = useNavigate();
 
   useEffect( () => {
     const getLawyers = async () => {
+      if (refUserRole.current !== "Admin") {
+        navigate('*');
+      }
       const url = BASE_API_ROUTE + 'Lawyer/GetAll';
       try {
         const response = await axios.get(url);
