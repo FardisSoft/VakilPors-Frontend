@@ -5,6 +5,7 @@ import '../../css/Wallet.css'
 import { useAuth } from "../../context/AuthProvider";
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
+import { toast } from 'react-toastify';
 
 const PremiumCard = () => {
 
@@ -14,25 +15,68 @@ const PremiumCard = () => {
         description: "شارژ کیف پول"
     });
     const [getbalance, setbalance] = useState([]);
+    const [tokens, setTokens] = useState(0);
+    const [lawyerId, setLawyerId] = useState('');
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const token = await getAccessToken();
-            if (token) {
+    const fetchData = async () => {
+        const token = await getAccessToken();
+        if (token) {
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + token
+            };
+            try {
+                const balance = await axios.get(BASE_API_ROUTE + `Wallet/GetBalance`, {
+                    headers: headers
+                });
+                setbalance(balance.data);
+            } catch (error) {
+                console.log('error in getting Balance : ', error);
+            }
+            if(refUserRole.current == 'Vakil'){
                 try {
-                    const headers = {
-                        'Content-Type': 'application/json',
-                        'Authorization': "Bearer " + token
-                    };
-                    const balance = await axios.get(BASE_API_ROUTE + `Wallet/GetBalance`, {
+                    const response = await axios.get(BASE_API_ROUTE + `Lawyer/GetCurrentLawyer`, {
                         headers: headers
                     });
-                    setbalance(balance.data);
+                    setTokens(response.data.data.tokens);
+                    setLawyerId(response.data.data.id);
+                    // console.log('response in getting lawyer data for tokens : ', response);
                 } catch (error) {
-                    console.log('error in getting Balance : ', error);
+                    console.log('error in getting lawyer data for tokens : ', error);
                 }
             }
-        };
+        }
+    };
+
+    const showSuccesMessage = (successMessage) => {
+        toast.success(successMessage, {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          rtl: true,
+        });
+      };
+    
+      const showErrorMessage = (errorMessage) => {
+        toast.error(errorMessage, {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          rtl: true,
+        });
+      };
+
+    useEffect(() => {
         fetchData();
     }, []);
 
@@ -51,7 +95,28 @@ const PremiumCard = () => {
                 console.log('error in Payment/request : ',err);
             }
         }
-    }
+    };
+
+    const transferToken = async () => {
+        const token = await getAccessToken();
+        if (token) {
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + token
+            };
+            try {
+                const response = await axios.get(BASE_API_ROUTE + `Lawyer/TransferToken?lawyerId=${lawyerId}`, {
+                    headers: headers
+                });
+                fetchData();
+                showSuccesMessage('توکن شما با موفقیت به کیف پول شما منتقل شد');
+                console.log('response in transferToken : ', response);
+            } catch (error) {
+                showErrorMessage('خطا در انتقال توکن به کیف پول');
+                console.log('error in transferToken : ', error);
+            }
+        }
+    };
 
     const setpayroll = (event) => {
         setamountdetail({
@@ -73,6 +138,13 @@ const PremiumCard = () => {
                             <img class="img-wallet img-fluid" src="https://pchospital.bio/img/Wallet-pana.svg" />
                             <p class="font-weight-bold text-wallet mt-md-2 pt-md-2">موجودی کیف پول :</p>
                             <p class="my-1 tahoma text-xxl">{getbalance}  تومان</p>
+                            {refUserRole.current == "Vakil" && <>
+                                <p class="font-weight-bold text-wallet mt-md-2 pt-md-2 mt-2">توکن شما در وکیل پرس :</p>
+                                <p class="my-1 tahoma text-xxl">{tokens}</p>
+                                <button class="btn btn-primary mr-2 mt-3 mt-sm-0" style={{ width: "80%" }} onClick={transferToken}>
+                                    انتقال توکن به کیف پول
+                                </button>
+                            </>}
                         </div>
                         {
                             refUserRole.current == "User" ? (
