@@ -59,7 +59,7 @@ root.render(
               <Route path="/Replies/:threadId/:userId" element={<Sidebar component={Replies}/>}/>
               <Route path="/contactUs" element={<Sidebar component={ContactUs}/>}/>
               <Route path="/Forgot_Password" element={<Sidebar component={ForgotPassword}/>}/>
-              <Route path="/Reset_Password/:phoneNumber" element={<Sidebar component={ResetPassword}/>}/>
+              <Route path="/Reset_Password/:phoneNumber/:isSMS" element={<Sidebar component={ResetPassword}/>}/>
               <Route path="/Activation_Account/:phoneNumber" element={<Sidebar component={ActivationAccount}/>}/>
               <Route path="/chatPage" element={<Sidebar component={ChatPage}/>}/>
               <Route path="/PremiumPage" element={<Sidebar component={PremiumPage}/>}/>
