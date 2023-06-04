@@ -18,11 +18,11 @@ import createCache from '@emotion/cache';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@mui/material/styles';
 const cacheRtl = createCache({
-    key: 'muirtl',
-    stylisPlugins: [rtlPlugin],
+  key: 'muirtl',
+  stylisPlugins: [rtlPlugin],
 });
 const theme = createTheme({
-    direction: 'rtl',
+  direction: 'rtl',
 });
 // mui rtl
 
@@ -31,7 +31,7 @@ const filter = createFilterOptions();
 const AddNewCase = () => {
 
   const [DocumentId, setDocumentId] = useState();
-  const [isEdit, setisEdit] = useState(false); 
+  const [isEdit, setisEdit] = useState(false);
   const [Title, setTitle] = useState('');
   const [File, setFile] = useState(null);
   const [FileURL, setFileURL] = useState('');
@@ -45,15 +45,15 @@ const AddNewCase = () => {
 
   useEffect(() => {
     const getDocData = async () => {
-      if(func.split('_')[0] == "edit"){
+      if (func.split('_')[0] == "edit") {
         setisEdit(true);
       }
       setDocumentId(func.split('_')[1]);
-      if(func.split('_')[0] == "edit"){
-        const url =  BASE_API_ROUTE + `Document/GetDocumentById?documentId=${func.split('_')[1]}`;
+      if (func.split('_')[0] == "edit") {
+        const url = BASE_API_ROUTE + `Document/GetDocumentById?documentId=${func.split('_')[1]}`;
         const token = await getAccessToken();
-        try{
-          const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
+        try {
+          const response = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
           // console.log("success in Getting Document Data!!! : ",response);
           setTitle(response.data.data.title);
           setMinimumBadget(response.data.data.minimumBudget);
@@ -64,12 +64,12 @@ const AddNewCase = () => {
           setFileURL(response.data.data.fileUrl);
         }
         catch (error) {
-          console.log("error in Getting Document Data!!! : ",error);
+          console.log("error in Getting Document Data!!! : ", error);
         }
       }
     };
     getDocData();
-  },[]);
+  }, []);
 
   const showErrorMessage = (errorMessage) => {
     toast.error(errorMessage, {
@@ -81,7 +81,7 @@ const AddNewCase = () => {
       draggable: true,
       progress: undefined,
       theme: "light",
-      rtl:true,
+      rtl: true,
     });
   };
   const showSuccesMessage = (payam) => {
@@ -94,7 +94,7 @@ const AddNewCase = () => {
       draggable: true,
       progress: undefined,
       theme: "light",
-      rtl:true,
+      rtl: true,
     });
   };
 
@@ -134,14 +134,14 @@ const AddNewCase = () => {
 
   const titleLists = () => {
     return (
-      <Autocomplete 
+      <Autocomplete
         value={Title}
         onChange={(event, newValue) => {
           if (typeof newValue === 'string') {
             setTitle(newValue)
           } else if (newValue && newValue.inputValue) {
             setTitle(newValue.inputValue)
-          } else if(newValue && newValue.title) {
+          } else if (newValue && newValue.title) {
             setTitle(newValue.title)
           }
         }}
@@ -174,15 +174,15 @@ const AddNewCase = () => {
           // Regular option
           return option.title;
         }}
-        renderOption={(props, option) => <li {...props} style={{fontFamily:'shabnam'}}>{option.title}</li>}
+        renderOption={(props, option) => <li {...props} style={{ fontFamily: 'shabnam' }}>{option.title}</li>}
         freeSolo
         renderInput={(params) => (
-          <TextField className="autocomplete-textfield" sx={{border:"none"}}{...params}/>
+          <TextField className="autocomplete-textfield" sx={{ border: "none" }}{...params} />
         )}
       />
     );
   };
-    
+
   const categoryList = () => {
     return (
       <Autocomplete
@@ -192,7 +192,7 @@ const AddNewCase = () => {
             setDocumentCategory(newValue)
           } else if (newValue && newValue.inputValue) {
             setDocumentCategory(newValue.inputValue)
-          } else if(newValue && newValue.category) {
+          } else if (newValue && newValue.category) {
             setDocumentCategory(newValue.category)
           }
         }}
@@ -225,10 +225,10 @@ const AddNewCase = () => {
           // Regular option
           return option.category;
         }}
-        renderOption={(props, option) => <li {...props} style={{fontFamily:'shabnam'}}>{option.category}</li>}
+        renderOption={(props, option) => <li {...props} style={{ fontFamily: 'shabnam' }}>{option.category}</li>}
         freeSolo
         renderInput={(params) => (
-          <TextField className="autocomplete-textfield" sx={{border:"none"}}{...params}/>
+          <TextField className="autocomplete-textfield" sx={{ border: "none" }}{...params} />
         )}
       />
     );
@@ -248,15 +248,15 @@ const AddNewCase = () => {
     // console.log({MaximumBudget, MinimumBudget, Title,  DocumentCategory, File, Description, caseName});
 
     const token = await getAccessToken();
-    if(token){
+    if (token) {
       const url = BASE_API_ROUTE + 'Document/AddDocument';
       try {
-          const response = await axios.post(url,data,{headers: {Authorization: `Bearer ${token}`}});
-          // console.log('response in adding doc : ', response);
-          showSuccesMessage('پرونده با موفقیت ایجاد شد.');
+        const response = await axios.post(url, data, { headers: { Authorization: `Bearer ${token}` } });
+        // console.log('response in adding doc : ', response);
+        showSuccesMessage('پرونده با موفقیت ایجاد شد.');
       } catch (error) {
-          console.log('error in adding doc : ',error);
-          showErrorMessage('ایجاد پرونده با خطا مواجه شد');
+        console.log('error in adding doc : ', error);
+        showErrorMessage('ایجاد پرونده با خطا مواجه شد');
       }
     }
   };
@@ -272,109 +272,109 @@ const AddNewCase = () => {
     data.append('File', File);
     data.append('Description', Description);
     data.append('caseName', caseName);
-    
+
     const token = await getAccessToken();
-    if(token){
+    if (token) {
       const url = BASE_API_ROUTE + 'Document/UpdateDocument';
       try {
-          const response = await axios.post(url,data,{headers: {Authorization: `Bearer ${token}`}});
-          // console.log('response in updating Document : ', response);
-          showSuccesMessage('پرونده با موفقیت ویرایش شد.');
+        const response = await axios.post(url, data, { headers: { Authorization: `Bearer ${token}` } });
+        // console.log('response in updating Document : ', response);
+        showSuccesMessage('پرونده با موفقیت ویرایش شد.');
       } catch (error) {
-          console.log('error in updating Document : ',error);
-          showErrorMessage('ویرایش پرونده با خطا مواجه شد');
+        console.log('error in updating Document : ', error);
+        showErrorMessage('ویرایش پرونده با خطا مواجه شد');
       }
     }
   };
 
   return (
     <>
-    <Helmet>
-        <title>{isEdit ? "ویرایش پرونده" : "افزودن پرونده"}</title> 
-    </Helmet>
-    <ThemeProvider theme={theme}>
-    <CacheProvider value={cacheRtl}>
-    <Grid display={"flex"} flexDirection={"column"} alignItems={"center"} justifyContent={"center"} width={"100%"} backgroundColor={'#ABC0C0'}>
-      <Grid flexDirection={'column'} width={"80%"} borderRadius={"10px"} paddingY={"40px"} paddingX={"50px"} m={'2%'} display={"flex"} justifyContent={"center"} alignSelf={"center"} backgroundColor={'white'}>
-        <Typography variant="h4" sx={{fontFamily: "shabnam"}} paddingY={2}>{isEdit ? "ویرایش پرونده" : "افزودن پرونده جدید"}</Typography>
-        <hr></hr>
-        <Grid container direction={'row'} marginY={'20px'}>
-          <div display='inline' style={{marginLeft:"10px"}} class="circle-icon big bgc-3 tc-white text-bold flip">1</div>
-          <Typography variant="h6" sx={{fontFamily: "shabnam"}}>چه کاری می خواهید برای شما انجام شود؟</Typography>
-        </Grid>
-        {titleLists()}
-        <br></br>
-        <br></br>
-        <Grid container direction={'row'} marginBottom={'20px'}>
-          <div display='inline' style={{marginLeft:"10px"}} class="circle-icon big bgc-3 tc-white text-bold flip">2</div>
-          <Typography variant="h6" sx={{fontFamily: "shabnam"}}>پرونده شما در چه زمینه ای است؟</Typography>
-        </Grid>
-        {categoryList()}
-        <br></br>
-        <br></br>
-        <Grid container direction={'row'} marginBottom={'20px'}>
-          <div display='inline' style={{marginLeft:"10px"}} class="circle-icon big bgc-3 tc-white text-bold flip">3</div>
-          <Typography variant="h6" sx={{fontFamily: "shabnam"}}>نام پرونده</Typography>
-        </Grid>
-        <TextField
-          type="text"
-          value={caseName}
-          onChange={(e) => setCaseName(e.target.value)}
-          variant="outlined"
-          inputProps={{style: { fontFamily:"shabnam"}}}/>
-        <br></br>
-        <br></br>
-        <Grid container direction={'row'} marginBottom={'20px'}>
-          <div display='inline' style={{marginLeft:"10px"}} class="circle-icon big bgc-3 tc-white text-bold flip">4</div>
-          <Typography variant="h6" sx={{fontFamily: "shabnam"}}>پرونده خود را توضیح دهید : </Typography>
-        </Grid>
-        <TextField
-            multiline
-            rows={7}
-            value={Description}
-            onChange={(e) => setDescription(e.target.value)}
-            variant="outlined"
-            inputProps={{style: {fontFamily:"shabnam"}}}/>
-        <br></br>
-        <br></br> 
-        <Grid container direction={'row'} marginBottom={'20px'}>
-          <div display='inline' style={{marginLeft:"10px"}} class="circle-icon big bgc-3 tc-white text-bold flip">5</div>
-          <Typography variant="h6" sx={{fontFamily: "shabnam"}}>اپلود فایل پرونده</Typography>
-        </Grid>
-        <MuiFileInput fullWidth margin='10px' value={File} onChange={(File) => setFile(File)} />
-        <br></br>
-        <br></br>
-        <Grid container direction={'row'} marginBottom={'20px'}>
-          <div display='inline' style={{marginLeft:"10px"}} class="circle-icon big bgc-3 tc-white text-bold flip">6</div>
-          <Typography display='inline' variant="h6" sx={{fontFamily: "shabnam"}}>بودجه شما چقدر است ؟  </Typography>                
-        </Grid>   
-        <TextField
-          label="حداقل (تومان)"
-          type="text"
-          value={MinimumBudget}
-          onChange={(e) => setMinimumBadget(e.target.value)}
-          variant="outlined"
-          inputProps={{ dir: "rtl", style: { fontFamily:"shabnam", fontSize: "15px",color:"black",} }}
-          InputLabelProps={{ align: "right", dir: "rtl", style: { fontFamily:"shabnam", fontSize: "15px",color:"black",} }}
-          sx={{width:{xs:'100%',sm:'50%'},mb:'10px'}}/>
-        <TextField
-          label="حداکثر (تومان)"
-          type="text"
-          value={MaximumBudget}
-          onChange={(e) => setMaximumBadget(e.target.value)}
-          variant="outlined"
-          inputProps={{ dir: "rtl", style: { fontFamily:"shabnam", fontSize: "15px",color:"black",}}}
-          InputLabelProps={{ align: "right", dir: "rtl", style: { fontFamily:"shabnam", fontSize: "15px",color:"black",} }}
-          sx={{width:{xs:'100%',sm:'50%'}}}/>
-        <br></br>
-        <br></br>
-        <button onClick={() => {isEdit ? handleEditCase() : handleCreateCase()}} class="btn btn-p-primary btn-lg btn-block" id="create-new-project">
-          {isEdit ? "ویرایش پرونده" : "ایجاد پرونده"} 
-        </button>
-      </Grid>
-    </Grid>
-    </CacheProvider>
-    </ThemeProvider>
+      <Helmet>
+        <title>{isEdit ? "ویرایش پرونده" : "افزودن پرونده"}</title>
+      </Helmet>
+      <ThemeProvider theme={theme}>
+        <CacheProvider value={cacheRtl}>
+          <Grid display={"flex"} flexDirection={"column"} alignItems={"center"} justifyContent={"center"} width={"100%"} backgroundColor={'#ABC0C0'}>
+            <Grid flexDirection={'column'} width={"80%"} borderRadius={"10px"} paddingY={"40px"} paddingX={"50px"} m={'2%'} display={"flex"} justifyContent={"center"} alignSelf={"center"} backgroundColor={'white'}>
+              <Typography variant="h4" sx={{ fontFamily: "shabnam" }} paddingY={2}>{isEdit ? "ویرایش پرونده" : "افزودن پرونده جدید"}</Typography>
+              <hr></hr>
+              <Grid container direction={'row'} marginY={'20px'}>
+                <div display='inline' style={{ marginLeft: "10px" }} class="circle-icon big bgc-3 tc-white text-bold flip">1</div>
+                <Typography variant="h6" sx={{ fontFamily: "shabnam" }}>چه کاری می خواهید برای شما انجام شود؟</Typography>
+              </Grid>
+              {titleLists()}
+              <br></br>
+              <br></br>
+              <Grid container direction={'row'} marginBottom={'20px'}>
+                <div display='inline' style={{ marginLeft: "10px" }} class="circle-icon big bgc-3 tc-white text-bold flip">2</div>
+                <Typography variant="h6" sx={{ fontFamily: "shabnam" }}>پرونده شما در چه زمینه ای است؟</Typography>
+              </Grid>
+              {categoryList()}
+              <br></br>
+              <br></br>
+              <Grid container direction={'row'} marginBottom={'20px'}>
+                <div display='inline' style={{ marginLeft: "10px" }} class="circle-icon big bgc-3 tc-white text-bold flip">3</div>
+                <Typography variant="h6" sx={{ fontFamily: "shabnam" }}>نام پرونده</Typography>
+              </Grid>
+              <TextField
+                type="text"
+                value={caseName}
+                onChange={(e) => setCaseName(e.target.value)}
+                variant="outlined"
+                inputProps={{ style: { fontFamily: "shabnam" } }} />
+              <br></br>
+              <br></br>
+              <Grid container direction={'row'} marginBottom={'20px'}>
+                <div display='inline' style={{ marginLeft: "10px" }} class="circle-icon big bgc-3 tc-white text-bold flip">4</div>
+                <Typography variant="h6" sx={{ fontFamily: "shabnam" }}>پرونده خود را توضیح دهید : </Typography>
+              </Grid>
+              <TextField
+                multiline
+                rows={7}
+                value={Description}
+                onChange={(e) => setDescription(e.target.value)}
+                variant="outlined"
+                inputProps={{ style: { fontFamily: "shabnam" } }} />
+              <br></br>
+              <br></br>
+              <Grid container direction={'row'} marginBottom={'20px'}>
+                <div display='inline' style={{ marginLeft: "10px" }} class="circle-icon big bgc-3 tc-white text-bold flip">5</div>
+                <Typography variant="h6" sx={{ fontFamily: "shabnam" }}>اپلود فایل پرونده</Typography>
+              </Grid>
+              <MuiFileInput fullWidth margin='10px' value={File} onChange={(File) => setFile(File)} />
+              <br></br>
+              <br></br>
+              <Grid container direction={'row'} marginBottom={'20px'}>
+                <div display='inline' style={{ marginLeft: "10px" }} class="circle-icon big bgc-3 tc-white text-bold flip">6</div>
+                <Typography display='inline' variant="h6" sx={{ fontFamily: "shabnam" }}>بودجه شما چقدر است ؟  </Typography>
+              </Grid>
+              <TextField
+                label="حداقل (تومان)"
+                type="text"
+                value={MinimumBudget}
+                onChange={(e) => setMinimumBadget(e.target.value)}
+                variant="outlined"
+                inputProps={{ dir: "rtl", style: { fontFamily: "shabnam", fontSize: "15px", color: "black", } }}
+                InputLabelProps={{ align: "right", dir: "rtl", style: { fontFamily: "shabnam", fontSize: "15px", color: "black", } }}
+                sx={{ width: { xs: '100%', sm: '50%' }, mb: '10px' }} />
+              <TextField
+                label="حداکثر (تومان)"
+                type="text"
+                value={MaximumBudget}
+                onChange={(e) => setMaximumBadget(e.target.value)}
+                variant="outlined"
+                inputProps={{ dir: "rtl", style: { fontFamily: "shabnam", fontSize: "15px", color: "black", } }}
+                InputLabelProps={{ align: "right", dir: "rtl", style: { fontFamily: "shabnam", fontSize: "15px", color: "black", } }}
+                sx={{ width: { xs: '100%', sm: '50%' } }} />
+              <br></br>
+              <br></br>
+              <button onClick={() => { isEdit ? handleEditCase() : handleCreateCase() }} class="btn btn-p-primary btn-lg btn-block" id="create-new-project">
+                {isEdit ? "ویرایش پرونده" : "ایجاد پرونده"}
+              </button>
+            </Grid>
+          </Grid>
+        </CacheProvider>
+      </ThemeProvider>
     </>
   );
 }

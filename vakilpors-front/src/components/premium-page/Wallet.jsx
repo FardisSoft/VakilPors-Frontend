@@ -4,6 +4,7 @@ import { BASE_API_ROUTE } from '../../Constants';
 import '../../css/Wallet.css'
 import { useAuth } from "../../context/AuthProvider";
 import axios from 'axios';
+import { TextField } from '@mui/material';
 
 
 const PremiumCard = () => {
@@ -86,18 +87,16 @@ const PremiumCard = () => {
                                         <div class="text-center w-100 mb-4">
                                             <h3>شارژ کیف پول</h3>
                                         </div>
-                                        <div class=" w-100">
-                                            <label >مبلغ مورد نظر خود را به تومان وارد نمایید</label>
-                                            <input
-                                                class="my-1"
-                                                variant="outlined"
-                                                id="mu-text-field"
-                                                name="amount"
-                                                onChange={setpayroll}
-                                                value={getamountdetail.amount}
-                                                style={{ width: 300, height: 40, border: "2px solid rgba(0, 0, 0, 0.15)", borderRadius: "5px" }}
-                                                inputProps={{ style: { width: 300, height: 20 } }}
-                                            />
+                                        <div class="w-100">
+
+                                            <div class="form-group mt-3 psc my-5" id="p_1">
+                                                <label for="service">مبلغ مورد نظر خود را به تومان وارد نمایید</label>
+                                                <input
+                                                    class="form-control"
+                                                    name="amount"
+                                                    onChange={setpayroll}
+                                                    value={getamountdetail.amount} />
+                                            </div>
 
                                             <div class="form-group mt-3 psc my-5" id="p_1">
                                                 <label for="service">انتخاب درگاه پرداخت</label>
@@ -121,25 +120,23 @@ const PremiumCard = () => {
                                                 <div class="text-center w-100 mb-4">
                                                     <h3>برداشت از حساب</h3>
                                                 </div>
-                                                <div class=" w-100">
-                                                    <label>مبلغ مورد نظر خود را به تومان وارد نمایید</label>
-                                                    <input
-                                                        class="my-2"
-                                                        name="amount"
-                                                        onChange={setpayroll}
-                                                        value={getamountdetail.amount}
-                                                        style={{ width: 320, height: 40, border: "2px solid rgba(0, 0, 0, 0.15)", borderRadius: "5px" }}
-                                                        inputProps={{ style: { width: 300, height: 20 } }}
-                                                    />
-                                                    <label class="my-2">شماره کارت خود را وارد نمایید</label>
-                                                    <br />
-                                                    <input
-                                                        variant="outlined"
-                                                        id="mu-text-field"
-                                                        name="creditNumber"
-                                                        style={{ width: 320, height: 40, border: "2px solid rgba(0, 0, 0, 0.15)", borderRadius: "5px" }}
-                                                        inputProps={{ style: { width: 300, height: 20 } }}
-                                                    />
+                                                <div class="w-100">
+
+                                                    <div class="form-group mt-3 psc my-5" id="p_1">
+                                                        <label for="service">مبلغ مورد نظر خود را به تومان وارد نمایید</label>
+                                                        <input
+                                                            class="form-control"
+                                                            name="amount"
+                                                            onChange={setpayroll}
+                                                            value={getamountdetail.amount} />
+                                                    </div>
+                                                    <div class="form-group mt-3 psc my-5" id="p_1">
+                                                        <label for="service">شماره کارت خود را وارد نمایید</label>
+                                                        <input
+                                                            class="form-control"
+                                                            id="mu-text-field"
+                                                            name="creditNumber" />
+                                                    </div>
                                                     <hr class="my-4" />
                                                     <button class="btn btn-primary mr-2 mt-3 mt-sm-0" style={{ width: "100%" }} onClick={payroll}>
                                                         برداشت از حساب
