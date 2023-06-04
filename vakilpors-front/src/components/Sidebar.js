@@ -86,6 +86,7 @@ const Sidebar = (props) => {
   const [profilePicture, setProfilePicture] = useState();
   const [online, setOnline] = useState(true);
   const [name, setName] = useState('');
+  const [isPremium, setIsPremium] = useState(false);
   let tempLinks = [];
   const navigate = useNavigate();
 
@@ -218,6 +219,7 @@ const Sidebar = (props) => {
     setProfilePicture(refUserRole.current === "Vakil" ? data.user.profileImageUrl : data.profileImageUrl);
     setOnline(true);
     setName(refUserRole.current === "Vakil" ? data.user.name : data.name);
+    setIsPremium(refUserRole.current === "User" ? data.isPremium : false);
   };
 
   const updateSize = () => {
@@ -295,7 +297,7 @@ const Sidebar = (props) => {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        { refUserRole.current && <Grid container direction="column" display="flex" alignItems="center" justifyContent="center" sx={{mt:2,mb:2}}>
+        { refUserRole.current && <Grid container direction="column" display="flex" alignItems="center" justifyContent="center" sx={{mt:2,mb:2}} backgroundColor={isPremium?'gold':'white'}>
           <StyledBadge invisible={!online} overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} variant="dot">
             <Avatar alt="profile picture" sx={{ width: 60, height: 60 }} srcSet={profilePicture} />
           </StyledBadge>
