@@ -98,6 +98,10 @@ const PremiumCard = () => {
     };
 
     const transferToken = async () => {
+        if(tokens < 10){
+            showErrorMessage('شما برای انتقال توکن به کیف پول حداقل باید 10 توکن داشته باشید.');
+            return;
+        }
         const token = await getAccessToken();
         if (token) {
             const headers = {
