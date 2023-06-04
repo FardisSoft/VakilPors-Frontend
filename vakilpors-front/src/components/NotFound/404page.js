@@ -56,7 +56,7 @@ const NotFound = () => {
                     <Typography sx={{ fontFamily:"shabnam", fontSize:"30px", fontWeight:"bold", align:"center",mb:"10px",color:"rgb(00,00,99)" }}>صفحه مورد نظر یافت نشد یا وجود ندارد</Typography>
                 </Grid>
             </Slide>
-            <Button variant="contained" sx={{ml:'20px'}} size='large' color="primary" onClick={()=>navigate("/")}>رفتن به صفحه اصلی</Button>
+            <Button variant="contained" sx={{ml:'20px', fontFamily:"Shabnam"}} size='large' color="primary" onClick={()=>navigate("/")}>رفتن به صفحه اصلی</Button>
         </Grid>
     </Grid>
     </>
