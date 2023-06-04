@@ -37,7 +37,8 @@ import NotFound from './components/NotFound';
 import VideoCall from './components/video-call/VideoCall';
 import VerifyLawyers from './components/admin-pages/VerifyLawyers';
 import Statistics from './components/admin-pages/Statistics';
-import AsasiLaw from './components/AsasiLaw.js';
+import AsasiLaw from './components/AsasiLaw';
+import _404page from './components/NotFound/404page'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -74,7 +75,7 @@ root.render(
               <Route path="/Statistics" element={<Sidebar component={Statistics}/>}/>
               <Route path="/AsasiLaw" element={<Sidebar component={AsasiLaw}/>}/>
 
-              <Route path="*" element={<NotFound/>}/>
+              <Route path="*" element={<_404page/>}/>
           </Routes>
         </AuthProvider>
       </BrowserRouter>
