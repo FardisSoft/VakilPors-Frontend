@@ -12,6 +12,7 @@ import { BASE_API_ROUTE } from '../Constants';
 import axios from 'axios';
 import jwt from 'jwt-decode';
 import { toast } from 'react-toastify';
+import backPic from '../assests/images/chatBackGround.png';
 
 const StyledTooltip = styled (({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} arrow/>
@@ -694,7 +695,7 @@ const ChatPage = () => {
       {pageWidth > 1255 && <Divider color='black' orientation="vertical" variant="middle" flexItem/>}
       
       <Grid height={isReplyActive ? '95%' : '100%'} width={{ xs: '100%', md: '80%' }} maxWidth={1000} sx={{
-        backgroundImage: 'url(https://blog.1a23.com/wp-content/uploads/sites/2/2020/02/Desktop.png)',
+        backgroundImage:`url(${backPic})`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center', display: 'flex', flexDirection: 'column'}}>
