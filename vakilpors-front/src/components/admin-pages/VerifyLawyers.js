@@ -77,7 +77,7 @@ const VerifyLawyers = () => {
             <CardHeader titleTypographyProps={{ m:0, fontFamily:"shabnam", fontWeight:"bold", fontSize:"16px", color:"grayText" }} title="کارت ویزیت "/>
             <CardMedia image={lawyer.callingCardImageUrl || "https://www.vuescript.com/wp-content/uploads/2018/11/Show-Loader-During-Image-Loading-vue-load-image.png"} sx={{ alignSelf:"center", height: 167, width: 300 }} title="کارت ویزیت"/>
             <CardHeader titleTypographyProps={{ m:0, fontFamily:"shabnam", fontWeight:"bold", fontSize:"16px", color:"grayText" }} title="کارت ملی "/>
-            <CardMedia image={lawyer.callingCardImageUrl || "https://www.vuescript.com/wp-content/uploads/2018/11/Show-Loader-During-Image-Loading-vue-load-image.png"} sx={{ alignSelf:"center", height: 167, width: 300, mb: '20px' }} title="کارت ملی"/>
+            <CardMedia image={lawyer.nationalCardImageUrl || "https://www.vuescript.com/wp-content/uploads/2018/11/Show-Loader-During-Image-Loading-vue-load-image.png"} sx={{ alignSelf:"center", height: 167, width: 300, mb: '20px' }} title="کارت ملی"/>
           </Grid>
         </Grid>
       )}
