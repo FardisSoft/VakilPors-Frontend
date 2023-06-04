@@ -18,6 +18,8 @@ import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@mui/material/styles';
+import backgroundbb from "../../assests/images/back.png";
+
 const cacheRtl = createCache({
 	key: 'muirtl',
 	stylisPlugins: [rtlPlugin],
@@ -129,7 +131,7 @@ const Forum = () => {
 			</Helmet>
 			<ThemeProvider theme={theme}>
 				<CacheProvider value={cacheRtl}>
-					<Grid container width={'100%'} minHeight={'100vh'} paddingY={'30px'} backgroundColor={'#fffbf5'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+					<Grid container width={'100%'} minHeight={'100vh'} paddingY={'30px'} display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{background : `url(${backgroundbb})`}}>
 						<Grid container direction={'column'} width={{ xs: '100%', md: '90%', lg: '80%' }} display={'flex'} justifyContent={'center'} alignItems={'center'}>
 							<Grid sx={{boxShadow : 4 , padding : 0.5 , mb : 7 , borderRadius : 5}}  alignItems={'center'} display={'flex'} justifyContent={'center'}>
 								<Typography fontFamily={'shabnam'} fontSize={'18px'} sx={{ mb: '30px' }} ><br></br>یک تاپیک جدید ایجاد کنید یا تاپیک مورد نظر خود را از لیست پایین انتخاب کنید.</Typography>
