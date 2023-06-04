@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from "react-router-dom";
-import Grid from '@mui/material/Grid';
-import Slide from '@mui/material/Slide';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import { Typography } from "@mui/material";
+import { Grid, Slide, TextField, Button, Typography, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { toast } from 'react-toastify';
 import { BASE_API_ROUTE } from "../../Constants";
 import axios from "axios";
@@ -17,9 +13,6 @@ import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@mui/material/styles';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-
 const cacheRtl = createCache({
     key: 'muirtl',
     stylisPlugins: [rtlPlugin],
@@ -27,11 +20,9 @@ const cacheRtl = createCache({
         fontFamily: 'shabnam',
     },
 });
-
 const theme = createTheme({
     direction: 'rtl',
 });
-
 // mui rtl
 
 const ForgotPassword = () => {
@@ -85,15 +76,11 @@ const ForgotPassword = () => {
             } else {
                 url += `Email=${encodeURIComponent(phoneNumber.trim())}&useSms=false`;
             }
-            console.log("urlo bebein::: ");
-            console.log(url);
-
-
+            // console.log("url: ",url);
             const response = await axios.get(url);
             showSuccesMessage();
             await delay(5000);
             navigate(`/Reset_Password/${phoneNumber}`);
-
         } catch (error) {
             showErrorMessage();
             console.log('error in forgot password : ',error);
@@ -144,26 +131,33 @@ const ForgotPassword = () => {
                         aria-label="forgot password type"
                         sx={{ margin: '10px 0' }}
                     >
-                        <ToggleButton sx={{ fontFamily:"shabnam"}} value="phone" aria-label="phone forgot password">
+                        <ToggleButton sx={{ fontFamily:"shabnam", fontSize:'17px' }} value="phone" aria-label="phone forgot password">
                             با شماره تلفن همراه
                         </ToggleButton>
-                        <ToggleButton sx={{ fontFamily:"shabnam"}} value="email" aria-label="email forgot password">
+                        <ToggleButton sx={{ fontFamily:"shabnam", fontSize:'17px' }} value="email" aria-label="email forgot password">
                             با ایمیل
                         </ToggleButton>
                     </ToggleButtonGroup>
                 </Slide>
                 <Slide in={show} direction="right">
                     <TextField
-
                         label={forgotType === 'phone' ? 'شماره تلفن همراه' : 'ایمیل'}
                         variant="outlined"
-                        fullWidth
                         type={forgotType === 'phone' ? 'tel' : 'email'}
                         value={phoneNumber}
                         onChange={(e) => {
                             setPhoneNumber(e.target.value);
                         }}
-                        sx={{ margin: '10px 0', fontFamily:"shabnam" }}
+                        dir="rtl"
+                        inputProps={{ dir: "rtl", style: { fontFamily:"shabnam", fontSize: "17px",color:"black",} }}
+                        InputLabelProps={{ align: "right", dir: "rtl", style: { fontFamily:"shabnam", fontSize: "17px",color:"black",} }}
+                        sx={{
+                            width: {xs:'100%',sm:'80%'},
+                            padding: 0,
+                            backgroundColor: 'rgba(255,255,255,0.5)',
+                            margin: '10px 0',
+                            borderRadius:"5px",
+                        }}
                     />
                 </Slide>
                 <Slide in={show} direction="up">
