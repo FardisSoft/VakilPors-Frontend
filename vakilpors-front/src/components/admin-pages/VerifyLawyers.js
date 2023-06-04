@@ -29,7 +29,7 @@ const VerifyLawyers = () => {
   const handleVerify = async (lawyerId) => {
     const token = await getAccessToken();
     if(token){
-      const url = BASE_API_ROUTE + '';
+      const url = BASE_API_ROUTE + `Lawyer/VerifyLawyer?lawyerId=${lawyerId}`;
       try {
         const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
         console.log('response in verifing lawyer : ',response);
@@ -50,7 +50,7 @@ const VerifyLawyers = () => {
           title={'لیست وکلای تایید نشده : '}/>
       </Grid>
       {lawyers.map( (lawyer,index) =>
-        !lawyer.isAuthorized && 
+        !lawyer.isVerified && 
         <Grid key={index} container direction={{ xs: 'column', sm: 'row' }} marginBottom={'20px'}>
           <Grid item component={Card}>
             <CardContent>
