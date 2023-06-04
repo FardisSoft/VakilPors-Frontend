@@ -58,7 +58,7 @@ const Sort = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} >
+                <MenuItem key={page} variant="h9">
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
