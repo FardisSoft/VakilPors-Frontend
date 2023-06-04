@@ -652,7 +652,7 @@ const ChatPage = () => {
       <title>چت آنلاین</title>
     </Helmet>
 
-    <Grid container direction={{ xs: 'column', md: 'row' }} height={{xs:'auto', md:'calc(100vh - 65px)'}} minHeight={{xs:'100vh', md:'calc(100vh - 65px)'}} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', display:'flex', justifyContent:'space-around', alignItems:'stretch'}}>
+    <Grid container direction={{ xs: 'column', md: 'row' }} width={'100%'} height={{xs:'auto', md:'calc(100vh - 65px)'}} minHeight={{xs:'100vh', md:'calc(100vh - 65px)'}} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', display:'flex', justifyContent:'flex-start', alignItems:'stretch'}}>
       <Grid container direction={'column'} width={{ xs: '100%', md: '20%' }} sx={{ backgroundColor: '#0041c2', borderBottom: { xs: '1px solid grey', md: '0px solid grey' } }}>
         
         {/* show user him/herself info */}
@@ -692,9 +692,9 @@ const ChatPage = () => {
 
       </Grid> 
 
-      {pageWidth > 1255 && <Divider color='black' orientation="vertical" variant="middle" flexItem/>}
+      {/* {pageWidth > 1255 && <Divider color='black' orientation="vertical" variant="middle" flexItem/>} */}
       
-      <Grid height={isReplyActive ? '95%' : '100%'} width={{ xs: '100%', md: '80%' }} maxWidth={1000} sx={{
+      <Grid height={'100%'} width={{ xs: '100%', md: '80%' }} sx={{
         backgroundImage:`url(${backPic})`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
@@ -702,7 +702,7 @@ const ChatPage = () => {
         {refSelectedChat.current ? (
           <>
             {/* show messages */}
-            <Grid container direction={'column'} height={{xs:'auto',md:'85%'}} >
+            <Grid container direction={'column'} height={{xs:'auto',md:(isReplyActive ? '80%' : '85%')}} >
             {/* border={'1px solid grey'} borderRadius={2} */}
               <Grid height={{xs:'auto',md:'100%'}} sx={{ flex: '0 0 auto', overflow: 'overlay'}}>
                 {refChats.current && refChats.current[getChatIndexByChatId(refSelectedChat.current)].chatMessages.map((message,index) => renderMessage(message,index))}
