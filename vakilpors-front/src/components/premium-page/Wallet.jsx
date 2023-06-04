@@ -16,7 +16,6 @@ const PremiumCard = () => {
     });
     const [getbalance, setbalance] = useState([]);
     const [tokens, setTokens] = useState(0);
-    const [lawyerId, setLawyerId] = useState('');
 
     const fetchData = async () => {
         const token = await getAccessToken();
@@ -39,7 +38,6 @@ const PremiumCard = () => {
                         headers: headers
                     });
                     setTokens(response.data.data.tokens);
-                    setLawyerId(response.data.data.id);
                     // console.log('response in getting lawyer data for tokens : ', response);
                 } catch (error) {
                     console.log('error in getting lawyer data for tokens : ', error);
@@ -109,12 +107,12 @@ const PremiumCard = () => {
                 'Authorization': "Bearer " + token
             };
             try {
-                const response = await axios.get(BASE_API_ROUTE + `Lawyer/TransferToken?lawyerId=${lawyerId}`, {
+                const response = await axios.get(BASE_API_ROUTE + 'Lawyer/TransferToken', {
                     headers: headers
                 });
                 fetchData();
                 showSuccesMessage('توکن شما با موفقیت به کیف پول شما منتقل شد');
-                console.log('response in transferToken : ', response);
+                // console.log('response in transferToken : ', response);
             } catch (error) {
                 showErrorMessage('خطا در انتقال توکن به کیف پول');
                 console.log('error in transferToken : ', error);
