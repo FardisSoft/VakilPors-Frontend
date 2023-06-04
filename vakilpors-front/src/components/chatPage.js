@@ -690,14 +690,12 @@ const ChatPage = () => {
           </List>
         </Grid>
 
-      </Grid> 
-
-      {/* {pageWidth > 1255 && <Divider color='black' orientation="vertical" variant="middle" flexItem/>} */}
+      </Grid>
       
       <Grid height={'100%'} width={{ xs: '100%', sm: '65%', md: '75%' }} sx={{
         backgroundImage:`url(${backPic})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
+        backgroundRepeat: {xs:'repeat-y', sm:'no-repeat'},
+        backgroundSize: {xs:'100%', sm:'cover'},
         backgroundPosition: 'center', display: 'flex', flexDirection: 'column'}}>
         {refSelectedChat.current ? (
           <>
