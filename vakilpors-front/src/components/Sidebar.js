@@ -204,6 +204,7 @@ const Sidebar = (props) => {
         {name:'تایید مدارک وکلا', icon:AssignmentTurnedInOutlined, url:'/VerifyLawyers'},
         {name:'آمار سایت', icon:AssessmentOutlined, url:'/Statistics'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
+        {name:'قانون اساسی', icon:Gavel, url:'/AsasiLaw'},
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
       ];
       break;
