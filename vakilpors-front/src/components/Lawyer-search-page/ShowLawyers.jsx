@@ -9,6 +9,8 @@ import { Avatar, CardContent, Grid, Rating } from '@mui/material';
 import rtlPlugin from 'stylis-plugin-rtl';
 import createCache from '@emotion/cache';
 import { createTheme } from '@mui/material/styles';
+import dlpbp from '../../assests/images/default_lawyer_profile_background_picture.jpg';
+
 const cacheRtl = createCache({
     key: 'muirtl',
     stylisPlugins: [rtlPlugin],
@@ -28,8 +30,9 @@ const ShowLawyers = ({ Lawyer }) => {
                 <div class="teacher-item">
                     <div class="box-shadow teacher-box-size"  >
                         <a class="img-layer lazy">
+                        
                             <Grid sx={{
-                                backgroundImage: `url(${Lawyer.profileBackgroundPictureUrl})`,
+                               backgroundImage:`url(${Lawyer.profileBackgroundPictureUrl?Lawyer.profileBackgroundPictureUrl:dlpbp})`,
                                 backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center', height: 250
                             }} display="flex" alignItems="center" justifyContent="center">
                                 <CardContent>

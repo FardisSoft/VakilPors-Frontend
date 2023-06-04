@@ -134,7 +134,7 @@ const Forum = () => {
 							<Grid sx={{boxShadow : 4 , padding : 0.5 , mb : 7 , borderRadius : 5}}  alignItems={'center'} display={'flex'} justifyContent={'center'}>
 								<Typography fontFamily={'shabnam'} fontSize={'18px'} sx={{ mb: '30px' }} ><br></br>یک تاپیک جدید ایجاد کنید یا تاپیک مورد نظر خود را از لیست پایین انتخاب کنید.</Typography>
 							</Grid>
-							<Grid container direction={{ xs: 'column', md: 'row' }} width={{ xs: '97%', sm: '90%' }} backgroundColor={'#8eb1e5'} display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{ mb: '50px', p: '20px', borderRadius: '20px', boxShadow: 4 }}>
+							<Grid container direction={{ xs: 'column', md: 'row' }} width={{ xs: '97%', sm: '90%' }} backgroundColor={'#8eb1e5'} display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{ mb: '50px', p: '20px', borderBottomLeftRadius: '20px',borderTopRightRadius : '20px', boxShadow: 4 }}>
 								<TextField label="تاپیک جدید" multiline rows={2} variant="outlined"
 									value={thread}
 									onChange={(e) => setThread(e.target.value)}
