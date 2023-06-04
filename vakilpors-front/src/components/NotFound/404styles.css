@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,600,700');
+@import url('https://fonts.googleapis.com/css?family=Catamaran:400,800');
+.error-container {
+  text-align: center;
+  font-size: 180px;
+  font-family: 'Catamaran', sans-serif;
+  font-weight: 800;
+  margin: 20px 15px;
+}
+.error-container > span {
+  display: inline-block;
+  line-height: 0.7;
+  position: relative;
+  color: #4d4dff;
+}
+.error-container > span {
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+}
+.error-container > span:nth-of-type(1) {
+  color: #4d4dff;
+  animation: colordancing 4s infinite;
+}
+.error-container > span:nth-of-type(3) {
+  color: #F56991;
+  animation: colordancing2 4s infinite;
+}
+.error-container > span:nth-of-type(2) {
+  width: 120px;
+  height: 120px;
+  border-radius: 999px;
+}
+.error-container > span:nth-of-type(2):before,
+.error-container > span:nth-of-type(2):after {
+  border-radius: 0%;
+  content:"";
+  position: absolute;
+  top: 0; left: 0;
+  width: inherit; height: inherit;
+  border-radius: 999px;
+  box-shadow: inset 30px 0 0 rgba(209, 242, 165, 0.4),
+        inset 0 30px 0 rgba(239, 250, 180, 0.4),
+        inset -30px 0 0 rgba(255, 196, 140, 0.4), 
+        inset 0 -30px 0 rgba(245, 105, 145, 0.4);
+  animation: shadowsdancing 4s infinite;
+}
+.error-container > span:nth-of-type(2):before {
+  -webkit-transform: rotate(45deg);
+     -moz-transform: rotate(45deg);
+      transform: rotate(45deg);
+}
+
+.screen-reader-text {
+    position: absolute;
+    top: -9999em;
+    left: -9999em;
+}
+@keyframes shadowsdancing {
+  0% {
+    box-shadow: inset 30px 0 0 rgba(21, 21, 182, 0.4),
+        inset 0 30px 0 rgba(16, 28, 197, 0.4),
+        inset -30px 0 0 rgba(18, 35, 192, 0.4), 
+        inset 0 -30px 0 rgba(20, 17, 197, 0.4);
+  }
+  25% {
+    box-shadow: inset 30px 0 0 rgba(54, 33, 148, 0.4),
+        inset 0 30px 0 rgba(32, 44, 199, 0.4),
+        inset -30px 0 0 rgba(39, 36, 197, 0.4), 
+        inset 0 -30px 0 rgba(73, 30, 231, 0.4);
+  }
+  50% {
+     box-shadow: inset 30px 0 0 rgba(29, 32, 180, 0.4),
+        inset 0 30px 0 rgba(47, 50, 224, 0.4),
+        inset -30px 0 0 rgba(25, 38, 224, 0.4), 
+        inset 0 -30px 0 rgba(28, 15, 204, 0.4);
+  }
+  75% {
+   box-shadow: inset 30px 0 0 rgba(10, 27, 173, 0.4),
+        inset 0 30px 0 rgba(13, 10, 226, 0.4),
+        inset -30px 0 0 rgba(9, 79, 230, 0.4), 
+        inset 0 -30px 0 rgba(15, 18, 199, 0.4);
+  }
+  100% {
+    box-shadow: inset 30px 0 0 rgba(21, 21, 182, 0.4),
+        inset 0 30px 0 rgba(16, 28, 197, 0.4),
+        inset -30px 0 0 rgba(18, 35, 192, 0.4), 
+        inset 0 -30px 0 rgba(20, 17, 197, 0.4);
+  }
+}
+@keyframes colordancing {
+  0% {
+    color: #0000e6;
+  }
+  25% {
+    color: #3399ff;
+  }
+  50% {
+    color: #0066cc;
+  }
+  75% {
+    color: #1a8cff;
+  }
+  100% {
+    color: #0000e6;
+  }
+}
+@keyframes colordancing2 {
+  0% {
+    color: #1a1aff;
+  }
+  25% {
+    color: #00ccff;
+  }
+  50% {
+    color: #3399ff;
+  }
+  75% {
+    color: #1a8cff;
+  }
+  100% {
+    color: #1a1aff;
+  }
+}
+
+/* demo stuff */
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+body {
+  background-color: #416475;
+  margin-bottom: 50px;
+}
+html, button, input, select, textarea {
+    font-family: 'Montserrat', Helvetica, sans-serif;
+    color: #92a4ad;
+}
+h1 {
+  text-align: center;
+  margin: 30px 15px;
+}
+.zoom-area { 
+  max-width: 490px;
+  margin: 30px auto 30px;
+  font-size: 19px;
+  text-align: center;
+}
+.link-container {
+  text-align: center;
+}
+a.more-link {
+  text-transform: uppercase;
+  font-size: 13px;
+    background-color: #92a4ad;
+    padding: 10px 15px;
+    border-radius: 0;
+    color: #416475;
+    display: inline-block;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    line-height: 1.5;
+    text-decoration: none;
+  margin-top: 50px;
+  letter-spacing: 1px;
+}
+
+/* Modified styles */
+body {
+  background-color: #416475;
+  color: #fff;
+}
+
+.error-container > span:nth-of-type(1) {
+  color: #D1F2A5;
+}
+
+.error-container > span:nth-of-type(3) {
+  color: #F56991;
+}
+
+.error-container > span:nth-of-type(2):before,
+.error-container > span:nth-of-type(2):after {
+  box-shadow: inset 30px 0 0 rgba(99, 179, 237, 0.4),
+    inset 0 30px 0 rgba(158, 206, 255, 0.4),
+    inset -30px 0 0 rgba(165, 214, 255, 0.4),
+    inset 0 -30px 0 rgba(99, 179, 237, 0.4);
+}
+
+a.more-link {
+  background-color: #92a4ad;
+  color: #fff;
+}
