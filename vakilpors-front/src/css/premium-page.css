@@ -53,3 +53,12 @@ body{
 	font-family: "shabnam";
 }
 
+
+#transactions
+{
+border: 2px solid ;
+border-color: #ABC0C0;
+border-top-left-radius: 20px;
+border-bottom-right-radius: 20px;
+box-shadow: 5px 5px 5px gray;
+}
