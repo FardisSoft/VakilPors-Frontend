@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Grid, Typography, Slide } from '@mui/material';
-import lawOnline from '../../assests/images/law-online.jpg';
-import _404styles from '../../css/404styles.css';
+import lawOnline from '../assests/images/law-online.jpg';
+import _404styles from '../css/404styles.css';
 import { Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 
