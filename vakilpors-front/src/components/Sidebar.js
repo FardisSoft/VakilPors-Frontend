@@ -1,7 +1,7 @@
 import { HomeOutlined, PersonSearchOutlined, ForumOutlined, PolicyOutlined, AppRegistrationOutlined,
        LoginOutlined, LogoutOutlined, ManageAccountsOutlined, AccountCircleOutlined, CallOutlined,
        Menu, ChevronRight, ChatOutlined, DashboardOutlined, AssignmentOutlined, WalletOutlined,
-       AssignmentTurnedInOutlined, AssessmentOutlined } from "@mui/icons-material";
+       AssignmentTurnedInOutlined, AssessmentOutlined, Gavel } from "@mui/icons-material";
 import React, { useState, useEffect } from 'react';
 import useStateRef from "react-usestateref";
 import { styled } from '@mui/material/styles';
@@ -156,6 +156,7 @@ const Sidebar = (props) => {
         {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
+        {name:'قانون اساسی', icon:Gavel, url:'/AsasiLaw'},
         {name:'ثبت نام', icon:AppRegistrationOutlined, url:'/Register'},
         {name:'ورود', icon:LoginOutlined, url:'/Login'}
       ];
@@ -172,6 +173,7 @@ const Sidebar = (props) => {
         {name:'پرونده های من', icon:AssignmentOutlined, url:`/show-cases/${false}`},
         {name:'کیف پول', icon:WalletOutlined, url:`/wallet`},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
+        {name:'قانون اساسی', icon:Gavel, url:'/AsasiLaw'},
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
       ];
       break;
@@ -187,6 +189,7 @@ const Sidebar = (props) => {
         {name:'پرونده های من', icon:AssignmentOutlined, url:`/user-send-cases/${refLawyerID.current}`},
         {name:'کیف پول', icon:WalletOutlined, url:'/wallet'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
+        {name:'قانون اساسی', icon:Gavel, url:'/AsasiLaw'},
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
       ];
       break;
