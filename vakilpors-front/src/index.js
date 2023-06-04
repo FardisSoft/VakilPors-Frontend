@@ -37,6 +37,7 @@ import NotFound from './components/NotFound';
 import VideoCall from './components/video-call/VideoCall';
 import VerifyLawyers from './components/admin-pages/VerifyLawyers';
 import Statistics from './components/admin-pages/Statistics';
+import AsasiLaw from './components/AsasiLaw.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -71,6 +72,7 @@ root.render(
               <Route path="/videoCall/:roomId" element={<Sidebar component={VideoCall}/>}/>
               <Route path="/VerifyLawyers" element={<Sidebar component={VerifyLawyers}/>}/>
               <Route path="/Statistics" element={<Sidebar component={Statistics}/>}/>
+              <Route path="/AsasiLaw" element={<Sidebar component={AsasiLaw}/>}/>
 
               <Route path="*" element={<NotFound/>}/>
           </Routes>
