@@ -124,23 +124,7 @@
 }
 
 /* demo stuff */
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-body {
-  background-color: #416475;
-  margin-bottom: 50px;
-}
-html, button, input, select, textarea {
-    font-family: 'Montserrat', Helvetica, sans-serif;
-    color: #92a4ad;
-}
-h1 {
-  text-align: center;
-  margin: 30px 15px;
-}
+
 .zoom-area { 
   max-width: 490px;
   margin: 30px auto 30px;
@@ -167,10 +151,7 @@ a.more-link {
 }
 
 /* Modified styles */
-body {
-  background-color: #416475;
-  color: #fff;
-}
+
 
 .error-container > span:nth-of-type(1) {
   color: #D1F2A5;
@@ -186,9 +167,4 @@ body {
     inset 0 30px 0 rgba(158, 206, 255, 0.4),
     inset -30px 0 0 rgba(165, 214, 255, 0.4),
     inset 0 -30px 0 rgba(99, 179, 237, 0.4);
-}
-
-a.more-link {
-  background-color: #92a4ad;
-  color: #fff;
 }
