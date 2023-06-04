@@ -16,7 +16,7 @@ const VerifyLawyers = () => {
   const navigate = useNavigate();
 
   const getLawyers = async () => {
-    if (refUserRole.current !== "Admin") {
+    if (refUserRole.current && refUserRole.current !== "Admin") {
       navigate('*');
     }
     const url = BASE_API_ROUTE + 'Lawyer/GetAll';
