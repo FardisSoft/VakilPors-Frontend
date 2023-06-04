@@ -33,12 +33,11 @@ import AddNewCase from './components/case-pages/addNewCase';
 import ShowCases from './components/case-pages/ShowCases';
 import Wallet from './components/premium-page/Wallet';
 import UserSendCases from './components/case-pages/UserSendCases';
-import NotFound from './components/NotFound';
 import VideoCall from './components/video-call/VideoCall';
 import VerifyLawyers from './components/admin-pages/VerifyLawyers';
 import Statistics from './components/admin-pages/Statistics';
 import AsasiLaw from './components/AsasiLaw';
-import _404page from './components/NotFound/404page'
+import _404page from './components/404page'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
