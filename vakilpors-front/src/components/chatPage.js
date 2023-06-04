@@ -13,7 +13,6 @@ import axios from 'axios';
 import jwt from 'jwt-decode';
 import { toast } from 'react-toastify';
 
-
 const StyledTooltip = styled (({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} arrow/>
 ))(({ theme }) => ({
@@ -562,7 +561,7 @@ const ChatPage = () => {
           </Grid>
 
           {/* content */}
-          <Grid sx={{  whiteSpace: 'pre-wrap', wordBreak: 'break-word',}}>
+          <Grid sx={{ margin: '10px', whiteSpace: 'pre-wrap', wordBreak: 'break-word',}}>
             <Typography fontFamily={'shabnam'} 
               color={(isDeleted || message.callStatus == 2) ? 'red' : message.callStatus == 1 ? 'green' : 'black'}>
               { isDeleted ? 'This message was deleted'
@@ -641,7 +640,6 @@ const ChatPage = () => {
       </Grid>
     );
   };
-
 
   const WhiteIconButton = styled(IconButton)({
     color: 'white',
@@ -722,88 +720,82 @@ const ChatPage = () => {
                 </Grid>
               </Grid>}
 
-
               <TextField
-    sx={{
-      flexGrow: 1,
-      '& input': {
-        color: 'white',
-      },
-      '& svg': {
-        color: 'white',
-      },
-    }}
-    ref={inputRef}
-    variant="outlined"
-    dir='rtl'
-    fullWidth
-    placeholder="پیام خود را بنویسید..."
-    value={inputText}
-    onChange={handleInputChange}
-    onKeyDown={handleEnter}
-    InputProps={{
-      dir: "rtl",
-      style: {
-        fontFamily: "shabnam",
-        fontSize: "15px",
-        color: "white",
-      },
-      endAdornment: (
-        <InputAdornment position="end">
-          {isEditActive ? (
-            <>
-              <Tooltip title={<React.Fragment>ویرایش پیام</React.Fragment>}>
-                <WhiteIconButton size="small" onClick={handleEditMessage}>
-                  <Edit />
-                </WhiteIconButton>
-              </Tooltip>
-              <Tooltip title={<React.Fragment>انصراف</React.Fragment>}>
-                <WhiteIconButton size="small" onClick={handleCancelEditMessage}>
-                  <Cancel />
-                </WhiteIconButton>
-              </Tooltip>
-            </>
-          ) : isReplyActive ? (
-            <>
-              <Tooltip title={<React.Fragment>ارسال پاسخ</React.Fragment>}>
-                <WhiteIconButton size="small" onClick={handleReplyMessage}>
-                  <Reply />
-                </WhiteIconButton>
-              </Tooltip>
-              <Tooltip title={<React.Fragment>انصراف</React.Fragment>}>
-                <WhiteIconButton size="small" onClick={handleCancelReplyMessage}>
-                  <Cancel />
-                </WhiteIconButton>
-              </Tooltip>
-            </>
-          ) : (
-            <>
-              <Tooltip title={<React.Fragment>ارسال فایل</React.Fragment>}>
-                <WhiteIconButton size="small" component="label">
-                  <AttachFile />
-                  <input type="file" style={{ display: 'none' }} onChange={handleAttachFileClick} />
-                </WhiteIconButton>
-              </Tooltip>
-              <Tooltip title={<React.Fragment>ارسال پیام</React.Fragment>}>
-                <WhiteIconButton size="small" onClick={handleSendClick}>
-                  <Send />
-                </WhiteIconButton>
-              </Tooltip>
-            </>
-          )}
-        </InputAdornment>
-      ),
-    }}
-  />
-
-
-
-
+              sx={{
+                flexGrow: 1,
+                '& input': {
+                  color: 'white',
+                },
+                '& svg': {
+                  color: 'white',
+                },
+              }}
+              ref={inputRef}
+              variant="outlined"
+              dir='rtl'
+              fullWidth
+              placeholder="پیام خود را بنویسید..."
+              value={inputText}
+              onChange={handleInputChange}
+              onKeyDown={handleEnter}
+              InputProps={{
+                dir: "rtl",
+                style: {
+                  fontFamily: "shabnam",
+                  fontSize: "15px",
+                  color: "white",
+                },
+                endAdornment: (
+                  <InputAdornment position="end">
+                    {isEditActive ? (
+                      <>
+                        <StyledTooltip title={<React.Fragment>ویرایش پیام</React.Fragment>}>
+                          <WhiteIconButton size="small" onClick={handleEditMessage}>
+                            <Edit />
+                          </WhiteIconButton>
+                        </StyledTooltip>
+                        <StyledTooltip title={<React.Fragment>انصراف</React.Fragment>}>
+                          <WhiteIconButton size="small" onClick={handleCancelEditMessage}>
+                            <Cancel />
+                          </WhiteIconButton>
+                        </StyledTooltip>
+                      </>
+                    ) : isReplyActive ? (
+                      <>
+                        <StyledTooltip title={<React.Fragment>ارسال پاسخ</React.Fragment>}>
+                          <WhiteIconButton size="small" onClick={handleReplyMessage}>
+                            <Reply />
+                          </WhiteIconButton>
+                        </StyledTooltip>
+                        <StyledTooltip title={<React.Fragment>انصراف</React.Fragment>}>
+                          <WhiteIconButton size="small" onClick={handleCancelReplyMessage}>
+                            <Cancel />
+                          </WhiteIconButton>
+                        </StyledTooltip>
+                      </>
+                    ) : (
+                      <>
+                        <StyledTooltip title={<React.Fragment>ارسال فایل</React.Fragment>}>
+                          <WhiteIconButton size="small" component="label">
+                            <AttachFile />
+                            <input type="file" style={{ display: 'none' }} onChange={handleAttachFileClick} />
+                          </WhiteIconButton>
+                        </StyledTooltip>
+                        <StyledTooltip title={<React.Fragment>ارسال پیام</React.Fragment>}>
+                          <WhiteIconButton size="small" onClick={handleSendClick}>
+                            <Send />
+                          </WhiteIconButton>
+                        </StyledTooltip>
+                      </>
+                    )}
+                  </InputAdornment>
+                ),
+              }}/>
             </Grid>
           </>
         ) : (
           <Box sx={{ textAlign: 'center', marginTop: '50%' }}>
-            <Typography fontFamily={'shabnam'}>یکی از افراد را برای چت انتخاب کنید.</Typography>
+            <Typography fontFamily={'shabnam'} color={'white'}>یکی از افراد را برای چت انتخاب کنید.</Typography>
           </Box>
         )}
       </Grid>
