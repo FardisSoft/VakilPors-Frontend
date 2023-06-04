@@ -527,7 +527,7 @@ const ChatPage = () => {
           backgroundColor: 'skyblue',
           ...(isCurrentUser && {
             alignSelf: 'flex-end',
-            backgroundColor: '#0041c2',
+            backgroundColor: '#6699cc',
             // color: 'grey',
           }),
           ...(isDeleted && {
@@ -557,7 +557,7 @@ const ChatPage = () => {
           <Grid sx={{ display: 'flex', alignItems: 'center',}}>
             <Avatar src={message.sender.profileImageUrl} alt={message.sender.name} />
             <Grid marginRight={'10px'} container direction={'row'} display={'flex'} justifyContent={'space-around'}>
-              <Typography fontSize={'17px'} fontFamily={'shabnam'} marginLeft={'10px'}>{message.sender.name}</Typography>
+              <Typography  fontSize={'17px'} fontFamily={'shabnam'} marginLeft={'10px'}>{message.sender.name}</Typography>
             </Grid>
           </Grid>
 
@@ -653,7 +653,7 @@ const ChatPage = () => {
     </Helmet>
 
     <Grid container direction={{ xs: 'column', sm: 'row' }} width={'100%'} height={{xs:'auto', sm:'calc(100vh - 65px)'}} minHeight={{xs:'100vh', sm:'calc(100vh - 65px)'}} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', display:'flex', justifyContent:'flex-start', alignItems:'stretch'}}>
-      <Grid container direction={'column'} width={{ xs: '100%', sm: '35%', md: '25%' }} sx={{ backgroundColor: '#0041c2', borderBottom: { xs: '1px solid grey', sm: '0px solid grey' } }}>
+      <Grid container direction={'column'} width={{ xs: '100%', sm: '35%', md: '25%' }} sx={{ backgroundColor: '#1260cc', borderBottom: { xs: '1px solid grey', sm: '0px solid grey' } }}>
         
         {/* show user him/herself info */}
         {refUser.current && <Grid display="flex" flexDirection="column" alignItems="center" justifyContent={'center'} padding={1} border={'1px solid grey'} borderRadius={2}>
@@ -666,7 +666,7 @@ const ChatPage = () => {
         {/* border={'1px solid grey'} borderRadius={2} */}
           <List sx={{height: '100%', flex: {xs:'0 0 auto', sm:'1 0 0'}, overflow: 'overlay'}}>
             {refChats.current.map((chat) => (
-              <ListItem sx={{cursor:'pointer',...(refSelectedChat.current === chat.id && {backgroundColor:'skyblue',borderRadius:2})}} key={chat.id} onClick={() => handleChatSelect(chat.id)} >
+              <ListItem sx={{cursor:'pointer',...(refSelectedChat.current === chat.id && {backgroundColor:'#6699cc',borderRadius:2})}} key={chat.id} onClick={() => handleChatSelect(chat.id)} >
                 <ListItemAvatar onClick={() => {if(chat.users[getUserIndex(chat.id)].lawyerId != null) navigate(`/LawyerPage/${chat.users[getUserIndex(chat.id)].lawyerId}`);}}>
                   {chat.users[getUserIndex(chat.id)].lawyerId != null ? <StyledTooltip title={<React.Fragment>مشاهده پروفایل</React.Fragment>}>
                     <Avatar src={chat.users[getUserIndex(chat.id)].profileImageUrl} alt={chat.users[getUserIndex(chat.id)].name}/>
