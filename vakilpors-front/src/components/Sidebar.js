@@ -297,7 +297,7 @@ const Sidebar = (props) => {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        { refUserRole.current && <Grid container direction="column" display="flex" alignItems="center" justifyContent="center" sx={{mt:2,mb:2}} backgroundColor={isPremium?'gold':'white'}>
+        { refUserRole.current && <Grid container direction="column" display="flex" alignItems="center" justifyContent="center" sx={{pt:2,pb:2}} backgroundColor={isPremium?'gold':'white'} borderRadius={'10px'}>
           <StyledBadge invisible={!online} overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} variant="dot">
             <Avatar alt="profile picture" sx={{ width: 60, height: 60 }} srcSet={profilePicture} />
           </StyledBadge>
