@@ -21,16 +21,16 @@ const Forum = () => {
 	useEffect(() => {
 		const getThreadList = async () => {
 			const token = await getAccessToken();
-			if(token){
+			if (token) {
 				const tokenData = jwt(token);
 				setUserId(tokenData.uid);
 				const url = BASE_API_ROUTE + "Thread/GetThreadList";
 				try {
-					const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
+					const response = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
 					setThreadList(response.data.data);
 					// console.log('threadList : ',response.data.data);
 				} catch (error) {
-					console.log('error in getting thread list : ',error);
+					console.log('error in getting thread list : ', error);
 				}
 			}
 		};
@@ -41,9 +41,9 @@ const Forum = () => {
 		return refThreadList.current.findIndex((thread) => thread.id === threadId);
 	};
 
-    const createThread = async () => {
+	const createThread = async () => {
 		const token = await getAccessToken();
-		if(token){
+		if (token) {
 			const url = BASE_API_ROUTE + "Thread/CreateThread";
 			const data = {
 				"id": 0,
@@ -51,41 +51,41 @@ const Forum = () => {
 				"description": "no description",
 				"likeCount": 0,
 				"userId": 0,
-      			"commentCount": 0,
+				"commentCount": 0,
 				"createDate": new Date().toISOString(),
 				"hasAnswer": false,
 				"user": null,
 			};
 			try {
-				const response = await axios.post(url,data,{headers: {Authorization: `Bearer ${token}`}});
+				const response = await axios.post(url, data, { headers: { Authorization: `Bearer ${token}` } });
 				setThreadList(prevThreadList => {
 					const updatedThreadList = [...prevThreadList, response.data.data];
 					return updatedThreadList;
 				});
 			} catch (err) {
-				console.log('error in creating thread : ',err);
+				console.log('error in creating thread : ', err);
 			}
 		}
 	};
 
 	const handleDeleteThread = async (thread) => {
 		const token = await getAccessToken();
-		if(token){
+		if (token) {
 			const url = BASE_API_ROUTE + `Thread/DeleteThread?threadId=${thread.id}`;
-			try{
-				const response = await axios.get(url,{headers: {Authorization: `Bearer ${token}`}});
+			try {
+				const response = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
 				const newThreadList = [...refThreadList.current];
 				newThreadList.splice(getThreadIndexByThreadId(thread.id), 1);
 				setThreadList(newThreadList);
-			} catch (err){
-				console.log('error in deleteing thread : ,',err);
+			} catch (err) {
+				console.log('error in deleteing thread : ,', err);
 			}
 		}
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if(thread.trim() != '')
+		if (thread.trim() != '')
 			createThread();
 		setThread("");
 	};
@@ -93,13 +93,15 @@ const Forum = () => {
 	return (
 		<>
 			<Helmet>
-              <title>فروم</title>
-          	</Helmet>
+				<title>فروم</title>
+			</Helmet>
 			<div className='home'>
-				<h2 className='homeTitle'>یک موضوع جدید ایجاد کنید یا موضوع مورد نظر خود را از لیست پایین انتخاب کنید</h2>
+				<div className='homeTitle'>
+					<h2  class="my-1">یک موضوع جدید ایجاد کنید یا موضوع مورد نظر خود را از لیست پایین انتخاب کنید</h2>
+				</div>
 				<form className='homeForm'>
 					<div className='home__container'>
-						<label htmlFor='thread'>موضوع جدید <br/></label>
+						<label htmlFor='thread'>موضوع جدید <br /></label>
 						<input
 							type='text'
 							name='thread'
@@ -114,7 +116,7 @@ const Forum = () => {
 					{threadList.map((thread) => (
 						<div className='thread__item' key={thread.id}>
 							<div className='react__container'>
-								<p style={{color: '#071e22'}}>{thread.title}</p>
+								<p style={{ color: '#071e22' }}>{thread.title}</p>
 							</div>
 							<div className='react__container_1'>
 								<Likes
@@ -127,15 +129,15 @@ const Forum = () => {
 										userId={refUserId.current}
 									/>
 								</Badge>
-								{(thread.userId == refUserId.current && !thread.hasAnswer) && 
-								<IconButton onClick={() => handleDeleteThread(thread)}>
-									<Delete sx={{color: '#0d6efd'}}/>
-								</IconButton>}
+								{(thread.userId == refUserId.current && !thread.hasAnswer) &&
+									<IconButton onClick={() => handleDeleteThread(thread)}>
+										<Delete sx={{ color: '#0d6efd' }} />
+									</IconButton>}
 								<p>
 									تاریخ ایجاد
 									<Typography>{moment(thread.createDate).format('MMM D YYYY, h:mm A')}</Typography>
 									ایجاد شده توسط
-									<Typography sx={{fontSize: '15px', fontFamily: 'shabnam', ml: '10px'}}>{thread.user.name} </Typography>
+									<Typography sx={{ fontSize: '15px', fontFamily: 'shabnam', ml: '10px' }}>{thread.user.name} </Typography>
 								</p>
 							</div>
 						</div>

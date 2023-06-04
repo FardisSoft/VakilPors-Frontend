@@ -9,7 +9,7 @@ import { TextField } from '@mui/material';
 
 const PremiumCard = () => {
 
-    const { refUserRole, refIsLoggedIn, getAccessToken, logout } = useAuth();
+    const { refUserRole, getAccessToken } = useAuth();
 
     const [getamountdetail, setamountdetail] = useState({
         amount: "",

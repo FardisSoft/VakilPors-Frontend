@@ -18,7 +18,7 @@ const PremiumPage = () => {
 
   const navigate = useNavigate();
   const [getpremiumdetail, setpremiumdetail] = useState([]);
-  const { refUserRole, refIsLoggedIn, getAccessToken, logout } = useAuth();
+  const { refUserRole, getAccessToken} = useAuth();
   const [gettransactions, settransactions] = useState([]);
   const [getsub, setsub] = useState([]);
   const [getbalance, setbalance] = useState([]);
@@ -190,7 +190,7 @@ const PremiumPage = () => {
                               x.isSuccess ?
                                 (
                                   <>
-                                    <div class="col-3 my-3 mx-1" style={{ border: "2px solid ", borderColor: "#ABC0C0", borderTopLeftRadius: "25px", borderBottomRightRadius: "20px", }}>
+                                    <div class="col-3 my-3 mx-1" id="transactions">
                                       <label>مبلغ :</label>
                                       <b><p style={{ textAlign: "center" }}>{x.amount} تومان </p></b>
                                       <label>تاریخ خریداری بسته :</label>

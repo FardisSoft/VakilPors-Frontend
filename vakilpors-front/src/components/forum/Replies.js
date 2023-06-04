@@ -6,6 +6,7 @@ import { useAuth } from "../../context/AuthProvider";
 import moment from 'moment';
 import { Typography, IconButton, Grid } from "@mui/material";
 import Likes from "./utils/Likes";
+import '../../css/forum.css';
 import { Delete, Edit, TaskAlt } from '@mui/icons-material';
 
 const Replies = () => {

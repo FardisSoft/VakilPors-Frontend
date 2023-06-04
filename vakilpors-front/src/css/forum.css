@@ -1,13 +1,16 @@
 .home__container input {
 	padding: 10px 20px;
 	/* border: 1px solid #ddd; */
-	border-radius: 15px;
+	border-top-right-radius: 15px;
+	border-bottom-left-radius: 15px;
+	border-top-left-radius: 5px;
+	border-bottom-right-radius: 5px;
 	margin-bottom: 15px;
 }
 .home,
 .replies,
 .modal {
-	background: #fffbf5;
+	background: url("../assests/images/back_white.jpg");
 	display: flex;
 	width: 100%;
 	flex-direction: column;
@@ -17,8 +20,19 @@
 	padding: 30px;
 }
 .homeTitle {
+	text-align: center;
 	font-family: 'shabnam', 'yekan';
 	margin-bottom: 30px;
+	background-color :darkcyan;
+	height: 60px;
+	display: flex;
+	box-shadow: 10px 10px;
+	padding: 10px;
+	border-top-right-radius: 5px;
+	border-bottom-left-radius: 30px;
+	border-top-left-radius: 5px;
+	border-bottom-right-radius: 30px;
+	width: 500px;
 }
 .repliesTitle {
 	font-family: 'shabnam', 'yekan';
@@ -29,29 +43,32 @@
 .modalBtn {
 	font-family: 'shabnam', 'yekan';
 	display: block;
-	width: 200px;
+	width: 150px;
 	padding: 15px;
 	cursor: pointer;
 	outline: none;
 	border: none;
 	border-radius: 15px;
-	font-size: 16px;
+	font-size: 13px;
 	font-weight: bold;
 	color: #fffbf5;
-	background-color: #0363f4;
+	background-color: #012780;
 	margin-bottom: 15px;
 }
 .homeForm {
 	font-family: 'shabnam', 'yekan';
-	background-color: #8eb1e5;
+	background-color: #ABC0C0;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	width: 80%;
 	margin-bottom: 50px;
 	padding: 20px;
-	border-radius: 25px;
-	box-shadow: 0 0 1px 1px #444cc6;
+	border-top-right-radius: 30px;
+	border-bottom-left-radius: 30px;
+	border-top-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	box-shadow: 10px 10px 5px gray;
 }
 .home__container {
 	font-family: 'shabnam', 'yekan';
@@ -66,7 +83,6 @@
 .thread__container {
 	border-radius: 25px;
 	font-family: 'shabnam', 'yekan';
-	background-color: #fffbf5;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -96,7 +112,7 @@
 	margin-left: 3px;
 	margin-right: -25px;
 	height: 30px;
-	color: #0d6efd;
+	color: #012780;
 	cursor: pointer;
 }
 .react__container {
@@ -127,12 +143,14 @@
 	background-color: #ddd;
 	position: fixed;
 }
+
 .modalInput {
 	font-family: 'shabnam', 'yekan';
 	width: 100%;
 	padding: 15px;
 	margin-bottom: 15px;
 }
+
 .modal__content {
 	font-family: 'shabnam', 'yekan';
 	background-color: #8eb1e5;
@@ -145,7 +163,29 @@
 	box-shadow: 0 0 1px 1px #444cc6;
 	margin-bottom: 20px;
 }
+
 .modal__content > label {
 	margin-bottom: 15px;
+}
+
+.thread__container
+{
+	box-shadow: 10px 10px 5px gray;
+	border: 1px solid gray;
+	border-top-right-radius: 50px;
+	border-bottom-left-radius: 50px;
+	border-top-left-radius: 15px;
+	border-bottom-right-radius: 15px;
+	background-color :#ABC0C0;
+}
+
+.thread__item
+{
+	background-color: darkcyan;
+	border-top-right-radius: 30px;
+	border-bottom-left-radius: 30px;
+	border-top-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	box-shadow: 10px 10px 5px gray;
 }
 
