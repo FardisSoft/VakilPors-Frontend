@@ -658,7 +658,7 @@ const ChatPage = () => {
         {/* show user him/herself info */}
         {refUser.current && <Grid display="flex" flexDirection="column" alignItems="center" justifyContent={'center'} padding={1} border={'1px solid grey'} borderRadius={2}>
           <Avatar src={refUser.current.profileImageUrl} alt={refUser.current.name} />
-          <Typography fontFamily={'shabnam'}>{refUser.current.name}</Typography>
+          <Typography fontFamily={'shabnam'} color={'white'}>{refUser.current.name}</Typography>
         </Grid>}
 
         {/* show chats (persons that user has chatted with) */}
@@ -672,18 +672,18 @@ const ChatPage = () => {
                     <Avatar src={chat.users[getUserIndex(chat.id)].profileImageUrl} alt={chat.users[getUserIndex(chat.id)].name}/>
                   </StyledTooltip> : <Avatar src={chat.users[getUserIndex(chat.id)].profileImageUrl} alt={chat.users[getUserIndex(chat.id)].name}/>}
                 </ListItemAvatar>
-                <ListItemText primaryTypographyProps={{ fontFamily: 'shabnam' }} primary={chat.users[getUserIndex(chat.id)].name} />
+                <ListItemText primaryTypographyProps={{ fontFamily: 'shabnam', color:'white', ...(refSelectedChat.current === chat.id && {color:'black'}) }} primary={chat.users[getUserIndex(chat.id)].name} />
                 { (refUserRole.current === "User" && chat.users[getUserIndex(chat.id)].lawyerId != null && chat.chatMessages.length > 2) && 
                 <StyledTooltip title={<React.Fragment>نظر دادن</React.Fragment>}>
-                  <IconButton size="small" onClick={() => handleRateClick(chat.users[getUserIndex(chat.id)].lawyerId)}>
+                  <WhiteIconButton size="small" onClick={() => handleRateClick(chat.users[getUserIndex(chat.id)].lawyerId)}>
                     <RateReview />
-                  </IconButton>
+                  </WhiteIconButton>
                 </StyledTooltip>}
                 {(chat.chatMessages.length > 2 && refSelectedChat.current === chat.id) && 
                 <StyledTooltip title={<React.Fragment>تماس تصویری</React.Fragment>}>
-                  <IconButton size="small" onClick={handleCallClick}>
+                  <WhiteIconButton size="small" onClick={handleCallClick}>
                     <VideoCall />
-                  </IconButton>
+                  </WhiteIconButton>
                 </StyledTooltip>}
               </ListItem>
             ))}
