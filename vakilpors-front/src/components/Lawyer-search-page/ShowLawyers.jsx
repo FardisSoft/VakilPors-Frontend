@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import '../../css/ShowLawyers.css';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { AiOutlineFieldNumber } from "react-icons/ai";
-import { GiRank3 } from "react-icons/gi";
+import { GiRank3, GiConfirmed } from "react-icons/gi";
 import { ThemeProvider } from 'styled-components';
 import { CacheProvider } from '@emotion/react';
 import { Avatar, CardContent, Grid, Rating } from '@mui/material';
@@ -30,9 +30,9 @@ const ShowLawyers = ({ Lawyer }) => {
                 <div class="teacher-item">
                     <div class="box-shadow teacher-box-size"  >
                         <a class="img-layer lazy">
-                        
+
                             <Grid sx={{
-                               backgroundImage:`url(${Lawyer.profileBackgroundPictureUrl?Lawyer.profileBackgroundPictureUrl:dlpbp})`,
+                                backgroundImage: `url(${Lawyer.profileBackgroundPictureUrl ? Lawyer.profileBackgroundPictureUrl : dlpbp})`,
                                 backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center', height: 250
                             }} display="flex" alignItems="center" justifyContent="center">
                                 <CardContent>
@@ -41,7 +41,17 @@ const ShowLawyers = ({ Lawyer }) => {
 
                                 </CardContent>
                             </Grid>
+                            {Lawyer.isVerified ? (
+                                <>
+                                    <p class="my-0 mx-1">
+                                        <GiConfirmed color='green' size={15}></GiConfirmed>
+                                    </p>
+                                </>
+                            ) : (
+                                <p></p>
+                            )}
                         </a>
+
                         <Link to={`/LawyerPage/${Lawyer.id}`}>
                             <h2 className="align-center">
 
