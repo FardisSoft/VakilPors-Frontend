@@ -8,13 +8,12 @@ import { useNavigate } from "react-router-dom";
 
 const NotFound = () => {
 
-  const [show, setShow] = useState(false);
+    const [show, setShow] = useState(false);
 
   useEffect(() => {
     setShow(true);
   }, []);
 
-const NotFound = () => {
     const navigate = useNavigate();
 
   return (
