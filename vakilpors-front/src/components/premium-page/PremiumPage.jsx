@@ -25,7 +25,7 @@ const PremiumPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (refUserRole.current !== "User") {
+      if (refUserRole.current && refUserRole.current !== "User") {
         navigate('*');
       }
       const token = await getAccessToken();
