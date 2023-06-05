@@ -9,6 +9,7 @@ import { Typography, IconButton, Grid, TextField, Button } from "@mui/material";
 import Likes from "./utils/Likes";
 import { Delete, Edit, TaskAlt, WorkspacePremium } from '@mui/icons-material';
 import { toast } from 'react-toastify';
+import backgroundbb from "../../assests/images/back.png";
 
 // mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
@@ -174,7 +175,7 @@ const Replies = () => {
 			</Helmet>
 			<ThemeProvider theme={theme}>
 				<CacheProvider value={cacheRtl}>
-					<Grid container width={'100%'} minHeight={'100vh'} paddingY={'30px'} backgroundColor={'#fffbf5'} display={'flex'} justifyContent={'center'} alignItems={'center'} >
+					<Grid container width={'100%'} minHeight={'100vh'} paddingY={'30px'} backgroundColor={'#fffbf5'} display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{background : `url(${backgroundbb})`}} >
 						<Grid container direction={'column'} width={{ xs: '100%', md: '90%', lg: '80%' }} display={'flex'} justifyContent={'center'} alignItems={'center'}>
 							<Typography fontFamily={'shabnam'} fontSize={'18px'} sx={{ mb: '30px' }}>عنوان تاپیک : {title}</Typography>
 							<Grid container direction={{ xs: 'column', md: 'row' }} width={{ xs: '97%', sm: '90%' }} backgroundColor={'#8eb1e5'} display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{ mb: '50px', p: '20px', borderBottomLeftRadius: '20px',borderTopRightRadius : '20px', boxShadow: 4  }}>
