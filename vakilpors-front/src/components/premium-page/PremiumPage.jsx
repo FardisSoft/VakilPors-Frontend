@@ -8,6 +8,7 @@ import '../../css/premium-page.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { BASE_API_ROUTE } from '../../Constants';
 import Moment from 'moment-jalaali';
+import { toast } from 'react-toastify';
 
 const PremiumPage = () => {
 
@@ -23,51 +24,80 @@ const PremiumPage = () => {
     premiumPlan: ""
   });
 
+  const showSuccesMessage = (successMessage) => {
+    toast.success(successMessage, {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      rtl: true,
+    });
+  };
+
+  const showErrorMessage = (errorMessage) => {
+    toast.error(errorMessage, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        rtl: true,
+    });
+  };
+
+  const fetchData = async () => {
+    const token = await getAccessToken();
+    if (token) {
+      const tokenData = jwt(token);
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer " + token
+      };
+      try {
+        const url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
+        const response = await axios.get(url);
+        setpremiumdetail(response.data.data);
+      } catch (err) {
+        console.log('error in getting user data : ',err);
+      }
+      try {
+        const premiumdetail = await axios.get(BASE_API_ROUTE + `Wallet/GetTransactions`, {
+          headers: headers
+        });
+        settransactions(premiumdetail.data);
+      } catch (err) {
+        console.log('error in getting Transactions : ',err);
+      }
+      try {
+        const balance = await axios.get(BASE_API_ROUTE + `Wallet/GetBalance`, {
+          headers: headers
+        });
+        setbalance(balance.data);
+      } catch (err) {
+        console.log('error in getting Balance : ',err);
+      }
+      try {
+        const getsubstatus = await axios.get(BASE_API_ROUTE + `Premium/GetSubscriptionStatus`, {
+          headers: headers
+        });
+        setsub(getsubstatus.data.data);
+      } catch (err) {
+        console.log('error in getting SubscriptionStatus : ', err);
+      }
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      if (refUserRole.current && refUserRole.current !== "User") {
-        navigate('*');
-      }
-      const token = await getAccessToken();
-      if (token) {
-        const tokenData = jwt(token);
-        const headers = {
-          'Content-Type': 'application/json',
-          'Authorization': "Bearer " + token
-        };
-        try {
-          const url = BASE_API_ROUTE + `Customer/GetUserById?userId=${tokenData.uid}`;
-          const response = await axios.get(url);
-          setpremiumdetail(response.data.data);
-        } catch (err) {
-          console.log('error in getting user data : ',err);
-        }
-        try {
-          const premiumdetail = await axios.get(BASE_API_ROUTE + `Wallet/GetTransactions`, {
-            headers: headers
-          });
-          settransactions(premiumdetail.data);
-        } catch (err) {
-          console.log('error in getting Transactions : ',err);
-        }
-        try {
-          const balance = await axios.get(BASE_API_ROUTE + `Wallet/GetBalance`, {
-            headers: headers
-          });
-          setbalance(balance.data);
-        } catch (err) {
-          console.log('error in getting Balance : ',err);
-        }
-        try {
-          const getsubstatus = await axios.get(BASE_API_ROUTE + `Premium/GetSubscriptionStatus`, {
-            headers: headers
-          });
-          setsub(getsubstatus.data.data);
-        } catch (err) {
-          console.log('error in getting SubscriptionStatus : ', err);
-        }
-      }
-    };
+    if (refUserRole.current && refUserRole.current !== "User") {
+      navigate('*');
+    }
     fetchData();
   }, []);
 
@@ -78,6 +108,8 @@ const PremiumPage = () => {
       try {
         const response = await axios.post(url, '', { headers: { Authorization: `Bearer ${token}` } });
         // console.log('response in Premium/ActivateSubscription : ',response);
+        showSuccesMessage(`اشتراک ${premiumPlan} شما با موفقیت فعال شد!`);
+        fetchData();
       } catch (err) {
         console.log('error in Premium/ActivateSubscription : ',err);
       }
