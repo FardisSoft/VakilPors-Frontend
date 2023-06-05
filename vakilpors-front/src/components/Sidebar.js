@@ -1,7 +1,7 @@
 import { HomeOutlined, PersonSearchOutlined, ForumOutlined, PolicyOutlined, AppRegistrationOutlined,
        LoginOutlined, LogoutOutlined, ManageAccountsOutlined, AccountCircleOutlined, CallOutlined,
        Menu, ChevronRight, ChatOutlined, DashboardOutlined, AssignmentOutlined, WalletOutlined,
-       AssignmentTurnedInOutlined, AssessmentOutlined, Gavel } from "@mui/icons-material";
+       AssignmentTurnedInOutlined, AssessmentOutlined, Gavel, LiveHelpOutlined, PaidOutlined } from "@mui/icons-material";
 import React, { useState, useEffect } from 'react';
 import useStateRef from "react-usestateref";
 import { styled } from '@mui/material/styles';
@@ -204,6 +204,7 @@ const Sidebar = (props) => {
         {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
         {name:'تایید مدارک وکلا', icon:AssignmentTurnedInOutlined, url:'/VerifyLawyers'},
         {name:'آمار سایت', icon:AssessmentOutlined, url:'/Statistics'},
+        {name:'تراکنش های مالی', icon:PaidOutlined, url:'/HandleTransactions'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
         {name:'قانون اساسی', icon:Gavel, url:'/AsasiLaw'},
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
