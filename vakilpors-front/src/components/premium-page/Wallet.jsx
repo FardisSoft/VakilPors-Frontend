@@ -6,6 +6,7 @@ import { useAuth } from "../../context/AuthProvider";
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
+import walletPic from '../../assests/images/Wallet-pana.svg';
 
 const PremiumCard = () => {
 
@@ -137,7 +138,7 @@ const PremiumCard = () => {
                 <div class="col-12 col-sm-10 col-md-7 col-xl-5 mx-auto ">
                     <div class="shadow-sm p-0  bg-white" id="form">
                         <div class="bg-wallet d-flex flex-column align-items-center justify-content-center">
-                            <img class="img-wallet img-fluid" src="https://pchospital.bio/img/Wallet-pana.svg" />
+                            <img class="img-wallet img-fluid" src={walletPic} />
                             <p class="font-weight-bold text-wallet mt-md-2 pt-md-2">موجودی کیف پول :</p>
                             <p class="my-1 tahoma text-xxl">{getbalance}  تومان</p>
                             {refUserRole.current == "Vakil" && <>
