@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import useStateRef from 'react-usestateref';
-import { Avatar, Box, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, TextField, InputAdornment, Typography, styled } from '@mui/material';
+import { Avatar, Box, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, TextField, InputAdornment, Typography, styled } from '@mui/material';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined, DoneAll, Cancel, Reply, RateReview, VideoCall, Call, CallEnd } from '@mui/icons-material';
 import Moment from 'moment-jalaali';
@@ -46,7 +46,6 @@ const ChatPage = () => {
   const messageRefs = useRef([]);
   messageRefs.current.push(React.createRef());
 
-  const [pageWidth, setPageWidth] = useState(window.innerWidth);
 	const { refUserRole, getAccessToken } = useAuth();
   const navigate = useNavigate();
 
@@ -86,7 +85,6 @@ const ChatPage = () => {
 //////////////////////////////////////////////////////////// get initial data
 
   useEffect( () => {
-    window.addEventListener('resize', updateChatPageSize);
     const doEveryThing = async () => {
       const token = await getAccessToken();
       if(!token){
@@ -100,7 +98,6 @@ const ChatPage = () => {
       }
     };
     doEveryThing();
-    return () => window.removeEventListener('resize', updateChatPageSize);
   }, []);
 
   const getUserData = async (token) => {
@@ -285,10 +282,6 @@ const ChatPage = () => {
   };
 
 //////////////////////////////////////////////////////////// UI
-
-  const updateChatPageSize = () => {
-    setPageWidth(window.innerWidth);
-  };
 
   const handleEnter = (event) => {
     if(event.key == 'Enter'){
@@ -675,15 +668,15 @@ const ChatPage = () => {
                 <ListItemText primaryTypographyProps={{ fontFamily: 'shabnam', color:'white', ...(refSelectedChat.current === chat.id && {color:'black'}) }} primary={chat.users[getUserIndex(chat.id)].name} />
                 { (refUserRole.current === "User" && chat.users[getUserIndex(chat.id)].lawyerId != null && chat.chatMessages.length > 2) && 
                 <StyledTooltip title={<React.Fragment>نظر دادن</React.Fragment>}>
-                  <WhiteIconButton size="small" onClick={() => handleRateClick(chat.users[getUserIndex(chat.id)].lawyerId)}>
+                  <IconButton size="small" onClick={() => handleRateClick(chat.users[getUserIndex(chat.id)].lawyerId)}>
                     <RateReview />
-                  </WhiteIconButton>
+                  </IconButton>
                 </StyledTooltip>}
                 {(chat.chatMessages.length > 2 && refSelectedChat.current === chat.id) && 
                 <StyledTooltip title={<React.Fragment>تماس تصویری</React.Fragment>}>
-                  <WhiteIconButton size="small" onClick={handleCallClick}>
+                  <IconButton size="small" onClick={handleCallClick}>
                     <VideoCall />
-                  </WhiteIconButton>
+                  </IconButton>
                 </StyledTooltip>}
               </ListItem>
             ))}
