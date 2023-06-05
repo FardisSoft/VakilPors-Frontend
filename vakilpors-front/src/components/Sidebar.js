@@ -316,14 +316,24 @@ const Sidebar = (props) => {
               </ListItemButton>
             </ListItem>
           ))}
-          {refUserRole.current && <ListItem disablePadding>
+          {refUserRole.current && <>
+            <ListItem disablePadding>
+            <ListItemButton component={Link} to={'https://api.fardissoft.ir/File/Download?key=c19e4286-5f70-4544-87bb-eda9098a7e65'}>
+              <ListItemIcon>
+                <LiveHelpOutlined color="primary" />
+              </ListItemIcon>
+              <Typography fontFamily="shabnam" >دانلود راهنمای سایت</Typography>
+            </ListItemButton>
+          </ListItem>
+           <ListItem disablePadding>
             <ListItemButton onClick={logoutHandler}>
               <ListItemIcon>
                 <LogoutOutlined color="primary" />
               </ListItemIcon>
               <Typography fontFamily="shabnam" >خروج از حساب</Typography>
             </ListItemButton>
-          </ListItem>}
+          </ListItem>
+          </>}
         </List>
       </Drawer>
 
