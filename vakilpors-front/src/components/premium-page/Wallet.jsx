@@ -13,7 +13,7 @@ const Wallet = () => {
     const { refUserRole, getAccessToken } = useAuth();
     const [getamountdetail, setamountdetail] = useState({
         amount: "",
-        description: "شارژ کیف پول"
+        description: ""
     });
     const [getbalance, setbalance] = useState([]);
     const [tokens, setTokens] = useState(0);
@@ -50,7 +50,7 @@ const Wallet = () => {
     const showSuccesMessage = (successMessage) => {
         toast.success(successMessage, {
           position: "bottom-right",
-          autoClose: 3000,
+          autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -64,7 +64,7 @@ const Wallet = () => {
     const showErrorMessage = (errorMessage) => {
     toast.error(errorMessage, {
         position: "bottom-right",
-        autoClose: 3000,
+        autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -85,33 +85,36 @@ const Wallet = () => {
             const url = BASE_API_ROUTE + "Payment/request";
             const data = {
                 "amount": getamountdetail.amount,
-                "description": getamountdetail.description
+                "description": 'شارژ کیف پول'
             }
             try {
                 const response = await axios.post(url, data, { headers: { Authorization: `Bearer ${token}` } });
                 window.location.replace(response.data.paymentUrl);
             } catch (err) {
                 console.log('error in Payment/request : ',err);
+                showErrorMessage('خطا در اتصال به زرین پال');
             }
         }
     };
 
     const payrollLawyer = async () => {
-        // const token = await getAccessToken();
-		// if(token){
-        //     const url = BASE_API_ROUTE + "Payment/request"; //
-        //     const data = {
-        //         "amount": getamountdetail.amount,
-        //         "description": 'برداشت از کیف پول'
-        //     }
-        //     try {
-        //         const response = await axios.post(url, data, { headers: { Authorization: `Bearer ${token}` } });
-        //         showSuccesMessage('مبلغ مورد نظر به حساب شما واریز شد.');
-        //         fetchData();
-        //     } catch (err) {
-        //         console.log('error in Payment/request in taking money : ',err);
-        //     }
-        // }
+        if(Number(getbalance) < Number(getamountdetail.amount)){
+            showErrorMessage('موجودی کیف پول شما کافی نیست');
+            return;
+        }
+        const token = await getAccessToken();
+		if(token){
+            const url = BASE_API_ROUTE + `Wallet/MakeWithdraw?amount=${getamountdetail.amount}&cardNo=${getamountdetail.description}`;
+            try {
+                const response = await axios.post(url, '', { headers: { Authorization: `Bearer ${token}` } });
+                // console.log('response in MakeWithdraw : ',response);
+                showSuccesMessage('مبلغ مورد نظر حداکثر تا 24 ساعت دیگر به حساب شما واریز خواهد شد. در غیر این صورت به ادمین سایت پیام بدهید.');
+                fetchData();
+            } catch (err) {
+                console.log('error in MakeWithdraw : ',err);
+                showErrorMessage('خطا در برداشت از حساب');
+            }
+        }
     };
 
     const transferToken = async () => {
@@ -222,7 +225,9 @@ const Wallet = () => {
                                                         <input
                                                             class="form-control"
                                                             id="mu-text-field"
-                                                            name="creditNumber" />
+                                                            name="description"
+                                                            onChange={setpayroll}
+                                                            value={getamountdetail.description} />
                                                     </div>
                                                     <hr class="my-4" />
                                                     <button class="btn btn-primary mr-2 mt-3 mt-sm-0" style={{ width: "100%" }} onClick={payrollLawyer}>
