@@ -4,7 +4,7 @@ import axios from 'axios';
 import { BASE_API_ROUTE } from '../Constants';
 import { useAuth } from "../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
-import { FmdGood, Phone, Email, Chat } from '@mui/icons-material';
+import { FmdGood, Phone, Email, Chat, Telegram } from '@mui/icons-material';
 import { Button, Typography } from "@mui/material";
 import { toast } from 'react-toastify';
 
@@ -79,6 +79,8 @@ const ContactUs = () => {
 				<p style={{fontSize: 15, color: '#444cc6'}}>021-77240540</p>
 				<Email/>
 				<p style={{fontSize: 15, color: '#444cc6'}}>info@mail.fardissoft.ir</p>
+				<Telegram/>
+				<p style={{fontSize: 15, color: '#444cc6'}}>vakil_pors_bot@</p>
 				{refUserRole.current != 'Admin' &&
 				<Button onClick={handleChatStart}>
 					<Chat sx={{ml:'5px'}}/>
