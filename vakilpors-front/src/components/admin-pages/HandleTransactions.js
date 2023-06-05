@@ -87,34 +87,34 @@ const HandleTransactions = () => {
     <Helmet>
       <title>تراکنش های مالی</title>
     </Helmet>
-    <Grid container minHeight={'100vh'} direction='column'>
-      <Grid display="flex" alignItems="flex-start" justifyContent="flex-start" item component={Card}>
-          <CardHeader titleTypographyProps={{ mx:0, mb:0, mt:'20px', fontFamily:"shabnam", fontWeight:"bold", fontSize:"16px", color:"grayText" }} 
-          title={'لیست درخواست های برداشت از حساب وکلا (درخواست های پرداخت نشده) : '}/>
-      </Grid>
-      {transactions.map( (transaction,index) =>
-        (transaction.isWithdraw && !transaction.isPaid) && 
-        <Grid key={index} container direction={{ xs: 'column', sm: 'row' }} marginBottom={'20px'}>
-          <Grid item component={Card}>
-            <CardContent>
-              <Grid container direction={{xs: 'row', sm: 'column'}} display='flex' justifyContent={'space-between'} alignItems={'center'}>
+    <Grid minHeight={'100vh'} width={'100%'} display="flex" justifyContent={'center'}>
+      <Grid container width={{xs:'100%',md:'70%'}} direction='column' display="flex" alignItems={'center'}>
+        <Grid item component={Card} marginBottom={'20px'}>
+            <CardHeader titleTypographyProps={{ mx:0, mb:0, mt:'20px', fontFamily:"shabnam", fontWeight:"bold", fontSize:"16px", color:"grayText" }} 
+            title={'لیست درخواست های برداشت از حساب وکلا (درخواست های پرداخت نشده) : '}/>
+        </Grid>
+        {transactions.map( (transaction,index) =>
+          (transaction.isWithdraw && !transaction.isPaid) && 
+          <Grid key={index} container direction={{ xs: 'column', sm: 'row' }} marginBottom={'20px'}>
+            <Grid item component={Card} sm>
+              <CardContent>
+                <Grid container direction={{xs: 'column', sm: 'row'}} display='flex' justifyContent={{xs:'flex-start',sm:'space-between'}} alignItems={{xs:'flex-start',sm:'space-between'}}>
+                  <Typography sx={{fontFamily:"shabnam"}}>{'مبلغ : '+transaction.amount}</Typography>
+                  <Typography sx={{fontFamily:"shabnam"}}>{'شماره کارت : '+transaction.description.replace('برداشت از کیف پول، شماره کارت:','')}</Typography>
+                  <Typography sx={{fontFamily:"shabnam"}}>{'تاریخ ' + Moment(transaction.date).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(transaction.date).format('HH:mm')}</Typography>
+                </Grid>
+              </CardContent>
+            </Grid>
+            <Grid item component={Card}>
+              <CardContent>
                 <Button variant="contained" onClick={()=>handlePayment(transaction.id)} sx={{fontFamily:"shabnam",maxHeight:'40px'}}>
                   پرداخت شد
                 </Button>
-              </Grid>
-            </CardContent>                    
+              </CardContent>                    
+            </Grid>
           </Grid>
-          <Grid container direction={'column'} item component={Card} sm>
-            <CardContent>
-              <Grid container direction={{xs: 'column', sm: 'row'}} display='flex' justifyContent={{xs:'flex-start',sm:'space-between'}} alignItems={{xs:'flex-start',sm:'space-between'}}>
-                <Typography sx={{fontFamily:"shabnam"}}>{'مبلغ : '+transaction.amount}</Typography>
-                <Typography sx={{fontFamily:"shabnam"}}>{'شماره کارت : '+transaction.description.replace('برداشت از کیف پول، شماره کارت:','')}</Typography>
-                <Typography sx={{fontFamily:"shabnam"}}>{'تاریخ ' + Moment(transaction.date).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(transaction.date).format('HH:mm')}</Typography>
-              </Grid>
-            </CardContent>
-          </Grid>
-        </Grid>
-      )}
+        )}
+      </Grid>
     </Grid>
     </>
   );
