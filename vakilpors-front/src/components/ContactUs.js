@@ -78,7 +78,7 @@ const ContactUs = () => {
 				<Phone/>
 				<p style={{fontSize: 15, color: '#444cc6'}}>021-77240540</p>
 				<Email/>
-				<p style={{fontSize: 15, color: '#444cc6'}}>pub@iust.ac.ir</p>
+				<p style={{fontSize: 15, color: '#444cc6'}}>info@mail.fardissoft.ir</p>
 				{refUserRole.current != 'Admin' &&
 				<Button onClick={handleChatStart}>
 					<Chat sx={{ml:'5px'}}/>

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import '../../css/ShowLawyers.css';
-import { BsFillPersonFill } from 'react-icons/bs';
+import { BsFillPersonFill, BsPersonWorkspace } from 'react-icons/bs';
 import { AiOutlineFieldNumber } from "react-icons/ai";
 import { GiRank3, GiConfirmed } from "react-icons/gi";
 import { ThemeProvider } from 'styled-components';
@@ -65,14 +65,21 @@ const ShowLawyers = ({ Lawyer }) => {
                             </h2>
                             <h2>
                                 <p class="my-1">
-                                    <AiOutlineFieldNumber color='black' size={'20px'} />  شماره پروانه وکالت: </p>
+                                    <BsPersonWorkspace color='black' size={'20px'} /> عنوان : </p>
+                                <a title={Lawyer.title}  >
+                                    <i class="zmdi zmdi-account mx-3">
+                                    </i> {Lawyer.title} </a>
+                            </h2>
+                            <h2>
+                                <p class="my-1">
+                                    <AiOutlineFieldNumber color='black' size={'20px'} />  شماره پروانه وکالت : </p>
                                 <a title={Lawyer.parvandeNo}  >
                                     <i class="zmdi zmdi-account mx-3">
                                     </i> {Lawyer.parvandeNo} </a>
                             </h2>
                             <h2>
                                 <p class="my-2">
-                                    <GiRank3 color="black" size={'20px'} />   میانگین امتیاز: </p>
+                                    <GiRank3 color="black" size={'20px'} />   میانگین امتیاز : </p>
                                 <ThemeProvider theme={theme} >
                                     <CacheProvider value={cacheRtl}>
                                         <Rating dir="rtl" name="lawyer rating" value={Lawyer.rating} precision={0.05} readOnly />
