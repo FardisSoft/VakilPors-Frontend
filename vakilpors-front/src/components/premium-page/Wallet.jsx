@@ -6,9 +6,9 @@ import { useAuth } from "../../context/AuthProvider";
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
-import walletPic from '../../assests/images/Wallet-pana.svg';
+import walletPic from '../../assests/images/Wallet-pana.svg'; 
 
-const PremiumCard = () => {
+const Wallet = () => {
 
     const { refUserRole, getAccessToken } = useAuth();
     const [getamountdetail, setamountdetail] = useState({
@@ -59,21 +59,21 @@ const PremiumCard = () => {
           theme: "light",
           rtl: true,
         });
-      };
+    };
     
-      const showErrorMessage = (errorMessage) => {
-        toast.error(errorMessage, {
-          position: "bottom-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          rtl: true,
-        });
-      };
+    const showErrorMessage = (errorMessage) => {
+    toast.error(errorMessage, {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        rtl: true,
+    });
+    };
 
     useEffect(() => {
         fetchData();
@@ -94,6 +94,24 @@ const PremiumCard = () => {
                 console.log('error in Payment/request : ',err);
             }
         }
+    };
+
+    const payrollLawyer = async () => {
+        // const token = await getAccessToken();
+		// if(token){
+        //     const url = BASE_API_ROUTE + "Payment/request"; //
+        //     const data = {
+        //         "amount": getamountdetail.amount,
+        //         "description": 'برداشت از کیف پول'
+        //     }
+        //     try {
+        //         const response = await axios.post(url, data, { headers: { Authorization: `Bearer ${token}` } });
+        //         showSuccesMessage('مبلغ مورد نظر به حساب شما واریز شد.');
+        //         fetchData();
+        //     } catch (err) {
+        //         console.log('error in Payment/request in taking money : ',err);
+        //     }
+        // }
     };
 
     const transferToken = async () => {
@@ -207,7 +225,7 @@ const PremiumCard = () => {
                                                             name="creditNumber" />
                                                     </div>
                                                     <hr class="my-4" />
-                                                    <button class="btn btn-primary mr-2 mt-3 mt-sm-0" style={{ width: "100%" }} onClick={payroll}>
+                                                    <button class="btn btn-primary mr-2 mt-3 mt-sm-0" style={{ width: "100%" }} onClick={payrollLawyer}>
                                                         برداشت از حساب
                                                     </button>
                                                 </div>
@@ -225,4 +243,4 @@ const PremiumCard = () => {
     );
 }
 
-export default PremiumCard;
+export default Wallet;
