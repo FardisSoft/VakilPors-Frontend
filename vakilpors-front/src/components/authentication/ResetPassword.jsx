@@ -106,7 +106,7 @@ const ForgotPassword = () => {
             "code": verificationCode,
             "newPassword": newPassword,
             "confirmPassword": confirmPassword,
-            "usePhoneNumber": isSMS
+            "usePhoneNumber": isSMS == 'true'
         }
         try{
             const Response = await axios.post(url, data);

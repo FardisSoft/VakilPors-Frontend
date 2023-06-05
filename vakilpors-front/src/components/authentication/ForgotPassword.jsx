@@ -28,8 +28,6 @@ const theme = createTheme({
 const ForgotPassword = () => {
 
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [isSMS, setisSMS] = useState('');
-    
     const [forgotType, setForgotType] = useState('phone'); // 'phone' or 'email'
     const [show, setShow] = useState(false);
     const navigate = useNavigate();
@@ -75,16 +73,14 @@ const ForgotPassword = () => {
             let url = BASE_API_ROUTE + 'Auth/forgetpassword?';
             if (forgotType === 'phone') {
                 url += `PhoneNumber=${phoneNumber.trim()}&useSms=true`;
-                setisSMS(true);
             } else {
                 url += `Email=${encodeURIComponent(phoneNumber.trim())}&useSms=false`;
-                setisSMS(false);
             }
             console.log("url: ",url);
             const response = await axios.get(url);
             showSuccesMessage();
             await delay(5000);
-            navigate(`/Reset_Password/${encodeURIComponent(phoneNumber)}/${isSMS ? "true" : "false"}`);
+            navigate(`/Reset_Password/${encodeURIComponent(phoneNumber)}/${forgotType === 'phone' ? "true" : "false"}`);
         } catch (error) {
             showErrorMessage();
             console.log('error in forgot password : ',error);
