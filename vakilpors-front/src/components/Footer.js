@@ -47,6 +47,7 @@ const Footer = () => {
           <Box component="nav" className={classes.footerNav}>
             <Link to={'/'} className={classes.footerLink}><Typography fontFamily={'shabnam'} color={'white'}>صفحه اصلی</Typography></Link>
             <Link to={'/Policy'} className={classes.footerLink}><Typography fontFamily={'shabnam'} color={'white'}>شرایط سایت</Typography></Link>
+            <Link to={'/AsasiLaw'} className={classes.footerLink}><Typography fontFamily={'shabnam'} color={'white'}>قانون اساسی</Typography></Link>
             <Link to={'/contactUs'} className={classes.footerLink}><Typography fontFamily={'shabnam'} color={'white'}>تماس با ما</Typography></Link>
             <Link to={'/Login'} className={classes.footerLink}><Typography fontFamily={'shabnam'} color={'white'}>ورود</Typography></Link>
           </Box>
