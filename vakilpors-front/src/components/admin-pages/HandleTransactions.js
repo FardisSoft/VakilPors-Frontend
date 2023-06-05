@@ -94,7 +94,7 @@ const HandleTransactions = () => {
             <CardContent>
               <Grid container direction={{xs: 'row', sm: 'column'}} display='flex' justifyContent={'space-between'} alignItems={'center'}>
                 <Avatar alt="transaction profile" sx={{ width: 60, height: 60, mb: {xs:0,sm:'20px'}}} srcSet={transaction.user.profileImageUrl} />
-                <Button variant="contained" onClick={()=>handleVerify(transaction.id)} sx={{fontFamily:"shabnam",maxHeight:'40px',mb: {xs:0,sm:'20px'}}}>
+                <Button variant="contained" onClick={()=>handlePayment(transaction.id)} sx={{fontFamily:"shabnam",maxHeight:'40px',mb: {xs:0,sm:'20px'}}}>
                   تایید مدارک
                 </Button>
                 <Typography sx={{ fontFamily:"shabnam", fontWeight:"bold" }} color="text.secondary">

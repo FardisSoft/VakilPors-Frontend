@@ -11,33 +11,45 @@ import './css/public/fontstyles.css';
 import './css/public/scrollbar.css';
 
 import App from './App';
+
+import Policy from './components/Policy';
+import Sidebar from './components/Sidebar';
+import ContactUs from './components/ContactUs';
+import ChatPage from './components/chatPage';
+import Rate from './components/Rate';
+import AsasiLaw from './components/AsasiLaw';
+import _404page from './components/404page';
+
 import Login from './components/authentication/Login'
 import Register from './components/authentication/Register';
-import Policy from './components/Policy';
-import LawyerPage from './components/profile/LawyerPage';
-import Sidebar from './components/Sidebar';
-import Forum from './components/forum/Forum';
-import Lawyer_search_page from './components/Lawyer-search-page/Lawyer_search_page';
-import Call_Edit_Lawyer_Profile from './components/profile/Call_Edit_Lawyer_Profile';
-import Call_Edit_User_Profile from './components/profile/Call_Edit_User_Profile';
-import Replies from './components/forum/Replies';
-import ContactUs from './components/ContactUs';
 import ForgotPassword from './components/authentication/ForgotPassword';
 import ResetPassword from './components/authentication/ResetPassword';
 import ActivationAccount from './components/authentication/ActivationAccount';
-import ChatPage from './components/chatPage';
-import Rate from './components/Rate';
+
+import LawyerPage from './components/profile/LawyerPage';
+import Call_Edit_Lawyer_Profile from './components/profile/Call_Edit_Lawyer_Profile';
+import Call_Edit_User_Profile from './components/profile/Call_Edit_User_Profile';
+
+import Forum from './components/forum/Forum';
+import Replies from './components/forum/Replies';
+
+import Lawyer_search_page from './components/Lawyer-search-page/Lawyer_search_page';
+
 import PremiumPage from './components/premium-page/PremiumPage';
 import ResponseTransaction from './components/premium-page/ResponseTransaction';
+import Wallet from './components/premium-page/Wallet';
+
+
 import AddNewCase from './components/case-pages/addNewCase';
 import ShowCases from './components/case-pages/ShowCases';
-import Wallet from './components/premium-page/Wallet';
 import UserSendCases from './components/case-pages/UserSendCases';
+
 import VideoCall from './components/video-call/VideoCall';
+
 import VerifyLawyers from './components/admin-pages/VerifyLawyers';
 import Statistics from './components/admin-pages/Statistics';
-import AsasiLaw from './components/AsasiLaw';
-import _404page from './components/404page'
+import HandleTransactions from './components/admin-pages/HandleTransactions';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -73,6 +85,7 @@ root.render(
               <Route path="/VerifyLawyers" element={<Sidebar component={VerifyLawyers}/>}/>
               <Route path="/Statistics" element={<Sidebar component={Statistics}/>}/>
               <Route path="/AsasiLaw" element={<Sidebar component={AsasiLaw}/>}/>
+              <Route path="/HandleTransactions" element={<Sidebar component={HandleTransactions}/>}/>
 
               <Route path="*" element={<_404page/>}/>
           </Routes>
