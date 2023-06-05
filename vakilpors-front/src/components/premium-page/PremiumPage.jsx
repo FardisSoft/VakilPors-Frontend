@@ -112,6 +112,7 @@ const PremiumPage = () => {
         fetchData();
       } catch (err) {
         console.log('error in Premium/ActivateSubscription : ',err);
+        showErrorMessage('خطا در فعال سازی اشتراک');
       }
     }
   }
