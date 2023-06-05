@@ -21,6 +21,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { useAuth } from "../../context/AuthProvider";
 
 
 const Lawyer_search_page = () => {
@@ -29,6 +30,7 @@ const Lawyer_search_page = () => {
     const [filteredLawyers, setFilteredLawyers] = useState([]);
     const [LawyerQuery, setLawyerQuery] = useState({ text: "" });
 
+    const { refUserRole } = useAuth();
 
 
     const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -82,7 +84,7 @@ const Lawyer_search_page = () => {
             </Helmet>
             <div class="Main_contain">
                 <Search LawyerSearch={LawyerSearch} LawyerQuery={LawyerQuery} />
-                <PremiumCard />
+                {refUserRole.current === 'User' && <PremiumCard />}
                 <AppBar position="relative" style={{ borderBottomRightRadius: "30px", borderBottomLeftRadius: "30px", height: "70px", backgroundColor: "#012780" }}>
                     <Container maxWidth="xl">
                         <Toolbar >
