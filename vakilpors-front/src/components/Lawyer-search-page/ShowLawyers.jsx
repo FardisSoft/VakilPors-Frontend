@@ -6,6 +6,7 @@ import { GiRank3, GiConfirmed } from "react-icons/gi";
 import { ThemeProvider } from 'styled-components';
 import { CacheProvider } from '@emotion/react';
 import { Avatar, CardContent, Grid, Rating } from '@mui/material';
+import { Verified } from '@mui/icons-material';
 import rtlPlugin from 'stylis-plugin-rtl';
 import createCache from '@emotion/cache';
 import { createTheme } from '@mui/material/styles';
@@ -41,36 +42,37 @@ const ShowLawyers = ({ Lawyer }) => {
 
                                 </CardContent>
                             </Grid>
-                            {Lawyer.isVerified ? (
+                            {/* {Lawyer.isVerified ? (
                                 <>
                                     <p class="my-0 mx-1">
                                         <GiConfirmed color='green' size={15}></GiConfirmed>
+
                                     </p>
                                 </>
                             ) : (
                                 <p></p>
-                            )}
+                            )} */}
                         </a>
 
                         <Link to={`/LawyerPage/${Lawyer.id}`}>
                             <h2 className="align-center">
 
                                 <p class="my-1">
-                                    <BsFillPersonFill color='black' />    نام و نام خانوادگی :    </p>
+                                    <BsFillPersonFill color='black' size={'20px'} />    نام و نام خانوادگی :    </p>
                                 <a title={Lawyer.user.name}  >
                                     <i class="zmdi zmdi-account mx-3">
-                                    </i> {Lawyer.user.name} </a>
+                                    </i> {Lawyer.user.name} {Lawyer.isVerified && <Verified color='primary'/>} </a>
                             </h2>
                             <h2>
                                 <p class="my-1">
-                                    <AiOutlineFieldNumber color='black' />  شماره پروانه وکالت: </p>
+                                    <AiOutlineFieldNumber color='black' size={'20px'} />  شماره پروانه وکالت: </p>
                                 <a title={Lawyer.parvandeNo}  >
                                     <i class="zmdi zmdi-account mx-3">
                                     </i> {Lawyer.parvandeNo} </a>
                             </h2>
                             <h2>
                                 <p class="my-2">
-                                    <GiRank3 color="black" />   میانگین امتیاز: </p>
+                                    <GiRank3 color="black" size={'20px'} />   میانگین امتیاز: </p>
                                 <ThemeProvider theme={theme} >
                                     <CacheProvider value={cacheRtl}>
                                         <Rating dir="rtl" name="lawyer rating" value={Lawyer.rating} precision={0.05} readOnly />
