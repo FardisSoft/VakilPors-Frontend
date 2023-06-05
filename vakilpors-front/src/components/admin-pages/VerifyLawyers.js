@@ -16,9 +16,6 @@ const VerifyLawyers = () => {
   const navigate = useNavigate();
 
   const getLawyers = async () => {
-    if (refUserRole.current && refUserRole.current !== "Admin") {
-      navigate('*');
-    }
     const url = BASE_API_ROUTE + 'Lawyer/GetAll';
     try {
       const response = await axios.get(url);
@@ -58,7 +55,12 @@ const VerifyLawyers = () => {
   };
 
   useEffect( () => {
-    getLawyers();
+    if (refUserRole.current && refUserRole.current !== "Admin") {
+      navigate('*');
+    }
+    else{
+      getLawyers();
+    }
   }, []);
 
   const handleVerify = async (lawyerId) => {
