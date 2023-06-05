@@ -72,7 +72,7 @@ const HandleTransactions = () => {
       const url = BASE_API_ROUTE + `Wallet/PayWithdraw?transactionId=${transactionId}`;
       try {
         const response = await axios.post(url, '', {headers: {Authorization: `Bearer ${token}`}});
-        console.log('response in PayWithdraw : ',response);
+        // console.log('response in PayWithdraw : ',response);
         getTransactions();
         showSuccesMessage('تایید پرداخت تراکنش با موفقیت انجام شد.');
       } catch (error) {
@@ -88,7 +88,7 @@ const HandleTransactions = () => {
       <title>تراکنش های مالی</title>
     </Helmet>
     <Grid minHeight={'100vh'} width={'100%'} display="flex" justifyContent={'center'}>
-      <Grid container width={{xs:'100%',md:'70%'}} direction='column' display="flex" alignItems={'center'}>
+      <Grid container width={{xs:'100%',sm:'90%',md:'70%'}} direction='column' display="flex" alignItems={'center'}>
         <Grid item component={Card} marginBottom={'20px'}>
             <CardHeader titleTypographyProps={{ mx:0, mb:0, mt:'20px', fontFamily:"shabnam", fontWeight:"bold", fontSize:"16px", color:"grayText" }} 
             title={'لیست درخواست های برداشت از حساب وکلا (درخواست های پرداخت نشده) : '}/>
