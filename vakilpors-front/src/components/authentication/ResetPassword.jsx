@@ -33,6 +33,8 @@ const theme = createTheme({
 const ForgotPassword = () => {
 
     const { phoneNumber } = useParams();
+    const { isSMS } = useParams();
+    
     const [verificationCode, setverificationCode] = useState(''); 
     const [newPassword, setnewPassword] = useState(''); 
     const [confirmPassword, setconfirmPassword] = useState(''); 
@@ -100,12 +102,19 @@ const ForgotPassword = () => {
         const url = BASE_API_ROUTE + `Auth/resetpassword`;
         const data = {
             "phoneNumber": phoneNumber,
+            "email": phoneNumber,
             "code": verificationCode,
             "newPassword": newPassword,
-            "confirmPassword": confirmPassword
+            "confirmPassword": confirmPassword,
+            "usePhoneNumber": isSMS == 'true'
         }
         try{
             const Response = await axios.post(url, data);
+            console.log("urlo bebeinnn :::");
+            console.log(url);
+            console.log("data ro bbin : ");
+            console.log(data);
+
             showSuccesMessage();
             await delay(5000);
             navigate("/Login");
@@ -113,6 +122,11 @@ const ForgotPassword = () => {
         catch (error) {
             showErrorMessage("تغییر رمز عبور با خطا مواجه شد.");
             console.log('error in reseting password : ',error);
+            console.log("urlo bebeinnn :::");
+            console.log(url);
+            console.log("data ro bbin : ");
+            console.log(data);
+
         }
     };
 

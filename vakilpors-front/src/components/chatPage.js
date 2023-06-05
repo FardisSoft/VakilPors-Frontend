@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import useStateRef from 'react-usestateref';
-import { Avatar, Box, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, TextField, InputAdornment, Typography, styled } from '@mui/material';
+import { Avatar, Box, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, TextField, InputAdornment, Typography, styled } from '@mui/material';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { Delete, Edit, Send, AttachFile, DownloadForOfflineOutlined, DoneAll, Cancel, Reply, RateReview, VideoCall, Call, CallEnd } from '@mui/icons-material';
 import Moment from 'moment-jalaali';
@@ -12,6 +12,7 @@ import { BASE_API_ROUTE } from '../Constants';
 import axios from 'axios';
 import jwt from 'jwt-decode';
 import { toast } from 'react-toastify';
+import backPic from '../assests/images/chatBackGround.png';
 
 const StyledTooltip = styled (({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} arrow/>
@@ -45,7 +46,6 @@ const ChatPage = () => {
   const messageRefs = useRef([]);
   messageRefs.current.push(React.createRef());
 
-  const [pageWidth, setPageWidth] = useState(window.innerWidth);
 	const { refUserRole, getAccessToken } = useAuth();
   const navigate = useNavigate();
 
@@ -85,7 +85,6 @@ const ChatPage = () => {
 //////////////////////////////////////////////////////////// get initial data
 
   useEffect( () => {
-    window.addEventListener('resize', updateChatPageSize);
     const doEveryThing = async () => {
       const token = await getAccessToken();
       if(!token){
@@ -99,7 +98,6 @@ const ChatPage = () => {
       }
     };
     doEveryThing();
-    return () => window.removeEventListener('resize', updateChatPageSize);
   }, []);
 
   const getUserData = async (token) => {
@@ -284,10 +282,6 @@ const ChatPage = () => {
   };
 
 //////////////////////////////////////////////////////////// UI
-
-  const updateChatPageSize = () => {
-    setPageWidth(window.innerWidth);
-  };
 
   const handleEnter = (event) => {
     if(event.key == 'Enter'){
@@ -526,7 +520,7 @@ const ChatPage = () => {
           backgroundColor: 'skyblue',
           ...(isCurrentUser && {
             alignSelf: 'flex-end',
-            backgroundColor: 'lightsteelblue',
+            backgroundColor: '#6699cc',
             // color: 'grey',
           }),
           ...(isDeleted && {
@@ -556,7 +550,7 @@ const ChatPage = () => {
           <Grid sx={{ display: 'flex', alignItems: 'center',}}>
             <Avatar src={message.sender.profileImageUrl} alt={message.sender.name} />
             <Grid marginRight={'10px'} container direction={'row'} display={'flex'} justifyContent={'space-around'}>
-              <Typography fontSize={'17px'} fontFamily={'shabnam'} marginLeft={'10px'}>{message.sender.name}</Typography>
+              <Typography  fontSize={'17px'} fontFamily={'shabnam'} marginLeft={'10px'}>{message.sender.name}</Typography>
             </Grid>
           </Grid>
 
@@ -641,33 +635,37 @@ const ChatPage = () => {
     );
   };
 
+  const WhiteIconButton = styled(IconButton)({
+    color: 'white',
+  });
+
   return (
     <>
     <Helmet>
       <title>چت آنلاین</title>
     </Helmet>
 
-    <Grid container direction={{ xs: 'column', md: 'row' }} height={{xs:'auto', md:'calc(100vh - 65px)'}} minHeight={{xs:'100vh', md:'calc(100vh - 65px)'}} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', display:'flex', justifyContent:'space-around', alignItems:'stretch'}}>
-      <Grid container direction={'column'} width={{ xs: '100%', md: '20%' }} sx={{ borderBottom: { xs: '1px solid grey', md: '0px solid grey' } }}>
+    <Grid container direction={{ xs: 'column', sm: 'row' }} width={'100%'} height={{xs:'auto', sm:'calc(100vh - 65px)'}} minHeight={{xs:'100vh', sm:'calc(100vh - 65px)'}} sx={{ backgroundColor: 'rgba(173,216,230,0.7)', display:'flex', justifyContent:'flex-start', alignItems:'stretch'}}>
+      <Grid container direction={'column'} width={{ xs: '100%', sm: '35%', md: '25%' }} sx={{ backgroundColor: '#1260cc', borderBottom: { xs: '1px solid grey', sm: '0px solid grey' } }}>
         
         {/* show user him/herself info */}
         {refUser.current && <Grid display="flex" flexDirection="column" alignItems="center" justifyContent={'center'} padding={1} border={'1px solid grey'} borderRadius={2}>
           <Avatar src={refUser.current.profileImageUrl} alt={refUser.current.name} />
-          <Typography fontFamily={'shabnam'}>{refUser.current.name}</Typography>
+          <Typography fontFamily={'shabnam'} color={'white'}>{refUser.current.name}</Typography>
         </Grid>}
 
         {/* show chats (persons that user has chatted with) */}
         <Grid container direction={'column'} height={'80%'} >
         {/* border={'1px solid grey'} borderRadius={2} */}
-          <List sx={{height: '100%', flex: {xs:'0 0 auto', md:'1 0 0'}, overflow: 'overlay'}}>
+          <List sx={{height: '100%', flex: {xs:'0 0 auto', sm:'1 0 0'}, overflow: 'overlay'}}>
             {refChats.current.map((chat) => (
-              <ListItem sx={{cursor:'pointer',...(refSelectedChat.current === chat.id && {backgroundColor:'skyblue',borderRadius:2})}} key={chat.id} onClick={() => handleChatSelect(chat.id)} >
+              <ListItem sx={{cursor:'pointer',...(refSelectedChat.current === chat.id && {backgroundColor:'#6699cc',borderRadius:2})}} key={chat.id} onClick={() => handleChatSelect(chat.id)} >
                 <ListItemAvatar onClick={() => {if(chat.users[getUserIndex(chat.id)].lawyerId != null) navigate(`/LawyerPage/${chat.users[getUserIndex(chat.id)].lawyerId}`);}}>
                   {chat.users[getUserIndex(chat.id)].lawyerId != null ? <StyledTooltip title={<React.Fragment>مشاهده پروفایل</React.Fragment>}>
                     <Avatar src={chat.users[getUserIndex(chat.id)].profileImageUrl} alt={chat.users[getUserIndex(chat.id)].name}/>
                   </StyledTooltip> : <Avatar src={chat.users[getUserIndex(chat.id)].profileImageUrl} alt={chat.users[getUserIndex(chat.id)].name}/>}
                 </ListItemAvatar>
-                <ListItemText primaryTypographyProps={{ fontFamily: 'shabnam' }} primary={chat.users[getUserIndex(chat.id)].name} />
+                <ListItemText primaryTypographyProps={{ fontFamily: 'shabnam', color:'white', ...(refSelectedChat.current === chat.id && {color:'black'}) }} primary={chat.users[getUserIndex(chat.id)].name} />
                 { (refUserRole.current === "User" && chat.users[getUserIndex(chat.id)].lawyerId != null && chat.chatMessages.length > 2) && 
                 <StyledTooltip title={<React.Fragment>نظر دادن</React.Fragment>}>
                   <IconButton size="small" onClick={() => handleRateClick(chat.users[getUserIndex(chat.id)].lawyerId)}>
@@ -685,17 +683,19 @@ const ChatPage = () => {
           </List>
         </Grid>
 
-      </Grid> 
-
-      {pageWidth > 1255 && <Divider color='black' orientation="vertical" variant="middle" flexItem/>}
+      </Grid>
       
-      <Grid height={isReplyActive ? '95%' : '100%'} width={{ xs: '100%', md: '80%' }} maxWidth={1000} sx={{ display: 'flex', flexDirection: 'column'}}>
+      <Grid height={'100%'} width={{ xs: '100%', sm: '65%', md: '75%' }} sx={{
+        backgroundImage:`url(${backPic})`,
+        backgroundRepeat: {xs:'repeat-y', sm:'no-repeat'},
+        backgroundSize: {xs:'100%', sm:'cover'},
+        backgroundPosition: 'center', display: 'flex', flexDirection: 'column'}}>
         {refSelectedChat.current ? (
           <>
             {/* show messages */}
-            <Grid container direction={'column'} height={{xs:'auto',md:'85%'}} >
+            <Grid container direction={'column'} height={{xs:'auto',sm:(isReplyActive ? '80%' : '85%')}} >
             {/* border={'1px solid grey'} borderRadius={2} */}
-              <Grid height={{xs:'auto',md:'100%'}} sx={{ flex: '0 0 auto', overflow: 'overlay'}}>
+              <Grid height={{xs:'auto',sm:'100%'}} sx={{ flex: '0 0 auto', overflow: 'overlay'}}>
                 {refChats.current && refChats.current[getChatIndexByChatId(refSelectedChat.current)].chatMessages.map((message,index) => renderMessage(message,index))}
               </Grid>
             </Grid>
@@ -712,62 +712,82 @@ const ChatPage = () => {
                 </Grid>
               </Grid>}
 
-              <TextField sx={{ flexGrow: 1 }}
-                ref={inputRef}
-                variant="outlined"
-                dir='rtl'
-                fullWidth
-                placeholder="پیام خود را بنویسید..."
-                value={inputText}
-                onChange={handleInputChange}
-                onKeyDown={handleEnter}
-                InputProps={{
-                  dir: "rtl", style: { fontFamily:"shabnam", fontSize: "15px",color:"black",},
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      {isEditActive ? <>
-                      <StyledTooltip title={<React.Fragment>ویرایش پیام</React.Fragment>}>
-                      <IconButton size="small" onClick={handleEditMessage}>
-                        <Edit />
-                      </IconButton>
-                      </StyledTooltip>
-                      <StyledTooltip title={<React.Fragment>انصراف</React.Fragment>}>
-                      <IconButton size="small" onClick={handleCancelEditMessage}>
-                        <Cancel />
-                      </IconButton>
-                      </StyledTooltip>
-                      </> : isReplyActive ? <>
-                      <StyledTooltip title={<React.Fragment>ارسال پاسخ</React.Fragment>}>
-                      <IconButton size="small" onClick={handleReplyMessage}>
-                        <Reply />
-                      </IconButton>
-                      </StyledTooltip>
-                      <StyledTooltip title={<React.Fragment>انصراف</React.Fragment>}>
-                      <IconButton size="small" onClick={handleCancelReplyMessage}>
-                        <Cancel />
-                      </IconButton>
-                      </StyledTooltip>
-                      </> : <>
-                      <StyledTooltip title={<React.Fragment>ارسال فایل</React.Fragment>}>
-                      <IconButton size="small" component="label">
-                        <AttachFile />
-                        <input type="file" style={{ display: 'none' }} onChange={handleAttachFileClick} />
-                      </IconButton>
-                      </StyledTooltip>
-                      <StyledTooltip title={<React.Fragment>ارسال پیام</React.Fragment>}>
-                      <IconButton size="small" onClick={handleSendClick}>
-                        <Send />
-                      </IconButton>
-                      </StyledTooltip>
-                      </>}
-                    </InputAdornment>
-                  ),}}
-              />
+              <TextField
+              sx={{
+                flexGrow: 1,
+                '& input': {
+                  color: 'white',
+                },
+                '& svg': {
+                  color: 'white',
+                },
+              }}
+              ref={inputRef}
+              variant="outlined"
+              dir='rtl'
+              fullWidth
+              placeholder="پیام خود را بنویسید..."
+              value={inputText}
+              onChange={handleInputChange}
+              onKeyDown={handleEnter}
+              InputProps={{
+                dir: "rtl",
+                style: {
+                  fontFamily: "shabnam",
+                  fontSize: "15px",
+                  color: "white",
+                },
+                endAdornment: (
+                  <InputAdornment position="end">
+                    {isEditActive ? (
+                      <>
+                        <StyledTooltip title={<React.Fragment>ویرایش پیام</React.Fragment>}>
+                          <WhiteIconButton size="small" onClick={handleEditMessage}>
+                            <Edit />
+                          </WhiteIconButton>
+                        </StyledTooltip>
+                        <StyledTooltip title={<React.Fragment>انصراف</React.Fragment>}>
+                          <WhiteIconButton size="small" onClick={handleCancelEditMessage}>
+                            <Cancel />
+                          </WhiteIconButton>
+                        </StyledTooltip>
+                      </>
+                    ) : isReplyActive ? (
+                      <>
+                        <StyledTooltip title={<React.Fragment>ارسال پاسخ</React.Fragment>}>
+                          <WhiteIconButton size="small" onClick={handleReplyMessage}>
+                            <Reply />
+                          </WhiteIconButton>
+                        </StyledTooltip>
+                        <StyledTooltip title={<React.Fragment>انصراف</React.Fragment>}>
+                          <WhiteIconButton size="small" onClick={handleCancelReplyMessage}>
+                            <Cancel />
+                          </WhiteIconButton>
+                        </StyledTooltip>
+                      </>
+                    ) : (
+                      <>
+                        <StyledTooltip title={<React.Fragment>ارسال فایل</React.Fragment>}>
+                          <WhiteIconButton size="small" component="label">
+                            <AttachFile />
+                            <input type="file" style={{ display: 'none' }} onChange={handleAttachFileClick} />
+                          </WhiteIconButton>
+                        </StyledTooltip>
+                        <StyledTooltip title={<React.Fragment>ارسال پیام</React.Fragment>}>
+                          <WhiteIconButton size="small" onClick={handleSendClick}>
+                            <Send />
+                          </WhiteIconButton>
+                        </StyledTooltip>
+                      </>
+                    )}
+                  </InputAdornment>
+                ),
+              }}/>
             </Grid>
           </>
         ) : (
           <Box sx={{ textAlign: 'center', marginTop: '50%' }}>
-            <Typography fontFamily={'shabnam'}>یکی از افراد را برای چت انتخاب کنید.</Typography>
+            <Typography fontFamily={'shabnam'} color={'white'}>یکی از افراد را برای چت انتخاب کنید.</Typography>
           </Box>
         )}
       </Grid>

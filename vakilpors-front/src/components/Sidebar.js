@@ -1,7 +1,7 @@
 import { HomeOutlined, PersonSearchOutlined, ForumOutlined, PolicyOutlined, AppRegistrationOutlined,
        LoginOutlined, LogoutOutlined, ManageAccountsOutlined, AccountCircleOutlined, CallOutlined,
        Menu, ChevronRight, ChatOutlined, DashboardOutlined, AssignmentOutlined, WalletOutlined,
-       AssignmentTurnedInOutlined, AssessmentOutlined } from "@mui/icons-material";
+       AssignmentTurnedInOutlined, AssessmentOutlined, Gavel } from "@mui/icons-material";
 import React, { useState, useEffect } from 'react';
 import useStateRef from "react-usestateref";
 import { styled } from '@mui/material/styles';
@@ -86,6 +86,7 @@ const Sidebar = (props) => {
   const [profilePicture, setProfilePicture] = useState();
   const [online, setOnline] = useState(true);
   const [name, setName] = useState('');
+  const [isPremium, setIsPremium] = useState(false);
   let tempLinks = [];
   const navigate = useNavigate();
 
@@ -156,6 +157,7 @@ const Sidebar = (props) => {
         {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
+        {name:'قانون اساسی', icon:Gavel, url:'/AsasiLaw'},
         {name:'ثبت نام', icon:AppRegistrationOutlined, url:'/Register'},
         {name:'ورود', icon:LoginOutlined, url:'/Login'}
       ];
@@ -172,6 +174,7 @@ const Sidebar = (props) => {
         {name:'پرونده های من', icon:AssignmentOutlined, url:`/show-cases/${false}`},
         {name:'کیف پول', icon:WalletOutlined, url:`/wallet`},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
+        {name:'قانون اساسی', icon:Gavel, url:'/AsasiLaw'},
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
       ];
       break;
@@ -187,6 +190,7 @@ const Sidebar = (props) => {
         {name:'پرونده های من', icon:AssignmentOutlined, url:`/user-send-cases/${refLawyerID.current}`},
         {name:'کیف پول', icon:WalletOutlined, url:'/wallet'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
+        {name:'قانون اساسی', icon:Gavel, url:'/AsasiLaw'},
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
       ];
       break;
@@ -201,6 +205,7 @@ const Sidebar = (props) => {
         {name:'تایید مدارک وکلا', icon:AssignmentTurnedInOutlined, url:'/VerifyLawyers'},
         {name:'آمار سایت', icon:AssessmentOutlined, url:'/Statistics'},
         {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
+        {name:'قانون اساسی', icon:Gavel, url:'/AsasiLaw'},
         {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
       ];
       break;
@@ -214,6 +219,7 @@ const Sidebar = (props) => {
     setProfilePicture(refUserRole.current === "Vakil" ? data.user.profileImageUrl : data.profileImageUrl);
     setOnline(true);
     setName(refUserRole.current === "Vakil" ? data.user.name : data.name);
+    setIsPremium(refUserRole.current === "User" ? data.isPremium : false);
   };
 
   const updateSize = () => {
@@ -291,7 +297,7 @@ const Sidebar = (props) => {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        { refUserRole.current && <Grid container direction="column" display="flex" alignItems="center" justifyContent="center" sx={{mt:2,mb:2}}>
+        { refUserRole.current && <Grid container direction="column" display="flex" alignItems="center" justifyContent="center" sx={{pt:2,pb:2}} backgroundColor={isPremium?'gold':'white'} borderRadius={'10px'}>
           <StyledBadge invisible={!online} overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} variant="dot">
             <Avatar alt="profile picture" sx={{ width: 60, height: 60 }} srcSet={profilePicture} />
           </StyledBadge>

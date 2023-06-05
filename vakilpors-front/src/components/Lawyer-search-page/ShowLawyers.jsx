@@ -1,6 +1,26 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../../css/ShowLawyers.css';
+import { BsFillPersonFill } from 'react-icons/bs';
+import { AiOutlineFieldNumber } from "react-icons/ai";
+import { GiRank3, GiConfirmed } from "react-icons/gi";
+import { ThemeProvider } from 'styled-components';
+import { CacheProvider } from '@emotion/react';
+import { Avatar, CardContent, Grid, Rating } from '@mui/material';
+import { Verified } from '@mui/icons-material';
+import rtlPlugin from 'stylis-plugin-rtl';
+import createCache from '@emotion/cache';
+import { createTheme } from '@mui/material/styles';
+import dlpbp from '../../assests/images/default_lawyer_profile_background_picture.jpg';
+
+const cacheRtl = createCache({
+    key: 'muirtl',
+    stylisPlugins: [rtlPlugin],
+});
+const theme = createTheme({
+    direction: 'rtl',
+});
+
+
 
 
 const ShowLawyers = ({ Lawyer }) => {
@@ -11,27 +31,55 @@ const ShowLawyers = ({ Lawyer }) => {
                 <div class="teacher-item">
                     <div class="box-shadow teacher-box-size"  >
                         <a class="img-layer lazy">
-                            <img src={Lawyer.user.profileImageUrl} alt={Lawyer.user.profileImageUrl} style={{ display: "block" }} />
+
+                            <Grid sx={{
+                                backgroundImage: `url(${Lawyer.profileBackgroundPictureUrl ? Lawyer.profileBackgroundPictureUrl : dlpbp})`,
+                                backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center', height: 250
+                            }} display="flex" alignItems="center" justifyContent="center">
+                                <CardContent>
+
+                                    <Avatar alt="lawyer profile" sx={{ width: 80, height: 80 }} srcSet={Lawyer.user.profileImageUrl} />
+
+                                </CardContent>
+                            </Grid>
+                            {/* {Lawyer.isVerified ? (
+                                <>
+                                    <p class="my-0 mx-1">
+                                        <GiConfirmed color='green' size={15}></GiConfirmed>
+
+                                    </p>
+                                </>
+                            ) : (
+                                <p></p>
+                            )} */}
                         </a>
+
                         <Link to={`/LawyerPage/${Lawyer.id}`}>
                             <h2 className="align-center">
-                                <p class="my-2">نام و نام خانوادگی : </p>
+
+                                <p class="my-1">
+                                    <BsFillPersonFill color='black' size={'20px'} />    نام و نام خانوادگی :    </p>
                                 <a title={Lawyer.user.name}  >
-                                    <i class="zmdi zmdi-account ">
-                                    </i> {Lawyer.user.name} </a>
+                                    <i class="zmdi zmdi-account mx-3">
+                                    </i> {Lawyer.user.name} {Lawyer.isVerified && <Verified color='primary'/>} </a>
                             </h2>
                             <h2>
-                                <p class="my-2">شماره پروانه وکالت: </p>
+                                <p class="my-1">
+                                    <AiOutlineFieldNumber color='black' size={'20px'} />  شماره پروانه وکالت: </p>
                                 <a title={Lawyer.parvandeNo}  >
-                                    <i class="zmdi zmdi-account">
+                                    <i class="zmdi zmdi-account mx-3">
                                     </i> {Lawyer.parvandeNo} </a>
                             </h2>
                             <h2>
-                                <p class="my-2">رتبه شخص: </p>
-                                <a title={Lawyer.rating}  >
-                                    <i class="zmdi zmdi-account " >
-                                    </i> {Lawyer.rating} </a>
+                                <p class="my-2">
+                                    <GiRank3 color="black" size={'20px'} />   میانگین امتیاز: </p>
+                                <ThemeProvider theme={theme} >
+                                    <CacheProvider value={cacheRtl}>
+                                        <Rating dir="rtl" name="lawyer rating" value={Lawyer.rating} precision={0.05} readOnly />
+                                    </CacheProvider>
+                                </ThemeProvider>
                             </h2>
+                            <br />
                         </Link>
                     </div>
                 </div>

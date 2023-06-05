@@ -5,8 +5,10 @@ import '../../css/Wallet.css'
 import { useAuth } from "../../context/AuthProvider";
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
+import { toast } from 'react-toastify';
+import walletPic from '../../assests/images/Wallet-pana.svg'; 
 
-const PremiumCard = () => {
+const Wallet = () => {
 
     const { refUserRole, getAccessToken } = useAuth();
     const [getamountdetail, setamountdetail] = useState({
@@ -14,25 +16,66 @@ const PremiumCard = () => {
         description: "شارژ کیف پول"
     });
     const [getbalance, setbalance] = useState([]);
+    const [tokens, setTokens] = useState(0);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const token = await getAccessToken();
-            if (token) {
+    const fetchData = async () => {
+        const token = await getAccessToken();
+        if (token) {
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + token
+            };
+            try {
+                const balance = await axios.get(BASE_API_ROUTE + `Wallet/GetBalance`, {
+                    headers: headers
+                });
+                setbalance(balance.data);
+            } catch (error) {
+                console.log('error in getting Balance : ', error);
+            }
+            if(refUserRole.current == 'Vakil'){
                 try {
-                    const headers = {
-                        'Content-Type': 'application/json',
-                        'Authorization': "Bearer " + token
-                    };
-                    const balance = await axios.get(BASE_API_ROUTE + `Wallet/GetBalance`, {
+                    const response = await axios.get(BASE_API_ROUTE + `Lawyer/GetCurrentLawyer`, {
                         headers: headers
                     });
-                    setbalance(balance.data);
+                    setTokens(response.data.data.tokens);
+                    // console.log('response in getting lawyer data for tokens : ', response);
                 } catch (error) {
-                    console.log('error in getting Balance : ', error);
+                    console.log('error in getting lawyer data for tokens : ', error);
                 }
             }
-        };
+        }
+    };
+
+    const showSuccesMessage = (successMessage) => {
+        toast.success(successMessage, {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          rtl: true,
+        });
+    };
+    
+    const showErrorMessage = (errorMessage) => {
+    toast.error(errorMessage, {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        rtl: true,
+    });
+    };
+
+    useEffect(() => {
         fetchData();
     }, []);
 
@@ -51,7 +94,50 @@ const PremiumCard = () => {
                 console.log('error in Payment/request : ',err);
             }
         }
-    }
+    };
+
+    const payrollLawyer = async () => {
+        // const token = await getAccessToken();
+		// if(token){
+        //     const url = BASE_API_ROUTE + "Payment/request"; //
+        //     const data = {
+        //         "amount": getamountdetail.amount,
+        //         "description": 'برداشت از کیف پول'
+        //     }
+        //     try {
+        //         const response = await axios.post(url, data, { headers: { Authorization: `Bearer ${token}` } });
+        //         showSuccesMessage('مبلغ مورد نظر به حساب شما واریز شد.');
+        //         fetchData();
+        //     } catch (err) {
+        //         console.log('error in Payment/request in taking money : ',err);
+        //     }
+        // }
+    };
+
+    const transferToken = async () => {
+        if(tokens < 10){
+            showErrorMessage('شما برای انتقال توکن به کیف پول حداقل باید 10 توکن داشته باشید.');
+            return;
+        }
+        const token = await getAccessToken();
+        if (token) {
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + token
+            };
+            try {
+                const response = await axios.get(BASE_API_ROUTE + 'Lawyer/TransferToken', {
+                    headers: headers
+                });
+                fetchData();
+                showSuccesMessage('توکن شما با موفقیت به کیف پول شما منتقل شد');
+                // console.log('response in transferToken : ', response);
+            } catch (error) {
+                showErrorMessage('خطا در انتقال توکن به کیف پول');
+                console.log('error in transferToken : ', error);
+            }
+        }
+    };
 
     const setpayroll = (event) => {
         setamountdetail({
@@ -70,9 +156,16 @@ const PremiumCard = () => {
                 <div class="col-12 col-sm-10 col-md-7 col-xl-5 mx-auto ">
                     <div class="shadow-sm p-0  bg-white" id="form">
                         <div class="bg-wallet d-flex flex-column align-items-center justify-content-center">
-                            <img class="img-wallet img-fluid" src="https://pchospital.bio/img/Wallet-pana.svg" />
+                            <img class="img-wallet img-fluid" src={walletPic} />
                             <p class="font-weight-bold text-wallet mt-md-2 pt-md-2">موجودی کیف پول :</p>
                             <p class="my-1 tahoma text-xxl">{getbalance}  تومان</p>
+                            {refUserRole.current == "Vakil" && <>
+                                <p class="font-weight-bold text-wallet mt-md-2 pt-md-2 mt-2">توکن شما در وکیل پرس :</p>
+                                <p class="my-1 tahoma text-xxl">{tokens}</p>
+                                <button class="btn btn-primary mr-2 mt-3 mt-sm-0" style={{ width: "80%" }} onClick={transferToken}>
+                                    انتقال توکن به کیف پول
+                                </button>
+                            </>}
                         </div>
                         {
                             refUserRole.current == "User" ? (
@@ -81,18 +174,16 @@ const PremiumCard = () => {
                                         <div class="text-center w-100 mb-4">
                                             <h3>شارژ کیف پول</h3>
                                         </div>
-                                        <div class=" w-100">
-                                            <label >مبلغ مورد نظر خود را به تومان وارد نمایید</label>
-                                            <input
-                                                class="my-1"
-                                                variant="outlined"
-                                                id="mu-text-field"
-                                                name="amount"
-                                                onChange={setpayroll}
-                                                value={getamountdetail.amount}
-                                                style={{ width: 300, height: 40, border: "2px solid rgba(0, 0, 0, 0.15)", borderRadius: "5px" }}
-                                                inputProps={{ style: { width: 300, height: 20 } }}
-                                            />
+                                        <div class="w-100">
+                                            
+                                            <div class="form-group mt-3 psc my-5" id="p_1">
+                                                <label for="service">مبلغ مورد نظر خود را به تومان وارد نمایید</label>
+                                                <input
+                                                    class="form-control"
+                                                    name="amount"
+                                                    onChange={setpayroll}
+                                                    value={getamountdetail.amount} />
+                                            </div>
 
                                             <div class="form-group mt-3 psc my-5" id="p_1">
                                                 <label for="service">انتخاب درگاه پرداخت</label>
@@ -116,27 +207,25 @@ const PremiumCard = () => {
                                                 <div class="text-center w-100 mb-4">
                                                     <h3>برداشت از حساب</h3>
                                                 </div>
-                                                <div class=" w-100">
-                                                    <label>مبلغ مورد نظر خود را به تومان وارد نمایید</label>
-                                                    <input
-                                                        class="my-2"
-                                                        name="amount"
-                                                        onChange={setpayroll}
-                                                        value={getamountdetail.amount}
-                                                        style={{ width: 320, height: 40, border: "2px solid rgba(0, 0, 0, 0.15)", borderRadius: "5px" }}
-                                                        inputProps={{ style: { width: 300, height: 20 } }}
-                                                    />
-                                                    <label class="my-2">شماره کارت خود را وارد نمایید</label>
-                                                    <br />
-                                                    <input
-                                                        variant="outlined"
-                                                        id="mu-text-field"
-                                                        name="creditNumber"
-                                                        style={{ width: 320, height: 40, border: "2px solid rgba(0, 0, 0, 0.15)", borderRadius: "5px" }}
-                                                        inputProps={{ style: { width: 300, height: 20 } }}
-                                                    />
+                                                <div class="w-100">
+
+                                                    <div class="form-group mt-3 psc my-5" id="p_1">
+                                                        <label for="service">مبلغ مورد نظر خود را به تومان وارد نمایید</label>
+                                                        <input
+                                                            class="form-control"
+                                                            name="amount"
+                                                            onChange={setpayroll}
+                                                            value={getamountdetail.amount} />
+                                                    </div>
+                                                    <div class="form-group mt-3 psc my-5" id="p_1">
+                                                        <label for="service">شماره کارت خود را وارد نمایید</label>
+                                                        <input
+                                                            class="form-control"
+                                                            id="mu-text-field"
+                                                            name="creditNumber" />
+                                                    </div>
                                                     <hr class="my-4" />
-                                                    <button class="btn btn-primary mr-2 mt-3 mt-sm-0" style={{ width: "100%" }} onClick={payroll}>
+                                                    <button class="btn btn-primary mr-2 mt-3 mt-sm-0" style={{ width: "100%" }} onClick={payrollLawyer}>
                                                         برداشت از حساب
                                                     </button>
                                                 </div>
@@ -154,4 +243,4 @@ const PremiumCard = () => {
     );
 }
 
-export default PremiumCard;
+export default Wallet;

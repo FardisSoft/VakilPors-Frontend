@@ -79,7 +79,7 @@ const LawyerPage = () => {
         setNumberOfAnswers(data.numberOfAnswers);
         setNumberOfLikes(data.numberOfLikes);
         setNumberOfVerifies(data.numberOfVerifies);
-        setIsVerified(data.isAuthorized);
+        setIsVerified(data.isVerified);
     };
 
     // khoda vakili alireza ro .....
