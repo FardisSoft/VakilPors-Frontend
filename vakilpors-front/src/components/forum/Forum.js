@@ -3,7 +3,7 @@ import useStateRef from "react-usestateref";
 import { Helmet } from 'react-helmet-async';
 import Moment from 'moment-jalaali';
 import { Typography, IconButton, Badge, Grid, TextField, Button } from "@mui/material";
-import { Delete } from '@mui/icons-material';
+import { Delete, WorkspacePremium } from '@mui/icons-material';
 import Likes from "./utils/Likes";
 import Comments from "./utils/Comments";
 import { useAuth } from "../../context/AuthProvider";
@@ -164,7 +164,15 @@ const Forum = () => {
 													</IconButton>}
 											</Grid>
 											<Grid display={'flex'} flexDirection={'row'} marginTop={'10px'}>
-												<Typography sx={{ fontSize: '15px', fontFamily: 'shabnam', mr: '10px' }}>توسط {thread.user.name}</Typography>
+												<Typography sx={{ fontSize: '15px', fontFamily: 'shabnam', mr: '5px' }}>توسط {thread.user.isLawyer && '(وکیل)'} {thread.user.name}</Typography>
+												{thread.user.isPremium && <WorkspacePremium sx={{
+													color: 'purple',
+													backgroundColor: 'gold',
+													borderRadius: '12px',
+													padding: '1px',
+													width: '23px',
+													mr: '10px',
+												}} />}
 												<Typography fontFamily={'shabnam'} fontSize={'14px'}>{Moment(thread.createDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(thread.createDate).format('HH:mm')}</Typography>
 											</Grid>
 										</Grid>
