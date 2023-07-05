@@ -121,6 +121,7 @@ const Statistics = () => {
 					alignItems: 'center',
 					justifyContent: 'center',
 					minHeight: '100vh',
+					marginTop: '40px',
 					backgroundColor: '#fffbf5'}}>
 					<h1 style={{paddingBottom:15, fontSize:24, color: '#000000', alignSelf:'center'}}>آمار سایت</h1>
 			<div style={{display: 'flex',
@@ -141,16 +142,16 @@ const Statistics = () => {
 					<p style={{fontSize: 15, color: '#444cc6'}}>تعداد پرونده ها : {statistics.casesCount}</p>		
 					<p style={{fontSize: 15, color: '#444cc6'}}>تعداد پیام ها : {statistics.messagesCount}</p>
 				</>}
+				{window.innerWidth > 1000 && <Paper>
+					<Chart dir={'ltr'} width={900} data={refMonthsViews.current} >
+						<ArgumentAxis labelComponent={Label} position="top"/>
+						<ValueAxis />
+						<BarSeries valueField="view" argumentField="month" pointComponent={BarWithLabel}/>
+						<Title textComponent={Title} />
+						<Animation />
+					</Chart>
+				</Paper>}
 			</div>
-			<Paper>
-				<Chart dir={'ltr'} width={1000} data={refMonthsViews.current} >
-					<ArgumentAxis labelComponent={Label} position="top"/>
-					<ValueAxis />
-					<BarSeries valueField="view" argumentField="month" pointComponent={BarWithLabel}/>
-					<Title textComponent={Title} />
-					<Animation />
-				</Chart>
-			</Paper>
 		</div>
 		</>
 	);
