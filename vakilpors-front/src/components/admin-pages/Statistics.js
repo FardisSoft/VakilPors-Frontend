@@ -5,9 +5,9 @@ import { BASE_API_ROUTE } from "../../Constants";
 import { useAuth } from "../../context/AuthProvider";
 import axios from "axios";
 import Paper from '@mui/material/Paper';
-import { Chart,BarSeries,Title,ArgumentAxis,ValueAxis, } from '@devexpress/dx-react-chart-material-ui';
+import { Chart,BarSeries,ArgumentAxis,ValueAxis, } from '@devexpress/dx-react-chart-material-ui';
 import { Animation } from '@devexpress/dx-react-chart';
-import Moment, { max } from 'moment-jalaali';
+import Moment from 'moment-jalaali';
 
 const Statistics = () => {
 
@@ -72,7 +72,7 @@ const Statistics = () => {
 		const width = maxBarWidth * barWidth;
 		return (
 		  <React.Fragment>
-			<path d={getPath(arg - width / 2, width, val, startVal, value)} fill={value > 50 ? 'rgba(255,0,0,0.6)' : value > 30 ? 'rgba(255,127,39,0.7)' : color} style={style} />
+			<path d={getPath(arg - width / 2, width, val, startVal, value)} fill={value > (2 * maxView / 3) ? 'rgba(255,0,0,0.6)' : value > (maxView / 2) ? 'rgba(255,127,39,0.8)' : value > (maxView / 3) ? 'rgba(255,200,0,0.7)' : color} style={style} />
 			<Chart.Label
 			  x={arg}
 			  y={(val + startVal) / 2}
@@ -83,6 +83,31 @@ const Statistics = () => {
 			  {value}
 			</Chart.Label>
 		  </React.Fragment>
+		);
+	};
+
+	const Title = () => {
+		return (
+		  	<React.Fragment>
+				<p style={{fontSize:'20px', marginTop:'20px', marginRight:'38%'}}>
+					{'بازدید سایت در 12 ماه گذشته'}
+				</p>
+		  	</React.Fragment>
+		);
+	};
+
+	const Label = (props) => {
+		const { text, x, y } = props;
+		return (
+			<React.Fragment>
+				<Chart.Label
+					x={x}
+					y={y}
+					textAnchor="middle"
+					style={{ fill: 'black', fontFamily:'shabnam', fontSize:'15px', }}>
+					{text}
+				</Chart.Label>
+			</React.Fragment>
 		);
 	};
 
@@ -118,11 +143,11 @@ const Statistics = () => {
 				</>}
 			</div>
 			<Paper>
-				<Chart dir={'ltr'} width={1000} data={refMonthsViews.current}>
-					<ArgumentAxis />
+				<Chart dir={'ltr'} width={1000} data={refMonthsViews.current} >
+					<ArgumentAxis labelComponent={Label} position="top"/>
 					<ValueAxis />
 					<BarSeries valueField="view" argumentField="month" pointComponent={BarWithLabel}/>
-					<Title text="بازدید سایت در 12 ماه گذشته" style={{fontFamily:'shabnam'}} />
+					<Title textComponent={Title} />
 					<Animation />
 				</Chart>
 			</Paper>
