@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@devexpress/dx-react-chart": "^4.0.5",
+    "@devexpress/dx-react-chart-material-ui": "^4.0.5",
+    "@devexpress/dx-react-core": "^4.0.5",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@fontsource/roboto": "^4.5.8",
