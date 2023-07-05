@@ -23,17 +23,6 @@ const Statistics = () => {
 	const indexMonth = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
 
 	useEffect(() => {
-		const getMonthsViews = () => {
-			if(refMonthsViews.current.length == 0){
-				for (let i = monthIndex[shamsiMonth] ; i > 0; i--) {
-					setMonthsViews([{ month: indexMonth[i-1], view: backArray[i-1] }, ...refMonthsViews.current]);
-				}
-				for (let i = 12; i > monthIndex[shamsiMonth]; i--) {
-					setMonthsViews([{ month: indexMonth[i-1], view: backArray[i-1] }, ...refMonthsViews.current]);
-				}
-			}
-			setMaxView(Math.max(...backArray));
-		}
 		const getStatistics = async () => {				  
 			const token = await getAccessToken();
 			if(token){
@@ -41,13 +30,21 @@ const Statistics = () => {
 				try {
 					const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
 					setStatistics(response.data);
+					if(refMonthsViews.current.length == 0){
+						for (let i = monthIndex[shamsiMonth] ; i > 0; i--) {
+							setMonthsViews([{ month: indexMonth[i-1], view: backArray[i-1] }, ...refMonthsViews.current]);
+						}
+						for (let i = 12; i > monthIndex[shamsiMonth]; i--) {
+							setMonthsViews([{ month: indexMonth[i-1], view: backArray[i-1] }, ...refMonthsViews.current]);
+						}
+					}
+					setMaxView(Math.max(...backArray));
 					// console.log('response in getting Statistics : ',response);
 				} catch (error) {
 					console.log('error in getting Statistics : ',error);
 				}
 			}
 		};
-		getMonthsViews();
 		getStatistics();
 	}, []);
 
