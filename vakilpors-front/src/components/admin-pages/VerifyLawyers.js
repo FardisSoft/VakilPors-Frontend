@@ -105,7 +105,7 @@ const VerifyLawyers = () => {
               </Grid>
             </CardContent>                    
           </Grid>
-          <Grid container direction={'column'} item component={Card} sm>
+          <Grid container direction={'column'} item component={Card} sm paddingRight={2}>
             <CardContent>
               <Grid container direction={{xs: 'column', sm: 'row'}} display='flex' justifyContent={{xs:'flex-start',sm:'space-between'}} alignItems={{xs:'flex-start',sm:'space-between'}}>
                 <Typography sx={{fontFamily:"shabnam"}}>{'نام : '+lawyer.user.name}</Typography>
@@ -114,10 +114,16 @@ const VerifyLawyers = () => {
                 <Typography sx={{fontFamily:"shabnam"}}>{'شماره موبایل : '+lawyer.user.phoneNumber}</Typography>
               </Grid>
             </CardContent>
-            <CardHeader titleTypographyProps={{ m:0, fontFamily:"shabnam", fontWeight:"bold", fontSize:"16px", color:"grayText" }} title="کارت ویزیت "/>
-            <CardMedia image={lawyer.callingCardImageUrl || "https://www.vuescript.com/wp-content/uploads/2018/11/Show-Loader-During-Image-Loading-vue-load-image.png"} sx={{ alignSelf:"center", height: 167, width: 300 }} title="کارت ویزیت"/>
-            <CardHeader titleTypographyProps={{ m:0, fontFamily:"shabnam", fontWeight:"bold", fontSize:"16px", color:"grayText" }} title="کارت ملی "/>
-            <CardMedia image={lawyer.nationalCardImageUrl || "https://www.vuescript.com/wp-content/uploads/2018/11/Show-Loader-During-Image-Loading-vue-load-image.png"} sx={{ alignSelf:"center", height: 167, width: 300, mb: '20px' }} title="کارت ملی"/>
+            <Grid container direction={'row'} display={'flex'} justifyContent={'flex-start'} alignItems={'flex-start'}>
+              <Grid flexDirection={'column'} display={'flex'}>
+                <CardHeader titleTypographyProps={{ m:0, fontFamily:"shabnam", fontWeight:"bold", fontSize:"16px", color:"grayText" }} title="کارت ویزیت "/>
+                <CardMedia image={lawyer.callingCardImageUrl || "https://www.vuescript.com/wp-content/uploads/2018/11/Show-Loader-During-Image-Loading-vue-load-image.png"} sx={{ alignSelf:"flex-start", height: 167, width: 300, mb: '20px', ml: '20px' }} title="کارت ویزیت"/>
+              </Grid>
+              <Grid flexDirection={'column'} display={'flex'}>
+                <CardHeader titleTypographyProps={{ m:0, fontFamily:"shabnam", fontWeight:"bold", fontSize:"16px", color:"grayText" }} title="کارت ملی "/>
+                <CardMedia image={lawyer.nationalCardImageUrl || "https://www.vuescript.com/wp-content/uploads/2018/11/Show-Loader-During-Image-Loading-vue-load-image.png"} sx={{ alignSelf:"flex-start", height: 167, width: 300, mb: '20px' }} title="کارت ملی"/>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       )}
