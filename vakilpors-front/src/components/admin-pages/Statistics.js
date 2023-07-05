@@ -3,11 +3,15 @@ import { Helmet } from 'react-helmet-async';
 import { BASE_API_ROUTE } from "../../Constants";
 import { useAuth } from "../../context/AuthProvider";
 import axios from "axios";
+import Paper from '@mui/material/Paper';
+import { Chart,BarSeries,Title,ArgumentAxis,ValueAxis, } from '@devexpress/dx-react-chart-material-ui';
+import { Animation } from '@devexpress/dx-react-chart';
 
 const Statistics = () => {
 
 	const [statistics, setStatistics] = useState(null);
 	const { getAccessToken } = useAuth();
+	// const [ data, setData ] = ;
 
 	useEffect(() => {
 		const getStatistics = async () => {
@@ -35,7 +39,7 @@ const Statistics = () => {
 					flexDirection: 'column',
 					alignItems: 'center',
 					justifyContent: 'center',
-					height: '100vh',
+					minHeight: '100vh',
 					backgroundColor: '#fffbf5'}}>
 					<h1 style={{paddingBottom:15, fontSize:24, color: '#000000', alignSelf:'center'}}>آمار سایت</h1>
 			<div style={{display: 'flex',
@@ -57,6 +61,23 @@ const Statistics = () => {
 					<p style={{fontSize: 15, color: '#444cc6'}}>تعداد پیام ها : {statistics.messagesCount}</p>
 				</>}
 			</div>
+			<Paper>
+				<Chart data={[
+								{ year: '1950', population: 2.525 },
+								{ year: '1960', population: 3.018 },
+								{ year: '1970', population: 3.682 },
+								{ year: '1980', population: 4.440 },
+								{ year: '1990', population: 5.310 },
+								{ year: '2000', population: 6.127 },
+								{ year: '2010', population: 6.930 },
+							]}>
+					<ArgumentAxis />
+					<ValueAxis />
+					<BarSeries valueField="population" argumentField="year" />
+					<Title text="World population" />
+					<Animation />
+				</Chart>
+			</Paper>
 		</div>
 		</>
 	);
