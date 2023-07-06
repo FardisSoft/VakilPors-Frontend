@@ -4,8 +4,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Helmet } from 'react-helmet-async';
 import Peer from 'peerjs';
 import * as signalR from '@microsoft/signalr';
-import { Box, Grid, IconButton } from '@mui/material';
+import { Box, Grid, IconButton, Typography, Button } from '@mui/material';
 import { CallEnd, Mic, MicOff, Videocam, VideocamOff } from '@mui/icons-material';
+import { Dialog, DialogActions, DialogTitle } from '@mui/material';
 import { useAuth } from "../../context/AuthProvider";
 import { BASE_API_ROUTE } from '../../Constants';
 import Video from './Video';
@@ -19,6 +20,7 @@ const VideoCall = () => {
   const [streams, setStreams, refStreams] = useStateRef([]);
   const [audioMuted, setAudioMuted] = useState(false);
   const [videoMuted, setVideoMuted] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
 
   const { getAccessToken } = useAuth();
   const { roomId } = useParams();
@@ -103,6 +105,9 @@ const VideoCall = () => {
           console.log('user disconnected : ',id);
           if(refPeers.current[id]) refPeers.current[id].close();
           setStreams([refLocalStream.current]);
+          if(id != refUserId.current){
+            setOpenAlert(true);
+          }
         });
         myPeer.on('call', call => {
           call.answer(refLocalStream.current, {metadata: { streamId: refLocalStream.current.id }});
@@ -162,7 +167,7 @@ const VideoCall = () => {
       <title>تماس تصویری</title>
     </Helmet>
     <Grid display={"flex"} flexDirection={"column"} minHeight={'100vh'} alignItems={"center"} justifyContent={"center"} width={"100%"} backgroundColor={'#ABC0C0'}>
-      <Grid container direction={{xs:'column', sm:"row"}} display={"flex"} alignItems={"center"} justifyContent={"center"} width={{xs:'97%',sm:"90%"}} borderRadius={"10px"} paddingY={"40px"} paddingX={{xs:'10px',sm:"20px",md:'50px'}} m={'2%'} backgroundColor={'white'}>
+      <Grid container direction={{xs:'column', sm:"row"}} display={"flex"} alignItems={"center"} justifyContent={"center"} width={{xs:'97%',sm:"90%"}} height={{xs: '80vh',sm:'75vh'}} borderRadius={"10px"} paddingY={"40px"} paddingX={{xs:'10px',sm:"20px",md:'50px'}} m={'2%'}>
         <div style={{
               display: 'flex',
               alignItems: 'center',
@@ -174,7 +179,7 @@ const VideoCall = () => {
           {refStreams.current.map((stream,index) => <Video key={index} stream={stream} muted={index === 0} /> )}
         </div>
       </Grid>
-      <Grid container direction={'row'} margin={'10px'} display={'flex'} justifyContent={'center'}>
+      <Grid container direction={'row'} margin={'10px'} display={'flex'} justifyContent={'center'} sx={{zIndex:3}}>
         <Box backgroundColor='red' width={'44px'} borderRadius={'25px'} padding={'5px'} marginX={'10px'}>
           <IconButton size="small" onClick={endCall}>
             <CallEnd sx={{color:'white'}}/>
@@ -192,6 +197,20 @@ const VideoCall = () => {
         </Box>
       </Grid>
     </Grid>
+    <Dialog
+      open={openAlert}
+      onClose={()=>setOpenAlert(false)}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">
+        <Typography fontFamily={"shabnam"} fontSize={'19px'}>شخص مقابل شما از تماس خارج شد!</Typography>
+      </DialogTitle>
+      <DialogActions>
+        <Button onClick={()=>{setOpenAlert(false);navigate('/');}} autoFocus><Typography fontFamily={"shabnam"} fontSize={'15px'}>صفحه اصلی</Typography></Button>
+        <Button onClick={()=>{setOpenAlert(false);navigate('/chatPage');}} autoFocus><Typography fontFamily={"shabnam"} fontSize={'15px'}>صفحه چت</Typography></Button>
+      </DialogActions>
+    </Dialog>
     </>
   );
 };

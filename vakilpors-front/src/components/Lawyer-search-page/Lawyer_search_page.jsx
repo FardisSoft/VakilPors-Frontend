@@ -80,7 +80,7 @@ const Lawyer_search_page = () => {
     return (
         <>
             <Helmet>
-                <title>Lawyer Search Page</title>
+                <title>جست و جوی وکلا</title>
             </Helmet>
             <div class="Main_contain">
                 <Search LawyerSearch={LawyerSearch} LawyerQuery={LawyerQuery} />

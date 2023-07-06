@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from 'react-router-dom';
 import '../../css/ShowLawyers.css';
 import { BsFillPersonFill, BsPersonWorkspace } from 'react-icons/bs';
@@ -10,6 +11,8 @@ import { Verified } from '@mui/icons-material';
 import rtlPlugin from 'stylis-plugin-rtl';
 import createCache from '@emotion/cache';
 import { createTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import dlpbp from '../../assests/images/default_lawyer_profile_background_picture.jpg';
 
 const cacheRtl = createCache({
@@ -20,7 +23,18 @@ const theme = createTheme({
     direction: 'rtl',
 });
 
-
+const StyledTooltip = styled (({ className, ...props }) => (
+	<Tooltip {...props} classes={{ popper: className }} arrow/>
+  ))(({ theme }) => ({
+	[`& .${tooltipClasses.tooltip}`]: {
+	  backgroundColor: '#f5f5f9',
+	  color: 'rgba(0, 0, 0, 0.87)',
+	  maxWidth: 300,
+	  fontSize: '15px',
+	  border: '1px solid #dadde9',
+	  fontFamily: 'shabnam',
+	},
+  }));
 
 
 const ShowLawyers = ({ Lawyer }) => {
@@ -61,14 +75,18 @@ const ShowLawyers = ({ Lawyer }) => {
                                     <BsFillPersonFill color='black' size={'20px'} />    نام و نام خانوادگی :    </p>
                                 <a title={Lawyer.user.name}  >
                                     <i class="zmdi zmdi-account mx-3">
-                                    </i> {Lawyer.user.name} {Lawyer.isVerified && <Verified color='primary'/>} </a>
+                                    </i> {Lawyer.user.name} {Lawyer.isVerified && 
+                                        <StyledTooltip title={<React.Fragment>{'تایید شده توسط وکیل پرس'}</React.Fragment>}>
+                                            <Verified color='primary'/>
+                                        </StyledTooltip>
+                                    } </a>
                             </h2>
                             <h2>
                                 <p class="my-1">
                                     <BsPersonWorkspace color='black' size={'20px'} /> عنوان : </p>
                                 <a title={Lawyer.title}  >
                                     <i class="zmdi zmdi-account mx-3">
-                                    </i> {Lawyer.title} </a>
+                                    </i> {Lawyer.title ? Lawyer.title : 'وکیل'} </a>
                             </h2>
                             <h2>
                                 <p class="my-1">
