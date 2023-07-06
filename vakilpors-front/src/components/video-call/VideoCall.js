@@ -174,7 +174,7 @@ const VideoCall = () => {
           {refStreams.current.map((stream,index) => <Video key={index} stream={stream} muted={index === 0} /> )}
         </div>
       </Grid>
-      <Grid container direction={'row'} margin={'10px'} display={'flex'} justifyContent={'center'}>
+      <Grid container direction={'row'} margin={'10px'} display={'flex'} justifyContent={'center'} sx={{zIndex:3}}>
         <Box backgroundColor='red' width={'44px'} borderRadius={'25px'} padding={'5px'} marginX={'10px'}>
           <IconButton size="small" onClick={endCall}>
             <CallEnd sx={{color:'white'}}/>
