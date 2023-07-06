@@ -6,6 +6,8 @@ import { BASE_API_ROUTE } from "../../Constants";
 import { useAuth } from "../../context/AuthProvider";
 import Moment from 'moment-jalaali';
 import { Typography, IconButton, Grid, TextField, Button } from "@mui/material";
+import { styled } from '@mui/material/styles';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import Likes from "./utils/Likes";
 import { Delete, Edit, TaskAlt, WorkspacePremium } from '@mui/icons-material';
 import { toast } from 'react-toastify';
@@ -25,6 +27,19 @@ const theme = createTheme({
 	direction: 'rtl',
 });
 // mui rtl
+
+const StyledTooltip = styled (({ className, ...props }) => (
+	<Tooltip {...props} classes={{ popper: className }} arrow/>
+  ))(({ theme }) => ({
+	[`& .${tooltipClasses.tooltip}`]: {
+	  backgroundColor: '#f5f5f9',
+	  color: 'rgba(0, 0, 0, 0.87)',
+	  maxWidth: 300,
+	  fontSize: '15px',
+	  border: '1px solid #dadde9',
+	  fontFamily: 'shabnam',
+	},
+  }));
 
 const Replies = () => {
 	const [replyList, setReplyList] = useState([]);
@@ -198,22 +213,25 @@ const Replies = () => {
 										...(reply.user.userId == 1 && { backgroundColor: 'lightskyblue', })
 									}}>
 										<Grid display={'flex'} flexDirection={'row'} marginTop={{ xs: '10px', sm: '0' }}>
-											{reply.isSetAsAnswer && <TaskAlt sx={{
-												color: 'green',
-												backgroundColor: 'lightgreen',
-												borderRadius: '12px',
-												padding: '1px',
-												width: '27px',
-												marginRight: '10px',
-												...(reply.user.isLawyer && {
-													color: 'lightyellow',
-													backgroundColor: 'gold',
-												}),
-												...(reply.user.isPremium && {
-													color: 'purple',
-													backgroundColor: 'gold',
-												}),
-											}} />}
+											{reply.isSetAsAnswer && 
+											<StyledTooltip title={<React.Fragment>{'تایید شده به عنوان پاسخ توسط نگارنده تاپیک'}</React.Fragment>}>
+												<TaskAlt sx={{
+													color: 'green',
+													backgroundColor: 'lightgreen',
+													borderRadius: '12px',
+													padding: '1px',
+													width: '27px',
+													marginRight: '10px',
+													...(reply.user.isLawyer && {
+														color: 'lightyellow',
+														backgroundColor: 'gold',
+													}),
+													...(reply.user.isPremium && {
+														color: 'purple',
+														backgroundColor: 'gold',
+													}),
+												}} />
+											</StyledTooltip>}
 											<Typography sx={{ fontSize: '15px', fontFamily: 'shabnam' }}>{reply.text}</Typography>
 										</Grid>
 										<Grid display={'flex'} flexDirection={'column'} >
@@ -228,20 +246,25 @@ const Replies = () => {
 													</IconButton>
 												</>}
 												{(IsSelfThread && reply.user.userId !== Number(userId) && !reply.isSetAsAnswer) &&
+												<StyledTooltip title={<React.Fragment>{'تایید به عنوان پاسخ مناسب'}</React.Fragment>}>
 													<IconButton size="large" onClick={() => handleSetAsAnswerClick(reply.id)}>
 														<TaskAlt />
-													</IconButton>}
+													</IconButton>
+												</StyledTooltip>}
 											</Grid>
 											<Grid display={'flex'} flexDirection={'row'} marginTop={'10px'}>
 												<Typography sx={{ mr: '3px', fontSize: '15px', fontFamily: 'shabnam' }}>توسط {reply.user.name} </Typography>
-												{reply.user.isPremium && <WorkspacePremium sx={{
-													color: 'purple',
-													backgroundColor: 'gold',
-													borderRadius: '12px',
-													padding: '1px',
-													width: '23px',
-													mr: '10px',
-												}} />}
+												{reply.user.isPremium && 
+												<StyledTooltip title={<React.Fragment>{'کاربر پرمیوم'}</React.Fragment>}>
+													<WorkspacePremium sx={{
+														color: 'purple',
+														backgroundColor: 'gold',
+														borderRadius: '12px',
+														padding: '1px',
+														width: '23px',
+														mr: '10px',
+													}} />
+												</StyledTooltip>}
 												<Typography sx={{ ml: '10px', fontSize: '13px', fontFamily: 'shabnam' }}>{Moment(reply.createDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(reply.createDate).format('HH:mm')}</Typography>
 											</Grid>
 										</Grid>
