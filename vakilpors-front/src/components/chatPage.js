@@ -350,6 +350,8 @@ const ChatPage = () => {
       message: inputText.trim(),
       isEdited: true,
     };
+    delete updatedMessage.chat;
+    delete updatedMessage.ref;
     setInputText('');
     setIsEditActive(false);
     editChatMessage(updatedMessage);
