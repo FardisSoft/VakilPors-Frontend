@@ -316,11 +316,13 @@ const Sidebar = (props) => {
             {refUserRole.current != null &&
             <Box display={'flex'} flexDirection={'row'}>
               <ArrowDropDown color="primary" onClick={handleDropDownClick} sx={{color:"white",position:'relative', top:'9px', left:'15px', cursor:'pointer'}} />
+              { window.innerWidth > 450 && <>
               <Typography onClick={handleDropDownClick} sx={{fontFamily:"shabnam", position:'relative', top:'9px', left:'10px', cursor:'pointer'}}>{name}</Typography>
               {isPremium && 
               <StyledTooltip title={<React.Fragment>{'کاربر پرمیوم'}</React.Fragment>}>
                 <WorkspacePremium sx={{position:'relative',top:'10px',right:'-15px',color: 'purple',backgroundColor: 'gold',borderRadius: '12px',padding: '1px',width: '23px',mr: '10px',}} />
               </StyledTooltip>}
+              </>}
               <Avatar alt="profile picture" sx={{ width: 40, height: 40, }} srcSet={profilePicture} />
             </Box>}
           </Grid>
