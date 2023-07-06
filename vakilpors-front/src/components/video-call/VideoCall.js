@@ -4,8 +4,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Helmet } from 'react-helmet-async';
 import Peer from 'peerjs';
 import * as signalR from '@microsoft/signalr';
-import { Box, Grid, IconButton } from '@mui/material';
+import { Box, Grid, IconButton, Typography, Button } from '@mui/material';
 import { CallEnd, Mic, MicOff, Videocam, VideocamOff } from '@mui/icons-material';
+import { Dialog, DialogActions, DialogTitle } from '@mui/material';
 import { useAuth } from "../../context/AuthProvider";
 import { BASE_API_ROUTE } from '../../Constants';
 import Video from './Video';
@@ -19,6 +20,7 @@ const VideoCall = () => {
   const [streams, setStreams, refStreams] = useStateRef([]);
   const [audioMuted, setAudioMuted] = useState(false);
   const [videoMuted, setVideoMuted] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
 
   const { getAccessToken } = useAuth();
   const { roomId } = useParams();
@@ -103,6 +105,9 @@ const VideoCall = () => {
           console.log('user disconnected : ',id);
           if(refPeers.current[id]) refPeers.current[id].close();
           setStreams([refLocalStream.current]);
+          if(id != refUserId.current){
+            setOpenAlert(true);
+          }
         });
         myPeer.on('call', call => {
           call.answer(refLocalStream.current, {metadata: { streamId: refLocalStream.current.id }});
@@ -192,6 +197,20 @@ const VideoCall = () => {
         </Box>
       </Grid>
     </Grid>
+    <Dialog
+      open={openAlert}
+      onClose={()=>setOpenAlert(false)}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">
+        <Typography fontFamily={"shabnam"} fontSize={'19px'}>شخص مقابل شما از تماس خارج شد!</Typography>
+      </DialogTitle>
+      <DialogActions>
+        <Button onClick={()=>{setOpenAlert(false);navigate('/');}} autoFocus><Typography fontFamily={"shabnam"} fontSize={'15px'}>صفحه اصلی</Typography></Button>
+        <Button onClick={()=>{setOpenAlert(false);navigate('/chatPage');}} autoFocus><Typography fontFamily={"shabnam"} fontSize={'15px'}>صفحه چت</Typography></Button>
+      </DialogActions>
+    </Dialog>
     </>
   );
 };
