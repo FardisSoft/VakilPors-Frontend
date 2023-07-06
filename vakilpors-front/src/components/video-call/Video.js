@@ -24,7 +24,7 @@ const Video = ({ stream, muted }) => {
           bottom: '20px',
           left: '5vw',
           zIndex: 2,
-          border: '3px solid rgb(25,118,210)',
+          border: '3px solid rgba(25,118,210,0.6)',
           maxWidth: '200px',
         }),
         ...(!muted && {
