@@ -1,16 +1,16 @@
 import { HomeOutlined, PersonSearchOutlined, ForumOutlined, PolicyOutlined, AppRegistrationOutlined,
        LoginOutlined, LogoutOutlined, ManageAccountsOutlined, AccountCircleOutlined, CallOutlined,
-       Menu, ChevronRight, ChatOutlined, DashboardOutlined, AssignmentOutlined, WalletOutlined,
-       AssignmentTurnedInOutlined, AssessmentOutlined, Gavel, LiveHelpOutlined, PaidOutlined } from "@mui/icons-material";
+       ChevronRight, ChatOutlined, DashboardOutlined, AssignmentOutlined, WalletOutlined,
+       AssignmentTurnedInOutlined, AssessmentOutlined, Gavel, LiveHelpOutlined, PaidOutlined, 
+       ArrowDropDown, } from "@mui/icons-material";
+import MenuIcon from '@mui/icons-material/Menu';
 import React, { useState, useEffect } from 'react';
 import useStateRef from "react-usestateref";
-import { styled } from '@mui/material/styles';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import { Link, useNavigate } from "react-router-dom";
-import { Box, Divider, Grid, Drawer } from '@mui/material';
-import { Badge, Avatar, Typography, Toolbar } from '@mui/material';
+import { Box, Divider, Grid, Drawer, Badge, Avatar, Typography, Toolbar } from '@mui/material';
 import MuiAppBar from '@mui/material/AppBar';
-import { List, ListItem, ListItemButton, IconButton, ListItemIcon } from '@mui/material';
+import { List, ListItem, ListItemButton, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from '@mui/material';
 import { useAuth } from "../context/AuthProvider";
 import jwt from 'jwt-decode';
 import axios from 'axios';
@@ -83,6 +83,8 @@ const Sidebar = (props) => {
   const { refUserRole, refIsLoggedIn, getAccessToken, logout } = useAuth();
   const [lawyerID, setLawyerID, refLawyerID] = useStateRef();
   const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const openMenu = Boolean(anchorEl);
   const [profilePicture, setProfilePicture] = useState();
   const [online, setOnline] = useState(true);
   const [name, setName] = useState('');
@@ -248,6 +250,14 @@ const Sidebar = (props) => {
     setOpen(false);
   };
 
+  const handleDropDownClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleDropDownClose = () => {
+    setAnchorEl(null);
+  };
+
   const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
         backgroundColor: '#44b700',
@@ -280,17 +290,99 @@ const Sidebar = (props) => {
   return (
     <ThemeProvider theme={theme}>
     <Box sx={{ display: 'flex' }}>
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} sx={{ width: open ? `calc(100vw - ${drawerWidth}px)` : '100vw' }}>
         <Toolbar>
           <IconButton color="inherit" aria-label="open drawer" edge="end" onClick={handleDrawerOpen} sx={{ ...(open && { display: 'none' }) }}>
-            <Menu/>
+            <MenuIcon/>
           </IconButton>
-          <Typography variant="h6" noWrap sx={{mr:5, fontFamily:"shabnam"}} component="div">
-            وکیل پرس
-          </Typography>
+          <Grid container direction={'row'} display={'flex'} justifyContent={'space-between'} >
+            <Typography variant="h6" noWrap sx={{mr:5, fontFamily:"shabnam"}} component="div">
+              وکیل پرس
+            </Typography>
+            {refUserRole.current != null &&
+            <Box display={'flex'} flexDirection={'row'}>
+              <ArrowDropDown color="primary" onClick={handleDropDownClick} sx={{color:"white",position:'relative', top:'9px', left:'15px', cursor:'pointer'}} />
+              <Typography onClick={handleDropDownClick} sx={{fontFamily:"shabnam", position:'relative', top:'9px', left:'15px', cursor:'pointer'}}>{name}</Typography>
+              <Avatar alt="profile picture" sx={{ width: 40, height: 40, }} srcSet={profilePicture} />
+            </Box>}
+          </Grid>
         </Toolbar>
       </AppBar>
-      
+
+      <React.Fragment>
+        <Menu
+          anchorEl={anchorEl}
+          id="account-menu"
+          open={openMenu}
+          onClose={handleDropDownClose}
+          onClick={handleDropDownClose}
+          PaperProps={{
+            elevation: 0,
+            sx: {
+              overflow: 'visible',
+              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+              mt: 1.5,
+              '& .MuiAvatar-root': {
+                width: 32,
+                height: 32,
+                ml: -0.5,
+                mr: 1,
+              },
+              '&:before': {
+                content: '""',
+                display: 'block',
+                position: 'absolute',
+                top: 0,
+                right: 14,
+                width: 10,
+                height: 10,
+                bgcolor: 'background.paper',
+                transform: 'translateY(-50%) rotate(45deg)',
+                zIndex: 0,
+              },
+            },
+          }}
+          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        >
+          {refUserRole.current == 'User' && <>
+          <MenuItem onClick={()=>navigate('/edit-user')}>
+            <ListItemIcon>
+              <ManageAccountsOutlined color="primary" />
+            </ListItemIcon>
+            <Typography fontFamily="shabnam" >{'ویرایش پروفایل'}</Typography>
+          </MenuItem>
+          <MenuItem onClick={()=>navigate('/PremiumPage')}>
+            <ListItemIcon>
+              <DashboardOutlined color="primary" />
+            </ListItemIcon>
+            <Typography fontFamily="shabnam" >{'داشبورد'}</Typography>
+          </MenuItem>
+          </>}
+          {refUserRole.current == 'Vakil' && <>
+          <MenuItem onClick={()=>navigate('/edit_lawyer')}>
+            <ListItemIcon>
+              <ManageAccountsOutlined color="primary" />
+            </ListItemIcon>
+            <Typography fontFamily="shabnam" >{'ویرایش پروفایل'}</Typography>
+          </MenuItem>
+          <MenuItem onClick={()=>navigate(`/LawyerPage/${refLawyerID.current}`)}>
+            <ListItemIcon>
+              <AccountCircleOutlined color="primary" />
+            </ListItemIcon>
+            <Typography fontFamily="shabnam" >{'مشاهده پروفایل'}</Typography>
+          </MenuItem>
+          </>}      
+          <Divider />
+          <MenuItem onClick={logoutHandler}>
+            <ListItemIcon>
+              <LogoutOutlined color="primary" />
+            </ListItemIcon>
+            <Typography fontFamily="shabnam" >خروج از حساب</Typography>
+          </MenuItem>
+        </Menu>
+      </React.Fragment>
+
       <Drawer variant="persistent" anchor="right" open={open} sx={{ width: drawerWidth == 240 || open ? drawerWidth : 0 , flexShrink: 0, '& .MuiDrawer-paper': {width: drawerWidth == 240 || open ? drawerWidth : 0,}}}>
         <DrawerHeader>
           <IconButton sx={{width:drawerWidth, borderRadius:2, backgroundColor:"rgb(25,118,210)", ":hover":{backgroundColor:"rgba(25,118,210,0.7)"}}} onClick={handleDrawerClose}>
