@@ -2,15 +2,16 @@ import { HomeOutlined, PersonSearchOutlined, ForumOutlined, PolicyOutlined, AppR
        LoginOutlined, LogoutOutlined, ManageAccountsOutlined, AccountCircleOutlined, CallOutlined,
        ChevronRight, ChatOutlined, DashboardOutlined, AssignmentOutlined, WalletOutlined,
        AssignmentTurnedInOutlined, AssessmentOutlined, Gavel, LiveHelpOutlined, PaidOutlined, 
-       ArrowDropDown, } from "@mui/icons-material";
+       ArrowDropDown, WorkspacePremium, } from "@mui/icons-material";
 import MenuIcon from '@mui/icons-material/Menu';
 import React, { useState, useEffect } from 'react';
 import useStateRef from "react-usestateref";
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { Link, useNavigate } from "react-router-dom";
 import { Box, Divider, Grid, Drawer, Badge, Avatar, Typography, Toolbar } from '@mui/material';
 import MuiAppBar from '@mui/material/AppBar';
-import { List, ListItem, ListItemButton, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from '@mui/material';
+import { List, ListItem, ListItemButton, IconButton, ListItemIcon, Menu, MenuItem } from '@mui/material';
 import { useAuth } from "../context/AuthProvider";
 import jwt from 'jwt-decode';
 import axios from 'axios';
@@ -20,6 +21,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import Footer from "./Footer";
 
 let drawerWidth = 240;
+
+const StyledTooltip = styled (({ className, ...props }) => (
+	<Tooltip {...props} classes={{ popper: className }} arrow/>
+  ))(({ theme }) => ({
+	[`& .${tooltipClasses.tooltip}`]: {
+	  backgroundColor: '#f5f5f9',
+	  color: 'rgba(0, 0, 0, 0.87)',
+	  maxWidth: 300,
+	  fontSize: '15px',
+	  border: '1px solid #dadde9',
+	  fontFamily: 'shabnam',
+	},
+  }));
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -302,7 +316,11 @@ const Sidebar = (props) => {
             {refUserRole.current != null &&
             <Box display={'flex'} flexDirection={'row'}>
               <ArrowDropDown color="primary" onClick={handleDropDownClick} sx={{color:"white",position:'relative', top:'9px', left:'15px', cursor:'pointer'}} />
-              <Typography onClick={handleDropDownClick} sx={{fontFamily:"shabnam", position:'relative', top:'9px', left:'15px', cursor:'pointer'}}>{name}</Typography>
+              <Typography onClick={handleDropDownClick} sx={{fontFamily:"shabnam", position:'relative', top:'9px', left:'10px', cursor:'pointer'}}>{name}</Typography>
+              {isPremium && 
+              <StyledTooltip title={<React.Fragment>{'کاربر پرمیوم'}</React.Fragment>}>
+                <WorkspacePremium sx={{position:'relative',top:'10px',right:'-15px',color: 'purple',backgroundColor: 'gold',borderRadius: '12px',padding: '1px',width: '23px',mr: '10px',}} />
+              </StyledTooltip>}
               <Avatar alt="profile picture" sx={{ width: 40, height: 40, }} srcSet={profilePicture} />
             </Box>}
           </Grid>
@@ -390,11 +408,19 @@ const Sidebar = (props) => {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        { refUserRole.current && <Grid container direction="column" display="flex" alignItems="center" justifyContent="center" sx={{pt:2,pb:2}} backgroundColor={isPremium?'gold':'white'} borderRadius={'10px'}>
+        { refUserRole.current && <Grid container direction="column" display="flex" alignItems="center" justifyContent="center" sx={{pt:2,pb:2}} 
+        // backgroundColor={isPremium?'gold':'white'} 
+        borderRadius={'10px'}>
           <StyledBadge invisible={!online} overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} variant="dot">
             <Avatar alt="profile picture" sx={{ width: 60, height: 60 }} srcSet={profilePicture} />
           </StyledBadge>
-          <Typography sx={{fontFamily:"shabnam", mt:1}}>{name}</Typography>
+          <Box display={'flex'} flexDirection={'row'}>
+            <Typography sx={{fontFamily:"shabnam", mt:1}}>{name}</Typography>
+            {isPremium && 
+            <StyledTooltip title={<React.Fragment>{'کاربر پرمیوم'}</React.Fragment>}>
+              <WorkspacePremium sx={{position:'relative',top:'10px',right:'-5px',color: 'purple',backgroundColor: 'gold',borderRadius: '12px',padding: '1px',width: '23px',mr: '10px',}} />
+            </StyledTooltip>}
+          </Box>
         </Grid>}
         <Divider />
         <List sx={{flex: '1 1 auto', overflow: 'overlay'}}>
