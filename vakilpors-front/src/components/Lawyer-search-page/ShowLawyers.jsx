@@ -86,7 +86,7 @@ const ShowLawyers = ({ Lawyer }) => {
                                     <BsPersonWorkspace color='black' size={'20px'} /> عنوان : </p>
                                 <a title={Lawyer.title}  >
                                     <i class="zmdi zmdi-account mx-3">
-                                    </i> {Lawyer.title} </a>
+                                    </i> {Lawyer.title ? Lawyer.title : 'وکیل'} </a>
                             </h2>
                             <h2>
                                 <p class="my-1">
