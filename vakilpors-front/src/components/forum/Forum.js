@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import useStateRef from "react-usestateref";
 import { Helmet } from 'react-helmet-async';
 import Moment from 'moment-jalaali';
+import { styled } from '@mui/material/styles';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { Typography, IconButton, Badge, Grid, TextField, Button } from "@mui/material";
 import { Delete, WorkspacePremium } from '@mui/icons-material';
 import Likes from "./utils/Likes";
@@ -28,6 +30,19 @@ const theme = createTheme({
 	direction: 'rtl',
 });
 // mui rtl
+
+const StyledTooltip = styled (({ className, ...props }) => (
+	<Tooltip {...props} classes={{ popper: className }} arrow/>
+  ))(({ theme }) => ({
+	[`& .${tooltipClasses.tooltip}`]: {
+	  backgroundColor: '#f5f5f9',
+	  color: 'rgba(0, 0, 0, 0.87)',
+	  maxWidth: 300,
+	  fontSize: '15px',
+	  border: '1px solid #dadde9',
+	  fontFamily: 'shabnam',
+	},
+  }));
 
 const Forum = () => {
 	const [thread, setThread] = useState("");
@@ -165,14 +180,17 @@ const Forum = () => {
 											</Grid>
 											<Grid display={'flex'} flexDirection={'row'} marginTop={'10px'}>
 												<Typography sx={{ fontSize: '15px', fontFamily: 'shabnam', mr: '5px' }}>توسط {thread.user.isLawyer && '(وکیل)'} {thread.user.name}</Typography>
-												{thread.user.isPremium && <WorkspacePremium sx={{
-													color: 'purple',
-													backgroundColor: 'gold',
-													borderRadius: '12px',
-													padding: '1px',
-													width: '23px',
-													mr: '10px',
-												}} />}
+												{thread.user.isPremium && 
+												<StyledTooltip title={<React.Fragment>{'کاربر پرمیوم'}</React.Fragment>}>
+													<WorkspacePremium sx={{
+														color: 'purple',
+														backgroundColor: 'gold',
+														borderRadius: '12px',
+														padding: '1px',
+														width: '23px',
+														mr: '10px',
+													}} />
+												</StyledTooltip>}
 												<Typography fontFamily={'shabnam'} fontSize={'14px'}>{Moment(thread.createDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(thread.createDate).format('HH:mm')}</Typography>
 											</Grid>
 										</Grid>
