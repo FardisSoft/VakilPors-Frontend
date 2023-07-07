@@ -14,7 +14,10 @@ const Statistics = () => {
 	const [statistics, setStatistics] = useState(null);
 	const { getAccessToken } = useAuth();
 	const [ maxView, setMaxView ] = useState();
+	const [ minView, setMinView ] = useState();
 	const [ monthsViews, setMonthsViews, refMonthsViews ] = useStateRef([]);
+
+	const [ temp, setTemp, refTemp ] = useStateRef([]);
 
 	const backArray = [26, 13, 99, 88, 77, 66, 55, 44, 130, 100, 10, 4];
 
@@ -38,7 +41,13 @@ const Statistics = () => {
 							setMonthsViews([{ month: indexMonth[i-1], view: backArray[i-1] }, ...refMonthsViews.current]);
 						}
 					}
-					setMaxView(Math.max(...backArray));
+					if(refTemp.current.length == 0){
+						setTemp([{month: ` ( ${response.data.dailyVisits} ) امروز`, view: response.data.dailyVisits},...refTemp.current]);
+						setTemp([{month: 'این ماه', view: response.data.monthlyVisits},...refTemp.current]);
+						setTemp([{month: 'امسال', view: response.data.yearlyVisits},...refTemp.current]);
+					}
+					setMaxView(Math.max(...[response.data.dailyVisits,response.data.monthlyVisits,response.data.yearlyVisits]));
+					setMinView(Math.min(...[response.data.dailyVisits,response.data.monthlyVisits,response.data.yearlyVisits]));
 					// console.log('response in getting Statistics : ',response);
 				} catch (error) {
 					console.log('error in getting Statistics : ',error);
@@ -69,7 +78,12 @@ const Statistics = () => {
 		const width = maxBarWidth * barWidth;
 		return (
 		  <React.Fragment>
-			<path d={getPath(arg - width / 2, width, val, startVal, value)} fill={value > (2 * maxView / 3) ? 'rgba(255,0,0,0.6)' : value > (maxView / 2) ? 'rgba(255,127,39,0.8)' : value > (maxView / 3) ? 'rgba(255,200,0,0.7)' : color} style={style} />
+			<path d={getPath(arg - width / 2, width, val, startVal, value)} 
+			fill={
+				// value > (2 * maxView / 3) ? 'rgba(255,0,0,0.6)' : value > (maxView / 2) ? 'rgba(255,127,39,0.8)' : value > (maxView / 3) ? 'rgba(255,200,0,0.7)' : color
+				value == maxView ? 'rgba(255,0,0,0.6)' : value == minView ? 'rgba(255,200,0,0.7)' : 'rgba(255,127,39,0.8)'
+			} 
+			style={style} />
 			<Chart.Label
 			  x={arg}
 			  y={(val + startVal) / 2}
@@ -86,8 +100,8 @@ const Statistics = () => {
 	const Title = () => {
 		return (
 		  	<React.Fragment>
-				<p style={{fontSize:'20px', marginTop:'20px', marginRight:'38%'}}>
-					{'بازدید سایت در 12 ماه گذشته'}
+				<p style={{fontSize:'20px', marginTop:'20px', marginRight:'30%'}}>
+					{'آمار بازدید سایت'}
 				</p>
 		  	</React.Fragment>
 		);
@@ -131,16 +145,16 @@ const Statistics = () => {
 						borderRadius: '25px',
 						alignItems: 'center'}}>
 				{statistics && <>
-					<p style={{fontSize: 15, color: '#444cc6'}}>بازدید امروز : {statistics.dailyVisits}</p>
+					{window.innerWidth <= 400 && <><p style={{fontSize: 15, color: '#444cc6'}}>بازدید امروز : {statistics.dailyVisits}</p>
 					<p style={{fontSize: 15, color: '#444cc6'}}>بازدید این ماه : {statistics.monthlyVisits}</p>
-					<p style={{fontSize: 15, color: '#444cc6'}}>بازدید امسال : {statistics.yearlyVisits}</p>
+					<p style={{fontSize: 15, color: '#444cc6'}}>بازدید امسال : {statistics.yearlyVisits}</p></>}
 					<p style={{fontSize: 15, color: '#444cc6'}}>تعداد کاربران : {statistics.usersCount}</p>
 					<p style={{fontSize: 15, color: '#444cc6'}}>تعداد وکلا : {statistics.lawyersCount}</p>
 					<p style={{fontSize: 15, color: '#444cc6'}}>تعداد پرونده ها : {statistics.casesCount}</p>		
 					<p style={{fontSize: 15, color: '#444cc6'}}>تعداد پیام ها : {statistics.messagesCount}</p>
 				</>}
-				{window.innerWidth > 1000 && <Paper>
-					<Chart dir={'ltr'} width={900} data={refMonthsViews.current} >
+				{window.innerWidth > 400 && <Paper>
+					<Chart dir={'ltr'} width={300} data={refTemp.current} >
 						<ArgumentAxis labelComponent={Label} position="top"/>
 						<ValueAxis />
 						<BarSeries valueField="view" argumentField="month" pointComponent={BarWithLabel}/>
