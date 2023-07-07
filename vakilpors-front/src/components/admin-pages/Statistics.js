@@ -5,7 +5,7 @@ import { BASE_API_ROUTE } from "../../Constants";
 import { useAuth } from "../../context/AuthProvider";
 import axios from "axios";
 import Paper from '@mui/material/Paper';
-import { Chart,BarSeries,ArgumentAxis,ValueAxis,PieSeries,Legend } from '@devexpress/dx-react-chart-material-ui';
+import { Chart,BarSeries,ArgumentAxis,ValueAxis, } from '@devexpress/dx-react-chart-material-ui';
 import { Animation } from '@devexpress/dx-react-chart';
 import Moment from 'moment-jalaali';
 
@@ -18,7 +18,6 @@ const Statistics = () => {
 	const [ monthsViews, setMonthsViews, refMonthsViews ] = useStateRef([]);
 
 	const [ temp, setTemp, refTemp ] = useStateRef([]);
-	const [ temp2, setTemp2, refTemp2 ] = useStateRef([]);
 
 	const backArray = [26, 13, 99, 88, 77, 66, 55, 44, 130, 100, 10, 4];
 
@@ -47,13 +46,6 @@ const Statistics = () => {
 						setTemp([{month: 'این ماه', view: response.data.monthlyVisits},...refTemp.current]);
 						setTemp([{month: 'امسال', view: response.data.yearlyVisits},...refTemp.current]);
 					}
-					if(refTemp2.current.length == 0){
-						setTemp2([{month: ` ( ${response.data.dailyVisits} ) امروز`, view: response.data.dailyVisits},...refTemp.current]);
-						setTemp2([{month: ` ( ${response.data.monthlyVisits} ) این ماه`, view: response.data.monthlyVisits},...refTemp.current]);
-						setTemp2([{month: ` ( ${response.data.yearlyVisits} ) امسال`, view: response.data.yearlyVisits},...refTemp.current]);
-
-					}
-					// setTemp2([]);
 					setMaxView(Math.max(...[response.data.dailyVisits,response.data.monthlyVisits,response.data.yearlyVisits]));
 					setMinView(Math.min(...[response.data.dailyVisits,response.data.monthlyVisits,response.data.yearlyVisits]));
 					// console.log('response in getting Statistics : ',response);
@@ -153,17 +145,15 @@ const Statistics = () => {
 						borderRadius: '25px',
 						alignItems: 'center'}}>
 				{statistics && <>
-					{/* {window.innerWidth <= 400 && <> */}
-					<p style={{fontSize: 15, color: '#444cc6'}}>بازدید امروز : {statistics.dailyVisits}</p>
+					{window.innerWidth <= 400 && <><p style={{fontSize: 15, color: '#444cc6'}}>بازدید امروز : {statistics.dailyVisits}</p>
 					<p style={{fontSize: 15, color: '#444cc6'}}>بازدید این ماه : {statistics.monthlyVisits}</p>
-					<p style={{fontSize: 15, color: '#444cc6'}}>بازدید امسال : {statistics.yearlyVisits}</p>
-					{/* </>} */}
+					<p style={{fontSize: 15, color: '#444cc6'}}>بازدید امسال : {statistics.yearlyVisits}</p></>}
 					<p style={{fontSize: 15, color: '#444cc6'}}>تعداد کاربران : {statistics.usersCount}</p>
 					<p style={{fontSize: 15, color: '#444cc6'}}>تعداد وکلا : {statistics.lawyersCount}</p>
 					<p style={{fontSize: 15, color: '#444cc6'}}>تعداد پرونده ها : {statistics.casesCount}</p>		
 					<p style={{fontSize: 15, color: '#444cc6'}}>تعداد پیام ها : {statistics.messagesCount}</p>
 				</>}
-				{/* {window.innerWidth > 400 && <Paper>
+				{window.innerWidth > 400 && <Paper>
 					<Chart dir={'ltr'} width={300} data={refTemp.current} >
 						<ArgumentAxis labelComponent={Label} position="top"/>
 						<ValueAxis />
@@ -171,29 +161,7 @@ const Statistics = () => {
 						<Title textComponent={Title} />
 						<Animation />
 					</Chart>
-				</Paper>} */}
-				{/* {window.innerWidth > 400 && <Paper>
-					<Chart width={300}
-					data={refTemp2.current}
-					>
-					<PieSeries
-						valueField="view"
-						argumentField="month"
-						innerRadius={0.6}
-						// outerRadius={1.6}
-					/>
-					<Title
-						// text="The Population of Continents and Regions"
-					/>
-					<Legend
-          orientation="horizontal"
-          itemTextPosition="right"
-          horizontalAlignment="center"
-          verticalAlignment="bottom"
-          columnCount={4} />
-					<Animation />
-					</Chart>
-				</Paper>} */}
+				</Paper>}
 			</div>
 		</div>
 		</>
