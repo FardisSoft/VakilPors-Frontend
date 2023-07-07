@@ -108,6 +108,9 @@ const Replies = () => {
 				if (error.response.data.hasOwnProperty('Message') && error.response.data.Message == 'This message is detected as a spam and can not be shown.') {
 					showErrorMessage('نظر شما حاوی تبلیغات غیر مجاز است.');
 				}
+				if (error.response.data.hasOwnProperty("Message") && error.response.data.Message == "The new comment should be sent within 2 minutes after the last comment") {
+					showErrorMessage("ارسال کامنت جدید باید حداقل 2 دقیقه پس از کامنت قبلی باشد.");
+				}
 			}
 		}
 	};
