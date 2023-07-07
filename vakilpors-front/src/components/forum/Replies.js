@@ -217,7 +217,8 @@ const Replies = () => {
 									}}>
 										<Grid display={'flex'} flexDirection={'row'} marginTop={{ xs: '10px', sm: '0' }}>
 											{reply.isSetAsAnswer && 
-											<StyledTooltip title={<React.Fragment>{'تایید شده به عنوان پاسخ توسط نگارنده تاپیک'}</React.Fragment>}>
+											<StyledTooltip title={<React.Fragment>{'تایید شده به عنوان پاسخ توسط نگارنده تاپیک ، این پاسخ یک '}
+											{reply.user.isLawyer ? 'وکیل' : 'کاربر'}{reply.user.isPremium && ' پرمیوم'}{' است.'}</React.Fragment>}>
 												<TaskAlt sx={{
 													color: 'green',
 													backgroundColor: 'lightgreen',
