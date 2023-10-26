@@ -2,15 +2,46 @@ import {useEffect,useState} from 'react'
 import axios from 'axios'
 import  {BASE_API_ROUTE}  from '../../Constants';
 
-export default function useLawyerShowSearch(Pagenumber,filter,Pagesize) {
-  useEffect(()=>{
-    axios({
-      method:'GET',
-      url:BASE_API_ROUTE + `Lawyer/GetAllPaged?PageNumber=${Pagenumber}&PageSize=${Pagesize}`
+export default function useLawyerShowSearch(Pagenumber,Pagesize,sort) {
+  const[loading,setloading]=useState(true);
+  const[error,seterror]=useState(false);
+  const[lawyerdetail1, setlawyerdetail]=useState([]);
+  const[hasMore,sethasMore]=useState(false);
 
-    }).then(res=>{
-      console.log(res.data)
-    })
-  },[Pagenumber,filter,Pagesize])
-  return  null
+  useEffect(()=>{
+    setlawyerdetail([])
+  },[sort])
+
+  useEffect(() => {
+    setloading(true);
+    seterror(false);
+  
+    let cancel;
+  
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(BASE_API_ROUTE + `Lawyer/GetAllPaged?PageNumber=${Pagenumber}&PageSize=${Pagesize}&sort=${sort}`, {
+          cancelToken: new axios.CancelToken(c => (cancel = c))
+        });
+        const data = response.data;  
+        setlawyerdetail(prevlawyer => {
+          return [...prevlawyer, ...data.data.results];
+        });
+        // setlawyerdetail(data.data.results)
+        sethasMore(data.data.nextPage != null)
+        setloading(false)
+        console.log(sort)
+        console.log(data.data.nextPage != null);
+        console.log(data.data.nextPage);
+        console.log(data.data.results);
+      } catch (error) {
+        if (axios.isCancel(error)) return;
+        seterror(true)
+      }
+    };  
+    fetchData();  
+    return () => cancel();
+  }, [Pagenumber, Pagesize, sort]);
+  
+  return {lawyerdetail1,loading,error,hasMore};
 }
