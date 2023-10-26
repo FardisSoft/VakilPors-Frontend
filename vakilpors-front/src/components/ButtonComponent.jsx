@@ -19,7 +19,7 @@ const Button = styled.button`
     background-position: right bottom;
     background-size: 200% 100%;
     color: #FCFAF6;
-    // border: solid 2px #FCFAF6;
+    border: solid 2px #2087E2;
     border-radius: 10px;
     transition: all 0.15s ease-out;
     display: block;
@@ -29,6 +29,7 @@ const Button = styled.button`
         background-position: left bottom;
         background-color: #082640;
         color: #FCFAF6;
+        border: solid 2px #082640;
     }
 `;
 
