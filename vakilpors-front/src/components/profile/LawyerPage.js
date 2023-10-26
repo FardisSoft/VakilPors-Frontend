@@ -111,6 +111,7 @@ const LawyerPage = () => {
                     const responseRate = await axios.get(urlRate, {headers: {Authorization: `Bearer ${token}`}});
                     // console.log('response in getting laywer rates : ',responseRate);
                     setRatesList(responseRate.data);
+                    console.log(ratesList)
                     calculateRateAverage(responseRate.data);
                 } catch (error) {
                     if(error.response.data.Message != 'NO RATES FOUND!'){

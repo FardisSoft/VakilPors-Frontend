@@ -22,33 +22,43 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useAuth } from "../../context/AuthProvider";
+import useLawyerShowSearch from './useLawyerShowSearch';
 
 
 const Lawyer_search_page = () => {
-
+    const Pagesize=6
     const [lawyerdetail, setlawyerdetail] = useState([]);
     const [filteredLawyers, setFilteredLawyers] = useState([]);
     const [LawyerQuery, setLawyerQuery] = useState({ text: "" });
 
     const { refUserRole } = useAuth();
 
+    const[Pagenum,setPagenum]=useState(1);
+    const[filter,setfilter]=useState('');
 
     const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
+    // useLawyerShowSearch(Pagenum,filter,Pagesize)
 
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch(BASE_API_ROUTE + "Lawyer/GetAll")
+            const response = await fetch(BASE_API_ROUTE +`Lawyer/GetAllPaged?PageNumber=${Pagenum}&PageSize=${Pagesize}&sort=${filter}`)
             const data = await response.json()
-            setlawyerdetail(data.data)
-            setFilteredLawyers(data.data)
+            setlawyerdetail(data.data.results)
+            console.log(data.data.results)
+            console.log('salammmmm')
+            // console.log(data.data.results)
+            // setFilteredLawyers(data.data.results)
         };
         fetchData()
-    }, [])
+    }, [Pagenum,filter,Pagesize])
 
 
     const LawyerSearch = (event) => {
         setLawyerQuery({ ...LawyerQuery, text: event.target.value });
+        console.log(event.target.value)
+
         const allLawyers = lawyerdetail.filter((Lawyer) => {
             return Lawyer.user.name
                 .toLowerCase()
@@ -58,22 +68,35 @@ const Lawyer_search_page = () => {
     };
 
     const handleSortBygrade = () => {
-        const sorted = [...filteredLawyers].sort((a, b) => a.grade - b.grade);
-        setFilteredLawyers(sorted);
+        // const sorted = [...filteredLawyers].sort((a, b) => a.grade - b.grade);
+        // setFilteredLawyers(sorted);
+        setfilter('Grade');
+        setPagenum(1);
     }
 
     const handleSortByparvandeNo = () => {
-        const sorted = [...filteredLawyers].sort((a, b) => a.parvandeNo - b.parvandeNo);
-        setFilteredLawyers(sorted);
+        // console.log(filteredLawyers)
+        // const sorted = [...filteredLawyers].sort((a, b) => a.parvandeNo - b.parvandeNo);
+        // console.log("salam")
+        // console.log(sorted)
+        // setFilteredLawyers(sorted);
+        setfilter('ParvandeNo')
+        setPagenum(1);
     }
 
     const handleSortBylikes = () => {
-        const sorted = [...filteredLawyers].sort((a, b) => a.numberOfLikes - b.numberOfLikes);
-        setFilteredLawyers(sorted);
+        // const sorted = [...filteredLawyers].sort((a, b) => a.numberOfLikes - b.numberOfLikes);
+        // setFilteredLawyers(sorted);
+
+        setfilter('NumberOfLikes')
+        setPagenum(1);
+
     }
     const handleSortByoldest = () => {
-        const sorted = [...filteredLawyers].sort((a, b) => a.id - b.id);
-        setFilteredLawyers(sorted);
+        // const sorted = [...filteredLawyers].sort((a, b) => a.id - b.id);
+        // setFilteredLawyers(sorted);
+        setfilter('Id')
+        setPagenum(1);
     }
 
 
@@ -169,8 +192,8 @@ const Lawyer_search_page = () => {
                 <section className="container" >
                     <div class="contain">
                         <div className="row">
-                            {filteredLawyers.length > 0 ? (
-                                filteredLawyers.map((Lawyer) => (
+                            {lawyerdetail.length > 0 ? (
+                                lawyerdetail.map((Lawyer) => (
                                     <ShowLawyers
                                         Lawyer={Lawyer}
                                     />
@@ -180,6 +203,10 @@ const Lawyer_search_page = () => {
                                 >
                                 </div>
                             )}
+                        </div>
+                        <div style={{textAlign:"center",fontSize:30,direction:"ltr"}}>
+                            <div>loading...</div>
+                            <div>Error</div>
                         </div>
                     </div>
                 </section>
