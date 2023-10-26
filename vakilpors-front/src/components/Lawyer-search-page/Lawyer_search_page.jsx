@@ -23,6 +23,8 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useAuth } from "../../context/AuthProvider";
 import useLawyerShowSearch from "./useLawyerShowSearch";
+import LoadingSkeleton from "./LoadingSkeleton";
+import MapSkeleton from "./MapSkeleton";
 
 const Lawyer_search_page = () => {
   const Pagesize = 6;
@@ -33,29 +35,33 @@ const Lawyer_search_page = () => {
 
   const [Pagenum, setPagenum] = useState(1);
   const [sort, setsort] = useState("");
+  const [click, setclick] = useState(false);
 
   const { lawyerdetail1, loading, error, hasMore } = useLawyerShowSearch(
     Pagenum,
     Pagesize,
-    sort
+    sort,
+    click
   );
   console.log(lawyerdetail1, hasMore, error, loading);
 
   const observer = useRef();
 
-  const lastLawyerelement = useCallback((node) => {
-    if (loading) return;
-    if (observer.current) observer.current.disconnect();
-    observer.current = new IntersectionObserver((entries) => {
-        if(entries[0].isIntersecting && hasMore){
-            console.log('visible')
-            setPagenum(prevpagenum=>prevpagenum+1)
+  const lastLawyerelement = useCallback(
+    (node) => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          console.log("visible");
+          setPagenum((prevpagenum) => prevpagenum + 1);
         }
-    });
-    if(node) observer.current.observe(node)
-    console.log(node);
-  },[loading,hasMore]);
-
+      });
+      if (node) observer.current.observe(node);
+      console.log(node);
+    },
+    [loading, hasMore]
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,20 +91,24 @@ const Lawyer_search_page = () => {
   const handleSortBygrade = () => {
     setsort("Grade");
     setPagenum(1);
+    setclick(!click);
   };
 
   const handleSortByparvandeNo = () => {
     setsort("ParvandeNo");
     setPagenum(1);
+    setclick(!click);
   };
 
   const handleSortBylikes = () => {
     setsort("NumberOfLikes");
     setPagenum(1);
+    setclick(!click);
   };
   const handleSortByoldest = () => {
     setsort("Id");
     setPagenum(1);
+    setclick(!click);
   };
 
   return (
@@ -239,8 +249,9 @@ const Lawyer_search_page = () => {
         </AppBar>
         <section className="container">
           <div class="contain">
+            <div>{loading && <MapSkeleton />}</div>
             <div className="row">
-              {lawyerdetail1.length > 0 && (
+              {lawyerdetail1.length > 0 && !loading && (
                 <>
                   {lawyerdetail1.map((Lawyer, index) => {
                     if (lawyerdetail1.length === index + 1) {
@@ -261,10 +272,7 @@ const Lawyer_search_page = () => {
             </div>
             <div
               style={{ textAlign: "center", fontSize: 30, direction: "ltr" }}
-            >
-              <div>{loading && "loading..."}</div>
-              <div>{error && "error..."}</div>
-            </div>
+            ></div>
           </div>
         </section>
       </div>

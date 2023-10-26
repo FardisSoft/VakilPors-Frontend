@@ -2,7 +2,7 @@ import {useEffect,useState} from 'react'
 import axios from 'axios'
 import  {BASE_API_ROUTE}  from '../../Constants';
 
-export default function useLawyerShowSearch(Pagenumber,Pagesize,sort) {
+export default function useLawyerShowSearch(Pagenumber,Pagesize,sort,click) {
   const[loading,setloading]=useState(true);
   const[error,seterror]=useState(false);
   const[lawyerdetail1, setlawyerdetail]=useState([]);
@@ -10,7 +10,7 @@ export default function useLawyerShowSearch(Pagenumber,Pagesize,sort) {
 
   useEffect(()=>{
     setlawyerdetail([])
-  },[sort])
+  },[sort,click])
 
   useEffect(() => {
     setloading(true);
