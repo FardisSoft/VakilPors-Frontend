@@ -114,8 +114,8 @@ const ShowLawyers = ({ Lawyer }) => {
                   <AiOutlineFieldNumber color="black" size={"20px"} /> شماره
                   پروانه وکالت :{" "}
                 </p>
-                <a title={Lawyer.parvandeNo}>
-                  <i class="zmdi zmdi-account mx-3"></i> {Lawyer.parvandeNo}{" "}
+                <a title={Lawyer.licenseNumber}>
+                  <i class="zmdi zmdi-account mx-3"></i> {Lawyer.licenseNumber}{" "}
                 </a>
               </h2>
               <h2>

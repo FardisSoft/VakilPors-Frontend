@@ -27,7 +27,7 @@ import LoadingSkeleton from "./LoadingSkeleton";
 import MapSkeleton from "./MapSkeleton";
 
 const Lawyer_search_page = () => {
-  const Pagesize = 6;
+  const Pagesize = 12;
   const [lawyerdetail, setlawyerdetail] = useState([]);
   const [LawyerQuery, setLawyerQuery] = useState({ text: "" });
 
@@ -95,7 +95,7 @@ const Lawyer_search_page = () => {
   };
 
   const handleSortByparvandeNo = () => {
-    setsort("ParvandeNo");
+    setsort("LicenseNumber");
     setPagenum(1);
     setclick(!click);
   };
