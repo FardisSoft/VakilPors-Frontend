@@ -101,7 +101,7 @@ const Lawyer_search_page = () => {
   };
 
   const handleSortBylikes = () => {
-    setsort("NumberOfLikes");
+    setsort("Rating");
     setPagenum(1);
     setclick(!click);
   };

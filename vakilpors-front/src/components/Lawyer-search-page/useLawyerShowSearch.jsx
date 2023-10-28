@@ -41,7 +41,7 @@ export default function useLawyerShowSearch(Pagenumber,Pagesize,sort,click) {
     };  
     fetchData();  
     return () => cancel();
-  }, [Pagenumber, Pagesize, sort]);
+  }, [Pagenumber, Pagesize, sort,click]);
   
   return {lawyerdetail1,loading,error,hasMore};
 }
