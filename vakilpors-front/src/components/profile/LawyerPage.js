@@ -106,13 +106,16 @@ const LawyerPage = () => {
             }
             if(token){
                 setWatcherUserId(jwt(token).uid);
-                const urlRate = BASE_API_ROUTE + `Rate/GetAllRates?lawyer_id=${LawyerId}`;
+                const urlRate = BASE_API_ROUTE + `Rate/GetRatesPaged?lawyerId=${LawyerId}&PageNumber=1&PageSize=6`;
                 try {
                     const responseRate = await axios.get(urlRate, {headers: {Authorization: `Bearer ${token}`}});
                     // console.log('response in getting laywer rates : ',responseRate);
-                    setRatesList(responseRate.data);
-                    console.log(ratesList)
-                    calculateRateAverage(responseRate.data);
+                    setRatesList(responseRate.data.results);
+                    console.log(responseRate.data.results)
+                    console.log(LawyerId)
+                    // console.log('salam')
+                    // console.log(ratesList)
+                    // calculateRateAverage(responseRate.data.results);
                 } catch (error) {
                     if(error.response.data.Message != 'NO RATES FOUND!'){
                         console.log('error in getting lawyer rates : ',error);

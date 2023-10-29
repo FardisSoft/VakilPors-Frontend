@@ -28,10 +28,10 @@ export default function useLawyerShowSearch(Pagenumber,Pagesize,sort,click) {
           return [...prevlawyer, ...data.data.results];
         });
         // setlawyerdetail(data.data.results)
-        sethasMore(data.data.nextPage != null)
+        sethasMore(data.data.nextPage !== null)
         setloading(false)
         console.log(sort)
-        console.log(data.data.nextPage != null);
+        console.log(data.data.nextPage !== null);
         console.log(data.data.nextPage);
         console.log(data.data.results);
       } catch (error) {

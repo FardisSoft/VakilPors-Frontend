@@ -25,6 +25,7 @@ import { useAuth } from "../../context/AuthProvider";
 import useLawyerShowSearch from "./useLawyerShowSearch";
 import LoadingSkeleton from "./LoadingSkeleton";
 import MapSkeleton from "./MapSkeleton";
+import Grid from "@mui/material/Unstable_Grid2";
 
 const Lawyer_search_page = () => {
   const Pagesize = 12;
@@ -62,19 +63,6 @@ const Lawyer_search_page = () => {
     },
     [loading, hasMore]
   );
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(
-        BASE_API_ROUTE +
-          `Lawyer/GetAllPaged?PageNumber=${Pagenum}&PageSize=${Pagesize}&sort=${sort}`
-      );
-      const data = await response.json();
-      setlawyerdetail(data.data.results);
-      console.log(data.data.results);
-    };
-    fetchData();
-  }, [Pagenum, Pagesize, sort]);
 
   const LawyerSearch = (event) => {
     setLawyerQuery({ ...LawyerQuery, text: event.target.value });
@@ -116,166 +104,168 @@ const Lawyer_search_page = () => {
       <Helmet>
         <title>جست و جوی وکلا</title>
       </Helmet>
-      <div class="Main_contain">
-        <Search LawyerSearch={LawyerSearch} LawyerQuery={LawyerQuery} />
-        {refUserRole.current === "User" && <PremiumCard />}
-        <AppBar
-          position="relative"
-          style={{
-            borderBottomRightRadius: "30px",
-            borderBottomLeftRadius: "30px",
-            height: "70px",
-            backgroundColor: "#012780",
-          }}
-        >
-          <Container maxWidth="xl">
-            <Toolbar>
-              <Typography variant="h9">مرتب سازی بر اساس</Typography>
+      <Grid >
+        <div class="Main_contain">
+          <Search LawyerSearch={LawyerSearch} LawyerQuery={LawyerQuery} />
+          {refUserRole.current === "User" && <PremiumCard />}
+          <AppBar
+            position="relative"
+            style={{
+              borderBottomRightRadius: "30px",
+              borderBottomLeftRadius: "30px",
+              height: "70px",
+              backgroundColor: "#012780",
+            }}
+          >
+            <Container maxWidth="xl">
+              <Toolbar>
+                <Typography variant="h9">مرتب سازی بر اساس</Typography>
 
-              <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-                <Button
-                  onClick={handleSortBygrade}
-                  sx={{
-                    my: -1,
-                    color: "white",
-                    display: "block",
-                    fontFamily: "shabnam",
-                  }}
-                >
-                  امتياز
-                </Button>
-                <Button
-                  onClick={handleSortByparvandeNo}
-                  sx={{
-                    my: -1,
-                    color: "white",
-                    display: "block",
-                    fontFamily: "shabnam",
-                  }}
-                >
-                  شماره پرونده
-                </Button>
-                <Button
-                  onClick={handleSortBylikes}
-                  sx={{
-                    my: -1,
-                    color: "white",
-                    display: "block",
-                    fontFamily: "shabnam",
-                  }}
-                >
-                  تعداد لايك كاربران
-                </Button>
-                <Button
-                  onClick={handleSortByoldest}
-                  sx={{
-                    my: -1,
-                    color: "white",
-                    display: "block",
-                    fontFamily: "shabnam",
-                  }}
-                >
-                  قدیمی ترین وکلای وکیل پرس
-                </Button>
-              </Box>
+                <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+                  <Button
+                    onClick={handleSortBygrade}
+                    sx={{
+                      my: -1,
+                      color: "white",
+                      display: "block",
+                      fontFamily: "shabnam",
+                    }}
+                  >
+                    امتياز
+                  </Button>
+                  <Button
+                    onClick={handleSortByparvandeNo}
+                    sx={{
+                      my: -1,
+                      color: "white",
+                      display: "block",
+                      fontFamily: "shabnam",
+                    }}
+                  >
+                    شماره پرونده
+                  </Button>
+                  <Button
+                    onClick={handleSortBylikes}
+                    sx={{
+                      my: -1,
+                      color: "white",
+                      display: "block",
+                      fontFamily: "shabnam",
+                    }}
+                  >
+                    تعداد لايك كاربران
+                  </Button>
+                  <Button
+                    onClick={handleSortByoldest}
+                    sx={{
+                      my: -1,
+                      color: "white",
+                      display: "block",
+                      fontFamily: "shabnam",
+                    }}
+                  >
+                    قدیمی ترین وکلای وکیل پرس
+                  </Button>
+                </Box>
 
-              <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-                <Button
-                  onClick={handleSortBygrade}
-                  sx={{
-                    my: 2,
-                    color: "white",
-                    display: "block",
-                    fontFamily: "shabnam",
-                  }}
-                >
-                  امتياز
-                </Button>
-                <Button
-                  onClick={handleSortByparvandeNo}
-                  sx={{
-                    my: 2,
-                    color: "white",
-                    display: "block",
-                    fontFamily: "shabnam",
-                  }}
-                >
-                  شماره پرونده
-                </Button>
-                <Button
-                  onClick={handleSortBylikes}
-                  sx={{
-                    my: 2,
-                    color: "white",
-                    display: "block",
-                    fontFamily: "shabnam",
-                  }}
-                >
-                  تعداد لايك كاربران
-                </Button>
-                <Button
-                  onClick={handleSortByoldest}
-                  sx={{
-                    my: 2,
-                    color: "white",
-                    display: "block",
-                    fontFamily: "shabnam",
-                  }}
-                >
-                  قدیمی ترین وکلای وکیل پرس
-                </Button>
-              </Box>
+                <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+                  <Button
+                    onClick={handleSortBygrade}
+                    sx={{
+                      my: 2,
+                      color: "white",
+                      display: "block",
+                      fontFamily: "shabnam",
+                    }}
+                  >
+                    امتياز
+                  </Button>
+                  <Button
+                    onClick={handleSortByparvandeNo}
+                    sx={{
+                      my: 2,
+                      color: "white",
+                      display: "block",
+                      fontFamily: "shabnam",
+                    }}
+                  >
+                    شماره پرونده
+                  </Button>
+                  <Button
+                    onClick={handleSortBylikes}
+                    sx={{
+                      my: 2,
+                      color: "white",
+                      display: "block",
+                      fontFamily: "shabnam",
+                    }}
+                  >
+                    تعداد لايك كاربران
+                  </Button>
+                  <Button
+                    onClick={handleSortByoldest}
+                    sx={{
+                      my: 2,
+                      color: "white",
+                      display: "block",
+                      fontFamily: "shabnam",
+                    }}
+                  >
+                    قدیمی ترین وکلای وکیل پرس
+                  </Button>
+                </Box>
 
-              <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open settings">
-                  <IconButton sx={{ p: 0 }}></IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: "45px" }}
-                  id="menu-appbar"
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                ></Menu>
-              </Box>
-            </Toolbar>
-          </Container>
-        </AppBar>
-        <section className="container">
-          <div class="contain">
-            <div>{loading && <MapSkeleton />}</div>
-            <div className="row">
-              {lawyerdetail1.length > 0 && !loading && (
-                <>
-                  {lawyerdetail1.map((Lawyer, index) => {
-                    if (lawyerdetail1.length === index + 1) {
-                      return (
-                        <div ref={lastLawyerelement}>
-                          <ShowLawyers Lawyer={Lawyer} />
-                        </div>
-                      );
-                    } else {
-                      return <ShowLawyers Lawyer={Lawyer} />;
-                    }
-                  })}
-                </>
-              )}
-              {lawyerdetail1.length === 0 && (
-                <div className="text-center py-5"></div>
-              )}
+                <Box sx={{ flexGrow: 0 }}>
+                  <Tooltip title="Open settings">
+                    <IconButton sx={{ p: 0 }}></IconButton>
+                  </Tooltip>
+                  <Menu
+                    sx={{ mt: "45px" }}
+                    id="menu-appbar"
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                  ></Menu>
+                </Box>
+              </Toolbar>
+            </Container>
+          </AppBar>
+          <section className="container">
+            <div class="contain">
+              <div>{loading && <MapSkeleton />}</div>
+              <div className="row">
+                {lawyerdetail1.length > 0 && !loading && (
+                  <>
+                    {lawyerdetail1.map((Lawyer, index) => {
+                      if (lawyerdetail1.length === index + 1) {
+                        return (
+                          <div ref={lastLawyerelement}>
+                            <ShowLawyers Lawyer={Lawyer} />
+                          </div>
+                        );
+                      } else {
+                        return <ShowLawyers Lawyer={Lawyer} />;
+                      }
+                    })}
+                  </>
+                )}
+                {lawyerdetail1.length === 0 && (
+                  <div className="text-center py-5"></div>
+                )}
+              </div>
+              <div
+                style={{ textAlign: "center", fontSize: 30, direction: "ltr" }}
+              ></div>
             </div>
-            <div
-              style={{ textAlign: "center", fontSize: 30, direction: "ltr" }}
-            ></div>
-          </div>
-        </section>
-      </div>
+          </section>
+        </div>
+      </Grid>
     </>
   );
 };
