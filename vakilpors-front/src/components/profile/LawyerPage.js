@@ -13,7 +13,7 @@ import {Done, Female, Male, CardMembership, LocationOn, Business, VerifiedUser, 
 import { useParams } from "react-router-dom";
 import jwt from 'jwt-decode';
 import dlpbp from '../../assests/images/default_lawyer_profile_background_picture.jpg';
-
+import Comment from "../Comment/Comment";
 // mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
 import { CacheProvider } from '@emotion/react';
@@ -106,7 +106,7 @@ const LawyerPage = () => {
             }
             if(token){
                 setWatcherUserId(jwt(token).uid);
-                const urlRate = BASE_API_ROUTE + `Rate/GetRatesPaged?lawyerId=${LawyerId}&PageNumber=1&PageSize=6`;
+                const urlRate = BASE_API_ROUTE + `Rate/GetRatesPaged?lawyerId=${LawyerId}&PageNumber=2&PageSize=5`;
                 try {
                     const responseRate = await axios.get(urlRate, {headers: {Authorization: `Bearer ${token}`}});
                     // console.log('response in getting laywer rates : ',responseRate);
@@ -318,7 +318,7 @@ const LawyerPage = () => {
             <Grid display="flex" alignItems="flex-start" justifyContent="flex-start" item component={Card}>
                 <CardHeader titleTypographyProps={{ m:0, fontFamily:"shabnam", fontWeight:"bold", fontSize:"16px", color:"grayText" }} title="نظرات کاربران"/>
             </Grid>
-            {ratesList.map((ratei,index) => 
+            {/* {ratesList.map((ratei,index) => 
                 <Grid key={index} container direction={{ xs: 'column', sm: 'row' }}>
                     <Grid display="flex" alignItems={{xs:'center',sm:"flex-start"}} justifyContent={{xs:'center',sm:"flex-start"}} item component={Card}>
                         <CardContent>
@@ -333,7 +333,8 @@ const LawyerPage = () => {
                         </CardContent>
                     </Grid>
                 </Grid>
-            )}
+            )} */}
+            <Comment/>
         </Grid>
     </Stack>
     </CacheProvider>
