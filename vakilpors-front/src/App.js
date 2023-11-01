@@ -60,7 +60,7 @@ const App = () => {
       <ThemeProvider theme={theme}>
         
       <CacheProvider value={cacheRtl}>
-
+{/* 
       <MKBox
         minHeight="75vh"
         width="100%"
@@ -99,9 +99,8 @@ const App = () => {
             </MKTypography>
           </Grid>
         </Container>
-      </MKBox> 
+      </MKBox>  */}
 
-{/* 
        <Grid sx={{flexGrow: 1,height: '100vh',backgroundImage: `url(${landing_page})`,backgroundSize: 'cover',
                 backgroundPosition: 'center',paddingTop:12,boxShadow: 'inset 0 0 0 2000px rgba(0, 0, 0, 0.5)',}}>
       <Grid container justifyContent="start" alignItems="start">
@@ -124,7 +123,7 @@ const App = () => {
       </Grid>
     </Grid>
 
-
+{/* 
     <Grid container spacing={2}>
       <Grid item xs={12} sm={4}>
         <Card>
@@ -156,7 +155,7 @@ const App = () => {
           </Typography>
         </Card>
       </Grid>
-    </Grid>  */}
+    </Grid> */}
 
 
 

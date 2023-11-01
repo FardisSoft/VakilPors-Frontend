@@ -19,16 +19,57 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
+import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
 
 const Lawyer_search_page = () => {
 
-    const [lawyerdetail, setlawyerdetail] = useState([]);
+    const [lawyerdetail, setLawyerdetail] = useState([]);
     const [filteredLawyers, setFilteredLawyers] = useState([]);
     const [LawyerQuery, setLawyerQuery] = useState({ text: "" });
 
+
+    const [filters, setFilters] = useState({
+        Rating: '',
+        Title: '',
+        Name: '',
+        City: '',
+        MemberOf: '',
+        LicenseNumber: '',
+        Gender: '',
+      });
+    
+      const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFilters((prevFilters) => ({
+          ...prevFilters,
+          [name]: value,
+        }));
+      };
+    
+      const handleSubmit = async () => {
+        try {
+          const apiUrl = 'https://api.fardissoft.ir/Lawyer/GetAllPaged';
+          const response = await axios.get(apiUrl, { params: filters });
+          const data = response.data;
+          console.log(data);
+          setLawyerdetail(data.data.results);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+
+      useEffect(() => {
+        console.log("Lawyer Data ::://:: ", lawyerdetail);
+        setFilteredLawyers(lawyerdetail);
+      }, [lawyerdetail]);
+      
+      useEffect(() => {
+        console.log("filteredLawyers ::://:: ", filteredLawyers);
+      }, [filteredLawyers]);
 
 
     const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -36,13 +77,12 @@ const Lawyer_search_page = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch(BASE_API_ROUTE + "Lawyer/GetAll")
-            const data = await response.json()
-            setlawyerdetail(data.data)
-            setFilteredLawyers(data.data)
+          const response = await fetch(BASE_API_ROUTE + "Lawyer/GetAll");
+          const data = await response.json();
+          setLawyerdetail(data.data);
         };
-        fetchData()
-    }, [])
+        fetchData();
+      }, []);
 
 
     const LawyerSearch = (event) => {
@@ -163,6 +203,59 @@ const Lawyer_search_page = () => {
                         </Toolbar>
                     </Container>
                 </AppBar>
+
+
+                <div>
+      <Button variant="contained" onClick={handleSubmit}>
+        فیلتر
+      </Button>
+      <div>
+        <TextField
+          label="Rating"
+          name="Rating"
+          value={filters.Rating}
+          onChange={handleChange}
+        />
+        <TextField
+          label="Title"
+          name="Title"
+          value={filters.Title}
+          onChange={handleChange}
+        />
+        <TextField
+          label="Name"
+          name="Name"
+          value={filters.Name}
+          onChange={handleChange}
+        />
+        <TextField
+          label="City"
+          name="City"
+          value={filters.City}
+          onChange={handleChange}
+        />
+        <TextField
+          label="MemberOf"
+          name="MemberOf"
+          value={filters.MemberOf}
+          onChange={handleChange}
+        />
+        <TextField
+          label="LicenseNumber"
+          name="LicenseNumber"
+          value={filters.LicenseNumber}
+          onChange={handleChange}
+        />
+        <TextField
+          label="Gender"
+          name="Gender"
+          value={filters.Gender}
+          onChange={handleChange}
+        />
+      </div>
+    </div>
+
+
                 <section className="container" >
                     <div class="contain">
                         <div className="row">
