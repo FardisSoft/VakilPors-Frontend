@@ -20,7 +20,7 @@ export default function useLawyerShowSearch(Pagenumber,Pagesize,sort,click) {
   
     const fetchData = async () => {
       try {
-        const response = await axios.get(BASE_API_ROUTE + `Lawyer/GetAllPaged?PageNumber=${Pagenumber}&PageSize=${Pagesize}&sort=${sort}`, {
+        const response = await axios.get(BASE_API_ROUTE + `Lawyer/GetAllPaged?PageNumber=${Pagenumber}&PageSize=${Pagesize}&sort=${sort}&IsAscending=false`, {
           cancelToken: new axios.CancelToken(c => (cancel = c))
         });
         const data = response.data;  
