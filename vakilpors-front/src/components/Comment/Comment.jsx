@@ -1,94 +1,63 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { BASE_API_ROUTE } from "../../Constants";
-import { Avatar, Rating, Typography, Chip } from "@mui/material";
-import { Stack, Grid } from "@mui/material";
-import { Card, CardContent, CardHeader, CardMedia } from "@mui/material";
-import LinkMUI from "@mui/material/Link";
-import { useAuth } from "../../context/AuthProvider";
-import jwt from 'jwt-decode';
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import useComment from "./useComment";
+import ShowComment from "./ShowComment";
 import { useParams } from "react-router-dom";
+import SkeletonSearch from "./SkeletonSearch";
+import MapSkeleton from "./MapSkeleton";
 
 const Comment = () => {
-  const [ratesList, setRatesList] = useState([]);
-  const { getAccessToken, refUserRole } = useAuth();
-  const [ watcherUserId, setWatcherUserId] = useState();
+  const Pagesize = 5;
   const { LawyerId } = useParams();
+  const [Pagenumber, setPagenumber] = useState(1);
+  const { Commentdetail1, loading, error, hasMore } = useComment(
+    Pagenumber,
+    Pagesize,
+    LawyerId
+  );
+  const handlepagenum = () => {
+    setPagenumber((prevpage) => prevpage + 1);
+  };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const token = await getAccessToken();
-      if (token) {
-        setWatcherUserId(jwt(token).uid);
-        const urlRate =
-          BASE_API_ROUTE +
-          `Rate/GetRatesPaged?lawyerId=${LawyerId}&PageNumber=2&PageSize=5`;
-        try {
-          const responseRate = await axios.get(urlRate, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          // console.log('response in getting laywer rates : ',responseRate);
-          setRatesList(responseRate.data.results);
-          console.log(responseRate.data.results);
-          console.log(LawyerId);
-          // console.log('salam')
-          // console.log(ratesList)
-          // calculateRateAverage(responseRate.data.results);
-        } catch (error) {
-          if (error.response.data.Message != "NO RATES FOUND!") {
-            console.log("error in getting lawyer rates : ", error);
-          }
+  const observer = useRef();
+
+  const lastLawyerelement = useCallback(
+    (node) => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          console.log("visible");
+          setPagenumber((prevpage) => prevpage + 1);
         }
-      }
-    };
-    fetchData();
-  }, []);
+      });
+      if (node) observer.current.observe(node);
+      console.log(node);
+    },
+    [loading, hasMore]
+  );
 
   return (
     <div>
-      {ratesList.map((ratei, index) => (
-        <Grid key={index} container direction={{ xs: "column", sm: "row" }}>
-          <Grid
-            display="flex"
-            alignItems={{ xs: "center", sm: "flex-start" }}
-            justifyContent={{ xs: "center", sm: "flex-start" }}
-            item
-            component={Card}
-          >
-            <CardContent>
-              <Avatar
-                alt="user profile"
-                sx={{ width: 60, height: 60 }}
-                srcSet={ratei.user.profileImageUrl}
-              />
-            </CardContent>
-          </Grid>
-          <Grid
-            display="flex"
-            alignItems="flex-start"
-            justifyContent="flex-start"
-            item
-            component={Card}
-            sm
-          >
-            <CardContent>
-              <Typography sx={{ fontFamily: "shabnam" }}>
-                {ratei.user.name}
-              </Typography>
-              <Rating
-                dir="rtl"
-                name="user rating"
-                value={ratei.rateNum}
-                precision={0.5}
-                readOnly
-              />
-              <Typography sx={{ fontFamily: "shabnam" }}>
-                {ratei.comment}
-              </Typography>
-            </CardContent>
-          </Grid>
-        </Grid>
-      ))}
+      {Commentdetail1.length > 0 && !loading && (
+        <>
+          {Commentdetail1.map((ratei, index) => {
+            // <ShowComment ratei={ratei} index={index} />
+            if (Commentdetail1.length === index + 1) {
+              return (
+                <div ref={lastLawyerelement}>
+                  <ShowComment ratei={ratei} index={index} />
+                </div>
+              );
+            } else {
+              return <ShowComment ratei={ratei} index={index} />;
+            }
+          })}
+        </>
+      )}
+      <div>
+        {loading && <MapSkeleton/>}
+      </div>
+      {hasMore && <button onClick={handlepagenum}>نمایش بیشتر</button>}
     </div>
   );
 };
