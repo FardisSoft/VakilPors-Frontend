@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_API_ROUTE } from "../../Constants";
 import { useAuth } from "../../context/AuthProvider";
+import { useParams } from "react-router-dom";
+import jwt from "jwt-decode";
 
 export default function useComment(Pagenumber, Pagesize,LawyerId) {
   const [loading, setloading] = useState(true);
@@ -9,7 +11,9 @@ export default function useComment(Pagenumber, Pagesize,LawyerId) {
   const [Commentdetail1, setCommentdetail1] = useState([]);
   const [hasMore, sethasMore] = useState(false);
   const { getAccessToken, refUserRole } = useAuth();
-
+  useEffect(()=>{
+    setCommentdetail1([]);
+  },[])
   useEffect(() => {
     let cancel;
     const fetchData = async () => {  

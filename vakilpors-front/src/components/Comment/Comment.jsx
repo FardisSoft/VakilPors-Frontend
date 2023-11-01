@@ -4,6 +4,8 @@ import ShowComment from "./ShowComment";
 import { useParams } from "react-router-dom";
 import SkeletonSearch from "./SkeletonSearch";
 import MapSkeleton from "./MapSkeleton";
+import Button from "@mui/material/Button";
+import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 
 const Comment = () => {
   const Pagesize = 5;
@@ -19,6 +21,7 @@ const Comment = () => {
   };
 
   const observer = useRef();
+  const commentContainerRef = useRef();
 
   const lastLawyerelement = useCallback(
     (node) => {
@@ -35,29 +38,68 @@ const Comment = () => {
     },
     [loading, hasMore]
   );
-
+  useEffect(() => {
+    setPagenumber(1);
+  }, []);
+  console.log(commentContainerRef.current);
   return (
     <div>
-      {Commentdetail1.length > 0 && !loading && (
-        <>
-          {Commentdetail1.map((ratei, index) => {
-            // <ShowComment ratei={ratei} index={index} />
-            if (Commentdetail1.length === index + 1) {
-              return (
-                <div ref={lastLawyerelement}>
-                  <ShowComment ratei={ratei} index={index} />
-                </div>
-              );
-            } else {
+      <div ref={commentContainerRef}>
+        {Commentdetail1.length > 0 && !loading && (
+          <>
+            {Commentdetail1.map((ratei, index) => {
               return <ShowComment ratei={ratei} index={index} />;
-            }
-          })}
-        </>
-      )}
-      <div>
-        {loading && <MapSkeleton/>}
+              // if (Commentdetail1.length === index + 1) {
+              //   return (
+              //     <div ref={lastLawyerelement}>
+              //       <ShowComment ratei={ratei} index={index} />
+              //     </div>
+              //   );
+              // } else {
+              //   return <ShowComment ratei={ratei} index={index} />;
+              // }
+            })}
+          </>
+        )}
+        <div>
+          {loading && (
+            <div>
+              {commentContainerRef.current && hasMore && (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: commentContainerRef.current.innerHTML,
+                  }}
+                />
+              )}
+              <MapSkeleton />
+            </div>
+          )}
+        </div>
+        {hasMore && (
+          <div
+            style={{
+              fontFamily: "shabnam",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: "1rem",
+            }}
+          >
+            <Button
+              variant="text"
+              onClick={handlepagenum}
+              sx={{
+                fontFamily: "shabnam",
+                fontSize: "1rem",
+                fontWeight: "Bold",
+              }}
+            >
+              نمایش بیشتر
+            </Button>
+            <ExpandMoreOutlinedIcon style={{color:'1976D3'}} />
+          </div>
+        )}
       </div>
-      {hasMore && <button onClick={handlepagenum}>نمایش بیشتر</button>}
     </div>
   );
 };
