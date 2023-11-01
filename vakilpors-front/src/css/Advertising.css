@@ -1,0 +1,16 @@
+/* ./css/Advertising.css */
+
+.root {
+    adding: 16px;
+}
+
+.paper {
+    padding: 16px;
+    text-align: center;
+    color: #333;
+    }
+
+.avatar {
+    width: 56px;
+    height: 56px;
+}
