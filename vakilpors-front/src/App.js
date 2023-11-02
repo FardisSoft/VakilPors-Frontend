@@ -35,7 +35,8 @@ const App = () => {
       try {
         const response = await axios.get(`${BASE_API_ROUTE}Lawyer/GetAll`);
         console.log(response);
-        setLawyers(response.data.data.slice(0, 10)); // Only take the first 10 lawyers
+        const randomNumber = Math.floor(Math.random() * 100) + 1;
+        setLawyers(response.data.data.slice(randomNumber, randomNumber+10)); // Only take the first 10 lawyers
       } catch (error) {
         console.error('Failed to fetch lawyers:', error);
       }
@@ -74,7 +75,7 @@ const App = () => {
                   </Button>
                 </Grid>
 
-                <Advertising lawyers={lawyers} /> {/* Use the Advertising component */}
+                <Advertising lawyers={lawyers} /> 
               </Grid>
             </Grid>
           </Grid>
