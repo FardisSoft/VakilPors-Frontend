@@ -5,6 +5,19 @@ import lawOnline from '../assests/images/law-online.jpg';
 import _404styles from '../css/404styles.css';
 import { Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
+import StyledButton from './ButtonComponent';
+import Lottie from 'react-lottie';
+import animationData from "../assests/lotttie-animations/Animation-404-3.json";
+
+
+const defaultOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: animationData,
+  rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice'
+  }
+};
 
 const NotFound = () => {
 
@@ -28,9 +41,9 @@ const NotFound = () => {
     alignItems: "center",
     justifyContent: "center",
     height: "100vh",
-    backgroundImage:`url(${lawOnline})`,
-    backgroundRepeat:'no-repeat',
-    backgroundSize:'cover',
+    // backgroundImage:`url(${lawOnline})`,
+    // backgroundRepeat:'no-repeat',
+    // backgroundSize:'cover',
     backgroundPosition:'center',
         }}>
         <Grid 
@@ -44,19 +57,25 @@ const NotFound = () => {
             width: {xs:'90%',sm:'60%',md:'40%'}}}>
             <Slide in={show} direction="left">
                 <Grid justifyContent={'center'}>
-                <section class="error-container">
+                {/* <section class="error-container">
                     <span>4</span>
                     <span><span class="screen-reader-text">0</span></span>
                     <span>4</span>
-                </section>
+                </section> */}
+                <Lottie options={defaultOptions}
+                  height={400}
+                  width={400}
+                  />
                 </Grid>
             </Slide>
             <Slide in={show} direction="right">
                 <Grid justifyContent={'center'}>
-                    <Typography sx={{ fontFamily:"shabnam", fontSize:"30px", fontWeight:"bold", align:"center",mb:"10px",color:"rgb(00,00,99)" }}>صفحه مورد نظر یافت نشد یا وجود ندارد</Typography>
+                    <Typography sx={{ fontFamily:"shabnam", fontSize:"30px", fontWeight:"bold", align:"center",mb:"10px",color:"rgb(00,00,99)" }}>صفحه مورد نظر یافت نشد یا وجود ندارد...</Typography>
                 </Grid>
             </Slide>
-            <Button variant="contained" sx={{ml:'20px', fontFamily:"Shabnam"}} size='large' color="primary" onClick={()=>navigate("/")}>رفتن به صفحه اصلی</Button>
+            <StyledButton  style={{marginLeft:'20px', fontFamily:"Shabnam"}} onClick={()=>navigate("/")}>
+              رفتن به صفحه اصلی
+              </StyledButton>
         </Grid>
     </Grid>
     </>
