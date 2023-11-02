@@ -2,9 +2,6 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Grid, Typography, Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
-import landing_page from './assests/images/default_lawyer_profile_background_picture.jpg';
-
-// mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
@@ -13,6 +10,13 @@ import { ThemeProvider } from '@mui/material/styles';
 import StyledButton from './components/ButtonComponent';
 
 
+import Advertising from './components/premium-page/Avertising'; // Import the Advertising component
+import landing_page from './assests/images/default_lawyer_profile_background_picture.jpg';
+import lawer1 from './assests/images/lawer1.jpg';
+import lawer2 from './assests/images/lawer2.jpg';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { BASE_API_ROUTE } from './Constants';
 const cacheRtl = createCache({
   key: 'muirtl',
   stylisPlugins: [rtlPlugin],
@@ -31,6 +35,25 @@ const App = () => {
   // const navigate = (path) => {
   //   console.log(`Navigating to ${path}`);
   // };
+
+  const [lawyers, setLawyers] = useState([]);
+
+  useEffect(() => {
+    const fetchLawyers = async () => {
+      try {
+        const response = await axios.get(`${BASE_API_ROUTE}Lawyer/GetAll`);
+        console.log(response);
+        const randomNumber = Math.floor(Math.random() * 100) + 1;
+        setLawyers(response.data.data.slice(randomNumber, randomNumber+10)); // Only take the first 10 lawyers
+      } catch (error) {
+        console.error('Failed to fetch lawyers:', error);
+      }
+
+    };
+
+    fetchLawyers();
+  }, []);
+
 
   return (
     <>
@@ -63,6 +86,8 @@ const App = () => {
               فروم عمومی
             </StyledButton>
           </Grid>
+            <Advertising lawyers={lawyers} />
+
         </Grid>
       </Grid>
     </Grid>
