@@ -47,7 +47,7 @@ import UserSendCases from './components/case-pages/UserSendCases';
 import VideoCall from './components/video-call/VideoCall';
 
 import VerifyLawyers from './components/admin-pages/VerifyLawyers';
-import Statistics from './components/admin-pages/Statistics';
+import VisitPannelStatistics from './components/admin-pages/Statistics-v2';
 import HandleTransactions from './components/admin-pages/HandleTransactions';
 
 
@@ -83,7 +83,7 @@ root.render(
               <Route path="/wallet" element={<Sidebar component={Wallet}/>}/>
               <Route path="/videoCall/:roomId" element={<Sidebar component={VideoCall}/>}/>
               <Route path="/VerifyLawyers" element={<Sidebar component={VerifyLawyers}/>}/>
-              <Route path="/Statistics" element={<Sidebar component={Statistics}/>}/>
+              <Route path="/Statistics" element={<Sidebar component={VisitPannelStatistics}/>}/>
               <Route path="/AsasiLaw" element={<Sidebar component={AsasiLaw}/>}/>
               <Route path="/HandleTransactions" element={<Sidebar component={HandleTransactions}/>}/>
 
