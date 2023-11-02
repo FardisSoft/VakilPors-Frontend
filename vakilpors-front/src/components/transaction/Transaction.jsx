@@ -18,6 +18,8 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
+import Skeletonload from "./Skeletonload";
+import moment from "moment-jalaali";
 
 const theme = createTheme({
   typography: {
@@ -28,11 +30,17 @@ const theme = createTheme({
 
 const columns = [
   { id: "amount", label: "مبلغ", minWidth: 100 },
-  { id: "date", label: "تاریخ خریداری شده", minWidth: 250 },
-  { id: "description", label: "توضیحات", minWidth: 100 },
+  { id: "date", label: "تاریخ خریداری شده", minWidth: 100 },
+  { id: "time", label: "ساعت", minWidth: 50 },
+  { id: "description", label: "", minWidth: 0 },
+  { id: "description45", label: "توضیحات", minWidth: 100 },
 ];
 
 const Transaction = () => {
+  const date = "2023-11-02T17:55:09.615249Z";
+  // const formattedDate = moment(date).format("jYYYY/jM/jD HH:mm:ss");
+  // console.log(formattedDate);
+
   let pagesize = 5;
   const [isLoading, setIsLoading] = useState(true);
   const [pagenum, setpagenum] = useState(1);
@@ -76,7 +84,7 @@ const Transaction = () => {
     }
     fetchData();
   }, [pagenum]);
-  
+
   const handlePagination = (e, p) => {
     setpagenum(p);
     console.log(p);
@@ -87,12 +95,14 @@ const Transaction = () => {
       <div>
         <div className="report-box shadow-sm mt-3 bg-white" id="history">
           {isLoading ? (
-            <div>Loading...</div>
+            <div>
+              <Skeletonload />
+            </div>
           ) : (
             <>
               <TableContainer
                 component={Paper}
-                style={{ fontFamily: "shabnam" }}
+                style={{ fontFamily: "shabnam", overflowX: "auto" }}
               >
                 <Table>
                   <TableHead>
@@ -111,17 +121,38 @@ const Transaction = () => {
                   <TableBody>
                     {gettransactions.map((row, index) => (
                       <TableRow key={index}>
-                        {columns.map((column) => (
-                          <TableCell key={column.id} align="right">
-                            {row[column.id]}
-                          </TableCell>
-                        ))}
+                        {columns.map((column) => {
+                          if (column.id === "date") {
+                            const formattedDate = moment(row[column.id]).format(
+                              "jYYYY/jM/jD"
+                            );
+                            const formattedTime = moment(row[column.id]).format(
+                              "HH:mm:ss"
+                            );
+                            return (
+                              <>
+                                <TableCell key="date" align="right">
+                                  {formattedDate}
+                                </TableCell>
+                                <TableCell key="time" align="right">
+                                  {formattedTime}
+                                </TableCell>
+                              </>
+                            );
+                          } else {
+                            return (
+                              <TableCell key={column.id} align="right">
+                                {row[column.id]}
+                              </TableCell>
+                            );
+                          }
+                        })}
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
               </TableContainer>
-              <div style={{display:"flex", justifyContent:"center"}}>
+              <div style={{ display: "flex", justifyContent: "center" }}>
                 <Pagination
                   count={totalpage}
                   style={{
