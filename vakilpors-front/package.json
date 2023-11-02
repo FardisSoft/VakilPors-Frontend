@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/plots": "^1.2.5",
     "@devexpress/dx-react-chart": "^4.0.5",
     "@devexpress/dx-react-chart-material-ui": "^4.0.5",
     "@devexpress/dx-react-core": "^4.0.5",

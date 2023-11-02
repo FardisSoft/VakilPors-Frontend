@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import { render } from "react-dom";
-import CountUp, { useCountUp } from "react-countup";
 import useStateRef from "react-usestateref";
 import { Helmet } from 'react-helmet-async';
 import { BASE_API_ROUTE } from "../../Constants";
@@ -12,12 +11,13 @@ import { Animation } from '@devexpress/dx-react-chart';
 import Moment from 'moment-jalaali';
 import { AiOutlineAreaChart, AiFillCheckSquare } from "react-icons/ai";
 import AnimatedCounter from "./AnimatedCounter";
+import { Column } from '@ant-design/plots';
+
 
 
 const VisitPannelStatistics = () => {
-
-
-  const [statistics, setStatistics] = useState(null);
+	const [ data_1, setData_1 ] = useState([]);
+  	const [statistics, setStatistics] = useState(null);
 	const { getAccessToken } = useAuth();
 	const [ maxView, setMaxView ] = useState();
 	const [ minView, setMinView ] = useState();
@@ -39,6 +39,12 @@ const VisitPannelStatistics = () => {
 				try {
 					const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
 					setStatistics(response.data);
+					setData_1([
+						...data_1,
+						{ period: 'بازدید امروز', count: response.data.dailyVisits },
+						{ period: 'بازدید ماهانه', count: response.data.monthlyVisits },
+						{ period: 'بازدید سالانه', count: response.data.yearlyVisits },
+					]);
 					if(refMonthsViews.current.length == 0){
 						for (let i = monthIndex[shamsiMonth] ; i > 0; i--) {
 							setMonthsViews([{ month: indexMonth[i-1], view: backArray[i-1] }, ...refMonthsViews.current]);
@@ -62,6 +68,36 @@ const VisitPannelStatistics = () => {
 		};
 		getStatistics();
 	}, []);
+
+	const config = {
+		data: data_1,
+		xField: 'period',
+		yField: 'count',
+		label: {
+			// 可手动配置 label 数据标签位置
+			position: 'middle',
+			// 'top', 'bottom', 'middle',
+			// 配置样式
+			style: {
+				fill: '#FFFFFF',
+				opacity: 0.6,
+			},
+		},
+		xAxis: {
+			label: {
+				autoHide: true,
+				autoRotate: false,
+			},
+		},
+		meta: {
+			period: {
+				alias: 'بازه',
+			},
+			count: {
+				alias: 'تعداد',
+			},
+		},
+	};
 
 	const getPath = (x, width, y, y1, val) => {
 		if(val == 0) return;
@@ -132,11 +168,6 @@ const VisitPannelStatistics = () => {
   console.log(`-------------------- The statistics are: ${statistics} -------------------`);
   document.getElementById("root")
 
-  const UsersCount = () => {
-    render (
-      <CountUp start={0} end={10} duration={2.5} delay={1} />
-    );
-  };
 
 	return (
 		<>
@@ -197,7 +228,7 @@ const VisitPannelStatistics = () => {
           </div>
         }
 				{window.innerWidth > 400 && 
-        <Paper>
+        		<Paper style={{ padding: '2rem'}}>
 					{/* <Chart dir={'ltr'} width={300} data={refTemp.current} >
 						<ArgumentAxis labelComponent={Label} position="top"/>
 						<ValueAxis />
@@ -205,6 +236,7 @@ const VisitPannelStatistics = () => {
 						<Title textComponent={Title} />
 						<Animation />
 					</Chart> */}
+					<Column {...config} />
 				</Paper>}
 			</div>
 		</div>
