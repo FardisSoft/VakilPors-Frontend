@@ -68,10 +68,11 @@ const PremiumPage = () => {
         console.log('error in getting user data : ',err);
       }
       try {
-        const premiumdetail = await axios.get(BASE_API_ROUTE + `Wallet/GetTransactions`, {
+        const premiumdetail = await axios.get(BASE_API_ROUTE + `Wallet/GetTransactions?PageNumber=1&PageSize=7`, {
           headers: headers
         });
-        settransactions(premiumdetail.data);
+        console.log(premiumdetail.data.results)
+        settransactions(premiumdetail.data.results);
       } catch (err) {
         console.log('error in getting Transactions : ',err);
       }
@@ -161,8 +162,7 @@ const PremiumPage = () => {
       payroll();
     }
   }
-
-
+  console.log(gettransactions.length)
   return (
     <>
       <Helmet>

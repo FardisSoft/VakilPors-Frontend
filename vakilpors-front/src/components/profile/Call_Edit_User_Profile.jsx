@@ -10,12 +10,15 @@ import { useAuth } from "../../context/AuthProvider";
 import { updateUser } from '../../services/userService';
 import { BASE_API_ROUTE } from '../../Constants';
 import { toast } from 'react-toastify';
+import StyledButton from '../ButtonComponent';
+
+
 
 const Call_Edit_User_Profile = () => {
 
   const [getdetail, setdetail, refdetail] = useStateRef({});
   const { getAccessToken } = useAuth();
-  const descriptionUser = "کاربر گرامی ! در این قسمت می توانید تمامی اطلاعات کاربری خود را بروزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";
+  const descriptionUser = "کاربر گرامی! در این قسمت می‌توانید تمامی اطلاعات کاربری خود را به‌روزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";
 
   const showErrorMessage = (errorMessage) => {
     toast.error(errorMessage, {
@@ -157,9 +160,12 @@ const Call_Edit_User_Profile = () => {
               </div>
             </div>
             <div className="form-row-last">
-              <Button sx={{marginTop:'20px',fontFamily:'shabnam'}} type="submit" variant="contained" color="primary"  onClick={updateuser}>
+              {/* <Button sx={{marginTop:'20px',fontFamily:'shabnam'}} type="submit" variant="contained" color="primary"  onClick={updateuser}>
                 ثبت اطلاعات
-              </Button>
+              </Button> */}
+              <StyledButton style={{marginTop:'20px', fontFamily:'shabnam', width: '10rem' }} type="submit"  onClick={updateuser}>
+                ثبت اطلاعات
+              </StyledButton>
             </div>
           </form>
         </div>

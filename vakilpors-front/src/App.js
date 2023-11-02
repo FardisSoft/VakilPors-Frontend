@@ -10,6 +10,9 @@ import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@mui/material/styles';
+import StyledButton from './components/ButtonComponent';
+
+
 const cacheRtl = createCache({
   key: 'muirtl',
   stylisPlugins: [rtlPlugin],
@@ -24,6 +27,11 @@ const theme = createTheme({
 
 const App = () => {
   const navigate = useNavigate();
+
+  // const navigate = (path) => {
+  //   console.log(`Navigating to ${path}`);
+  // };
+
   return (
     <>
       <Helmet>
@@ -41,13 +49,19 @@ const App = () => {
           <Typography variant="h5" align="center" sx={{mb:'30px',fontSize: {xs:'20px',sm:'30px'},color: '#fff',textShadow: '2px 2px #000',}}>
             گرفتن جواب سوال حقوقی و وکیل برای هر پرونده ای مثل آب خوردن!
           </Typography>
-          <Grid align='center'>
-            <Button variant="contained" size='large' color="primary" onClick={()=>navigate("/Lawyer-search-page")}>
+          <Grid container justifyContent="center" rowSpacing={2}>
+            {/* <Button variant="contained" size='large' color="primary" onClick={()=>navigate("/Lawyer-search-page")}>
               جست و جوی وکلا
             </Button>
             <Button variant="contained" sx={{ml:'20px'}} size='large' color="primary" onClick={()=>navigate("/Forum")}>
               فروم عمومی
-            </Button>
+            </Button> */}
+            <StyledButton  onClick={()=>navigate("/Lawyer-search-page")} style={{ marginLeft: "20px" }}>
+              جست و جوی وکلا
+            </StyledButton>
+            <StyledButton   onClick={()=>navigate("/Forum")}>
+              فروم عمومی
+            </StyledButton>
           </Grid>
         </Grid>
       </Grid>
