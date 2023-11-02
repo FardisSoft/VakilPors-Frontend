@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Paper, Typography, Avatar, Box , IconButton  } from '@mui/material';
+import { Paper, Typography, Avatar, Box, IconButton, CircularProgress } from '@mui/material';
 import Rating from '@material-ui/lab/Rating';
 // import LawyerCard from './LaweyerCard';
 import { createTheme } from '@mui/material/styles';
@@ -22,10 +22,10 @@ const theme = createTheme({
 });
 
 const LawyerCard = ({ lawyer }) => (
-    <Box sx={{ 
-        display: 'flex', 
-        flexDirection: 'row', 
-        alignItems: 'center', 
+    <Box sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
         m: 2,
         p: 2,
         borderRadius: 2,
@@ -74,11 +74,15 @@ const Advertising = ({ lawyers }) => {
             boxShadow: 3,
             backgroundColor: 'darkcyan', // Set the background color to gray
         }}>
-            {lawyers.length > 0 && <LawyerCard lawyer={lawyers[currentLawyerIndex]} />}
+            {lawyers.length > 0 ?  (
+                <LawyerCard lawyer={lawyers[currentLawyerIndex]} />
+            ) : (
+                <CircularProgress style={{color: 'white' }}/> // Show loading spinner if lawyers are still being fetched
+            )}
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', mt: 2 }}>
                 {lawyers.map((lawyer, index) => (
                     <IconButton key={index} onClick={() => setCurrentLawyerIndex(index)} color={index === currentLawyerIndex ? "primary" : "default"}>
-                        <span style={{fontSize: '1.5em' }}>•</span>
+                        <span style={{ fontSize: '1.5em' }}>•</span>
                     </IconButton>
                 ))}
             </Box>
