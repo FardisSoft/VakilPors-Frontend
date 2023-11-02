@@ -98,13 +98,13 @@ const Lawyer_search_page = () => {
     setPagenum(1);
     setclick(!click);
   };
-
+  const LawyerContainerRef = useRef();
   return (
     <>
       <Helmet>
         <title>جست و جوی وکلا</title>
       </Helmet>
-      <Grid >
+      <Grid>
         <div class="Main_contain">
           <Search LawyerSearch={LawyerSearch} LawyerQuery={LawyerQuery} />
           {refUserRole.current === "User" && <PremiumCard />}
@@ -122,7 +122,7 @@ const Lawyer_search_page = () => {
                 <Typography variant="h9">مرتب سازی بر اساس</Typography>
 
                 <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-                  <Button
+                  {/* <Button
                     onClick={handleSortBygrade}
                     sx={{
                       my: -1,
@@ -132,7 +132,7 @@ const Lawyer_search_page = () => {
                     }}
                   >
                     امتياز
-                  </Button>
+                  </Button> */}
                   <Button
                     onClick={handleSortByparvandeNo}
                     sx={{
@@ -169,7 +169,7 @@ const Lawyer_search_page = () => {
                 </Box>
 
                 <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-                  <Button
+                  {/* <Button
                     onClick={handleSortBygrade}
                     sx={{
                       my: 2,
@@ -179,7 +179,7 @@ const Lawyer_search_page = () => {
                     }}
                   >
                     امتياز
-                  </Button>
+                  </Button> */}
                   <Button
                     onClick={handleSortByparvandeNo}
                     sx={{
@@ -238,8 +238,21 @@ const Lawyer_search_page = () => {
           </AppBar>
           <section className="container">
             <div class="contain">
-              <div>{loading && <MapSkeleton />}</div>
-              <div className="row">
+              <div>
+                {loading && (
+                  <>
+                    {/* {LawyerContainerRef.current && hasMore && (
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: LawyerContainerRef.current.innerHTML,
+                        }}
+                      />
+                    )} */}
+                    <MapSkeleton />
+                  </>
+                )}
+              </div>
+              <div className="row" ref={LawyerContainerRef}>
                 {lawyerdetail1.length > 0 && !loading && (
                   <>
                     {lawyerdetail1.map((Lawyer, index) => {

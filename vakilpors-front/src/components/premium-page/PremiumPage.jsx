@@ -68,7 +68,7 @@ const PremiumPage = () => {
         console.log('error in getting user data : ',err);
       }
       try {
-        const premiumdetail = await axios.get(BASE_API_ROUTE + `Wallet/GetTransactions?PageNumber=4&PageSize=7`, {
+        const premiumdetail = await axios.get(BASE_API_ROUTE + `Wallet/GetTransactions?PageNumber=1&PageSize=7`, {
           headers: headers
         });
         console.log(premiumdetail.data.results)
