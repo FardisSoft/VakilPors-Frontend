@@ -38,9 +38,9 @@ const LawyerCard = ({ lawyer }) => (
         <Avatar alt={lawyer.name} src={lawyer.profileImageUrl} sx={{ width: 80, height: 80, borderRadius: '0%' }} />
         <Box sx={{ ml: 2 }}>
             <Typography variant="h6">{lawyer.name}</Typography>
-            <Typography variant="body2">Title: {lawyer.title ? lawyer.title : "وکیل"}</Typography>
-            <Typography variant="body2">License Number: {lawyer.licenseNumber}</Typography>
-            <Typography variant="body2">Description: {lawyer.aboutMe}</Typography>
+            <Typography variant="body2">عنوان: {lawyer.title ? lawyer.title : "وکیل"}</Typography>
+            <Typography variant="body2">شماره پرونده وکالت: {lawyer.licenseNumber}</Typography>
+            <Typography variant="body2">توضیحات: {lawyer.aboutMe}</Typography>
             <ThemeProvider theme={theme}>
                 <CacheProvider value={cacheRtl}>
                     <Rating name="read-only" value={lawyer.rating} readOnly />
