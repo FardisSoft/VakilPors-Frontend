@@ -11,7 +11,7 @@ import { Animation } from '@devexpress/dx-react-chart';
 import Moment from 'moment-jalaali';
 import { AiOutlineAreaChart, AiFillCheckSquare } from "react-icons/ai";
 import AnimatedCounter from "./AnimatedCounter";
-import { Column, Line, Pie } from '@ant-design/plots';
+import { Column, Line, Pie, Area, Rose } from '@ant-design/plots';
 import { Grid, Typography, Slide, Card } from '@mui/material';
 import { Download, Info } from '@material-ui/icons';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -133,11 +133,11 @@ const VisitPannelStatistics = () => {
 	
 	// Data for pie chart
 	const pieData = [
-		{ type: 'A', value: 27 },
-		{ type: 'B', value: 25 },
-		{ type: 'C', value: 18 },
-		{ type: 'D', value: 15 },
-		{ type: 'E', value: 10 },
+		{ type: 'تهران', value: 27 },
+		{ type: 'اصفهان', value: 25 },
+		{ type: 'بندرعباس', value: 18 },
+		{ type: 'شیراز', value: 15 },
+		{ type: 'بابل', value: 10 },
 	];
 	
 	// Config for pie chart
@@ -146,6 +146,166 @@ const VisitPannelStatistics = () => {
 		data: pieData,
 		angleField: 'value',
 		colorField: 'type',
+		radius: 0.8,
+		legend: false,
+		label: {
+		type: 'outer',
+		content: '{value}',
+		style: {
+			textAlign: 'left',
+			textBaseline: 'middle',
+			fontWeight: 'bold',
+		},
+		adjustColor: true,
+		},
+		interactions: [
+		{
+			type: 'element-active',
+		},
+		],
+	};
+
+	// Data for area chart
+	const areaData = [
+		{
+		  "timePeriod": "00",
+		  "value": 0
+		},
+		{
+		  "timePeriod": "01",
+		  "value": 0
+		},
+		{
+		  "timePeriod": "02",
+		  "value": 0
+		},
+		{
+		  "timePeriod": "03",
+		  "value": 0
+		},
+		{
+		  "timePeriod": "04",
+		  "value": 0
+		},
+		{
+		  "timePeriod": "05",
+		  "value": 0
+		},
+		{
+		  "timePeriod": "06",
+		  "value": 5
+		},
+		{
+		  "timePeriod": "07",
+		  "value": 20
+		},
+		{
+		  "timePeriod": "08",
+		  "value": 22
+		},
+		{
+		  "timePeriod": "09",
+		  "value": 3
+		},
+		{
+		  "timePeriod": "10",
+		  "value": 16
+		},
+		{
+		  "timePeriod": "11",
+		  "value": 21
+		},
+		{
+		  "timePeriod": "12",
+		  "value": 30
+		},
+		{
+		  "timePeriod": "13",
+		  "value": 0
+		},
+		{
+		  "timePeriod": "14",
+		  "value": 2
+		},
+		{
+		  "timePeriod": "15",
+		  "value": 1
+		},
+		{
+		  "timePeriod": "16",
+		  "value": 3
+		},
+		{
+		  "timePeriod": "17",
+		  "value": 4
+		},
+		{
+		  "timePeriod": "18",
+		  "value": 1
+		},
+		{
+		  "timePeriod": "19",
+		  "value": 8
+		},
+		{
+		  "timePeriod": "20",
+		  "value": 2
+		},
+		{
+		  "timePeriod": "21",
+		  "value": 2
+		},
+		{
+		  "timePeriod": "23",
+		  "value": 0
+		}
+	]
+
+	// Config for area chart
+	const areaConfig = {
+		data: areaData,
+		xField: 'timePeriod',
+		yField: 'value',
+		xAxis: {
+			range: [0, 1],
+		},
+	};
+
+	// Data for rose chart
+	const roseData = [
+		{
+		  type: 'معاضدتی',
+		  value: 27,
+		},
+		{
+		  type: 'سازمانی',
+		  value: 25,
+		},
+		{
+		  type: 'حقوقی',
+		  value: 18,
+		},
+		{
+		  type: 'جنایی',
+		  value: 15,
+		},
+		{
+		  type: 'تسخیری',
+		  value: 10,
+		},
+		{
+		  type: 'خانوادگی',
+		  value: 5,
+		},
+	  ];
+	// Config for rose chart
+	const roseConfig = {
+		data: roseData,
+		xField: 'type',
+		yField: 'value',
+		seriesField: 'type',
+		radius: 0.9,
+		legend: false
 	};
 
 	const getPath = (x, width, y, y1, val) => {
@@ -230,7 +390,7 @@ const VisitPannelStatistics = () => {
 						minHeight: '100vh',
 						backgroundColor: '#fffbf5'}}>
 				
-						<h1 style={{ paddingBottom:15, fontSize:24, color: '#000000', alignSelf:'center', marginTop: "2rem", fontWeight: "bold" }}><AiOutlineAreaChart /> آمار سایت</h1>
+				<h1 style={{ paddingBottom:15, fontSize:24, color: '#000000', alignSelf:'center', marginTop: "2rem", fontWeight: "bold" }}><AiOutlineAreaChart /> آمار سایت</h1>
 				<div style={{display: 'flex',
 							flexDirection: 'column',
 							alignItems: 'flex-start',
@@ -281,21 +441,34 @@ const VisitPannelStatistics = () => {
 						<Column {...config} />
 					</Paper>}
 				</div>
+				<Grid container spacing={5} sx={{ mb: '2rem' }} lg={10}>
+					<Grid item xs={12} sm={6}>
+						<Card sx={{ p: 2 }}>
+							<h2 style={{ textAlign: 'center', fontWeight: 'bold' }}>تعداد بازدید در روزهای هفته</h2>
+							<Line {...lineConfig} />
+						</Card>
+					</Grid>
+					<Grid item xs={12} sm={6}>
+						<Card sx={{ p: 2 }}>
+							<h2 style={{ textAlign: 'center', fontWeight: 'bold' }}>بیشینه شهرها با تعداد وکلای ثبت‌نام شده</h2>
+							<Pie {...pieConfig} />
+						</Card>
+					</Grid>
+					<Grid item xs={12} sm={6}>
+						<Card sx={{ p: 2 }}>
+							<h2 style={{ textAlign: 'center', fontWeight: 'bold' }}>تعداد تراکنش‌های مالی در ساعات شبانه‌روز</h2>
+							<Area {...areaConfig} />
+						</Card>
+					</Grid>
+					<Grid item xs={12} sm={6}>
+						<Card sx={{ p: 2 }}>
+							<h2 style={{ textAlign: 'center', fontWeight: 'bold' }}>تعداد وکلا براساس زمینه کاری</h2>
+							<Rose {...roseConfig} />
+						</Card>
+					</Grid>
+				</Grid>
 			</div>
 
-			<Grid container spacing={2}>
-				<Grid item xs={12} sm={6}>
-					<Card sx={{ p: 2 }}>
-						<h2>تعداد بازدید در روزهای هفته</h2>
-						<Line {...lineConfig} />
-					</Card>
-				</Grid>
-				<Grid item xs={12} sm={6}>
-					<Card sx={{ p: 2 }}>
-						<Pie {...pieConfig} />
-					</Card>
-				</Grid>
-			</Grid>
 		</>
 	);
 }
