@@ -1,15 +1,18 @@
+// App.jsx
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Grid, Typography, Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
-import landing_page from './assests/images/default_lawyer_profile_background_picture.jpg';
-
-// mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@mui/material/styles';
+import Advertising from './components/premium-page/Avertising'; // Import the Advertising component
+import landing_page from './assests/images/default_lawyer_profile_background_picture.jpg';
+import lawer1 from './assests/images/lawer1.jpg';
+import lawer2 from './assests/images/lawer2.jpg';
+
 const cacheRtl = createCache({
   key: 'muirtl',
   stylisPlugins: [rtlPlugin],
@@ -20,10 +23,15 @@ const theme = createTheme({
     fontFamily: 'shabnam',
   },
 });
-// mui rtl
 
 const App = () => {
   const navigate = useNavigate();
+  const lawyers = [
+    { name: 'Lawyer 1', description: 'Specializes in corporate law.', image: lawer1, rating: 4, wins: 100 },
+    { name: 'Lawyer 2', description: 'Expert in criminal law.', image: lawer2, rating: 5, wins: 150 },
+    // Add more lawyers here...
+  ];
+  
   return (
     <>
       <Helmet>
@@ -49,6 +57,8 @@ const App = () => {
               فروم عمومی
             </Button>
           </Grid>
+          
+          <Advertising lawyers={lawyers} /> {/* Use the Advertising component */}
         </Grid>
       </Grid>
     </Grid>
