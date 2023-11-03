@@ -35,13 +35,15 @@ const App = () => {
       try {
         const response = await axios.get(`${BASE_API_ROUTE}Lawyer/GetAll`);
         console.log(response);
-        const randomNumber = Math.floor(Math.random() * 100) + 1;
-        setLawyers(response.data.data.slice(randomNumber, randomNumber+10)); // Only take the first 10 lawyers
+        if (response.data) {
+          const randomNumber = Math.floor(Math.random() * 100) + 1;
+          setLawyers(response.data.data.slice(randomNumber, randomNumber+10)); // Only take the first 10 lawyers
+        }
       } catch (error) {
         console.error('Failed to fetch lawyers:', error);
       }
-      
     };
+    
     
     fetchLawyers();
   }, []);
