@@ -22,7 +22,7 @@ const theme = createTheme({
 
 
 const LawyerCard = ({ lawyer }) => {
-    
+    const shortDescription = lawyer.aboutMe.split(' ').slice(0, 20).join(' ');
     if (!lawyer) {
         return null; // or some fallback UI
     }
@@ -46,15 +46,17 @@ const LawyerCard = ({ lawyer }) => {
                 <Typography variant="h6">{lawyer.user.name}</Typography>
                 <Typography variant="body2">عنوان: {lawyer.title ? lawyer.title : "وکیل"}</Typography>
                 <Typography variant="body2">شماره پرونده وکالت: {lawyer.licenseNumber}</Typography>
-                <Typography variant="body2">توضیحات: {lawyer.aboutMe}</Typography>
+                <Typography variant="body2">توضیحات: {shortDescription}...
+                <p></p>
+                <Link to={`/LawyerPage/${lawyer.id}`} style={{ color: 'darkblue' }}>بیشتر</Link> {/* Set the link color to blue */}
+                </Typography>
                 <ThemeProvider theme={theme}>
                     <CacheProvider value={cacheRtl}>
                         <Rating name="read-only" value={lawyer.rating} readOnly />
                     </CacheProvider>
                 </ThemeProvider>
                 {/* assax */}
-                <p></p>
-                <Link to={`/LawyerPage/${lawyer.id}`} style={{ color: 'darkblue' }}>View Profile</Link> {/* Set the link color to blue */}
+                
             </Box>
         </Box>
     );}
