@@ -92,8 +92,8 @@ const Transaction = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <div>
-        <div className="report-box shadow-sm mt-3 bg-white" id="history">
+      <div style={{display:'flex',justifyContent:'center',alignItems:'center', margin:'20px 20px'}}>
+        <div  className="table-responsive">
           {isLoading ? (
             <div>
               <Skeletonload />
@@ -111,7 +111,7 @@ const Transaction = () => {
                         <TableCell
                           key={column.id}
                           align="right"
-                          style={{ minWidth: column.minWidth }}
+                          style={{ }}
                         >
                           {column.label}
                         </TableCell>

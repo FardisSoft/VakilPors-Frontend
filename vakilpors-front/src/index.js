@@ -38,7 +38,7 @@ import Lawyer_search_page from './components/Lawyer-search-page/Lawyer_search_pa
 import PremiumPage from './components/premium-page/PremiumPage';
 import ResponseTransaction from './components/premium-page/ResponseTransaction';
 import Wallet from './components/premium-page/Wallet';
-
+import PremiumLawyers from './components/premium-page/PremiumLawyers';
 
 import AddNewCase from './components/case-pages/addNewCase';
 import ShowCases from './components/case-pages/ShowCases';
@@ -47,10 +47,10 @@ import UserSendCases from './components/case-pages/UserSendCases';
 import VideoCall from './components/video-call/VideoCall';
 
 import VerifyLawyers from './components/admin-pages/VerifyLawyers';
-import Statistics from './components/admin-pages/Statistics';
+import VisitPannelStatistics from './components/admin-pages/Statistics-v2';
 import HandleTransactions from './components/admin-pages/HandleTransactions';
 
-
+import AdvertisingPage from './components/premium-page/Avertising';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
@@ -83,10 +83,11 @@ root.render(
               <Route path="/wallet" element={<Sidebar component={Wallet}/>}/>
               <Route path="/videoCall/:roomId" element={<Sidebar component={VideoCall}/>}/>
               <Route path="/VerifyLawyers" element={<Sidebar component={VerifyLawyers}/>}/>
-              <Route path="/Statistics" element={<Sidebar component={Statistics}/>}/>
+              <Route path="/Statistics" element={<Sidebar component={VisitPannelStatistics}/>}/>
               <Route path="/AsasiLaw" element={<Sidebar component={AsasiLaw}/>}/>
               <Route path="/HandleTransactions" element={<Sidebar component={HandleTransactions}/>}/>
-
+              <Route path="/AdvertisingPage" element={<Sidebar component={AdvertisingPage}/>}/>
+              <Route path="/PremiumLawyers" element={<Sidebar component={PremiumLawyers}/>}/>
               <Route path="*" element={<_404page/>}/>
           </Routes>
         </AuthProvider>

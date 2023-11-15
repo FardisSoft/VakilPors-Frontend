@@ -13,6 +13,8 @@ import axios from 'axios';
 import { BASE_API_ROUTE } from "../../Constants";
 import jwt from 'jwt-decode';
 import { toast } from 'react-toastify';
+import StyledButton from "../ButtonComponent";
+import { FcSms, FcEditImage } from "react-icons/fc";
 
 // mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
@@ -139,6 +141,8 @@ const Forum = () => {
 		setThread("");
 	};
 
+	console.log("--------------------- The threads are: ", threadList);
+
 	return (
 		<>
 			<Helmet>
@@ -146,22 +150,25 @@ const Forum = () => {
 			</Helmet>
 			<ThemeProvider theme={theme}>
 				<CacheProvider value={cacheRtl}>
-					<Grid container width={'100%'} minHeight={'100vh'} paddingY={'30px'} display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{background : `url(${backgroundbb})`}}>
+					<Grid container width={'100%'} minHeight={'100vh'} paddingY={'30px'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
 						<Grid container direction={'column'} width={{ xs: '100%', md: '90%', lg: '80%' }} display={'flex'} justifyContent={'center'} alignItems={'center'}>
-							<Grid sx={{boxShadow : 4 , padding : 0.5 , mb : 7 , borderRadius : 5}}  alignItems={'center'} display={'flex'} justifyContent={'center'}>
-								<Typography fontFamily={'shabnam'} fontSize={'18px'} sx={{ mb: '30px' }} ><br></br>یک تاپیک جدید ایجاد کنید یا تاپیک مورد نظر خود را از لیست پایین انتخاب کنید.</Typography>
-							</Grid>
+							{/* <Grid sx={{boxShadow : 4 , padding : 0.5 , mb : 7 , borderRadius : 5, mt: -10}}  alignItems={'center'} display={'flex'} justifyContent={'center'}> */}
+							<Typography fontFamily={'shabnam'} fontSize={'18px'} sx={{ mb: '30px' }} >
+							یک تاپیک جدید ایجاد کنید یا تاپیک مورد نظر خود را از لیست پایین انتخاب کنید.
+							<FcEditImage size={25}/>
+							</Typography>
+							{/* </Grid> */}
 							<Grid container direction={{ xs: 'column', md: 'row' }} width={{ xs: '97%', sm: '90%' }} backgroundColor={'#8eb1e5'} display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{ mb: '50px', p: '20px', borderBottomLeftRadius: '20px',borderTopRightRadius : '20px', boxShadow: 4 }}>
 								<TextField label="تاپیک جدید" multiline rows={2} variant="outlined"
 									value={thread}
 									onChange={(e) => setThread(e.target.value)}
 									inputProps={{ dir: "rtl", style: { fontFamily: "shabnam", fontSize: "15px", color: "black" } }}
 									InputLabelProps={{ align: "right", dir: "rtl", style: { fontFamily: "shabnam", fontSize: "15px", color: "black" } }}
-									sx={{ width: { xs: '100%', md: '80%' }, backgroundColor: 'rgba(255,255,255,0)', borderRadius: '40px' }} />
-								<Button variant="contained" onClick={handleSubmit} sx={{ fontFamily: "shabnam", mt: { xs: '10px', md: '0' } }}>ساخت تاپیک جدید</Button>
+									sx={{ width: { xs: '100%', md: '80%' }, backgroundColor: 'rgba(255,255,255,0)', borderRadius: '50px' }} />
+								<StyledButton onClick={handleSubmit} style={{ fontFamily: "shabnam", marginTop: '1rem', width: '12rem' }}>ساخت تاپیک جدید</StyledButton>
 							</Grid>
-							<Grid container direction={'column'} width={'100%'} display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{ boxShadow: 3, padding: 4, borderRadius: 10 }}>
-								{threadList.map((thread) => (
+							{threadList.length > 0 && <Grid container direction={'column'} width={'100%'} display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{ boxShadow: 3, padding: 4, borderRadius: 7 }}>
+								{ threadList.map((thread) => (
 									<Grid container key={thread.id} direction={{ xs: 'column', sm: 'row' }} width={{ xs: '97%', sm: '90%' }} backgroundColor={'#8eb1e5'} display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{
 										mb: '30px', p: '20px', borderRadius: '20px', boxShadow: 4,
 										...(thread.userId == '1' && { backgroundColor: 'lightskyblue', })
@@ -196,7 +203,8 @@ const Forum = () => {
 										</Grid>
 									</Grid>
 								))}
-							</Grid>
+							</Grid>}
+							
 						</Grid>
 					</Grid>
 				</CacheProvider>

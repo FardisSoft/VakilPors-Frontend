@@ -11,6 +11,7 @@ import { BASE_API_ROUTE } from '../../Constants';
 import { useAuth } from "../../context/AuthProvider";
 import { updateLawyer } from '../../services/userService';
 import { toast } from 'react-toastify';
+import StyledButton from '../ButtonComponent';
 
 // mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
@@ -34,7 +35,7 @@ const Call_Edit_Lawyer_Profile = () => {
   const [gender, setGender] = useState('');
   const [title, setTitle] = useState('');
   const [specialties, setSpecialties] = useState([]);
-  const descriptionUser = "کاربر گرامی ! در این قسمت می توانید تمامی اطلاعات کاربری خود را بروزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";  
+  const descriptionUser = "کاربر گرامی! در این قسمت می‌توانید تمامی اطلاعات کاربری خود را به‌روزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";  
 
   const showErrorMessage = (errorMessage) => {
     toast.error(errorMessage, {
@@ -479,9 +480,12 @@ const Call_Edit_Lawyer_Profile = () => {
               </div>
             </div>
             <div className="form-row-last">
-              <Button sx={{marginTop:'20px', fontFamily:'shabnam'}} type="submit" variant="contained" color="primary" onClick={updateuser}>
+              {/* <Button sx={{marginTop:'20px', fontFamily:'shabnam'}} type="submit" variant="contained" color="primary" onClick={updateuser}>
                 ثبت اطلاعات
-              </Button>
+              </Button> */}
+              <StyledButton style={{marginTop:'20px', fontFamily:'shabnam', width: '10rem' }} type="submit"  onClick={updateuser}>
+                ثبت اطلاعات
+              </StyledButton>
             </div>
           </form>
         </div>
