@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Paper, Typography, Avatar, Box, IconButton, CircularProgress } from '@mui/material';
+import { Paper, Typography, Avatar, Box, IconButton, CircularProgress, Button } from '@mui/material';
 import Rating from '@material-ui/lab/Rating';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@mui/material/styles';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import rtlPlugin from 'stylis-plugin-rtl';
-import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const cacheRtl = createCache({
     key: 'muirtl',
@@ -22,7 +22,8 @@ const theme = createTheme({
 
 
 const LawyerCard = ({ lawyer }) => {
-    
+    const navigate = useNavigate();
+    const shortDescription = lawyer.aboutMe.split(' ').slice(0, 30).join(' ');
     if (!lawyer) {
         return null; // or some fallback UI
     }
@@ -41,20 +42,22 @@ const LawyerCard = ({ lawyer }) => {
             width: '100%', // Take up full width
             height: 190, // Increase height by 20 pixels
         }}>
-            <Avatar alt={lawyer.name} src={lawyer.profileImageUrl} sx={{ width: 80, height: 80, borderRadius: '0%' }} />
+            <Avatar alt={lawyer.name} src={lawyer.profileImageUrl} sx={{ width: 85, height: 90, borderRadius: '0%' }} />
             <Box sx={{ ml: 2 }}>
                 <Typography variant="h6">{lawyer.user.name}</Typography>
                 <Typography variant="body2">عنوان: {lawyer.title ? lawyer.title : "وکیل"}</Typography>
                 <Typography variant="body2">شماره پرونده وکالت: {lawyer.licenseNumber}</Typography>
-                <Typography variant="body2">توضیحات: {lawyer.aboutMe}</Typography>
+                <Typography variant="body2">توضیحات: {shortDescription}...
+                <p></p>
+                <Button onClick={() => navigate(`/LawyerPage/${lawyer.id}`)}  style={{ color: 'darkblue' }}>بیشتر</Button> {/* Set the link color to blue */}
+                </Typography>
                 <ThemeProvider theme={theme}>
                     <CacheProvider value={cacheRtl}>
                         <Rating name="read-only" value={lawyer.rating} readOnly />
                     </CacheProvider>
                 </ThemeProvider>
                 {/* assax */}
-                <p></p>
-                <Link to={`/LawyerPage/${lawyer.id}`} style={{ color: 'darkblue' }}>View Profile</Link> {/* Set the link color to blue */}
+                
             </Box>
         </Box>
     );}
