@@ -38,7 +38,7 @@ import Lawyer_search_page from './components/Lawyer-search-page/Lawyer_search_pa
 import PremiumPage from './components/premium-page/PremiumPage';
 import ResponseTransaction from './components/premium-page/ResponseTransaction';
 import Wallet from './components/premium-page/Wallet';
-
+import PremiumLawyers from './components/premium-page/PremiumLawyers';
 
 import AddNewCase from './components/case-pages/addNewCase';
 import ShowCases from './components/case-pages/ShowCases';
@@ -87,6 +87,7 @@ root.render(
               <Route path="/AsasiLaw" element={<Sidebar component={AsasiLaw}/>}/>
               <Route path="/HandleTransactions" element={<Sidebar component={HandleTransactions}/>}/>
               <Route path="/AdvertisingPage" element={<Sidebar component={AdvertisingPage}/>}/>
+              <Route path="/PremiumLawyers" element={<Sidebar component={PremiumLawyers}/>}/>
               <Route path="*" element={<_404page/>}/>
           </Routes>
         </AuthProvider>
