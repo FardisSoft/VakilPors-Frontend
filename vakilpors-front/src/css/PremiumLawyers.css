@@ -1,5 +1,6 @@
+/*
 body {
-  background-color: #ADD8E6; /* Light Blue */
+  background-color: #ADD8E6; 
   color: black;
   font-family: Shabnam,Arial, sans-serif;
   margin: 0;
@@ -24,7 +25,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  background-color: #90EE90; /* Light Green */
+  background-color: #90EE90; 
   padding: 20px;
   border-radius: 10px;
   margin-top: 20px;
@@ -74,7 +75,7 @@ body {
 }
 
 .button {
-  background-color: #4CAF50; /* Green */
+  background-color: #4CAF50; 
   border: none;
   color: white;
   padding: 15px 32px;
@@ -89,7 +90,7 @@ body {
 }
 
 .button:hover {
-  background-color: #45a049; /* Darker green */
+  background-color: #45a049; 
 }
 
 .title {
@@ -115,3 +116,4 @@ body {
   color: #666;
   margin-top: 20px;
 }
+*/
