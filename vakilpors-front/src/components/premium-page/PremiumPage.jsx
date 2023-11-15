@@ -407,7 +407,7 @@ const PremiumPage = () => {
   });
 
   const [gettransactions, settransactions] = useState([]);
-  const[parent,setpar]=useState("")
+  const [parent, setpar] = useState("");
 
   const showSuccesMessage = (successMessage) => {
     toast.success(successMessage, {
@@ -509,7 +509,7 @@ const PremiumPage = () => {
         const response = await axios.post(url, "", {
           headers: { Authorization: `Bearer ${token}` },
         });
-        // console.log('response in Premium/ActivateSubscription : ',response);
+        console.log("response in Premium/ActivateSubscription : ", response);
         showSuccesMessage(`اشتراک ${premiumPlan} شما با موفقیت فعال شد!`);
         fetchData();
       } catch (err) {
@@ -543,22 +543,33 @@ const PremiumPage = () => {
       ...getamountdetail,
       amount: event.target.value,
     });
+    console.log("sfa");
+    console.log(getamountdetail);
+
+    // setamountdetail({
+    //   ...getamountdetail,
+    //   [event.target.name]: event.target.value,
+    // });
   };
 
   const handleTrasaction = () => {
+    console.log('vdcgvf');
     if (getbalance >= getamountdetail.amount) {
+      console.log(getamountdetail.amount);
       switch (getamountdetail.amount) {
-        case "20000":
+        case 20000:
           activateSubscription("bronze");
           break;
-        case "30000":
+        case 30000:
           activateSubscription("silver");
           break;
-        case "50000":
+        case 50000:
+          console.log("dfd");
           activateSubscription("gold");
           break;
       }
     } else {
+      console.log("sdfdf");
       payroll();
     }
   };
