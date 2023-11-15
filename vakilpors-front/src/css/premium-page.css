@@ -82,3 +82,11 @@ box-shadow: 5px 5px 5px gray;
 .ss{
 	color: #0992f5;
 }
+
+.loading-dashboard{
+    height: 30px !important;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+	padding:"5px 50px 5px 50px ";
+} 

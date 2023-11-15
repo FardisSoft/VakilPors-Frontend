@@ -92,7 +92,7 @@ const Transaction = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <div>
+      <div style={{display:'flex',justifyContent:'center',alignItems:'center', margin:'20px 20px'}}>
         <div  className="table-responsive">
           {isLoading ? (
             <div>
