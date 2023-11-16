@@ -1,36 +1,36 @@
-body {
-  background-color: #ADD8E6; /* Light Blue */
+.custom-body {
+  background-color: #ADD8E6; 
   color: black;
   font-family: Shabnam,Arial, sans-serif;
   margin: 0;
   padding: 0;
 }
 
-.header,
-.footer {
-  background-color: #0255a5;
+.custom-header {
+  background-color: #8355a3;
   color: white;
   padding: 20px;
   text-align: center;
+  
 }
 
-.container {
+.custom-container {
   max-width: 800px;
   margin: 0 auto;
   padding: 40px;
 }
 
-.plans {
+.custom-plans {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  background-color: #90EE90; /* Light Green */
+  background-color: #90EE90; 
   padding: 20px;
   border-radius: 10px;
   margin-top: 20px;
 }
 
-.plan-card {
+.custom-plan-card {
   background-color: #ffffff;
   border: 1px solid #ddd;
   margin-bottom: 20px;
@@ -42,16 +42,16 @@ body {
   box-sizing: border-box;
 }
 
-.plan-card:hover {
+.custom-plan-card:hover {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
-.plan-card h3 {
+.custom-plan-card h3 {
   color: #0255a5;
   margin-bottom: 10px;
 }
 
-.price {
+.custom-price {
   background-color: #2196f3;
   color: white;
   padding: 10px;
@@ -62,19 +62,19 @@ body {
   margin-bottom: 20px;
 }
 
-.price .amount {
+.custom-price .amount {
   font-size: 24px;
   font-weight: bold;
   margin-right: 5px;
 }
 
-.price .period {
+.custom-price .period {
   font-size: 16px;
   color: #fff;
 }
 
-.button {
-  background-color: #4CAF50; /* Green */
+.custom-button {
+  background-color: #4CAF50; 
   border: none;
   color: white;
   padding: 15px 32px;
@@ -88,29 +88,29 @@ body {
   border-radius: 5px;
 }
 
-.button:hover {
-  background-color: #45a049; /* Darker green */
+.custom-button:hover {
+  background-color: #45a049; 
 }
 
-.title {
+.custom-title {
   font-size: 2em;
-  color: #0255a5;
+  color: white;
   margin-bottom: 10px;
 }
 
-.subtitle {
+.custom-subtitle {
   font-size: 1.5em;
-  color: #0255a5;
+  color: white;
   margin-bottom: 20px;
 }
 
-.features {
+.custom-features {
   list-style-type: disc;
   margin-left: 20px;
   color: #666;
 }
 
-.testimonial {
+.custom-testimonial {
   font-style: italic;
   color: #666;
   margin-top: 20px;

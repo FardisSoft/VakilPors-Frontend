@@ -6,7 +6,7 @@ import {
     CardActions,
     Button
 } from '@material-ui/core';
-import '../../css/PremiumLawyers.css';
+import '../../css/PremiumLawyer.css';
 
 // Plan data
 const plans = [
@@ -43,40 +43,45 @@ const commonFeatures = Array.from(
 );
 
 export default function PremiumLawyers() {
-return (
-    <div className="premium-lawyers">
-        <h1 className="title">رشد کسب و کار خود را با تبلیغات هدفمند آنلاین افزایش دهید</h1>
-        <p className="subtitle">بین برنامه های روزانه یا هفتگی انتخاب کنید تا با مشتریان جدید ارتباط برقرار کنید.</p>
+    return (
+        <div className="custom-body">
+            <header className="custom-header">
+                <h1 className="custom-title">رشد کسب و کار خود را با تبلیغات هدفمند آنلاین افزایش دهید</h1>
+                <p className="custom-subtitle">بین برنامه های روزانه یا هفتگی انتخاب کنید تا با مشتریان جدید ارتباط برقرار کنید.</p>
+            </header>
 
-        <div className="plans">
-            {plans.map((plan, index) => (
-                <PlanCard key={index} plan={plan} commonFeatures={commonFeatures} />
-            ))}
+            <div className="custom-container">
+                <div className="custom-plans">
+                    {plans.map((plan, index) => (
+                        <PlanCard key={index} plan={plan} commonFeatures={commonFeatures} />
+                    ))}
+                </div>
+            </div>
         </div>
-    </div>
-);
+    );
 }
 
 function PlanCard({ plan, commonFeatures }) {
     return (
-        <Card className="plan-card">
+        <Card className="custom-plan-card">
             <CardHeader title={plan.name} />
             <CardContent>
-                <div className="price">
+                <div className="custom-price">
                     <span className="amount">{plan.price}</span>
                     <span className="period">{plan.period}</span>
                 </div>
                 <p><strong>{plan.description}</strong></p>
-                <ul className="features">
-                    {plan.commonFeatures.map((feature, index) => (
-                        <li key={index}>
-                            <span className="bullet">&#8226;</span> {feature}
-                        </li>
-                    ))}
+                <ul className="custom-features">
+                    {plan
+                        .commonFeatures.map((feature, index) => (
+                            <li key={index}>
+                                <span className="custom-bullet">&#8226;</span> {feature}
+                            </li>
+                        ))}
                 </ul>
             </CardContent>
             <CardActions>
-                <Button variant="contained" color="primary" className="button">
+                <Button variant="contained" color="primary" className="custom-button">
                     انتخاب
                 </Button>
             </CardActions>
