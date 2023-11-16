@@ -1,12 +1,19 @@
+// App.jsx
+import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import React, { useState, useEffect } from 'react';
-import { Grid, Typography, Button, Box } from '@mui/material';
+import { Grid, Typography, Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
+import rtlPlugin from 'stylis-plugin-rtl';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
+import { createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
+import Advertising from './components/premium-page/Avertising'; // Import the Advertising component
 import landing_page from './assests/images/default_lawyer_profile_background_picture.jpg';
+import lawer1 from './assests/images/lawer1.jpg';
+import lawer2 from './assests/images/lawer2.jpg';
+import { useState, useEffect } from 'react';
 import { makeStyles } from "@mui/styles";
-import axios from 'axios';
-import { BASE_API_ROUTE } from '../src/Constants';
-
 
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
@@ -24,17 +31,23 @@ import TypeAnimation from 'react-type-animation';
 
 import GavelRoundedIcon from '@mui/icons-material/GavelRounded';
 
-// mui rtl
-import rtlPlugin from 'stylis-plugin-rtl';
-import { CacheProvider } from '@emotion/react';
-import createCache from '@emotion/cache';
-import { createTheme } from '@mui/material/styles';
-import { ThemeProvider } from '@mui/material/styles';
-import Advertising from './components/premium-page/Avertising'; 
-import lawer1 from './assests/images/lawer1.jpg';
-import lawer2 from './assests/images/lawer2.jpg';
-import StyledButton from './components/ButtonComponent';
 
+import { Card, Box } from '@mui/material';
+
+
+import axios from 'axios';
+import { BASE_API_ROUTE } from './Constants';
+import StyledButton from './components/ButtonComponent';
+const cacheRtl = createCache({
+  key: 'muirtl',
+  stylisPlugins: [rtlPlugin],
+});
+const theme = createTheme({
+  direction: 'rtl',
+  typography: {
+    fontFamily: 'shabnam',
+  },
+});
 
 
 function TabPanel(props) {
@@ -63,16 +76,7 @@ function a11yProps(index) {
     'aria-controls': `vertical-tabpanel-${index}`,
   };
 }
-const cacheRtl = createCache({
-  key: 'muirtl',
-  stylisPlugins: [rtlPlugin],
-});
-const theme = createTheme({
-  direction: 'rtl',
-  typography: {
-    fontFamily: 'shabnam',
-  },
-});
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -90,32 +94,36 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
 const App = () => {
+
   const classes = useStyles();
-  const navigate = useNavigate();
   const [value, setValue] = React.useState(0);
 
+  const navigate = useNavigate();
+  const [lawyers, setLawyers] = useState([]);
 
-  const features = [
-    { title: 'امکانات ۱', description: 'توضیحات امکانات ۱' },
-    { title: 'امکانات ۲', description: 'توضیحات امکانات ۲' },
-    { title: 'امکانات ۳', description: 'توضیحات امکانات ۳' },
-  ];
 
   const [expandedPanel, setExpandedPanel] = useState(null);
+
 
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpandedPanel(isExpanded ? panel : null);
   };
 
+
   const handleButtonClick = (description) => {
     console.log(description);
+    // انجام عملیات مورد نیاز برای دکمه
   };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const [lawyers, setLawyers] = useState([]);
+
+
+
 
   useEffect(() => {
     const fetchLawyers = async () => {
@@ -141,71 +149,38 @@ const App = () => {
       <Helmet>
         <title>وکیل پرس</title>
       </Helmet>
-      
-      <Grid
-        sx={{
-          flexGrow: 1,
-          height: '94vh',
-          backgroundImage: `url(${landing_page})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          paddingTop: 12,
-          boxShadow: 'inset 0 0 0 2000px rgba(0, 0, 0, 0.5)',
-          borderBottomRightRadius: '15%',
-          borderBottomLeftRadius: '15%',
-        }}
-      >
-        <Grid container justifyContent="start" alignItems="start">
-          <Grid item xs={12} sm={8} md={6} sx={{ mx: '10px' }}>
-            <Typography
-              variant="h2"
-              align="center"
-              sx={{
-                mb: '30px',
-                fontSize: { xs: '30px', sm: '50px' },
-                color: '#fff',
-                textShadow: '2px 2px #000',
-                fontFamily: "Shabnam"
-              }}
-            >
-              از وکیل پرس بپرس!
-            </Typography>
-            <Typography
-              variant="h5"
-              align="center"
-              sx={{
-                mb: '30px',
-                fontSize: { xs: '20px', sm: '30px' },
-                color: '#fff',
-                textShadow: '2px 2px #000',
-                fontFamily: "Shabnam"
-              }}
-            >
-              گرفتن جواب سوال حقوقی و وکیل برای هر پرونده ای مثل آب خوردن!
-            </Typography>
-            <Grid align="center">
-              <Button
-                variant="contained"
-                size="large"
-                color="primary"
-                onClick={() => navigate("/Lawyer-search-page")}
-              >
-                جست و جوی وکلا
-              </Button>
-              <Button
-                variant="contained"
-                sx={{ ml: '20px' }}
-                size="large"
-                color="primary"
-                onClick={() => navigate("/Forum")}
-              >
-                فروم عمومی
-              </Button>
+      <ThemeProvider theme={theme}>
+        <CacheProvider value={cacheRtl}>
+          <Grid sx={{
+            flexGrow: 1, height: '96vh', backgroundImage: `url(${landing_page})`, backgroundSize: 'cover',
+            backgroundPosition: 'center', display: "grid", paddingTop: 12, placeItems: "center", boxShadow: 'inset 0 0 0 2000px rgba(0, 0, 0, 0.5)',
+            backgroundSize: 'cover', borderBottomRightRadius: '5%', borderBottomLeftRadius: '5%',
+          }}>
+
+
+            <Grid container justifyContent="start" alignItems="start">
+              <Grid item xs={12} sm={8} md={6} sx={{ mx: '10px', }}>
+                <Typography variant="h2" align="center" sx={{ mb: '30px', fontSize: { xs: '30px', sm: '50px' }, color: '#fff', textShadow: '2px 2px #000',  fontFamily: "Shabnam"}}>
+                  از وکیل پرس بپرس!
+                </Typography>
+                <Typography variant="h5" align="center" sx={{ mb: '30px', fontSize: { xs: '20px', sm: '30px' }, color: '#fff', textShadow: '2px 2px #000',  fontFamily: "Shabnam"}}>
+                  گرفتن جواب سوال حقوقی و وکیل برای هر پرونده ای مثل آب خوردن!
+                </Typography>
+                <Grid container direction="row" justifyContent="center" alignItems="center">
+                  <StyledButton onClick={() => navigate("/Lawyer-search-page")}>
+                  جست و جوی وکلا
+                  </StyledButton>
+                  <StyledButton style={{ marginRight: '2rem' }} onClick={() => navigate("/Forum")}>
+                  فروم عمومی
+                  </StyledButton>
+                </Grid>
+
+                <Advertising lawyers={lawyers} /> 
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </Grid>
-      <Box>
+
+          <Box>
       <div className="homepage">
       <div className="wrapper">
         <div 
@@ -329,7 +304,6 @@ const App = () => {
     </div>
 
 
-
     <Box
       sx={{ m:"5px", mb:"50px", flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 400, borderRadius: '30px', borderColor: 'grey' }}
       onMouseOver={(e) => {
@@ -348,21 +322,21 @@ const App = () => {
           onChange={handleChange}
           aria-label="Vertical tabs example"
           sx={{
-            borderRadius: '30px', // تغییر radius
+            borderRadius: '30px', 
             '& .MuiTabs-flexContainer': {
               flexDirection: 'column',
             },
             '& .MuiTab-root': {
-              fontFamily: 'Shabnam', // تغییر فونت به "شبنم"
+              fontFamily: 'Shabnam', 
               '& .MuiTab-label': {
-                fontWeight: 'bold', // بولد کردن لیبل
+                fontWeight: 'bold', 
               },
-              transition: 'border-right-width 0.3s', // اضافه کردن ترنزیشن
+              transition: 'border-right-width 0.3s', 
               '& .MuiButtonBase-root': {
-                backgroundColor: 'lightgray', // تغییر رنگ پیش زمینه دکمه‌ها به خاکستری کم رنگ
+                backgroundColor: 'lightgray', 
               },
               '&:hover': {
-                borderRightWidth: '8px', // تغییر ضخامت خط هاور (به عنوان مثال، 8px)
+                borderRightWidth: '8px', 
               },
             },
           }}
@@ -381,106 +355,103 @@ const App = () => {
           marginLeft: '10px',
         }}
       ></div>
-      <TabPanel value={value} index={0} sx={{ fontFamily: 'Shabnam', fontWeight: 'bold' }}>
-  شما می‌توانید در وکیل پرس، از میان تمامی وکلای به‌نام کشور، با توجه به نیاز و پرونده خود بهترین انتخاب را داشته باشید:
-  <br />
-  <br />
+            <TabPanel value={value} index={0} sx={{ fontFamily: 'Shabnam', fontWeight: 'bold' }}>
+        شما می‌توانید در وکیل پرس، از میان تمامی وکلای به‌نام کشور، با توجه به نیاز و پرونده خود بهترین انتخاب را داشته باشید:
+        <br />
+        <br />
 
-  
-  1. برای اینکار باید وارد تب "منو" شوید سپس گزینه "جستجوی وکیل" را بفشارید.
-  <br />
-   2. در این مرحله لیست تمامی وکلا به همراه مشخصات آن‌ها برای شما قابل نمایش هستند.
-   <br />
-   3. با کلیک بر روی نام وکیل، می‌توانید وارد صفحه پروفایل وکیل شوید که شامل تمام مشخصات حقوقی وکیل مدنظر است.
+        
+        1. برای اینکار باید وارد تب "منو" شوید سپس گزینه "جستجوی وکیل" را بفشارید.
+        <br />
+        2. در این مرحله لیست تمامی وکلا به همراه مشخصات آن‌ها برای شما قابل نمایش هستند.
+        <br />
+        3. با کلیک بر روی نام وکیل، می‌توانید وارد صفحه پروفایل وکیل شوید که شامل تمام مشخصات حقوقی وکیل مدنظر است.
 
-<br /> 
-<br /> 
- انتخاب راحت شما مشتری گرامی باعث می‌شود بهترین انتخاب را از میان وکلای کشور داشته باشید. معمولا در دعاوی حقوقی یکی از مهم‌ترین فاکتورها برای پیروزی انتخاب وکیل مناسب است.
-پس با وکیل پرس می‌توانی به راحتی و در کمترین زمان بهترین وکیل را بسته به نوع پرونده انتخاب نمایید.
-
-
-</TabPanel>
-<TabPanel value={value} index={1} sx={{ fontFamily: 'Shabnam', fontWeight: 'bold' }}>
-  اتفاق رایجی که قبل از وکیل پرس می‌افتاد این بود که در زمانی که شما در شرایط اضطرار هستید. ارتباط با وکیل امری سخت بود. یا باید به دفتر حقوقی وکیل مراجعه می‌شد.
-  یا باید شماره تلفن وکیل را به‌دست می آوردند اما با وجود وکیل پرس این ارتباط می‌تواند برخط و آنی و رایگان انجام پذیرد.
-  <br />
-  همانطور که مستحضر هستید زمان مکالمه وکیل و موکل اغلب بسیار طولانی می‌شود که باعث هزینه مخابرات برای اشخاص می‌شد. اما با ارتباط رایگان وکیل پرس می‌تواند در 
-  هر لحظه شبانه‌روز، به‌راحتی و با کیفیت تصویر و صوت بالا ارتباط ویدیویی و یا چت آنلاین داشته باشید.
-  <br />
-  <br />
-  برای این‌کار پس از مشخص نمودن وکیل مورد نظر اقدامات زیر را انجام دهید:
-  <br />
-  <br />
-
-  1. روی نام وکیل مورد نظر کلیک کرده تا وارد صفحه پروفایل وکیل شوید
-  <br />
-  2. گزینه "درخواست چت آنلاین" را بفشارید تا وارد صفحه چت شوید.
-  <br />
-  
-  3. پس از ورود به صفحه چت در صورت تایید وکیل می‌توانید پیام رد و بدل کنید.
-</TabPanel>
-<TabPanel value={value} index={2} sx={{ fontFamily: 'Shabnam', fontWeight: 'bold' }}>
-در صورتی‌که یک پیام عمومی دارید، می‌توانید آن را با وکلایی که در وکیل پرس هستند، در میان بگذارید که ضمن برخورداری از جواب وکلای به‌نام کشور 
-و برطرف شدن ابهام حقوقی، به سایر کابران نیز این امکان را می‌دهد که از تجریه و اطلاعات شما و وکلا بهره‌مند شوند.
-<br />
-برای استفاده از این امکان مراحل زیر را انجام دهید:
-<br />
-1. رفتن به منو
-<br />
-2. فشردن گزینه "فروم"
-<br />
-3. در بخش "موضوع جدید" سوال خود را مطرح کنید
-<br />
-
-4. روی دکمه "ساخت موضوع جدید" کلیک کنید تا موضوع ساخته شود.
-<br />
-در ضمن می‌توانید در قسمت پایینی پرسش و پاسخ‌های افراد دیگر را مشاهده کنید و بازخورد بدهید.
-
-</TabPanel>
-<TabPanel value={value} index={3} sx={{ fontFamily: 'Shabnam', fontWeight: 'bold' }}>
-  در وکیل‌پرس، امکان این وجود دارد که بتوانید با وکیل مربوطه به صورت برخط و آنی پرسش و پاسخ کتید و در ارتباط باشید.
-  <br />
-نکته ای که وکیل‌پرس را متمایز می‌کند اینست که چت وکیل‌پرس با اصل محرمانگی داده منطبق است و مجموعه وکیل‌پرس یا هیج شخص ثالت دیگری از محتوای پیام‌ها 
-باخبر نمی‌شود.
-<br />
-پس به‌صورت کاملا امن در وکیل‌پرس با وکیل‌تان چت کنید!
-</TabPanel>
-<TabPanel value={value} index={4} sx={{ fontFamily: 'Shabnam', fontWeight: 'bold' }}>
-در وکیل‌پرس، امکان این وجود دارد که بتوانید با وکیل مربوطه به صورت برخط و آنی پرسش و پاسخ تصویری داشته‌باشید و در ارتباط باشید.
-  <br />
-نکته ای که وکیل‌پرس را متمایز می‌کند اینست که چت وکیل‌پرس با اصل محرمانگی داده منطبق است و مجموعه وکیل‌پرس یا هیج شخص ثالت دیگری از محتوای پیام‌ها 
-باخبر نمی‌شود.
-<br />
-پس به‌صورت کاملا امن در وکیل‌پرس با وکیل‌تان به‌صورت تصویری در ارتباط باشید!
-</TabPanel>
-<TabPanel value={value} index={5} sx={{ fontFamily: 'Shabnam', fontWeight: 'bold' }}>
-  اگر وکیل هستید، وکیل‌پرس برای شما امکانی فراهم کرده‌است که ضمن اطلاع‌رسانی عمومی و آگاه‌سازی مردم از مسائل حقوقی و همجنین برندسازی شخصی، بتوانید 
-  از این راه کسب درآمد داشته باشید.
-  <br />
-  به این صورت که هر کامنت و شرکت شما در بحث‌های عمومی منجر به پرداخت پاداش از سوی وکیل‌پرس خواهد شد.
-  <br />
-مزایای وکیل پرس برای وکلا:
-<br />
-1. برندسازی شخصی
-<br />
-2. کسب درآمد از طریق فوروم
-<br />
-3. اطلاع‌رسانی جهت آگاه‌سازی عموم مردم
+      <br /> 
+      <br /> 
+      انتخاب راحت شما مشتری گرامی باعث می‌شود بهترین انتخاب را از میان وکلای کشور داشته باشید. معمولا در دعاوی حقوقی یکی از مهم‌ترین فاکتورها برای پیروزی انتخاب وکیل مناسب است.
+      پس با وکیل پرس می‌توانی به راحتی و در کمترین زمان بهترین وکیل را بسته به نوع پرونده انتخاب نمایید.
 
 
-  </TabPanel>
+      </TabPanel>
+      <TabPanel value={value} index={1} sx={{ fontFamily: 'Shabnam', fontWeight: 'bold' }}>
+        اتفاق رایجی که قبل از وکیل پرس می‌افتاد این بود که در زمانی که شما در شرایط اضطرار هستید. ارتباط با وکیل امری سخت بود. یا باید به دفتر حقوقی وکیل مراجعه می‌شد.
+        یا باید شماره تلفن وکیل را به‌دست می آوردند اما با وجود وکیل پرس این ارتباط می‌تواند برخط و آنی و رایگان انجام پذیرد.
+        <br />
+        همانطور که مستحضر هستید زمان مکالمه وکیل و موکل اغلب بسیار طولانی می‌شود که باعث هزینه مخابرات برای اشخاص می‌شد. اما با ارتباط رایگان وکیل پرس می‌تواند در 
+        هر لحظه شبانه‌روز، به‌راحتی و با کیفیت تصویر و صوت بالا ارتباط ویدیویی و یا چت آنلاین داشته باشید.
+        <br />
+        <br />
+        برای این‌کار پس از مشخص نمودن وکیل مورد نظر اقدامات زیر را انجام دهید:
+        <br />
+        <br />
 
-</Box>
+        1. روی نام وکیل مورد نظر کلیک کرده تا وارد صفحه پروفایل وکیل شوید
+        <br />
+        2. گزینه "درخواست چت آنلاین" را بفشارید تا وارد صفحه چت شوید.
+        <br />
+        
+        3. پس از ورود به صفحه چت در صورت تایید وکیل می‌توانید پیام رد و بدل کنید.
+      </TabPanel>
+      <TabPanel value={value} index={2} sx={{ fontFamily: 'Shabnam', fontWeight: 'bold' }}>
+      در صورتی‌که یک پیام عمومی دارید، می‌توانید آن را با وکلایی که در وکیل پرس هستند، در میان بگذارید که ضمن برخورداری از جواب وکلای به‌نام کشور 
+      و برطرف شدن ابهام حقوقی، به سایر کابران نیز این امکان را می‌دهد که از تجریه و اطلاعات شما و وکلا بهره‌مند شوند.
+      <br />
+      برای استفاده از این امکان مراحل زیر را انجام دهید:
+      <br />
+      1. رفتن به منو
+      <br />
+      2. فشردن گزینه "فروم"
+      <br />
+      3. در بخش "موضوع جدید" سوال خود را مطرح کنید
+      <br />
+
+      4. روی دکمه "ساخت موضوع جدید" کلیک کنید تا موضوع ساخته شود.
+      <br />
+      در ضمن می‌توانید در قسمت پایینی پرسش و پاسخ‌های افراد دیگر را مشاهده کنید و بازخورد بدهید.
+
+      </TabPanel>
+      <TabPanel value={value} index={3} sx={{ fontFamily: 'Shabnam', fontWeight: 'bold' }}>
+        در وکیل‌پرس، امکان این وجود دارد که بتوانید با وکیل مربوطه به صورت برخط و آنی پرسش و پاسخ کتید و در ارتباط باشید.
+        <br />
+      نکته ای که وکیل‌پرس را متمایز می‌کند اینست که چت وکیل‌پرس با اصل محرمانگی داده منطبق است و مجموعه وکیل‌پرس یا هیج شخص ثالت دیگری از محتوای پیام‌ها 
+      باخبر نمی‌شود.
+      <br />
+      پس به‌صورت کاملا امن در وکیل‌پرس با وکیل‌تان چت کنید!
+      </TabPanel>
+      <TabPanel value={value} index={4} sx={{ fontFamily: 'Shabnam', fontWeight: 'bold' }}>
+      در وکیل‌پرس، امکان این وجود دارد که بتوانید با وکیل مربوطه به صورت برخط و آنی پرسش و پاسخ تصویری داشته‌باشید و در ارتباط باشید.
+        <br />
+      نکته ای که وکیل‌پرس را متمایز می‌کند اینست که چت وکیل‌پرس با اصل محرمانگی داده منطبق است و مجموعه وکیل‌پرس یا هیج شخص ثالت دیگری از محتوای پیام‌ها 
+      باخبر نمی‌شود.
+      <br />
+      پس به‌صورت کاملا امن در وکیل‌پرس با وکیل‌تان به‌صورت تصویری در ارتباط باشید!
+      </TabPanel>
+      <TabPanel value={value} index={5} sx={{ fontFamily: 'Shabnam', fontWeight: 'bold' }}>
+        اگر وکیل هستید، وکیل‌پرس برای شما امکانی فراهم کرده‌است که ضمن اطلاع‌رسانی عمومی و آگاه‌سازی مردم از مسائل حقوقی و همجنین برندسازی شخصی، بتوانید 
+        از این راه کسب درآمد داشته باشید.
+        <br />
+        به این صورت که هر کامنت و شرکت شما در بحث‌های عمومی منجر به پرداخت پاداش از سوی وکیل‌پرس خواهد شد.
+        <br />
+      مزایای وکیل پرس برای وکلا:
+      <br />
+      1. برندسازی شخصی
+      <br />
+      2. کسب درآمد از طریق فوروم
+      <br />
+      3. اطلاع‌رسانی جهت آگاه‌سازی عموم مردم
 
 
+      </TabPanel>
+
+    </Box>
 
 
 
-
-
-  </>
-);
-
+        </CacheProvider>
+      </ThemeProvider>
+    </>
+  );
 }
 
 export default App;
