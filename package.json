@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "jest-watch-typeahead": "^2.2.2"
+  }
+}
