@@ -4,7 +4,26 @@ import { Helmet } from 'react-helmet-async';
 import Moment from 'moment-jalaali';
 import { styled } from '@mui/material/styles';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
-import { Typography, IconButton, Badge, Grid, TextField, Button } from "@mui/material";
+import { Typography, 
+	IconButton, 
+	Badge, 
+	Grid, 
+	TextField, 
+	Button, 
+	Paper, 
+	Table, 
+	TableBody, 
+	TableCell, 
+	TableContainer, 
+	TableHead, 
+	TablePagination, 
+	TableRow, 
+	Card, 
+	CardHeader, 
+	CardMedia, 
+	CardContent, 
+	Divider,
+	CardActions } from "@mui/material";
 import { Delete, WorkspacePremium } from '@mui/icons-material';
 import Likes from "./utils/Likes";
 import Comments from "./utils/Comments";
@@ -15,7 +34,10 @@ import jwt from 'jwt-decode';
 import { toast } from 'react-toastify';
 import StyledButton from "../ButtonComponent";
 import { FcSms, FcEditImage } from "react-icons/fc";
-
+import Lottie from 'react-lottie';
+import animationData from "../../assests/lotttie-animations/Animation-empty.json";
+import ReactPaginate from 'react-paginate';
+import './Forum.css';
 // mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
 import { CacheProvider } from '@emotion/react';
@@ -26,31 +48,62 @@ import backgroundbb from "../../assests/images/back.png";
 
 const cacheRtl = createCache({
 	key: 'muirtl',
-	stylisPlugins: [rtlPlugin],
+	stylisPlugins: [rtlPlugin]
 });
 const theme = createTheme({
 	direction: 'rtl',
+	typography: {
+		fontFamily: 'shabnam',
+	}
 });
 // mui rtl
 
 const StyledTooltip = styled (({ className, ...props }) => (
 	<Tooltip {...props} classes={{ popper: className }} arrow/>
-  ))(({ theme }) => ({
+	))(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
-	  backgroundColor: '#f5f5f9',
-	  color: 'rgba(0, 0, 0, 0.87)',
-	  maxWidth: 300,
-	  fontSize: '15px',
-	  border: '1px solid #dadde9',
-	  fontFamily: 'shabnam',
+		backgroundColor: '#f5f5f9',
+		color: 'rgba(0, 0, 0, 0.87)',
+		maxWidth: 300,
+		fontSize: '15px',
+		border: '1px solid #dadde9',
+		fontFamily: 'shabnam',
 	},
-  }));
+}));
+
+
+const defaultOptions = {
+	loop: true,
+	autoplay: true,
+	animationData: animationData,
+	rendererSettings: {
+		preserveAspectRatio: 'xMidYMid slice'
+	}
+};
+
 
 const Forum = () => {
 	const [thread, setThread] = useState("");
 	const [threadList, setThreadList, refThreadList] = useStateRef([]);
 	const [userId, setUserId, refUserId] = useStateRef("");
 	const { getAccessToken } = useAuth();
+
+
+	// for table
+	const [currentPage, setCurrentPage] = useState(0);
+	const pageSize = 2;
+
+	const handlePageChange = (selectedObject) => {
+		setCurrentPage(selectedObject.selected);
+	};
+
+	const pageCount = Math.ceil(threadList.length / pageSize);
+
+	const currentThreads = threadList.slice(
+		currentPage * pageSize,
+		(currentPage + 1) * pageSize
+	);
+
 
 	useEffect(() => {
 		const getThreadList = async () => {
@@ -70,7 +123,6 @@ const Forum = () => {
 		};
 		getThreadList();
 	}, []);
-
 	const showErrorMessage = (message) => {
 		toast.error(message, {
 			position: "bottom-right",
@@ -150,7 +202,8 @@ const Forum = () => {
 			</Helmet>
 			<ThemeProvider theme={theme}>
 				<CacheProvider value={cacheRtl}>
-					<Grid container width={'100%'} minHeight={'100vh'} paddingY={'30px'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+					<Grid container width={'100%'} minHeight={'100vh'} paddingY={'30px'} display={'flex'} justifyContent={'center'} alignItems={'center'} 
+					sx={{ backgroundColor: '#dadde9' }}>
 						<Grid container direction={'column'} width={{ xs: '100%', md: '90%', lg: '80%' }} display={'flex'} justifyContent={'center'} alignItems={'center'}>
 							{/* <Grid sx={{boxShadow : 4 , padding : 0.5 , mb : 7 , borderRadius : 5, mt: -10}}  alignItems={'center'} display={'flex'} justifyContent={'center'}> */}
 							<Typography fontFamily={'shabnam'} fontSize={'18px'} sx={{ mb: '30px' }} >
@@ -167,44 +220,132 @@ const Forum = () => {
 									sx={{ width: { xs: '100%', md: '80%' }, backgroundColor: 'rgba(255,255,255,0)', borderRadius: '50px' }} />
 								<StyledButton onClick={handleSubmit} style={{ fontFamily: "shabnam", marginTop: '1rem', width: '12rem' }}>ساخت تاپیک جدید</StyledButton>
 							</Grid>
-							{threadList.length > 0 && <Grid container direction={'column'} width={'100%'} display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{ boxShadow: 3, padding: 4, borderRadius: 7 }}>
-								{ threadList.map((thread) => (
-									<Grid container key={thread.id} direction={{ xs: 'column', sm: 'row' }} width={{ xs: '97%', sm: '90%' }} backgroundColor={'#8eb1e5'} display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{
-										mb: '30px', p: '20px', borderRadius: '20px', boxShadow: 4,
-										...(thread.userId == '1' && { backgroundColor: 'lightskyblue', })
-									}}>
-										<Typography sx={{ fontSize: '15px', fontFamily: 'shabnam' }}>{thread.title}</Typography>
-										<Grid display={'flex'} flexDirection={'column'}>
-											<Grid display={'flex'} flexDirection={'row'} justifyContent={'flex-end'} marginTop={{ xs: '10px', sm: '0' }}>
-												<Likes threadOrComment={thread} IsThread={true} />
-												<Badge badgeContent={thread.commentCount} color="primary">
-													<Comments threadId={thread.id} userId={refUserId.current} />
-												</Badge>
-												{(thread.userId == refUserId.current && !thread.hasAnswer) &&
-													<IconButton onClick={() => handleDeleteThread(thread)}>
-														<Delete sx={{ color: '#0d6efd' }} />
-													</IconButton>}
-											</Grid>
-											<Grid display={'flex'} flexDirection={'row'} marginTop={'10px'}>
-												<Typography sx={{ fontSize: '15px', fontFamily: 'shabnam', mr: '5px' }}>توسط {thread.user.isLawyer && '(وکیل)'} {thread.user.name}</Typography>
-												{thread.user.isPremium && 
-												<StyledTooltip title={<React.Fragment>{'کاربر پرمیوم'}</React.Fragment>}>
-													<WorkspacePremium sx={{
-														color: 'purple',
-														backgroundColor: 'gold',
-														borderRadius: '12px',
-														padding: '1px',
-														width: '23px',
-														mr: '10px',
-													}} />
-												</StyledTooltip>}
-												<Typography fontFamily={'shabnam'} fontSize={'14px'}>{Moment(thread.createDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(thread.createDate).format('HH:mm')}</Typography>
-											</Grid>
-										</Grid>
-									</Grid>
-								))}
-							</Grid>}
 							
+							{threadList.length === 0 && (
+								<Lottie options={defaultOptions}
+									height={400}
+									width={400}
+								/>
+							)}
+							{threadList.length > 0 && 
+							<Grid container direction={'column'} width={'70%'} display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{ boxShadow: 3, padding: 4, border: '5px solid #082640',
+							backgroundColor: '#FCF2F1',
+							borderRadius: '25px', }}>
+								<Grid>
+									{currentThreads.map((thread) => (
+									<Grid
+										container
+										key={thread.id}
+										direction={{ xs: 'column', sm: 'row' }}
+										// width={{ xs: '97%', sm: '90%' }}
+										backgroundColor={'#8eb1e5'}
+										display={'flex'}
+										justifyContent={'space-between'}
+										alignItems={'center'}
+										sx={{
+											width: '30rem',
+											mb: '30px',
+											p: '20px',
+											borderRadius: '1rem',
+											boxShadow: 4,
+											height: '8rem',
+											...(thread.userId == '1' && { backgroundColor: 'lightskyblue' }),
+										}}
+									>
+									<Typography
+										sx={{ fontSize: '20px', fontFamily: 'shabnam', fontWeight: 'bold', mt: '-4.5rem' }}
+										>
+										{thread.title}
+									</Typography>
+									{/* <Divider sx={{ height: '2rem', mt: '2rem', mr: '1rem' }}/> */}
+									<Grid display={'flex'} flexDirection={'column'}>
+										<Grid
+											display={'flex'}
+											flexDirection={'row'}
+											justifyContent={'flex-end'}
+											// marginTop={{ xs: '15px', sm: '0' }}
+											sx={{ mr: '-1rem' }}
+										>
+										<Likes threadOrComment={thread} IsThread={true} />
+										<Badge badgeContent={thread.commentCount} color="primary">
+											<Comments
+												threadId={thread.id}
+												userId={refUserId.current}
+											/>
+										</Badge>
+										{thread.userId == refUserId.current &&
+										!thread.hasAnswer && (
+										<IconButton
+										onClick={() => handleDeleteThread(thread)}
+										>
+										<Delete sx={{ color: '#0d6efd' }} />
+										</IconButton>
+										)}
+										</Grid>
+										<Grid
+										display={'flex'}
+										flexDirection={'row'}
+										marginTop={'10px'}
+										>
+										<Typography
+										sx={{
+										fontSize: '15px',
+										fontFamily: 'shabnam',
+										mr: '5px',
+										}}
+										>
+									توسط {thread.user.isLawyer && '(وکیل)'}{' '}
+									{thread.user.name}
+									</Typography>
+									{thread.user.isPremium && (
+									<StyledTooltip
+									title={
+									<React.Fragment>
+									{'کاربر پرمیوم'}
+									</React.Fragment>
+									}
+									>
+									<WorkspacePremium
+									sx={{
+									color: 'purple',
+									backgroundColor: 'gold',
+									borderRadius: '12px',
+									padding: '1px',
+									width: '23px',
+									mr: '10px',
+									}}
+									/>
+									</StyledTooltip>
+									)}
+									<Typography
+									fontFamily={'shabnam'}
+									fontSize={'14px'}
+									>
+									{Moment(thread.createDate)
+									.locale('fa')
+									.format('jYYYY/jM/jD') +
+									' ساعت ' +
+									Moment(thread.createDate).format('HH:mm')}
+									</Typography>
+									</Grid>
+									</Grid>
+									</Grid>
+									))}
+									<ReactPaginate
+										previousLabel={'قبلی'}
+										nextLabel={'بعدی'}
+										pageCount={pageCount}
+										onPageChange={handlePageChange}
+										containerClassName={'pagination'}
+										pageClassName={'page-item'}
+										pageLinkClassName={'page-link'}
+										activeClassName={'active'}
+										previousLinkClassName={'page-link'}
+										nextLinkClassName={'page-link'}
+									/>
+									</Grid>
+							</Grid>
+							}
 						</Grid>
 					</Grid>
 				</CacheProvider>
