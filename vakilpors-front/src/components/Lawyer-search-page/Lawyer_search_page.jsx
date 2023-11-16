@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import Search from './Search';
+import { useState, useEffect, useRef, useCallback } from "react";
+import Search from "./Search";
 import { getAlllawyer } from "../../services/userService";
-import ShowLawyers from './ShowLawyers';
-import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import ShowLawyers from "./ShowLawyers";
+import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 import "../../css/Main_ShowLawyer.css";
 import axios from "axios";
 import Sort from './Sort';
@@ -57,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Lawyer_search_page = () => {
+  const Pagesize = 12;
 
     const [lawyerdetail, setLawyerdetail] = useState([]);
     const [filteredLawyers, setFilteredLawyers] = useState([]);
@@ -117,6 +118,9 @@ const Lawyer_search_page = () => {
 
     const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
+  const [Pagenum, setPagenum] = useState(1);
+  const [sort, setsort] = useState("");
+  const [click, setclick] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -127,125 +131,178 @@ const Lawyer_search_page = () => {
         fetchData();
       }, []);
 
+  const observer = useRef();
 
-    const LawyerSearch = (event) => {
-        setLawyerQuery({ ...LawyerQuery, text: event.target.value });
-        const allLawyers = lawyerdetail.filter((Lawyer) => {
-            return Lawyer.user.name
-                .toLowerCase()
-                .includes(event.target.value.toLowerCase());
-        });
-        setFilteredLawyers(allLawyers);
-    };
+  const lastLawyerelement = useCallback(
+    (node) => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          console.log("visible");
+          setPagenum((prevpagenum) => prevpagenum + 1);
+        }
+      });
+      if (node) observer.current.observe(node);
+      console.log(node);
+    },
+    [loading, hasMore]
+  );
 
-    const handleSortBygrade = () => {
-      const sorted = [...filteredLawyers].sort((a, b) => a.grade - b.grade);
-      setFilteredLawyers(sorted);
-    }
+  const LawyerSearch = (event) => {
+    setLawyerQuery({ ...LawyerQuery, text: event.target.value });
+    console.log(event.target.value);
 
-    const handleSortByparvandeNo = () => {
-        const sorted = [...filteredLawyers].sort((a, b) => a.parvandeNo - b.parvandeNo);
-        setFilteredLawyers(sorted);
-      }
-      
-      const handleSortBylikes = () => {
-        const sorted = [...filteredLawyers].sort((a, b) => a.numberOfLikes - b.numberOfLikes);
-        setFilteredLawyers(sorted);
-      }
-      const handleSortByoldest = () => {
-        const sorted = [...filteredLawyers].sort((a, b) => a.id - b.id);
-        setFilteredLawyers(sorted);
-      }
+    const allLawyers = lawyerdetail.filter((Lawyer) => {
+      return Lawyer.user.name
+        .toLowerCase()
+        .includes(event.target.value.toLowerCase());
+    });
+    setlawyerdetail(allLawyers);
+  };
+
+  const handleSortBygrade = () => {
+    setsort("Grade");
+    setPagenum(1);
+    setclick(!click);
+  };
+
+  const handleSortByparvandeNo = () => {
+    setsort("LicenseNumber");
+    setPagenum(1);
+    setclick(!click);
+  };
+
+  const handleSortBylikes = () => {
+    setsort("Rating");
+    setPagenum(1);
+    setclick(!click);
+  };
+  const handleSortByoldest = () => {
+    setsort("Id");
+    setPagenum(1);
+    setclick(!click);
+  };
+  const LawyerContainerRef = useRef();
+  return (
+    <>
+      <Helmet>
+        <title>جست و جوی وکلا</title>
+      </Helmet>
+      <Grid>
+        <div class="Main_contain">
+          <Search LawyerSearch={LawyerSearch} LawyerQuery={LawyerQuery} />
+          {refUserRole.current === "User" && <PremiumCard />}
+          <AppBar
+            position="relative"
+            style={{
+              borderBottomRightRadius: "30px",
+              borderBottomLeftRadius: "30px",
+              height: "70px",
+              backgroundColor: "#012780",
+            }}
+          >
+            <Container maxWidth="xl">
+              <Toolbar>
+                <Typography variant="h9">مرتب سازی بر اساس</Typography>
+
+                <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+                  {/* <Button
+                    onClick={handleSortBygrade}
+                    sx={{
+                      my: -1,
+                      color: "white",
+                      display: "block",
+                      fontFamily: "shabnam",
+                    }}
+                  >
+                    امتياز
+                  </Button> */}
+                  <Button
+                    onClick={handleSortByparvandeNo}
+                    sx={{
+                      my: -1,
+                      color: "white",
+                      display: "block",
+                      fontFamily: "shabnam",
+                    }}
+                  >
+                    شماره پرونده
+                  </Button>
+                  <Button
+                    onClick={handleSortBylikes}
+                    sx={{
+                      my: -1,
+                      color: "white",
+                      display: "block",
+                      fontFamily: "shabnam",
+                    }}
+                  >
+                    تعداد لايك كاربران
+                  </Button>
+                  <Button
+                    onClick={handleSortByoldest}
+                    sx={{
+                      my: -1,
+                      color: "white",
+                      display: "block",
+                      fontFamily: "shabnam",
+                    }}
+                  >
+                    قدیمی ترین وکلای وکیل پرس
+                  </Button>
+                </Box>
+
+                <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+                  {/* <Button
+                    onClick={handleSortBygrade}
+                    sx={{
+                      my: 2,
+                      color: "white",
+                      display: "block",
+                      fontFamily: "shabnam",
+                    }}
+                  >
+                    امتياز
+                  </Button> */}
+                  <Button
+                    onClick={handleSortByparvandeNo}
+                    sx={{
+                      my: 2,
+                      color: "white",
+                      display: "block",
+                      fontFamily: "shabnam",
+                    }}
+                  >
+                    شماره پرونده
+                  </Button>
+                  <Button
+                    onClick={handleSortBylikes}
+                    sx={{
+                      my: 2,
+                      color: "white",
+                      display: "block",
+                      fontFamily: "shabnam",
+                    }}
+                  >
+                    تعداد لايك كاربران
+                  </Button>
+                  <Button
+                    onClick={handleSortByoldest}
+                    sx={{
+                      my: 2,
+                      color: "white",
+                      display: "block",
+                      fontFamily: "shabnam",
+                    }}
+                  >
+                    قدیمی ترین وکلای وکیل پرس
+                  </Button>
+                </Box>
 
 
-    return (
-        <>
-            <Helmet>
-                <title>جست و جوی وکلا</title>
-            </Helmet>
-            <div class="Main_contain">
-                <Search LawyerSearch={LawyerSearch} LawyerQuery={LawyerQuery} />
-                <PremiumCard />
-                <AppBar position="relative" style={{ borderBottomRightRadius: "30px", borderBottomLeftRadius: "30px", height: "70px", backgroundColor: "#012780" }}>
-                    <Container maxWidth="xl">
-                        <Toolbar  >
 
-                            <Typography variant="h9">
-                                مرتب سازی بر اساس
-                            </Typography>
-
-                            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }}}>
-                            <Button
-                                        onClick={handleSortBygrade}
-                                        sx={{ my: -1, color: 'white', display: 'block'}}>
-                                        امتياز
-                                    </Button>
-                                    <Button
-                                    onClick={handleSortByparvandeNo}
-                                        sx={{ my: -1, color: 'white', display: 'block' }}>
-                                        شماره پرونده  
-                                    </Button>
-                                    <Button
-                                       onClick={handleSortBylikes}
-                                        sx={{ my: -1, color: 'white', display: 'block' }}>
-                                        تعداد لايك كاربران
-                                    </Button>
-                                    <Button
-                                       onClick={handleSortByoldest}
-                                        sx={{ my: -1, color: 'white', display: 'block' }}>
-                                        قدیمی ترین وکلای وکیل پرس
-                                    </Button>
-                            </Box>
-                            
-                    
-                            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                                    <Button
-                                        onClick={handleSortBygrade}
-                                        sx={{ my: 2, color: 'white', display: 'block'}}>
-                                        امتياز
-                                    </Button>
-                                    <Button
-                                    onClick={handleSortByparvandeNo}
-                                        sx={{ my: 2, color: 'white', display: 'block' }}>
-                                        شماره پرونده  
-                                    </Button>
-                                    <Button
-                                       onClick={handleSortBylikes}
-                                        sx={{ my: 2, color: 'white', display: 'block' }}>
-                                        تعداد لايك كاربران
-                                    </Button>
-                                    <Button
-                                       onClick={handleSortByoldest}
-                                        sx={{ my: 2, color: 'white', display: 'block' }}>
-                                        قدیمی ترین وکلای وکیل پرس
-                                    </Button>
-                                
-                            </Box>
-
-                            <Box sx={{ flexGrow: 0 }}>
-                                <Tooltip title="Open settings">
-                                    <IconButton sx={{ p: 0 }}>
-                                    </IconButton>
-                                </Tooltip>
-                                <Menu
-                                    sx={{ mt: '45px' }}
-                                    id="menu-appbar"
-
-                                    anchorOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                    keepMounted
-                                    transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                >   
-                                </Menu>
-                            </Box>
-
-
-                            <div>
+    <div>
       <Button
         sx={{
           background: 'white',
@@ -349,18 +406,10 @@ const Lawyer_search_page = () => {
         </Box>
       </Modal>
     </div>
-
-
-
-
-
-
-
-
-
                         </Toolbar>
                     </Container>
                 </AppBar>
+
 
                 <section className="container" >
                     <div class="contain">
@@ -380,8 +429,9 @@ const Lawyer_search_page = () => {
                     </div>
                 </section>
             </div>
-        </>
-    );
+      </Grid>
+    </>
+  );
 };
 
 export default Lawyer_search_page;

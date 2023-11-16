@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from 'react-helmet-async';
 import { Grid, TextField, Typography, Slide, Button, InputAdornment, IconButton } from '@mui/material';
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { CastForEducation, Visibility, VisibilityOff } from "@mui/icons-material";
 import { toast } from 'react-toastify';
 import { useAuth } from "../../context/AuthProvider";
 import lawOnline from '../../assests/images/law-online.jpg';
+import StyledButton from "../ButtonComponent";
 
 // mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
@@ -170,9 +171,12 @@ const Login = () => {
                 </Slide>
                 <Slide in={show} direction="up">
                     <Grid container direction={{xs:'column',sm:'row'}} sx={{ display: "flex", m: 2, justifyContent:"center" }}>
-                        <Button size={'large'} variant="contained" color="primary" sx={{fontsize:"18px",fontFamily:"shabnam"}} onClick={handleLoginClick}>
+                        {/* <Button size={'large'} variant="contained" color="primary" sx={{fontsize:"18px",fontFamily:"shabnam"}} onClick={handleLoginClick}>
                             ورود
-                        </Button>
+                        </Button> */}
+                        <StyledButton  onClick={handleLoginClick} style={{ width: "5rem" }}>
+                            ورود
+                        </StyledButton>
                     </Grid>
                 </Slide>
                 <Slide in={show} direction="up">

@@ -16,6 +16,8 @@ const Main = () => {
         const fetchData = async () => {
             try {
                 const { data: Lawyerdata } = await getAlllawyer();
+                console.log(lawyerdetail);
+                console.log("salam");
                 setlawyerdetail(Lawyerdata);
                 setFilteredLawyers(Lawyerdata);
             } catch (err) {
@@ -59,6 +61,7 @@ const Main = () => {
                     )}
                 </div>
             </section>
+
 
         </>
     );

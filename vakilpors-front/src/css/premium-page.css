@@ -2,7 +2,6 @@
 {
 	margin-top: 50px;
 	margin-bottom: 50px;
-	
 }
 
 #buy
@@ -10,28 +9,33 @@
 	padding: 30px;
 	border-top-right-radius: 20px;
 	border-bottom-left-radius: 20px;
-
 }
 
 #showprofile
 {
 	padding: 30px;
-	border-top-right-radius: 20px;
-	border-bottom-left-radius: 20px;
-	background-color: #012780;
-
+	border-radius: 20px;
+	background-color: #a9e5edd8;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
-#all
+#alldash
 {
-	box-shadow: inset 0 -3em 3em rgba(0, 0, 0, 0.1), 0 0 0 0px rgb(255, 255, 255),
+	box-shadow: inset 0 -3em 3em rgba(245, 241, 241, 0.1), 0 0 0 0px rgb(255, 255, 255),
     0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
-	border-top-right-radius: 30px;
-	border-bottom-left-radius: 30px;
-	border-bottom-right-radius: 5px;
-	border-top-left-radius: 5px;
-	background-color: #ABC0C0;
+	border-radius: 20px;
 	padding: 30px;
+}
+
+#show-tr{
+	padding: 20px;
+	border-radius: 20px;
+	background-color: #a9e5edd8;
+	display: flex;
+	flex-direction: column;
 }
 
 #untilexpire
@@ -40,6 +44,10 @@
 	border-bottom-left-radius: 20px;
 	background-color: #ABC0C0;
 	padding: 30px;
+	/* display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center; */
 }
 
 #history
@@ -53,3 +61,32 @@ body{
 	font-family: "shabnam";
 }
 
+
+#transactions
+{
+border: 2px solid ;
+border-color: #ABC0C0;
+border-top-left-radius: 20px;
+border-bottom-right-radius: 20px;
+box-shadow: 5px 5px 5px gray;
+}
+#wallet-pernium{
+	padding: 30px;
+	border-radius: 20px;
+	background-color:white;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.ss{
+	color: #0992f5;
+}
+
+.loading-dashboard{
+    height: 30px !important;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+	padding:"5px 50px 5px 50px ";
+} 

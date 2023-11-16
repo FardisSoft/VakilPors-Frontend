@@ -11,6 +11,7 @@ import { BASE_API_ROUTE } from '../../Constants';
 import { useAuth } from "../../context/AuthProvider";
 import { updateLawyer } from '../../services/userService';
 import { toast } from 'react-toastify';
+import StyledButton from '../ButtonComponent';
 
 // mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
@@ -34,7 +35,7 @@ const Call_Edit_Lawyer_Profile = () => {
   const [gender, setGender] = useState('');
   const [title, setTitle] = useState('');
   const [specialties, setSpecialties] = useState([]);
-  const descriptionUser = "کاربر گرامی ! در این قسمت می توانید تمامی اطلاعات کاربری خود را بروزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";  
+  const descriptionUser = "کاربر گرامی! در این قسمت می‌توانید تمامی اطلاعات کاربری خود را به‌روزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";  
 
   const showErrorMessage = (errorMessage) => {
     toast.error(errorMessage, {
@@ -259,6 +260,13 @@ const Call_Edit_Lawyer_Profile = () => {
     });
   }
 
+  const handleMelliCardChange = (file) => {
+    setdetail({
+      ...refdetail.current,
+      ['nationalCardImage']: file,
+    });
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       const token = await getAccessToken();
@@ -465,10 +473,19 @@ const Call_Edit_Lawyer_Profile = () => {
                 <MuiFileInput fullWidth margin='10px' value={refdetail.current.resume} inputProps={{style: {padding: "20px 10px"}}} onChange={handleResumeChange} />
               </div>
             </div>
+            <div className="form-group">
+              <div className="form-row">
+                <label style={{ position: "relative", top: "5px" }}><p>کارت ملی (کارت ملی شما در پروفایل شما نمایش داده نخواهد شد و تنها جهت احراز هویت شما توسط ادمین مورد بررسی قرار می گیرد)</p></label>
+                <MuiFileInput fullWidth margin='10px' value={refdetail.current.nationalCardImage} inputProps={{style: {padding: "20px 10px"}}} onChange={handleMelliCardChange} />
+              </div>
+            </div>
             <div className="form-row-last">
-              <Button sx={{marginTop:'20px', fontFamily:'shabnam'}} type="submit" variant="contained" color="primary" onClick={updateuser}>
+              {/* <Button sx={{marginTop:'20px', fontFamily:'shabnam'}} type="submit" variant="contained" color="primary" onClick={updateuser}>
                 ثبت اطلاعات
-              </Button>
+              </Button> */}
+              <StyledButton style={{marginTop:'20px', fontFamily:'shabnam', width: '10rem' }} type="submit"  onClick={updateuser}>
+                ثبت اطلاعات
+              </StyledButton>
             </div>
           </form>
         </div>

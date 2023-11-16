@@ -15,7 +15,7 @@ const PremiumCard = () => {
   const showSuccesMessage = (payam) => {
     toast.success(payam, {
         position: "bottom-right",
-        autoClose: 5000,
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -27,27 +27,9 @@ const PremiumCard = () => {
 };
   
   const onClick1 = async () => {
-
-    showSuccesMessage('در حال انتقال به صفحه پریمیوم.');
-    await delay(5000);
-    navigate('/');
-};
-
-
-
-const onClick2 = async () => {
-
-  showSuccesMessage('در حال انتقال به صفحه پریمیوم');
-  await delay(5000);
-  navigate('/PremiumPage');
-};
-
-
-const onClick3 = async () => {
-
-  showSuccesMessage('در حال انتقال به صفحه پریمیوم');
-  await delay(5000);
-  navigate('/PremiumPage');
+    showSuccesMessage('در حال انتقال به داشبورد...');
+    await delay(3000);
+    navigate('/PremiumPage');
 };
 
   return (
@@ -65,7 +47,7 @@ const onClick3 = async () => {
               <li>برگزاری میتینگ و هماهنگی با وکلای درخواستی</li>
               <li>چت آنلاین با وکلای درخواستی</li>
             </ul>
-            <button onClick={onClick1} type="button" class="btn btn-lg btn-block btn-outline-primary"><Link to="/PremiumPage">خرید</Link></button>
+            <button onClick={onClick1} type="button" class="btn btn-lg btn-block btn-outline-primary">خرید</button>
           </div>
         </div>
         <div class="col-4 card mb-4 box-shadow" style={{borderTopRightRadius : "20px", borderBottomLeftRadius : "20px"}}>
@@ -80,7 +62,7 @@ const onClick3 = async () => {
               <li>برگزاری میتینگ و هماهنگی با وکلای درخواستی</li>
               <li>چت آنلاین با وکلای درخواستی</li>
             </ul>
-            <button onClick={onClick2} type="button" class="btn btn-lg btn-block btn-outline-primary"><Link to="/PremiumPage">خرید</Link></button>
+            <button onClick={onClick1} type="button" class="btn btn-lg btn-block btn-outline-primary">خرید</button>
           </div>
         </div>
         <div class="col-4 card mb-4 box-shadow" style={{borderTopRightRadius : "20px", borderBottomLeftRadius : "20px"}}>
@@ -95,7 +77,7 @@ const onClick3 = async () => {
               <li>برگزاری میتینگ و هماهنگی با وکلای درخواستی</li>
               <li>چت آنلاین با وکلای درخواستی</li>
             </ul>
-            <button onClick={onClick3} type="button" class="btn btn-lg btn-block btn-outline-primary"><Link to="/PremiumPage">خرید</Link></button>
+            <button onClick={onClick1} type="button" class="btn btn-lg btn-block btn-outline-primary">خرید</button>
           </div>
         </div>
       </div>

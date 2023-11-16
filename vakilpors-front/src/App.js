@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
-import React, { useState } from 'react';
-import { Grid, Typography, Button, Card, Box } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Grid, Typography, Button, Box } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import landing_page from './assests/images/default_lawyer_profile_background_picture.jpg';
 import { makeStyles } from "@mui/styles";
@@ -60,6 +60,22 @@ function a11yProps(index) {
 
 // mui rtl
 
+import Advertising from './components/premium-page/Avertising'; 
+import lawer1 from './assests/images/lawer1.jpg';
+import lawer2 from './assests/images/lawer2.jpg';
+import StyledButton from './components/ButtonComponent';
+const cacheRtl = createCache({
+  key: 'muirtl',
+  stylisPlugins: [rtlPlugin],
+});
+const theme = createTheme({
+  direction: 'rtl',
+  typography: {
+    fontFamily: 'shabnam',
+  },
+});
+
+
 const useStyles = makeStyles((theme) => ({
   card: {
     padding: theme.spacing(2),
@@ -95,12 +111,31 @@ const App = () => {
 
   const handleButtonClick = (description) => {
     console.log(description);
-    // انجام عملیات مورد نیاز برای دکمه
   };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const [lawyers, setLawyers] = useState([]);
+
+  useEffect(() => {
+    const fetchLawyers = async () => {
+      try {
+        const response = await axios.get(`${BASE_API_ROUTE}Lawyer/GetAll`);
+        console.log(response);
+        if (response.data) {
+          const randomNumber = Math.floor(Math.random() * 100) + 1;
+          setLawyers(response.data.data.slice(randomNumber, randomNumber+10)); // Only take the first 10 lawyers
+        }
+      } catch (error) {
+        console.error('Failed to fetch lawyers:', error);
+      }
+    };
+    
+    
+    fetchLawyers();
+  }, []);
+
 
   return (
     <>
@@ -434,9 +469,9 @@ const App = () => {
 3. اطلاع‌رسانی جهت آگاه‌سازی عموم مردم
 
 
-</TabPanel>
+  </TabPanel>
 
-    </Box>
+</Box>
 
 
 

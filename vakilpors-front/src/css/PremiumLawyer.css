@@ -1,0 +1,117 @@
+.custom-body {
+  background-color: #ADD8E6; 
+  color: black;
+  font-family: Shabnam,Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.custom-header {
+  background-color: #8355a3;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  
+}
+
+.custom-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+.custom-plans {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  background-color: #90EE90; 
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.custom-plan-card {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
+  width: calc(50% - 20px);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  border-radius: 5px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.custom-plan-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.custom-plan-card h3 {
+  color: #0255a5;
+  margin-bottom: 10px;
+}
+
+.custom-price {
+  background-color: #2196f3;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.custom-price .amount {
+  font-size: 24px;
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.custom-price .period {
+  font-size: 16px;
+  color: #fff;
+}
+
+.custom-button {
+  background-color: #4CAF50; 
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 5px;
+}
+
+.custom-button:hover {
+  background-color: #45a049; 
+}
+
+.custom-title {
+  font-size: 2em;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.custom-subtitle {
+  font-size: 1.5em;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.custom-features {
+  list-style-type: disc;
+  margin-left: 20px;
+  color: #666;
+}
+
+.custom-testimonial {
+  font-style: italic;
+  color: #666;
+  margin-top: 20px;
+}
