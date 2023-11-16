@@ -1,0 +1,29 @@
+{
+  "presets": ["@babel/preset-env", "@babel/preset-react"],
+  "plugins": [["@babel/transform-runtime"]]
+}
+
+
+// {
+//   "plugins": ["syntax-dynamic-import", "transform-runtime"],
+//   "presets": [
+//     [
+//       "es2015",
+//       {
+//         "modules": false
+//       }
+//     ],
+//     "react",
+//     "stage-0"
+//   ],
+//   "env": {
+//     "start": {
+//       "presets": [
+//         "react-hmre"
+//       ]
+//     },
+//     "test": {
+//       "presets": ["es2015", "react", "stage-0"]
+//     }
+//   }
+// }
