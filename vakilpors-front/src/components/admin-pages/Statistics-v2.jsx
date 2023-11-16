@@ -20,14 +20,12 @@ import InfoIcon from '@mui/icons-material/Info';
 
 const VisitPannelStatistics = () => {
 	const [ data_1, setData_1 ] = useState([]);
+	const [ weekVisits, setWeekVisits ] = useState([]);
+	const [ lawyerCityCount, setLawyerCityCount ] = useState([]);
+	const [ lawyerTitleCount, setLawyerTitleCount ] = useState([]);
+	const [ transactionMonthlyCount, setTransactionMonthlyCount ] = useState([]);
 
-	const [ data_2, setData_2 ] = useState([]);
-	const [ data_3, setData_3 ] = useState([]);
-	const [ data_4, setData_4 ] = useState([]);
-	const [ data_5, setData_5 ] = useState([]);
-	const [ data_6, setData_6 ] = useState([]);
-
-  	const [statistics, setStatistics] = useState(null);
+	const [statistics, setStatistics] = useState(null);
 	const { getAccessToken } = useAuth();
 	const [ maxView, setMaxView ] = useState();
 	const [ minView, setMinView ] = useState();
@@ -49,6 +47,12 @@ const VisitPannelStatistics = () => {
 				try {
 					const response = await axios.get(url, {headers: {Authorization: `Bearer ${token}`}});
 					setStatistics(response.data);
+					setWeekVisits(response.data.weekVisits);
+					setLawyerCityCount(response.data.lawyerCityCount);
+					setLawyerTitleCount(response.data.lawyerTitleCount);
+					setTransactionMonthlyCount(response.data.transactionMonthlyCount);
+
+					// console.log(`The statistics are: ${response.data.weekVisits}`);
 					setData_1([
 						...data_1,
 						{ period: 'بازدید امروز', count: response.data.dailyVisits },
@@ -109,22 +113,11 @@ const VisitPannelStatistics = () => {
 		},
 	};
 
-	// Data for line chart
-	const lineData = [
-		{ year: 'شنبه', value: 30 },
-		{ year: 'یکشنبه', value: 40 },
-		{ year: 'دوشنبه', value: 35 },
-		{ year: 'سه‌شنبه', value: 50 },
-		{ year: 'چهارشنبه', value: 49 },
-		{ year: 'پنج‌شنبه', value: 43 },
-		{ year: 'جمعه', value: 70 }	
-	];
-	
 	// Config for line chart
 	const lineConfig = {
-		data: lineData,
-		xField: 'year',
-		yField: 'value',
+		data: weekVisits,
+		xField: 'day',
+		yField: 'count',
 		point: {
 		size: 5,
 		shape: 'diamond',
@@ -132,14 +125,26 @@ const VisitPannelStatistics = () => {
 	};
 	
 	// Data for pie chart
-	const pieData = [
-		{ type: 'تهران', value: 27 },
-		{ type: 'اصفهان', value: 25 },
-		{ type: 'بندرعباس', value: 18 },
-		{ type: 'شیراز', value: 15 },
-		{ type: 'بابل', value: 10 },
-	];
+	// const pieData = [
+	// 	{ type: 'تهران', value: 27 },
+	// 	{ type: 'اصفهان', value: 25 },
+	// 	{ type: 'بندرعباس', value: 18 },
+	// 	{ type: 'شیراز', value: 15 },
+	// 	{ type: 'بابل', value: 10 },
+	// ];
 	
+	lawyerCityCount.sort((a, b) => b.count - a.count);
+
+	// Get the top 5 items
+	const top5 = lawyerCityCount.slice(0, 5);
+
+	const totalCount = top5.reduce((sum, item) => sum + item.count, 0);
+
+	const pieData = top5.map(item => ({
+		value: Math.round((item.count / totalCount) * 100),
+		type: item.city
+	}));
+
 	// Config for pie chart
 	const pieConfig = {
 		appendPadding: 10,
@@ -165,139 +170,29 @@ const VisitPannelStatistics = () => {
 		],
 	};
 
-	// Data for area chart
-	const areaData = [
-		{
-		  "timePeriod": "00",
-		  "value": 0
-		},
-		{
-		  "timePeriod": "01",
-		  "value": 0
-		},
-		{
-		  "timePeriod": "02",
-		  "value": 0
-		},
-		{
-		  "timePeriod": "03",
-		  "value": 0
-		},
-		{
-		  "timePeriod": "04",
-		  "value": 0
-		},
-		{
-		  "timePeriod": "05",
-		  "value": 0
-		},
-		{
-		  "timePeriod": "06",
-		  "value": 5
-		},
-		{
-		  "timePeriod": "07",
-		  "value": 20
-		},
-		{
-		  "timePeriod": "08",
-		  "value": 22
-		},
-		{
-		  "timePeriod": "09",
-		  "value": 3
-		},
-		{
-		  "timePeriod": "10",
-		  "value": 16
-		},
-		{
-		  "timePeriod": "11",
-		  "value": 21
-		},
-		{
-		  "timePeriod": "12",
-		  "value": 30
-		},
-		{
-		  "timePeriod": "13",
-		  "value": 0
-		},
-		{
-		  "timePeriod": "14",
-		  "value": 2
-		},
-		{
-		  "timePeriod": "15",
-		  "value": 1
-		},
-		{
-		  "timePeriod": "16",
-		  "value": 3
-		},
-		{
-		  "timePeriod": "17",
-		  "value": 4
-		},
-		{
-		  "timePeriod": "18",
-		  "value": 1
-		},
-		{
-		  "timePeriod": "19",
-		  "value": 8
-		},
-		{
-		  "timePeriod": "20",
-		  "value": 2
-		},
-		{
-		  "timePeriod": "21",
-		  "value": 2
-		},
-		{
-		  "timePeriod": "23",
-		  "value": 0
-		}
-	]
-
 	// Config for area chart
 	const areaConfig = {
-		data: areaData,
-		xField: 'timePeriod',
-		yField: 'value',
+		data: transactionMonthlyCount,
+		xField: 'month',
+		yField: 'count',
 		xAxis: {
 			range: [0, 1],
 		},
 	};
 
 	// Data for rose chart
-	const roseData = [
-		{
-		  type: 'معاضدتی',
-		  value: 27,
-		},
-		{
-		  type: 'سازمانی',
-		  value: 25,
-		},
-		{
-		  type: 'حقوقی',
-		  value: 18,
-		},
-		{
-		  type: 'جنایی',
-		  value: 15,
-		},
-		{
-		  type: 'تسخیری',
-		  value: 10,
-		},
-		{
-		  type: 'خانوادگی',
-		  value: 5,
-		},
-	  ];
+	lawyerTitleCount.sort((a, b) => b.count - a.count);
+
+	// Get the top 5 items
+	const _top5 = lawyerTitleCount.slice(0, 5);
+
+	const _totalCount = _top5.reduce((sum, item) => sum + item.count, 0);
+
+	const roseData = _top5.map(item => ({
+		value: Math.round((item.count / _totalCount) * 100),
+		type: item.title
+	}));
+
 	// Config for rose chart
 	const roseConfig = {
 		data: roseData,
