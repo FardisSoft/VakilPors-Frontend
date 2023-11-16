@@ -15,6 +15,7 @@ import lawer2 from './assests/images/lawer2.jpg';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BASE_API_ROUTE } from './Constants';
+import StyledButton from './components/ButtonComponent';
 const cacheRtl = createCache({
   key: 'muirtl',
   stylisPlugins: [rtlPlugin],
@@ -68,13 +69,13 @@ const App = () => {
                 <Typography variant="h5" align="center" sx={{ mb: '30px', fontSize: { xs: '20px', sm: '30px' }, color: '#fff', textShadow: '2px 2px #000', }}>
                   گرفتن جواب سوال حقوقی و وکیل برای هر پرونده ای مثل آب خوردن!
                 </Typography>
-                <Grid align='center'>
-                  <Button variant="contained" size='large' color="primary" onClick={() => navigate("/Lawyer-search-page")}>
-                    جست و جوی وکلا
-                  </Button>
-                  <Button variant="contained" sx={{ ml: '20px' }} size='large' color="primary" onClick={() => navigate("/Forum")}>
-                    فروم عمومی
-                  </Button>
+                <Grid container direction="row" justifyContent="center" alignItems="center">
+                  <StyledButton onClick={() => navigate("/Lawyer-search-page")}>
+                  جست و جوی وکلا
+                  </StyledButton>
+                  <StyledButton style={{ marginRight: '2rem' }} onClick={() => navigate("/Forum")}>
+                  فروم عمومی
+                  </StyledButton>
                 </Grid>
 
                 <Advertising lawyers={lawyers} /> 
