@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import { Box, Grid, Container, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import logo from '../assests/images/logoFS.jpg';
+import logo from '../assests/images/logoFS_blueback.jpg';
 
 const useStyles = makeStyles((theme) => ({
   rootBox: {
@@ -47,6 +47,7 @@ const Footer = () => {
           <Box component="nav" className={classes.footerNav}>
             <Link to={'/'} className={classes.footerLink}><Typography fontFamily={'shabnam'} color={'white'}>صفحه اصلی</Typography></Link>
             <Link to={'/Policy'} className={classes.footerLink}><Typography fontFamily={'shabnam'} color={'white'}>شرایط سایت</Typography></Link>
+            <Link to={'/AsasiLaw'} className={classes.footerLink}><Typography fontFamily={'shabnam'} color={'white'}>قانون اساسی</Typography></Link>
             <Link to={'/contactUs'} className={classes.footerLink}><Typography fontFamily={'shabnam'} color={'white'}>تماس با ما</Typography></Link>
             <Link to={'/Login'} className={classes.footerLink}><Typography fontFamily={'shabnam'} color={'white'}>ورود</Typography></Link>
           </Box>

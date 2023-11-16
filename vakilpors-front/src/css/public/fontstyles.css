@@ -1,0 +1,21 @@
+@font-face {
+  font-family: 'MaktabRita-Regular';
+  src: url('./fonts/MaktabRita-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'shabnam';
+  src: url('./fonts/Shabnam.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'yekan';
+  src: url('./fonts/Yekan.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+

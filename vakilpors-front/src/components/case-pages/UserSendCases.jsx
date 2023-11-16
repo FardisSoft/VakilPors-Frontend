@@ -5,6 +5,7 @@ import { useAuth } from "../../context/AuthProvider";
 import { BASE_API_ROUTE } from "../../Constants";
 import axios from "axios";
 import { Typography, Grid, Avatar, Card, CardContent, CardHeader } from "@mui/material";
+import { WorkspacePremium } from '@mui/icons-material';
 
 const UserSendCases = () => {
 
@@ -49,6 +50,14 @@ const UserSendCases = () => {
           <Grid display="flex" alignItems="flex-start" justifyContent="flex-start" item component={Card} sm>
             <CardContent>
               <Typography sx={{fontFamily:"shabnam"}}>{user.name}</Typography>
+              {user.isPremium && <WorkspacePremium sx={{
+                color: 'purple',
+                backgroundColor: 'gold',
+                borderRadius: '12px',
+                padding: '1px',
+                width: '23px',
+                ml: '5px',
+              }} />}
               <Typography onClick={() => navigate(`/show-cases/true_${user.id}_${LawyerId}`)} sx={{fontFamily:"shabnam", fontSize:'14px', color:'blue', cursor:'pointer'}}>مشاهده پرونده ها</Typography>
             </CardContent>
           </Grid>
