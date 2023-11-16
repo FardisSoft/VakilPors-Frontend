@@ -4,6 +4,9 @@ import { Grid, Typography, Button, Box } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import landing_page from './assests/images/default_lawyer_profile_background_picture.jpg';
 import { makeStyles } from "@mui/styles";
+import axios from 'axios';
+import { BASE_API_ROUTE } from '../src/Constants';
+
 
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
@@ -27,6 +30,10 @@ import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@mui/material/styles';
+import Advertising from './components/premium-page/Avertising'; 
+import lawer1 from './assests/images/lawer1.jpg';
+import lawer2 from './assests/images/lawer2.jpg';
+import StyledButton from './components/ButtonComponent';
 
 
 
@@ -56,14 +63,6 @@ function a11yProps(index) {
     'aria-controls': `vertical-tabpanel-${index}`,
   };
 }
-
-
-// mui rtl
-
-import Advertising from './components/premium-page/Avertising'; 
-import lawer1 from './assests/images/lawer1.jpg';
-import lawer2 from './assests/images/lawer2.jpg';
-import StyledButton from './components/ButtonComponent';
 const cacheRtl = createCache({
   key: 'muirtl',
   stylisPlugins: [rtlPlugin],

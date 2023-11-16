@@ -22,12 +22,16 @@ import Tooltip from '@mui/material/Tooltip';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import { Dialog, DialogContent } from '@mui/material';
+import { Dialog, DialogContent, Grid } from '@mui/material';
 import FilterAltRoundedIcon from '@mui/icons-material/FilterAltRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import { Select } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Modal} from '@mui/material';
+import useLawyerShowSearch from "./useLawyerShowSearch";
+
+import { useAuth } from "../../context/AuthProvider";
+
 
 
 
@@ -58,11 +62,24 @@ const useStyles = makeStyles((theme) => ({
 
 const Lawyer_search_page = () => {
   const Pagesize = 12;
+  const [lawyerdetail, setLawyerdetail] = useState([]);
+  const [filteredLawyers, setFilteredLawyers] = useState([]);
+  const [LawyerQuery, setLawyerQuery] = useState({ text: "" });
+  const classes = useStyles();
+  const [Pagenum, setPagenum] = useState(1);
+  const [sort, setsort] = useState("");
+  const [click, setclick] = useState(false);
 
-    const [lawyerdetail, setLawyerdetail] = useState([]);
-    const [filteredLawyers, setFilteredLawyers] = useState([]);
-    const [LawyerQuery, setLawyerQuery] = useState({ text: "" });
-    const classes = useStyles();
+  const { refUserRole } = useAuth();
+
+
+    const { lawyerdetail1, loading, error, hasMore } = useLawyerShowSearch(
+      Pagenum,
+      Pagesize,
+      sort,
+      click
+    );
+    console.log(lawyerdetail1, hasMore, error, loading);
 
 
     const [open, setOpen] = useState(false);
@@ -118,9 +135,7 @@ const Lawyer_search_page = () => {
 
     const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-  const [Pagenum, setPagenum] = useState(1);
-  const [sort, setsort] = useState("");
-  const [click, setclick] = useState(false);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -158,7 +173,7 @@ const Lawyer_search_page = () => {
         .toLowerCase()
         .includes(event.target.value.toLowerCase());
     });
-    setlawyerdetail(allLawyers);
+    setLawyerdetail(allLawyers);
   };
 
   const handleSortBygrade = () => {
