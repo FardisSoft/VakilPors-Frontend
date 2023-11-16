@@ -22,15 +22,49 @@ import Tooltip from '@mui/material/Tooltip';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { Dialog, DialogContent } from '@mui/material';
+import FilterAltRoundedIcon from '@mui/icons-material/FilterAltRounded';
+import StarRoundedIcon from '@mui/icons-material/StarRounded';
+import { Select } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { Modal} from '@mui/material';
 
+
+
+
+const useStyles = makeStyles((theme) => ({
+
+  ratingContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: theme.spacing(1),
+  },
+  starIcon: {
+    color: '#FFD700', // رنگ طلایی
+  },
+  modalContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(2),
+    padding: theme.spacing(2),
+    borderRadius: theme.spacing(2),
+    maxWidth: 400,
+    margin: '0 auto',
+    backgroundColor: '#fff',
+  },
+
+
+}));
 
 const Lawyer_search_page = () => {
 
     const [lawyerdetail, setLawyerdetail] = useState([]);
     const [filteredLawyers, setFilteredLawyers] = useState([]);
     const [LawyerQuery, setLawyerQuery] = useState({ text: "" });
+    const classes = useStyles();
 
 
+    const [open, setOpen] = useState(false);
     const [filters, setFilters] = useState({
         Rating: '',
         Title: '',
@@ -41,12 +75,20 @@ const Lawyer_search_page = () => {
         Gender: '',
       });
     
-      const handleChange = (e) => {
-        const { name, value } = e.target;
+      const handleChange = (event) => {
+        const { name, value } = event.target;
         setFilters((prevFilters) => ({
           ...prevFilters,
           [name]: value,
         }));
+      };
+
+      const handleOpen = () => {
+        setOpen(true);
+      };
+    
+      const handleClose = () => {
+        setOpen(false);
       };
     
       const handleSubmit = async () => {
@@ -59,6 +101,7 @@ const Lawyer_search_page = () => {
         } catch (error) {
           console.error(error);
         }
+        setOpen(false);
       };
 
 
@@ -200,61 +243,124 @@ const Lawyer_search_page = () => {
                                 >   
                                 </Menu>
                             </Box>
+
+
+                            <div>
+      <Button
+        sx={{
+          background: 'white',
+          color: 'black',
+          borderRadius: '20px',
+          border: '1px solid black',
+          '&:hover': { background: 'white' },
+        }}
+        variant="contained"
+        onClick={handleOpen}
+      >
+        <Typography sx={{ fontFamily: 'shabnam' }}>
+          <FilterAltRoundedIcon /> فیلتر
+        </Typography>
+      </Button>
+      <Modal open={open} onClose={handleClose}>
+      <Box className={classes.modalContent}>
+        <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, borderRadius: '20px' }}>
+        <TextField
+            label="نام و نام خانوادگی"
+            name="Name"
+            value={filters.Name}
+            onChange={handleChange}
+          />
+          <TextField
+            label="تیتر"
+            name="Title"
+            value={filters.Title}
+            onChange={handleChange}
+            sx={{direction:"rtl"}}
+          />
+          <TextField
+            label="گروه"
+            name="MemberOf"
+            value={filters.MemberOf}
+            onChange={handleChange}
+          />
+          <TextField
+            label="شماره پروانه"
+            name="LicenseNumber"
+            value={filters.LicenseNumber}
+            onChange={handleChange}
+          />
+          <TextField
+            label="شهر"
+            name="City"
+            value={filters.City}
+            onChange={handleChange}
+          />
+          <TextField
+            label="جنسیت"
+            name="Gender"
+            value={filters.Gender}
+            onChange={handleChange}
+          />          
+          <div className={classes.ratingContainer}>
+            <Select
+              value={filters.Rating}
+              onChange={handleChange}
+              name="Rating"
+              displayEmpty
+              inputProps={{ 'aria-label': 'Rating' }}
+              style={{ minWidth: 320 }}
+            >
+              <MenuItem sx={{ fontFamily: 'shabnam' }} value="" disabled>
+                امتیاز
+              </MenuItem>
+              <MenuItem value="1">
+                <StarRoundedIcon className={classes.starIcon} />
+              </MenuItem>
+              <MenuItem value="2">
+                <StarRoundedIcon className={classes.starIcon} />
+                <StarRoundedIcon className={classes.starIcon} />
+              </MenuItem>
+              <MenuItem value="3">
+                <StarRoundedIcon className={classes.starIcon} />
+                <StarRoundedIcon className={classes.starIcon} />
+                <StarRoundedIcon className={classes.starIcon} />
+              </MenuItem>
+              <MenuItem value="4">
+                <StarRoundedIcon className={classes.starIcon} />
+                <StarRoundedIcon className={classes.starIcon} />
+                <StarRoundedIcon className={classes.starIcon} />
+                <StarRoundedIcon className={classes.starIcon} />
+              </MenuItem>
+              <MenuItem value="5">
+                <StarRoundedIcon className={classes.starIcon} />
+                <StarRoundedIcon className={classes.starIcon} />
+                <StarRoundedIcon className={classes.starIcon} />
+                <StarRoundedIcon className={classes.starIcon} />
+                <StarRoundedIcon className={classes.starIcon} />
+              </MenuItem>
+            </Select>
+          </div>
+          <Button variant="contained" onClick={handleSubmit}>
+            <Typography sx={{ fontFamily: 'shabnam' }}>
+              <FilterAltRoundedIcon /> اعمال فیلتر
+            </Typography>
+          </Button>
+        </DialogContent>
+        </Box>
+      </Modal>
+    </div>
+
+
+
+
+
+
+
+
+
                         </Toolbar>
                     </Container>
                 </AppBar>
-
-
-                <div>
-      <Button variant="contained" onClick={handleSubmit}>
-        فیلتر
-      </Button>
-      <div>
-        <TextField
-          label="Rating"
-          name="Rating"
-          value={filters.Rating}
-          onChange={handleChange}
-        />
-        <TextField
-          label="Title"
-          name="Title"
-          value={filters.Title}
-          onChange={handleChange}
-        />
-        <TextField
-          label="Name"
-          name="Name"
-          value={filters.Name}
-          onChange={handleChange}
-        />
-        <TextField
-          label="City"
-          name="City"
-          value={filters.City}
-          onChange={handleChange}
-        />
-        <TextField
-          label="MemberOf"
-          name="MemberOf"
-          value={filters.MemberOf}
-          onChange={handleChange}
-        />
-        <TextField
-          label="LicenseNumber"
-          name="LicenseNumber"
-          value={filters.LicenseNumber}
-          onChange={handleChange}
-        />
-        <TextField
-          label="Gender"
-          name="Gender"
-          value={filters.Gender}
-          onChange={handleChange}
-        />
-      </div>
-    </div>
-
 
                 <section className="container" >
                     <div class="contain">

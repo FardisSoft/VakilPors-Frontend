@@ -1,0 +1,81 @@
+body {
+  background-color: #d4d2d2;
+}
+
+.homepage .wrapper {
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+}
+
+.homepage .container {
+  width: 21%;
+  height: 28vmin;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 1em 0;
+  position: relative;
+  font-size: 16px;
+  border-radius: 0.5em;
+  background-color: #2C3E50;
+  border-bottom: 10px solid #0a52ab;
+}
+
+.homepage i.material-icons {
+  color: #0a52ab;
+  font-size: 2em; /* تغییر این مقدار */
+  text-align: center;
+}
+
+.homepage span.num {
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+  font-size: 3em;
+}
+
+.homepage span.text {
+  color: #e0e0e0;
+  font-size: 1em;
+  text-align: center;
+  pad: 0.7em 0;
+  font-weight: 400;
+  line-height: 0;
+}
+
+@media screen and (max-width: 1024px) {
+  .homepage .wrapper {
+    width: 85vw;
+  }
+  .homepage .container {
+    height: 26vmin;
+    width: 26vmin;
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .homepage .wrapper {
+    width: 90vw;
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+  .homepage .container {
+    width: calc(50% - 40px);
+    height: 30vmin;
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .homepage .wrapper {
+    gap: 15px;
+  }
+  .homepage .container {
+    width: 100%;
+    height: 25vmin;
+    font-size: 8px;
+  }
+}
