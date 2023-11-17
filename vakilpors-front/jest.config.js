@@ -1,3 +1,3 @@
-module.exports = {
-    testMatch: ["<rootDir>/tests/*.test.js"],
-  };
+// module.exports = {
+//     testMatch: ["<rootDir>/tests/*.test.js"],
+//   };

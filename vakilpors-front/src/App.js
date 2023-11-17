@@ -8,7 +8,7 @@ import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@mui/material/styles';
-import Advertising from './components/premium-page/Avertising'; // Import the Advertising component
+import Advertising from './components/premium-page/Advertising'; // Import the Advertising component
 import landing_page from './assests/images/default_lawyer_profile_background_picture.jpg';
 import lawer1 from './assests/images/lawer1.jpg';
 import lawer2 from './assests/images/lawer2.jpg';

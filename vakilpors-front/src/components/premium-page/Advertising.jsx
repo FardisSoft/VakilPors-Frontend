@@ -25,7 +25,7 @@ const LawyerCard = ({ lawyer }) => {
     const navigate = useNavigate();
     const shortDescription = lawyer.aboutMe.split(' ').slice(0, 30).join(' ');
     if (!lawyer) {
-        return null; // or some fallback UI
+        return null; 
     }
     else{
         return(
@@ -37,7 +37,7 @@ const LawyerCard = ({ lawyer }) => {
             p: 2,
             borderRadius: 2,
             boxShadow: 3,
-            backgroundColor: 'gray', // Set the background color to brown
+            backgroundColor: 'gray', 
             color: 'white', // Set the text color to blue
             width: '100%', // Take up full width
             height: 190, // Increase height by 20 pixels
