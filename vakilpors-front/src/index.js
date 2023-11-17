@@ -50,7 +50,7 @@ import VerifyLawyers from './components/admin-pages/VerifyLawyers';
 import VisitPannelStatistics from './components/admin-pages/Statistics-v2';
 import HandleTransactions from './components/admin-pages/HandleTransactions';
 
-import AdvertisingPage from './components/premium-page/Avertising';
+import AdvertisingPage from './components/premium-page/Advertising';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
