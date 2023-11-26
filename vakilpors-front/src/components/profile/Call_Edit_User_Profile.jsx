@@ -181,7 +181,7 @@ const Call_Edit_User_Profile = () => {
                 </p>
               </div>
               <form className="form-detail" id="myform">
-                <h2 style={{ textAlign: "center" }}>اطلاعات کاربری</h2>
+                <h2 style={{ textAlign: "center" }}>اطلاعات فردی</h2>
                 <div
                   style={{
                     display: "flex",
