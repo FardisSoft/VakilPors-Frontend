@@ -51,6 +51,7 @@ import VisitPannelStatistics from './components/admin-pages/Statistics-v2';
 import HandleTransactions from './components/admin-pages/HandleTransactions';
 
 import AdvertisingPage from './components/premium-page/Avertising';
+import Lawyer_Jobinfo from './components/profile/Lawyer_Jobinfo';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
@@ -88,6 +89,7 @@ root.render(
               <Route path="/HandleTransactions" element={<Sidebar component={HandleTransactions}/>}/>
               <Route path="/AdvertisingPage" element={<Sidebar component={AdvertisingPage}/>}/>
               <Route path="/PremiumLawyers" element={<Sidebar component={PremiumLawyers}/>}/>
+              <Route path="/editjob_lawyer" element={<Sidebar component={Lawyer_Jobinfo}/>}/>
               <Route path="*" element={<_404page/>}/>
           </Routes>
         </AuthProvider>
