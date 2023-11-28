@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import useStateRef from "react-usestateref";
 import { Helmet } from "react-helmet-async";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-import { Button, Chip, TextField } from "@mui/material";
-import { MuiFileInput } from "mui-file-input";
+import { Button, TextField } from "@mui/material";
 import "../../css/profileelawyer.css";
 import jwt from "jwt-decode";
 import axios from "axios";
@@ -17,13 +16,13 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
-
+import ReactLoading from "react-loading";
 // mui rtl
 import rtlPlugin from "stylis-plugin-rtl";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // mui rtl
 const cacheRtl = createCache({
@@ -50,6 +49,7 @@ const Call_Edit_Lawyer_Profile = () => {
   const [gender, setGender] = useState("");
   const [title, setTitle] = useState("");
   const [specialties, setSpecialties] = useState([]);
+  const [loading, setloading] = useState(false);
   const descriptionUser =
     "کاربر گرامی! در این قسمت می‌توانید تمامی اطلاعات فردی خود را به‌روزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";
 
@@ -206,6 +206,7 @@ const Call_Edit_Lawyer_Profile = () => {
   }, []);
 
   const updateuser = async (event) => {
+    setloading(true);
     event.preventDefault();
     const formData = new FormData();
     for (const key in refdetail.current) {
@@ -238,10 +239,11 @@ const Call_Edit_Lawyer_Profile = () => {
       const tokenData = jwt(token);
       try {
         const success = await updateLawyer(formData);
-        // console.log("success in updating lawyer data : ",success);
+        setloading(false);
         showSuccesMessage("اطلاعات شما با موفقیت تغییر کرد.");
       } catch (error) {
         console.log("error in updating lawyer data : ", error);
+        setloading(false);
         showErrorMessage("تغییر اطلاعات با خطا مواجه شد.");
       }
     }
@@ -309,7 +311,7 @@ const Call_Edit_Lawyer_Profile = () => {
                     type="submit"
                     onClick={() => navigate("/editjob_lawyer")}
                   >
-                    اطلاعات شغلی 
+                    اطلاعات شغلی
                   </StyledButton>
                 </div>
               </div>
@@ -408,7 +410,9 @@ const Call_Edit_Lawyer_Profile = () => {
                       label="استان-شهر"
                       variant="outlined"
                       name="city"
-                      value={refdetail.current.city}
+                      value={
+                        refdetail.current ? refdetail.current.city : ""
+                      }
                       onChange={setUserInfo}
                       size="small"
                       fullWidth
@@ -449,7 +453,7 @@ const Call_Edit_Lawyer_Profile = () => {
                     variant="outlined"
                     type="text"
                     name="aboutMe"
-                    value={refdetail.current.aboutMe}
+                    value={refdetail.current ? refdetail.current.aboutMe : ""}
                     onChange={setUserInfo}
                     fullWidth
                     InputLabelProps={{ shrink: true }}
@@ -461,8 +465,8 @@ const Call_Edit_Lawyer_Profile = () => {
                   <Avatar
                     style={{
                       borderRadius: "10px",
-                      width: "80px",
-                      height: "80px",
+                      width: "150px",
+                      height: "90px",
                     }}
                     src={refdetail.current.profileBackgroundPictureUrl}
                     variant="square"
@@ -506,8 +510,8 @@ const Call_Edit_Lawyer_Profile = () => {
                     </h3>
                   </div>
                 </div>
-
-                <div style={{ marginTop: "10px", display: "flex" }}>
+{/* 
+                <div style={{ marginTop: "5px", display: "flex" }}>
                   <Avatar
                     style={{
                       borderRadius: "10px",
@@ -538,7 +542,7 @@ const Call_Edit_Lawyer_Profile = () => {
                       }}
                       sx={{
                         color: "white",
-                        width: "100px",
+                        width: "130px",
                         mt: 1,
                         height: "40px",
                       }}
@@ -556,7 +560,7 @@ const Call_Edit_Lawyer_Profile = () => {
                       جهت احراز هویت شما توسط ادمین مورد بررسی قرار می گیرد
                     </h3>
                   </div>
-                </div>
+                </div> */}
                 <div
                   className="form-row-last"
                   style={{ display: "flex", justifyContent: "center" }}
@@ -569,7 +573,19 @@ const Call_Edit_Lawyer_Profile = () => {
                     type="submit"
                     onClick={updateuser}
                   >
-                    ثبت اطلاعات
+                    {!loading && <span>ثبت اطلاعات</span>}
+                    {loading && (
+                      <div
+                        style={{
+                          height: "30px",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <ReactLoading type="bubbles" color="#fff" />
+                      </div>
+                    )}
                   </StyledButton>
                 </div>
               </form>
