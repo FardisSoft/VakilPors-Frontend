@@ -64,8 +64,9 @@ const Lawyer_Jobinfo = () => {
   const [specialties, setSpecialties] = useState([]);
   const fileInputRef = useRef(null);
   const [loading, setloading] = useState(false);
-
   const [open, setOpen] = useState(false);
+  const [loadingocr, setloadingocr] = useState(false);
+  const [code, setcode] = useState("");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -171,7 +172,7 @@ const Lawyer_Jobinfo = () => {
 
       reader.onloadend = () => {
         const fileString = reader.result;
-        console.log(fileString);
+        // console.log(fileString);
         setdetail({
           ...refdetail.current,
           ["nationalCardImage"]: file,
@@ -285,7 +286,6 @@ const Lawyer_Jobinfo = () => {
                 src={refdetail.current.nationalCardImageUrl}
                 variant="square"
               />
-
               <StyledButton
                 style={{
                   marginTop: "5px",
@@ -296,8 +296,8 @@ const Lawyer_Jobinfo = () => {
                 type="submit"
                 onClick={HandleOcr}
               >
-                {/* {!loading && <span> ارسال</span>}
-                {loading && (
+                {!loadingocr && <span> ارسال</span>}
+                {loadingocr && (
                   <div
                     style={{
                       height: "30px",
@@ -308,9 +308,10 @@ const Lawyer_Jobinfo = () => {
                   >
                     <ReactLoading type="bubbles" color="#fff" />
                   </div>
-                )} */}
-                ارسال
+                )}
               </StyledButton>
+              <div style={{marginTop:'5px'}}>کد ملی شما:</div>
+              <div>{code}</div>
             </div>
           </DialogContentText>
         </DialogContent>
@@ -425,56 +426,57 @@ const Lawyer_Jobinfo = () => {
       }
     }
   };
-  function convertImageUrlToFile(url, fileName) {
-    return fetch(url)
-      .then((response) => response.blob())
-      .then((blob) => {
-        const file = new File([blob], fileName, {
-          lastModified: new Date().getTime(),
-          lastModifiedDate: new Date(),
-          type: blob.type,
-        });
-        return file;
+  async function convertImageUrlToFile(url, fileName) {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const file = new File([blob], fileName, {
+        lastModified: new Date().getTime(),
+        lastModifiedDate: new Date(),
+        type: blob.type,
       });
+      return file;
+    } catch (error) {
+      console.error("خطا:", error);
+      throw error;
+    }
   }
   const HandleOcr = async (event) => {
+    setcode("")
     console.log(refdetail.current.nationalCardImage);
-
+    const img1 = await convertImageUrlToFile(
+      refdetail.current.nationalCardImageUrl,
+      "ocr.jpeg"
+    );
+    console.log(img1);
     const url = BASE_API_ROUTE + `Ocr`;
     const file = refdetail.current.nationalCardImage;
 
-    console.log(file); // اضافه کردن این خط
-
-    if (file && file instanceof Blob) {
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        const fileString = reader.result;
-        console.log(fileString);
-        setdetail({
-          ...refdetail.current,
-          ["nationalCardImage"]: file,
-        });
-      };
-
-      reader.readAsDataURL(file);
+    const formData1 = new FormData();
+    if (refdetail.current.nationalCardImage === null) {
+      console.log("dfdf");
+      formData1.append("imageFile", img1);
+    } else {
+      console.log("sdfdsf");
+      formData1.append("imageFile", file);
     }
-
-    const formData = new FormData();
-    formData.append("imageFile", refdetail.current.nationalCardImage);
-    console.log(formData);
-
+    console.log(formData1);
+    setloadingocr(true);
     axios
-      .post(url, formData, {
+      .post(url, formData1, {
         headers: {
-          "Content-Type": "multipart/form-data"
+          "Content-Type": "multipart/form-data",
         },
       })
       .then((response) => {
         console.log(response);
+        setcode(response.data.data.nationalCode);
+        console.log(response.data.data.nationalCode);
+        setloadingocr(false);
       })
       .catch((error) => {
         console.log(error);
+        setloadingocr(false);
       });
   };
 

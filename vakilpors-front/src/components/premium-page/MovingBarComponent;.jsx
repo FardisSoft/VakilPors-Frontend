@@ -26,25 +26,20 @@ const useStyles = makeStyles((theme) => ({
     },
     textContainer: {
         whiteSpace: 'nowrap',
-        animation: '$marquee 20s linear infinite',
         color: '#ffffff',
         textAlign: 'center',
-        width: '200%',
         fontFamily: 'Vazir, sans-serif', // Use 'Vazir' font
         fontSize: '20px',
         textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)',
-    },
-    text: {
-        display: 'inline-block',
-        color: 'black',
-        padding: '0 10px',
+        animation: '$marquee 50s linear infinite', // Adjusted duration to slow down
+        width: 'fit-content', // Adjust width for better readability
     },
     '@keyframes marquee': {
         '0%': {
-            transform: 'translateX(100%)',
+            transform: 'translateX(-100%)',
         },
         '100%': {
-            transform: 'translateX(-100%)',
+            transform: 'translateX(100%)',
         },
     },
 }));
@@ -57,20 +52,14 @@ const MovingBarComponent = ({ fullText }) => {
         // Change background color every 3 seconds for a more dynamic effect
         const interval = setInterval(() => {
             setBackgroundColor(getRandomColor());
-        }, 2000);
+        }, 2000); // Adjusted interval between appearances
 
         return () => clearInterval(interval);
     }, []);
 
     function getRandomColor() {
-        const colors = [
-             // Base color (gray)
-            '#42A5F5', // Blue
-            '#66BB6A', // Green
-            '#8E24AA', // Purple
-        ];
-
-        const randomIndex = Math.floor(Math.random() * (colors.length - 1));
+        const colors = ['#42A5F5', '#66BB6A', '#8E24AA'];
+        const randomIndex = Math.floor(Math.random() * colors.length);
         return colors[randomIndex];
     }
 
@@ -90,7 +79,7 @@ const MovingBarComponent = ({ fullText }) => {
                 <Card>
                     <CardContent style={{ backgroundColor }}>
                         <div className={classes.textContainer}>
-                            <Typography variant="h5" className={classes.text}>
+                            <Typography variant="h5">
                                 {initialText}
                             </Typography>
                         </div>
