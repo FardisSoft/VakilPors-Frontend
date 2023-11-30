@@ -1,9 +1,10 @@
 import React from 'react';
-import { render, screen, waitFor, act, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { BrowserRouter as Router } from 'react-router-dom';
-import App, { BASE_API_ROUTE } from './App';
+import App from './App';
 
 const mockAxios = new MockAdapter(axios);
 
@@ -33,36 +34,38 @@ mockAxios.onGet(`${BASE_API_ROUTE}Lawyer/GetAll`).reply(200, {
 });
 
 describe('App component', () => {
-    it('renders the App component with lawyer information and advertising', async () => {
-        await act(async () => {
-            render(
-                <Router>
-                    <App />
-                </Router>
-            );
-        });
+  it('renders learn react link', () => {
+    render(<App />);
+    const linkElement = screen.getByText(/learn react/i);
+    expect(linkElement).toBeInTheDocument();
+  });
 
-        await waitFor(() => expect(screen.getByText(mockLawyers[0].user.name)).toBeInTheDocument());
+  it('renders the App component with lawyer information and advertising', async () => {
+    render(
+      <Router>
+        <App />
+      </Router>
+    );
 
-        expect(screen.getByText(`عنوان: ${mockLawyers[0].title ? mockLawyers[0].title : "وکیل"}`)).toBeInTheDocument();
-        expect(screen.getByText(`شهر: ${mockLawyers[0].city ? mockLawyers[0].city : "نامشخص"}`)).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText(mockLawyers[0].user.name)).toBeInTheDocument());
 
-        expect(screen.getByText(mockLawyers[1].user.name)).toBeInTheDocument();
-        expect(screen.getByText(`عنوان: ${mockLawyers[1].title ? mockLawyers[1].title : "وکیل"}`)).toBeInTheDocument();
-        expect(screen.getByText(`شهر: ${mockLawyers[1].city ? mockLawyers[1].city : "نامشخص"}`)).toBeInTheDocument();
-    });
+    expect(screen.getByText(`عنوان: ${mockLawyers[0].title ? mockLawyers[0].title : "وکیل"}`)).toBeInTheDocument();
+    expect(screen.getByText(`شهر: ${mockLawyers[0].city ? mockLawyers[0].city : "نامشخص"}`)).toBeInTheDocument();
 
-    it('navigates to Lawyer-search-page when "جست و جوی وکلا" button is clicked', async () => {
-        const { getByText } = render(
-            <Router>
-                <App />
-            </Router>
-        );
+    expect(screen.getByText(mockLawyers[1].user.name)).toBeInTheDocument();
+    expect(screen.getByText(`عنوان: ${mockLawyers[1].title ? mockLawyers[1].title : "وکیل"}`)).toBeInTheDocument();
+    expect(screen.getByText(`شهر: ${mockLawyers[1].city ? mockLawyers[1].city : "نامشخص"}`)).toBeInTheDocument();
+  });
 
-        await act(async () => {
-            fireEvent.click(getByText('جست و جوی وکلا'));
-        });
+  it('navigates to Lawyer-search-page when "جست و جوی وکلا" button is clicked', async () => {
+    const { getByText } = render(
+      <Router>
+        <App />
+      </Router>
+    );
 
-        await waitFor(() => expect(window.location.pathname).toBe('/Lawyer-search-page'));
-    });
+    userEvent.click(getByText('جست و جوی وکلا'));
+
+    await waitFor(() => expect(window.location.pathname).toBe('/Lawyer-search-page'));
+  });
 });
