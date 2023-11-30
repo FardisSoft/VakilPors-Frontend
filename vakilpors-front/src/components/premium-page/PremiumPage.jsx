@@ -193,7 +193,7 @@ const PremiumPage = () => {
         setmonthtransaction([]);
         setmonth([]);
         for (let i = 0; i < transactionmonth.data.data.length; i++) {
-          const newData = transactionmonth.data.data[i].amount;
+          const newData =Math.floor(transactionmonth.data.data[i].amount);
           const newmonth = transactionmonth.data.data[i].month;
           console.log(transactionmonth.data.data[i].amount);
           setmonthtransaction((prevState) => [...prevState, newData]);
