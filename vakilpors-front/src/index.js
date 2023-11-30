@@ -52,6 +52,10 @@ import HandleTransactions from './components/admin-pages/HandleTransactions';
 
 import AdvertisingPage from './components/premium-page/Avertising';
 import Lawyer_Jobinfo from './components/profile/Lawyer_Jobinfo';
+
+
+import AllUsersTable from './components/admin-pages/AllUsers';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
@@ -85,6 +89,7 @@ root.render(
               <Route path="/videoCall/:roomId" element={<Sidebar component={VideoCall}/>}/>
               <Route path="/VerifyLawyers" element={<Sidebar component={VerifyLawyers}/>}/>
               <Route path="/Statistics" element={<Sidebar component={VisitPannelStatistics}/>}/>
+              <Route path="/AllUsers" element={<Sidebar component={AllUsersTable}/>}/>
               <Route path="/AsasiLaw" element={<Sidebar component={AsasiLaw}/>}/>
               <Route path="/HandleTransactions" element={<Sidebar component={HandleTransactions}/>}/>
               <Route path="/AdvertisingPage" element={<Sidebar component={AdvertisingPage}/>}/>

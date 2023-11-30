@@ -1,0 +1,133 @@
+.alert-history .muirtl-180b3ld {
+height: 90% !important;
+}
+
+.alert-history .deviceAppbar {
+padding-top: 5px !important;
+}
+
+.alert-history .card {
+width: 100%;
+}
+
+.alert-history .p-datatable-emptymessage {
+color: crimson !important;
+}
+
+.alert-history .p-datatable .p-column-header-content {
+display        : flex;
+align-items    : center;
+justify-content: center;
+}
+
+.alert-history .p-datatable .p-datatable-tbody>tr>td {
+text-align  : center !important;
+border      : 1px solid #e9ecef !important;
+border-width: 0 0 1px 0 !important;
+padding     : 1rem 1rem !important;
+}
+
+@media screen and (max-width: 960px) {
+.datatable-crud-demo .table-header {
+    align-items: flex-start;
+}
+}
+
+.alert-history .datatable-crud-demo .product-image {
+width     : 100px;
+box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.alert-history .datatable-crud-demo .p-dialog .product-image {
+width  : 150px;
+margin : 0 auto 2rem auto;
+display: block;
+}
+
+.alert-history .datatable-crud-demo .confirmation-content {
+display        : flex;
+align-items    : center;
+justify-content: center;
+}
+
+@media screen and (max-width: 960px) {
+.datatable-crud-demo .p-toolbar {
+    flex-wrap: wrap;
+}
+
+.datatable-crud-demo .p-toolbar .p-button {
+    margin-bottom: 0.25rem;
+}
+
+.datatable-crud-demo .table-header {
+    flex-direction: column;
+}
+
+.datatable-crud-demo .table-header .p-input-icon-left,
+.datatable-crud-demo .table-header input {
+    width: 100%;
+}
+}
+
+.alert-history .datatable-crud-demo .table-header {
+display        : flex;
+align-items    : center;
+justify-content: space-between;
+}
+
+
+.alert-history .muirtl-180b3ld {
+height: 90% !important;
+}
+
+.alert-history .deviceAppbar {
+padding-top: 5px !important;
+}
+
+.alert-history .AlertDetails {
+margin-bottom: 1rem;
+}
+
+.alert-history .detailsDialog {
+direction: rtl;
+}
+
+.alert-history .flex-text {
+display: flex;
+}
+
+.alert-history .alertHistoryMap {
+height: 25vh !important;
+width : 34vw !important;
+}
+
+.alert-history .table-header1 {
+margin-bottom  : 1rem;
+display        : flex;
+align-items    : center;
+justify-content: flex-start;
+}
+
+.alert-history .table-header1-lastest-update-date {
+color       : #dc5c5c;
+margin-right: 1rem;
+}
+
+.alert-history .table-header1-icon {
+
+cursor: pointer;
+}
+
+.alert-history .table-header1-btn {
+display        : flex;
+align-items    : center;
+justify-content: flex-start;
+}
+
+.alert-history .table-header2-right {
+margin-bottom: 0.5rem;
+}
+
+.alert-history .table-header2-left {
+margin-bottom: 0.5rem;
+}
