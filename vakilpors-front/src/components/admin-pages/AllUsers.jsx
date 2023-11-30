@@ -27,6 +27,13 @@ const theme = createTheme({
   direction: "rtl",
 });
 
+const Field = {"name": "Name",
+                "userName": "UserName",
+                "phoneNumber": "PhoneNumber",
+                "email": "Email",
+                "roleName": "RoleName"
+              };
+
 const AllUsersTable = () => {
   const { getAccessToken } = useAuth();
 
@@ -82,8 +89,8 @@ const AllUsersTable = () => {
               roleId: null,
               PageNumber: lazyParams.page,
               PageSize: lazyParams.rows,
-              Sort: null,
-              IsAscending: null,
+              Sort: lazyParams.sortField,
+              IsAscending: lazyParams.sortOrder,
             },
           })
           .then((res) => {
@@ -135,11 +142,15 @@ const AllUsersTable = () => {
     } else if (newSortOrder === -1) {
       newSortOrder = "false";
     }
-    setSortField(event.sortField);
+    console.log(`The event sortField is: ${event.sortField}`);
+    const selectedSortField = Field[event.sortField]; // Get the selected sort field from the Field array
+    const pascalSortField = selectedSortField.charAt(0).toUpperCase() + selectedSortField.slice(1); // Convert the selected sort field to PascalCase
+    
+    setSortField(selectedSortField);
     setSortOrder(newSortOrder);
     setLazyParams((prevState) => ({
       ...prevState,
-      sortField: sortField,
+      sortField: pascalSortField, // Use the PascalCase sort field in the lazyParams state
       sortOrder: newSortOrder,
     }));
   };
@@ -158,7 +169,7 @@ const AllUsersTable = () => {
       query: userName,
       PageSize: 10,
       PageNumber: lazyParams.page,
-      Sort: sortField,
+      Sort: lazyParams.sortField,
       IsAscending: sortOrder,
       roleId: roleId.code
     };
