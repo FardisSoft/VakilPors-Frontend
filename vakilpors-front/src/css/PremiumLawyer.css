@@ -1,4 +1,4 @@
-:root {
+.custom-styles {
   --main-bg: #fce4ec;
   --card-bg: #e6e6fa; /* Purple */
   --title-color: #6a0dad; /* Darker Purple */
@@ -8,24 +8,18 @@
   --border-color: #d2b4de; /* Lighter Purple */
 }
 
-body {
-  font-family: 'Caveat', cursive;
-  background: var(--main-bg);
-  margin: 0;
-  padding: 40px;
-}
-
-.custom-header {
+.custom-styles .custom-header {
   background: linear-gradient(to bottom, #8e44ad, #6a0dad);
   padding: 30px;
   text-align: center;
 }
 
-.custom-title {
+.custom-styles .custom-title {
   color: white;
   font-size: 2.5em;
   margin-bottom: 10px;
 }
+
 
 .custom-subtitle {
   font-style: italic;

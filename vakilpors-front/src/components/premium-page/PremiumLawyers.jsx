@@ -44,7 +44,7 @@ const commonFeatures = Array.from(
 
 export default function PremiumLawyers() {
     return (
-        <div className="custom-body">
+        <div className="custom-styles">
             <header className="custom-header">
                 <h1 className="custom-title">رشد کسب و کار خود را با تبلیغات هدفمند آنلاین افزایش دهید</h1>
                 <p className="custom-subtitle">بین برنامه های روزانه یا هفتگی انتخاب کنید تا با مشتریان جدید ارتباط برقرار کنید.</p>
@@ -52,15 +52,12 @@ export default function PremiumLawyers() {
 
             <div className="custom-container">
                 <div className="custom-plans">
-                    {plans.map((plan, index) => (
-                        <PlanCard key={index} plan={plan} commonFeatures={commonFeatures} />
-                    ))}
+                    {/* Rest of your JSX code */}
                 </div>
             </div>
         </div>
     );
 }
-
 function PlanCard({ plan, commonFeatures }) {
     return (
         <Card className="custom-plan-card">
