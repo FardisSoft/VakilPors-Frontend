@@ -6,6 +6,13 @@ import React from 'react';
 // Import the component to be tested
 import PremiumLawyers from '../PremiumLawyers';
 
+// Mock the implementation of the Button component
+jest.mock('@material-ui/core/Button', () => {
+    return ({ children, onClick }) => (
+        <button onClick={onClick}>{children}</button>
+    );
+});
+
 // Write a test suite for the component
 describe('PremiumLawyers component', () => {
     // Write a test case for rendering the component

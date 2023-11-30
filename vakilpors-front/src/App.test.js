@@ -6,31 +6,33 @@ import MockAdapter from 'axios-mock-adapter';
 import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
 
+const BASE_API_ROUTE = 'https://api.fardissoft.ir/'; // Assuming you have this defined in your code
+
 const mockAxios = new MockAdapter(axios);
 
 const mockLawyers = [
-    {
-        id: 134,
-        user: {
-            id: 13,
-            name: "ترانه",
-        },
-        title: null,
-        city: null,
+  {
+    id: 134,
+    user: {
+      id: 13,
+      name: 'ترانه',
     },
-    {
-        id: 1,
-        user: {
-            id: 100,
-            name: "شادی هراتی",
-        },
-        title: "معاضدتی",
-        city: "گلستان",
+    title: null,
+    city: null,
+  },
+  {
+    id: 1,
+    user: {
+      id: 100,
+      name: 'شادی هراتی',
     },
+    title: 'معاضدتی',
+    city: 'گلستان',
+  },
 ];
 
 mockAxios.onGet(`${BASE_API_ROUTE}Lawyer/GetAll`).reply(200, {
-    data: mockLawyers,
+  data: mockLawyers,
 });
 
 describe('App component', () => {
@@ -49,12 +51,12 @@ describe('App component', () => {
 
     await waitFor(() => expect(screen.getByText(mockLawyers[0].user.name)).toBeInTheDocument());
 
-    expect(screen.getByText(`عنوان: ${mockLawyers[0].title ? mockLawyers[0].title : "وکیل"}`)).toBeInTheDocument();
-    expect(screen.getByText(`شهر: ${mockLawyers[0].city ? mockLawyers[0].city : "نامشخص"}`)).toBeInTheDocument();
+    expect(screen.getByText(`عنوان: ${mockLawyers[0].title ? mockLawyers[0].title : 'وکیل'}`)).toBeInTheDocument();
+    expect(screen.getByText(`شهر: ${mockLawyers[0].city ? mockLawyers[0].city : 'نامشخص'}`)).toBeInTheDocument();
 
     expect(screen.getByText(mockLawyers[1].user.name)).toBeInTheDocument();
-    expect(screen.getByText(`عنوان: ${mockLawyers[1].title ? mockLawyers[1].title : "وکیل"}`)).toBeInTheDocument();
-    expect(screen.getByText(`شهر: ${mockLawyers[1].city ? mockLawyers[1].city : "نامشخص"}`)).toBeInTheDocument();
+    expect(screen.getByText(`عنوان: ${mockLawyers[1].title ? mockLawyers[1].title : 'وکیل'}`)).toBeInTheDocument();
+    expect(screen.getByText(`شهر: ${mockLawyers[1].city ? mockLawyers[1].city : 'نامشخص'}`)).toBeInTheDocument();
   });
 
   it('navigates to Lawyer-search-page when "جست و جوی وکلا" button is clicked', async () => {
