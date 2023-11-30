@@ -50,7 +50,7 @@ const AllUsersTable = () => {
   const [lazyParams, setLazyParams] = useState({
     first: 0,
     rows: 10,
-    page: 0,
+    page: 1,
     sortField: sortField,
     sortOrder: sortOrder,
   });
@@ -116,7 +116,7 @@ const AllUsersTable = () => {
       ...prevParams,
       first: event.first,
       rows: event.rows,
-      page: event.page,
+      page: event.page + 1,
     }));
   };
   // On Sort Change
