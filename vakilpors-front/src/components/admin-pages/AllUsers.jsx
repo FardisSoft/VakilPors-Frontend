@@ -55,6 +55,11 @@ const AllUsersTable = () => {
     sortOrder: sortOrder,
   });
 
+  const handleRoleChange = (event) => {
+    console.log(`The event.value is: ${event.target.value}`)
+    setRoleId(event.target.value);
+  };
+
   const getRecords = async (isSearching) => {
     const token = await getAccessToken();
     if (token) {
@@ -142,23 +147,12 @@ const AllUsersTable = () => {
   // Search For Specific Alert
   const searchHandler = async () => {
     setLoading(true);
-    // if there is no search parameter this condition doesnt let sendding request
-    if (!userName) {
-      setIsSearching(false);
-      setLazyParams({
-        first: 0,
-        rows: 10,
-        page: 1,
-        sortField: sortField,
-        sortOrder: sortOrder,
-      });
-      setLoading(false);
-      return;
-    }
-    //
+    console.log(`---------------------------- IN SEARCH HANDLER -------------------------`);
+
     setIsSearching(true);
 
     let URL = BASE_API_ROUTE + "User/GetAllPaged";
+
 
     let params = {
       query: userName,
@@ -166,7 +160,10 @@ const AllUsersTable = () => {
       PageNumber: lazyParams.page,
       Sort: sortField,
       IsAscending: sortOrder,
+      roleId: roleId.code
     };
+    console.log(`The params are: ${params.roleId.code}`);
+
     const token = await getAccessToken();
     axios({
       method: "get",
@@ -251,13 +248,20 @@ const AllUsersTable = () => {
                   </FormControl>
                 </Grid>
                 <Grid item xl={2} lg={2} md={4} sm={6} xs={12}>
+                <FormControl
+                    variant="outlined"
+                    style={{ direction: "rtl", width: "100%" }}
+                  >
                   <Dropdown
                     style={{ padding: "7px" }}
                     optionLabel="name"
                     options={usersType}
-                    placeholder="ناظر"
+                    placeholder="نقش کاربر"
                     className="w-full md:w-14rem"
+                    value={roleId}
+                    onChange={handleRoleChange}
                   />
+                  </FormControl>
                 </Grid>
 
                 <Grid className="searchBtn" item xl={2} lg={2} md={4} sm={6} xs={6}>
