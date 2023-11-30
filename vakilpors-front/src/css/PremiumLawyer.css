@@ -1,117 +1,101 @@
-.custom-body {
-  background-color: #ADD8E6; 
-  color: black;
-  font-family: Shabnam,Arial, sans-serif;
+:root {
+  --main-bg: #fce4ec;
+  --card-bg: #e6e6fa; /* Purple */
+  --title-color: #6a0dad; /* Darker Purple */
+  --text-color: #753240;
+  --accent-color: #9b59b6; /* Lighter Purple */
+  --button-color: #8e44ad; /* Purple */
+  --border-color: #d2b4de; /* Lighter Purple */
+}
+
+body {
+  font-family: 'Caveat', cursive;
+  background: var(--main-bg);
   margin: 0;
-  padding: 0;
+  padding: 40px;
 }
 
 .custom-header {
-  background-color: #8355a3;
-  color: white;
-  padding: 20px;
+  background: linear-gradient(to bottom, #8e44ad, #6a0dad);
+  padding: 30px;
   text-align: center;
-  
+}
+
+.custom-title {
+  color: white;
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.custom-subtitle {
+  font-style: italic;
+  font-size: 1.2em;
+  line-height: 1.5;
 }
 
 .custom-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 40px;
+  max-width: 1000px;
+  margin: 40px auto;
 }
 
 .custom-plans {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  background-color: #90EE90; 
-  padding: 20px;
-  border-radius: 10px;
-  margin-top: 20px;
+  gap: 30px;
 }
 
 .custom-plan-card {
-  background-color: #ffffff;
-  border: 1px solid #ddd;
-  margin-bottom: 20px;
-  width: calc(50% - 20px);
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  transition: 0.3s;
-  border-radius: 5px;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-.custom-plan-card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-}
-
-.custom-plan-card h3 {
-  color: #0255a5;
-  margin-bottom: 10px;
+  background: var(--card-bg);
+  padding: 30px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
 }
 
 .custom-price {
-  background-color: #2196f3;
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
+  background: var(--accent-color);
+  border-radius: 10px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  padding: 10px 15px;
 }
 
 .custom-price .amount {
   font-size: 24px;
   font-weight: bold;
-  margin-right: 5px;
+  color: white;
 }
 
 .custom-price .period {
   font-size: 16px;
-  color: #fff;
-}
-
-.custom-button {
-  background-color: #4CAF50; 
-  border: none;
   color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  transition: 0.3s;
-  border-radius: 5px;
 }
 
-.custom-button:hover {
-  background-color: #45a049; 
-}
-
-.custom-title {
-  font-size: 2em;
-  color: white;
-  margin-bottom: 10px;
-}
-
-.custom-subtitle {
-  font-size: 1.5em;
-  color: white;
-  margin-bottom: 20px;
+.custom-description {
+  color: var(--text-color);
+  margin-top: 20px;
+  line-height: 1.6;
 }
 
 .custom-features {
   list-style-type: disc;
   margin-left: 20px;
-  color: #666;
+  color: var(--text-color);
 }
 
-.custom-testimonial {
-  font-style: italic;
-  color: #666;
-  margin-top: 20px;
+.custom-button {
+  background: var(--button-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 15px 30px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.custom-button:hover {
+  background: lighten(var(--button-color), 10%);
+}
+
+.custom-plan-card:hover {
+  transform: scale(1.02);
 }

@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, Typography, makeStyles } from '@material-ui/core';
-import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     container: {
         position: 'relative',
         width: '100%',
-        height: '80px', // Adjust the height as needed
+        height: '80px',
         overflow: 'hidden',
-        backgroundColor: '#394240', // Replace with your desired background color
+        backgroundColor: '#394240',
         borderRadius: '8px',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
     },
     movingBar: {
         position: 'absolute',
@@ -17,27 +17,27 @@ const useStyles = makeStyles((theme) => ({
         left: 0,
         width: '100%',
         height: '100%',
-        backgroundColor: 'gray', // Replace with your desired bar color
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-start',
         cursor: 'pointer',
-        overflow: 'hidden', // Hide content that overflows
+        overflow: 'hidden',
         borderRadius: '8px',
     },
     textContainer: {
-        whiteSpace: 'nowrap', // Prevent text from wrapping
-        animation: '$marquee 40s linear infinite', // Adjust the animation duration for slower movement
-        color: '#ffffff', // Replace with your desired text color
+        whiteSpace: 'nowrap',
+        animation: '$marquee 20s linear infinite',
+        color: '#ffffff',
         textAlign: 'center',
-        width: '200%', // Double the width for continuous scrolling effect
-        fontFamily: 'Shabnam, sans-serif', // Use Shabnam font
+        width: '200%',
+        fontFamily: 'Vazir, sans-serif', // Use 'Vazir' font
+        fontSize: '20px',
+        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)',
     },
     text: {
         display: 'inline-block',
-        color:'black',
-        padding: '0 10px', // Add padding for better visibility
-        fontSize: '18px', // Adjust the font size as needed
+        color: 'black',
+        padding: '0 10px',
     },
     '@keyframes marquee': {
         '0%': {
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const MovingBarComponent = ({fullText}) => {
+const MovingBarComponent = ({ fullText }) => {
     const classes = useStyles();
     const [backgroundColor, setBackgroundColor] = useState(getRandomColor());
 
@@ -57,27 +57,26 @@ const MovingBarComponent = ({fullText}) => {
         // Change background color every 3 seconds for a more dynamic effect
         const interval = setInterval(() => {
             setBackgroundColor(getRandomColor());
-        }, 3000);
+        }, 2000);
 
         return () => clearInterval(interval);
     }, []);
 
     function getRandomColor() {
-        const colors = ['#FF8A65', '#90A4AE', '#FFD54F', '#81C784']; // Add your desired vibrant colors
-        const randomIndex = Math.floor(Math.random() * colors.length);
+        const colors = [
+             // Base color (gray)
+            '#42A5F5', // Blue
+            '#66BB6A', // Green
+            '#8E24AA', // Purple
+        ];
+
+        const randomIndex = Math.floor(Math.random() * (colors.length - 1));
         return colors[randomIndex];
     }
 
-    // const fullText =
-    //     'استفاده از برنامه پریمیوم هفتگی به شما این امکان را می‌دهد که به طور مداوم با مشتریان جدید ارتباط برقرار کنید. با قیمت مقرون به صرفه و امکانات منحصر به فرد، کسب و کار شما در نتایج جستجو و بخش‌های پیشنهادی به چشم می‌خورد. این برنامه امکاناتی همچون قرار دادن لیست ویژه، نمایش تبلیغات در صفحات با ترافیک بالا، گزارش تحلیلی از کلیک‌ها و تاثیرات، و خلاقیت‌های سفارشی برای تبلیغات موثر را فراهم می‌کند.' +
+    const initialText = fullText + ' ';
 
-    //     'هر روز با مشتریان محلی در تماس بودن نقش اساسی در رشد کسب و کار شما دارد. با برنامه روزانه، لیست کسب و کار شما به مدت 24 ساعت در سایت ما به صورت برجسته نمایش داده می‌شود، تا به حداکثر دیده شدن برسد. این فرصت را از دست ندهید و از تبلیغات روزانه برای جذب مشتریان جدید بهره مند شوید. این برنامه همچنین از امکاناتی همچون قرار دادن لیست ویژه، نمایش تبلیغات در صفحات با ترافیک بالا، گزارش تحلیلی از کلیک‌ها و تاثیرات، و خلاقیت‌های سفارشی برای تبلیغات موثر بهره می‌برد.';
-    
-        const initialText = fullText + ' '; // Add an extra space for a smoother transition
-
-    // Use Link component for navigation
     const navigateToPage = () => {
-        // Replace '/PremiumLawyers' with your desired page URL
         window.location.href = '/PremiumLawyers';
     };
 
