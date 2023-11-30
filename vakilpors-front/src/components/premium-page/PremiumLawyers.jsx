@@ -51,8 +51,10 @@ export default function PremiumLawyers() {
             </header>
 
             <div className="custom-container">
-                <div className="custom-plans">
-                    {/* Rest of your JSX code */}
+            <div className="custom-plans">
+                    {plans.map((plan, index) => (
+                        <PlanCard key={index} plan={plan} commonFeatures={commonFeatures} />
+                    ))}
                 </div>
             </div>
         </div>

@@ -1,14 +1,4 @@
 .custom-styles {
-  --main-bg: #fce4ec;
-  --card-bg: #e6e6fa; /* Purple */
-  --title-color: #6a0dad; /* Darker Purple */
-  --text-color: #753240;
-  --accent-color: #9b59b6; /* Lighter Purple */
-  --button-color: #8e44ad; /* Purple */
-  --border-color: #d2b4de; /* Lighter Purple */
-}
-
-.custom-styles .custom-header {
   background: linear-gradient(to bottom, #8e44ad, #6a0dad);
   padding: 30px;
   text-align: center;
@@ -19,7 +9,6 @@
   font-size: 2.5em;
   margin-bottom: 10px;
 }
-
 
 .custom-subtitle {
   font-style: italic;
@@ -38,14 +27,14 @@
 }
 
 .custom-plan-card {
-  background: var(--card-bg);
+  background: #e6e6fa; /* Purple */
   padding: 30px;
-  border: 1px solid var(--border-color);
+  border: 1px solid #d2b4de; /* Lighter Purple */
   border-radius: 10px;
 }
 
 .custom-price {
-  background: var(--accent-color);
+  background: #9b59b6; /* Lighter Purple */
   border-radius: 10px;
   display: flex;
   justify-content: space-between;
@@ -65,7 +54,7 @@
 }
 
 .custom-description {
-  color: var(--text-color);
+  color: #753240;
   margin-top: 20px;
   line-height: 1.6;
 }
@@ -73,11 +62,11 @@
 .custom-features {
   list-style-type: disc;
   margin-left: 20px;
-  color: var(--text-color);
+  color: #753240;
 }
 
 .custom-button {
-  background: var(--button-color);
+  background: #8e44ad; /* Purple */
   color: white;
   border: none;
   border-radius: 5px;
@@ -87,7 +76,7 @@
 }
 
 .custom-button:hover {
-  background: lighten(var(--button-color), 10%);
+  background: #a569bd; /* Lighten Purple */
 }
 
 .custom-plan-card:hover {
