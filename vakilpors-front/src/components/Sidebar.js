@@ -21,7 +21,9 @@ import {
   PaidOutlined,
   ArrowDropDown,
   WorkspacePremium,
+  GroupIcon
 } from "@mui/icons-material";
+import PeopleIcon from '@mui/icons-material/People';
 import MenuIcon from "@mui/icons-material/Menu";
 import React, { useState, useEffect } from "react";
 import useStateRef from "react-usestateref";
@@ -282,6 +284,11 @@ const Sidebar = (props) => {
           name: "ویرایش اطلاعات",
           icon: ManageAccountsOutlined,
           url: "/edit-user",
+        },
+        {
+          name: "مدیریت کاربران",
+          icon: PeopleIcon,
+          url: "/AllUsers",
         },
         {
           name: "جست و جوی وکلا",
