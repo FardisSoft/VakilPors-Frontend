@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
-import { Typography, Grid, Avatar, Card, CardContent, CardHeader, CardMedia, Button, Link } from "@mui/material";
+import { Typography,Box, Grid, Avatar, Card, CardContent, CardHeader, CardMedia, Button, Link } from "@mui/material";
 import LinkMUI from '@mui/material/Link';
 import { useAuth } from "../../context/AuthProvider";
 import { BASE_API_ROUTE } from '../../Constants';
@@ -10,14 +10,18 @@ import { toast } from 'react-toastify';
 import { FcMenu, FcNumericalSorting12 } from "react-icons/fc";
 import StyledButton from '../ButtonComponent';
 import { AiOutlineDownload, AiOutlineCheckCircle } from "react-icons/ai";
-
+import UsersCard from "./UserCard";
+import { UserStyle } from "./style";
 
 const VerifyLawyers = () => {
 
   const [lawyers, setLawyers] = useState([]);
+  const classes = UserStyle();
+
 
   const { refUserRole, getAccessToken } = useAuth();
   const navigate = useNavigate();
+
 
   const getLawyers = async () => {
     const url = BASE_API_ROUTE + 'Lawyer/GetAll';
@@ -29,6 +33,7 @@ const VerifyLawyers = () => {
       console.log('error in getting lawyers : ',error);
     }
   };
+
 
   const showSuccesMessage = (successMessage) => {
     toast.success(successMessage, {
@@ -83,6 +88,9 @@ const VerifyLawyers = () => {
     }
   };
 
+  const unverifiedLawyersCount = lawyers.filter(lawyer => !lawyer.isVerified).length;
+
+
   return (
     <>
     <Helmet>
@@ -94,53 +102,46 @@ const VerifyLawyers = () => {
           <FcNumericalSorting12 size={25}/>
           لیست وکلای تایید نشده : 
         </Typography>
-      </Grid>
-      {lawyers.map( (lawyer,index) =>
-        !lawyer.isVerified && 
-        <Grid key={index} container direction={{ xs: 'column', sm: 'row' }} marginBottom={'20px'}>
-          <Grid item component={Card} xs={1.75} sx={{ ml: '1rem', mr: '1rem' }}>
-            <CardContent>
-              <Grid container direction={{xs: 'row', sm: 'column'}} display='flex' justifyContent={'space-between'} alignItems={'center'}>
-                <Avatar alt="lawyer profile" sx={{ width: 60, height: 60, mb: {xs:0,sm:'20px'}}} srcSet={lawyer.user.profileImageUrl} />
-                {/* <Button variant="contained" onClick={()=>handleVerify(lawyer.id)} sx={{fontFamily:"shabnam",maxHeight:'40px',mb: {xs:0,sm:'20px'}}}>
-                  تایید مدارک
-                </Button> */}
-                <StyledButton onClick={()=>handleVerify(lawyer.id)} style={{fontFamily:"shabnam", maxHeight:'30px', width: '8rem', marginBottom: '1rem', fontSize: '1rem' }}>
-                  <AiOutlineCheckCircle style={{ marginLeft: '0.25rem'}}/>
-                  تایید مدارک
-                </StyledButton>
-                <Typography sx={{ fontFamily:"shabnam", fontWeight:"bold" }} color="text.secondary">
-                  <Link href={lawyer.resumeLink}>
-                    <AiOutlineDownload />
-                    دانلود رزومه
-                  </Link>
-                </Typography>
-              </Grid>
-            </CardContent>                    
-          </Grid>
-          <Grid item direction={'column'}  component={Card} sm paddingRight={2} xs={6} sx={{ ml: '1rem' }}>
-            <CardContent>
-              <Grid container direction={{xs: 'column', sm: 'row'}} display='flex' justifyContent={{xs:'flex-start',sm:'space-between'}} alignItems={{xs:'flex-start',sm:'space-between'}}>
-                <Typography sx={{fontFamily:"shabnam"}}>{'نام : '+lawyer.user.name}</Typography>
-                <Typography sx={{fontFamily:"shabnam"}}>{'عنوان : '+lawyer.title}</Typography>
-                <Typography sx={{fontFamily:"shabnam"}}>{'شماره پرونده : '+lawyer.parvandeNo}</Typography>
-                <Typography sx={{fontFamily:"shabnam"}}>{'شماره موبایل : '+lawyer.user.phoneNumber}</Typography>
-              </Grid>
-            </CardContent>
-            <Grid container direction={'row'} display={'flex'} justifyContent={'flex-start'} alignItems={'flex-start'}>
-              <Grid flexDirection={'column'} display={'flex'}>
-                <CardHeader titleTypographyProps={{ m:0, fontFamily:"shabnam", fontWeight:"bold", fontSize:"16px", color:"grayText" }} title="کارت ویزیت "/>
-                <CardMedia image={lawyer.callingCardImageUrl || "https://www.vuescript.com/wp-content/uploads/2018/11/Show-Loader-During-Image-Loading-vue-load-image.png"} sx={{ alignSelf:"flex-start", height: 167, width: 300, mb: '20px', ml: '20px' }} title="کارت ویزیت"/>
-              </Grid>
-              <Grid flexDirection={'column'} display={'flex'}>
-                <CardHeader titleTypographyProps={{ m:0, fontFamily:"shabnam", fontWeight:"bold", fontSize:"16px", color:"grayText" }} title="کارت ملی "/>
-                <CardMedia image={lawyer.nationalCardImageUrl || "https://www.vuescript.com/wp-content/uploads/2018/11/Show-Loader-During-Image-Loading-vue-load-image.png"} sx={{ alignSelf:"flex-start", height: 167, width: 300, mb: '20px' }} title="کارت ملی"/>
-              </Grid>
-            </Grid>
-          </Grid>
+
+        <Typography fontFamily={'shabnam'} fontSize={'18px'} sx={{ mb: '2rem', mt: '2rem', mr: '2.5rem' }}>
+          {unverifiedLawyersCount}
+        </Typography>
+
+
         </Grid>
-      )}
-    </Grid>
+
+        <Box className={classes.tabsContainer}>
+        <Box>
+            <Grid container spacing={2} alignItems="stretch">
+              {lawyers.map((lawyer,index) => (
+                !lawyer.isVerified && 
+                <Grid item xs={12} sm={6} md={4} key={index}>
+                  <UsersCard
+                    name={lawyer.user.name}
+                    username={lawyer.title}
+                    created_at={lawyer.user.phoneNumber}
+                    image_code={lawyer.user.profileImageUrl}
+                    device_id={lawyer.id}
+                    parvande={lawyer.parvandeNo}
+                    lawyers={lawyers}
+                    resumeLink={lawyer.resumeLink}
+                    callingCardImageUrl={lawyer.callingCardImageUrl}
+                    nationalCardImageUrl={lawyer.nationalCardImageUrl}
+                  />
+                </Grid>
+                
+
+
+              ))}
+            </Grid>
+          
+        </Box>
+      </Box>
+
+
+
+      </Grid>
+ 
     </>
   );
 };
