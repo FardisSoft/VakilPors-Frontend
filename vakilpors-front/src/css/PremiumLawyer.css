@@ -1,24 +1,36 @@
 .custom-styles {
-  background: linear-gradient(to bottom, #8e44ad, #6a0dad);
+  background: linear-gradient(to bottom, #8e44ad, #d2b4de);
   padding: 30px;
   text-align: center;
+  
 }
-
+.custom-header{
+  /* background: linear-gradient(to bottom, #8e44ad, #6a0dad); */
+  margin-top: 0px;
+  padding-top:0px;
+}
 .custom-styles .custom-title {
+  margin-top: 0px;
+  padding-top:0px;
   color: white;
   font-size: 2.5em;
   margin-bottom: 10px;
 }
 
 .custom-subtitle {
+  vmargin-top: 0px;
+  padding-top:0px;
   font-style: italic;
   font-size: 1.2em;
   line-height: 1.5;
 }
 
 .custom-container {
+  margin-top: 0px;
   max-width: 1000px;
   margin: 40px auto;
+  background:#d2b4de;
+  padding-top:0px;
 }
 
 .custom-plans {
@@ -27,14 +39,14 @@
 }
 
 .custom-plan-card {
-  background: #e6e6fa; /* Purple */
+  background: white; /* White background for the body */
   padding: 30px;
   border: 1px solid #d2b4de; /* Lighter Purple */
   border-radius: 10px;
 }
 
-.custom-price {
-  background: #9b59b6; /* Lighter Purple */
+.custom-plan-card .custom-price {
+  background: #8e44ad; /* Purple for the heading */
   border-radius: 10px;
   display: flex;
   justify-content: space-between;
@@ -42,27 +54,27 @@
   padding: 10px 15px;
 }
 
-.custom-price .amount {
+.custom-plan-card .custom-price .amount {
   font-size: 24px;
   font-weight: bold;
   color: white;
 }
 
-.custom-price .period {
+.custom-plan-card .custom-price .period {
   font-size: 16px;
   color: white;
 }
 
-.custom-description {
-  color: #753240;
+.custom-plan-card .custom-description {
+  color: #753240; /* Text color for the body */
   margin-top: 20px;
   line-height: 1.6;
 }
 
-.custom-features {
+.custom-plan-card .custom-features {
   list-style-type: disc;
   margin-left: 20px;
-  color: #753240;
+  color: #753240; /* Text color for the body */
 }
 
 .custom-button {
