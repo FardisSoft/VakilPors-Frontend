@@ -19,6 +19,7 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { Dropdown } from "primereact/dropdown";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { makeStyles } from '@mui/styles';
 
 const theme = createTheme({
   typography: {
@@ -26,6 +27,15 @@ const theme = createTheme({
   },
   direction: "rtl",
 });
+
+const useStyles = makeStyles(theme => ({
+  labelRoot: {
+    right: 0
+  },
+  shrink: {
+    transformOrigin: "top left"
+  }
+}));
 
 const Field = {"name": "Name",
                 "userName": "UserName",
@@ -37,6 +47,7 @@ const Field = {"name": "Name",
 const AllUsersTable = () => {
   const { getAccessToken } = useAuth();
 
+  const classes = useStyles();
   const [userName, setUserName] = useState(""); // use this as `query`
   
   const [records, setRecords] = useState([]);
@@ -102,7 +113,17 @@ const AllUsersTable = () => {
           .catch((err) => {
             setLoading(false);
             toast.error(
-              "مشکلی در دریافت اطلاعات جدول وجود دارد. لطفا دوباره تلاش کنید."
+              "مشکلی در دریافت اطلاعات جدول وجود دارد. لطفا دوباره تلاش کنید.", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                rtl: true
+              }
             );
           });
       } catch (error) {
@@ -196,7 +217,17 @@ const AllUsersTable = () => {
       .catch((err) => {
         setLoading(false);
         toast.error(
-          "مشکلی در دریافت اطلاعات جدول وجود دارد. لطفا دوباره تلاش کنید."
+          "مشکلی در دریافت اطلاعات جدول وجود دارد. لطفا دوباره تلاش کنید.", {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            rtl: true
+          }
         );
       });
   };
@@ -247,13 +278,13 @@ const AllUsersTable = () => {
                     style={{ direction: "rtl", width: "100%" }}
                   >
                     <TextField
-
+                      style={{ direction: "rtl" }}
                       type={"text"}
                       value={userName}
                       onChange={(user) => {
                         setUserName(user.target.value);
                       }}
-                      label="جست‌وجو در بین کاربران"
+                      label="جست‌وجو"
                       placeholder="مثال: demo"
                     />
                   </FormControl>
