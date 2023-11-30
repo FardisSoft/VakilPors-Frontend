@@ -28,10 +28,10 @@ const useStyles = makeStyles((theme) => ({
         whiteSpace: 'nowrap',
         color: '#ffffff',
         textAlign: 'center',
-        fontFamily: 'Vazir, sans-serif', // Use 'Vazir' font
+        fontFamily: 'Shabnam', // Change to 'Shabnam' font
         fontSize: '20px',
         textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)',
-        animation: '$marquee 70s linear infinite', // Adjusted duration to slow down
+        animation: '$marquee 70s linear infinite', // Adjusted duration to speed up
         width: 'fit-content', // Adjust width for better readability
     },
     '@keyframes marquee': {
@@ -49,10 +49,10 @@ const MovingBarComponent = ({ fullText }) => {
     const [backgroundColor, setBackgroundColor] = useState(getRandomColor());
 
     useEffect(() => {
-        // Change background color every 3 seconds for a more dynamic effect
+        // Change background color every 2 seconds for a more dynamic effect
         const interval = setInterval(() => {
             setBackgroundColor(getRandomColor());
-        }, 2000); // Adjusted interval between appearances
+        }, 1000); // Adjusted interval between appearances
 
         return () => clearInterval(interval);
     }, []);
