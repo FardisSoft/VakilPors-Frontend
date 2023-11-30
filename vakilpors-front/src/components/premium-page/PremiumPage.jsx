@@ -193,7 +193,7 @@ const PremiumPage = () => {
         setmonthtransaction([]);
         setmonth([]);
         for (let i = 0; i < transactionmonth.data.data.length; i++) {
-          const newData = transactionmonth.data.data[i].amount;
+          const newData =Math.floor(transactionmonth.data.data[i].amount);
           const newmonth = transactionmonth.data.data[i].month;
           console.log(transactionmonth.data.data[i].amount);
           setmonthtransaction((prevState) => [...prevState, newData]);
@@ -408,8 +408,8 @@ const PremiumPage = () => {
                                 borderRadius: "20px",
                                 padding: "5px 50px 5px 50px ",
                                 fontWeight: "bold",
-                                width: "80%",
-                                fontSize: "1rem",
+                                width: "85%",
+                                fontSize: "13px",
                               }}
                             >
                               ویرایش پروفایل

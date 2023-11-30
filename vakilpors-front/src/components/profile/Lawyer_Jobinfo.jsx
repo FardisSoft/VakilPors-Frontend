@@ -22,6 +22,13 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import { useNavigate } from "react-router-dom";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Slide from "@mui/material/Slide";
+import { TransitionProps } from "@mui/material/transitions";
 
 // mui rtl
 import rtlPlugin from "stylis-plugin-rtl";
@@ -57,6 +64,18 @@ const Lawyer_Jobinfo = () => {
   const [specialties, setSpecialties] = useState([]);
   const fileInputRef = useRef(null);
   const [loading, setloading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [loadingocr, setloadingocr] = useState(false);
+  const [code, setcode] = useState("");
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const descriptionUser =
     "کاربر گرامی! در این قسمت می‌توانید تمامی اطلاعات شغلی خود را به‌روزرسانی و یا ویرایش کنید. لطفا از صحت اطلاعات وارد شده اطمینان حاصل نمائید.";
 
@@ -153,7 +172,7 @@ const Lawyer_Jobinfo = () => {
 
       reader.onloadend = () => {
         const fileString = reader.result;
-        console.log(fileString);
+        // console.log(fileString);
         setdetail({
           ...refdetail.current,
           ["nationalCardImage"]: file,
@@ -209,6 +228,97 @@ const Lawyer_Jobinfo = () => {
           />
         )}
       />
+    );
+  };
+
+  const OCRDialog = () => {
+    return (
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <div
+              style={{
+                textAlign: "center",
+                fontWeight: "600",
+                color: "#42a7f5",
+              }}
+            >
+              شماره کد ملی
+            </div>
+            <div
+              style={{
+                fontSize: "12px",
+                lineHeight: "2",
+                textAlign: "justify",
+                width: "80%",
+                marginTop: "2%",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              از کیفیت و صحت کارت ملی خود مطمئن شوید و پس از ان دکمه ارسال را
+              فشار دهید تا شماره ملی شما استخراج شود اگر شماره ملی درست نیود
+              خودتان اصلاح کنید
+            </div>
+          </div>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+              }}
+            >
+              <Avatar
+                style={{
+                  borderRadius: "10px",
+                  width: "500px",
+                  height: "300px",
+                }}
+                src={refdetail.current.nationalCardImageUrl}
+                variant="square"
+              />
+              <StyledButton
+                style={{
+                  marginTop: "5px",
+                  fontFamily: "shabnam",
+                  width: "10rem",
+                  marginTop: "10px",
+                }}
+                type="submit"
+                onClick={HandleOcr}
+              >
+                {!loadingocr && <span> ارسال</span>}
+                {loadingocr && (
+                  <div
+                    style={{
+                      height: "30px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <ReactLoading type="bubbles" color="#fff" />
+                  </div>
+                )}
+              </StyledButton>
+              <div style={{marginTop:'5px'}}>کد ملی شما:</div>
+              <div>{code}</div>
+            </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>بستن</Button>
+        </DialogActions>
+      </Dialog>
     );
   };
 
@@ -300,6 +410,7 @@ const Lawyer_Jobinfo = () => {
           : specialtiesString + "/" + takh.title;
     });
     formData.append("specialties", specialtiesString);
+    console.log(formData);
     const token = await getAccessToken();
     if (token) {
       const tokenData = jwt(token);
@@ -314,6 +425,59 @@ const Lawyer_Jobinfo = () => {
         showErrorMessage("تغییر اطلاعات با خطا مواجه شد.");
       }
     }
+  };
+  async function convertImageUrlToFile(url, fileName) {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const file = new File([blob], fileName, {
+        lastModified: new Date().getTime(),
+        lastModifiedDate: new Date(),
+        type: blob.type,
+      });
+      return file;
+    } catch (error) {
+      console.error("خطا:", error);
+      throw error;
+    }
+  }
+  const HandleOcr = async (event) => {
+    setcode("")
+    console.log(refdetail.current.nationalCardImage);
+    const img1 = await convertImageUrlToFile(
+      refdetail.current.nationalCardImageUrl,
+      "ocr.jpeg"
+    );
+    console.log(img1);
+    const url = BASE_API_ROUTE + `Ocr`;
+    const file = refdetail.current.nationalCardImage;
+
+    const formData1 = new FormData();
+    if (refdetail.current.nationalCardImage === null) {
+      console.log("dfdf");
+      formData1.append("imageFile", img1);
+    } else {
+      console.log("sdfdsf");
+      formData1.append("imageFile", file);
+    }
+    console.log(formData1);
+    setloadingocr(true);
+    axios
+      .post(url, formData1, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        setcode(response.data.data.nationalCode);
+        console.log(response.data.data.nationalCode);
+        setloadingocr(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setloadingocr(false);
+      });
   };
 
   const setUserInfo = (event) => {
@@ -575,16 +739,16 @@ const Lawyer_Jobinfo = () => {
                               accept=".pdf"
                               onChange={handleResumeChange}
                             />
-                            <Button
-                              style={{
-                                backgroundColor: "#42f551",
-                                borderRadius: "5px",
-                                height: "25px",
-                                marginRight: "4px",
-                              }}
-                              variant="contained"
-                            >
-                              {refdetail.current.resumeLink && (
+                            {refdetail.current.resumeLink && (
+                              <Button
+                                style={{
+                                  backgroundColor: "#42f551",
+                                  borderRadius: "5px",
+                                  height: "25px",
+                                  marginRight: "4px",
+                                }}
+                                variant="contained"
+                              >
                                 <a
                                   style={{ color: "white" }}
                                   href={refdetail.current.resumeLink}
@@ -593,8 +757,8 @@ const Lawyer_Jobinfo = () => {
                                 >
                                   دانلود
                                 </a>
-                              )}
-                            </Button>
+                              </Button>
+                            )}
                           </InputAdornment>
                         ),
                       }}
@@ -618,33 +782,70 @@ const Lawyer_Jobinfo = () => {
                       flexDirection: "column",
                     }}
                   >
-                    <Button
-                      variant="contained"
-                      component="label"
-                      style={{
-                        backgroundColor: "#1976D2",
-                        borderRadius: "5px",
-                        color: "white",
-                        fontSize: "12px",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                      sx={{
-                        color: "white",
-                        width: "130px",
-                        mt: 1,
-                        height: "40px",
-                      }}
-                    >
-                      کارت ملی
-                      <input
-                        type="file"
-                        onChange={handleMelliCardChange}
-                        hidden
-                        accept=".jpg,.jpeg,.png"
-                      />
-                    </Button>
+                    <div style={{ display: "flex" }}>
+                      <Button
+                        variant="contained"
+                        component="label"
+                        style={{
+                          backgroundColor: "#1976D2",
+                          borderRadius: "5px",
+                          color: "white",
+                          fontSize: "12px",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                        sx={{
+                          color: "white",
+                          width: "130px",
+                          mt: 1,
+                          height: "40px",
+                        }}
+                      >
+                        کارت ملی
+                        <input
+                          type="file"
+                          onChange={handleMelliCardChange}
+                          hidden
+                          accept=".jpg,.jpeg,.png"
+                        />
+                      </Button>
+                      {refdetail.current.nationalCardImageUrl && (
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            height: "100%",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Button
+                            variant="contained"
+                            component="label"
+                            style={{
+                              backgroundColor: "orange",
+                              borderRadius: "5px",
+                              color: "white",
+                              fontSize: "10px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              marginRight: "5px",
+                            }}
+                            sx={{
+                              color: "white",
+                              width: "80px",
+                              mt: 1,
+                              height: "30px",
+                            }}
+                            onClick={handleClickOpen}
+                          >
+                            تست ocr
+                          </Button>
+                          {OCRDialog()}
+                        </div>
+                      )}
+                    </div>
                     <h3 style={{ marginTop: "8px", fontSize: "0.7rem" }}>
                       کارت ملی شما در پروفایل شما نمایش داده نخواهد شد و تنها
                       جهت احراز هویت شما توسط ادمین مورد بررسی قرار می گیرد
