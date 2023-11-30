@@ -6,7 +6,6 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
 import MuiButton from "@mui/material/Button";
-import { Dialog } from "primereact/dialog";
 import "./Table.css";
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
@@ -19,33 +18,25 @@ import { Button } from "primereact/button";
 import { IoMdRefresh } from "react-icons/io";
 import { convertDateToJalali, primeFaceDataTablePaginatorTemplate } from "./utils";
 
-// "authorization": "admin_naebzadeh",
-// "endpoint": "/api/log/log_table/?limit=10&offset=1",
-// "page_name": "داشبورد لاگ کاربران",
-// "created_at": "2023-07-29 09:29:25",
-// "timestamp": "1690610365082"
-const Field = ["authorization", "page_name", "created_at"];
+
+const Field = ["name", "userName", "phoneNumber", "email", "roleName"];
 const Header = [
-    "نام کاربری",
-    "نام صفحه",
-    "تاریخ ثبت لاگ"
+    "نام و نام خانوادگی",
+    "نام‌کاربری",
+    "شماره تماس",
+    "ایمیل",
+    "نقش"
 ];
 export default function Table(props) {
-    const [showAlertDetails, setShowAlertDetails] = useState(false);
-    const [eventDetails, setEventDetails] = useState({});
     const toast = useRef(null);
-    const [events, setEvents] = useState([]);
+    const [users, setUsers] = useState([]);
     const [columns, setColumns] = useState([]);
     const [selectedColumns, setSelectedColumns] = useState(columns);
     const [globalFilter, setGlobalFilter] = useState(null);
-    const [currentDate, setCurrentDate] = useState(null);
 
     const dt = useRef(null);
     useEffect(() => {
-        let current = new Date();
-        current = convertDateToJalali(current, "full", "medium");
-        setCurrentDate(current);
-        setEvents(props.records);
+        setUsers(props.records);
     }, [props.records]);
 
     useEffect(() => {
@@ -55,29 +46,8 @@ export default function Table(props) {
         }
         setColumns(cols);
         setSelectedColumns(cols);
-        let current = new Date();
-        current = convertDateToJalali(current, "full", "medium");
-        setCurrentDate(current);
     }, []);
-    // Show Details for a record
-    const handleShowDetails = (rowData) => {
-        setEventDetails(rowData);
-        setShowAlertDetails(true);
-    };
-    // Special Body Structure
-    const createBodyStructure = (rowData) => {
-        return (
-        <React.Fragment>
-            <MuiButton
-            variant="text"
-            size="small"
-            onClick={() => handleShowDetails(rowData)}
-            >
-            مشاهده‌ی جزئیات
-            </MuiButton>
-        </React.Fragment>
-        );
-    };
+
     // On Selected Cols Change
     const onColumnToggle = (event) => {
         let selectedColumns = event.value;
@@ -129,7 +99,7 @@ export default function Table(props) {
         <div>
         <div className="table-header">
             <div className="table-header1">
-            <Tooltip title="بروزرسانی">
+            <Tooltip title="به‌روزرسانی">
                 <div className="table-header1-btn">
                 <IoMdRefresh
                     color="#1976d2"
@@ -175,36 +145,36 @@ export default function Table(props) {
         <Toast ref={toast} />
         <div className="card">
             <DataTable
-            globalFilter={globalFilter}
-            loading={props.loading}
-            resizableColumns
-            columnResizeMode="fit"
-            emptyMessage="هیچ داده‌ای موجود نیست"
-            ref={dt}
-            header={header}
-            first={props.lazyParams.first}
-            onPage={props.onPage}
-            onSort={props.onSort}
-            stripedRows
-            editMode="row"
-            value={events?.logs}
-            paginator
-            rows={10}
-            rowsPerPageOptions={[5, 10, 25]}
-            lazy
-            totalRecords={events?.total_logs_count}
-            paginatorTemplate={primeFaceDataTablePaginatorTemplate}
-            currentPageReportTemplate={`نمایش {first} تا {last} از ${
-                events?.total_logs_count ? events?.total_logs_count : 0
-            } لاگ ها`}
-            responsiveLayout="scroll"
+                globalFilter={globalFilter}
+                loading={props.loading}
+                resizableColumns
+                columnResizeMode="fit"
+                emptyMessage="هیچ داده‌ای موجود نیست"
+                ref={dt}
+                header={header}
+                first={props.lazyParams.first}
+                onPage={props.onPage}
+                onSort={props.onSort}
+                stripedRows
+                editMode="row"
+                value={users?.results}
+                paginator
+                rows={10}
+                rowsPerPageOptions={[5, 10, 25]}
+                lazy
+                totalRecords={users?.totalItems}
+                paginatorTemplate={primeFaceDataTablePaginatorTemplate}
+                currentPageReportTemplate={`نمایش {first} تا {last} از ${
+                    users?.totalItems ? users?.totalItems : 0
+                }کاربر`}
+                responsiveLayout="scroll"
             >
-            <Column
-                header="ردیف"
-                body={(data, props) => <div>{props.rowIndex + 1}</div>}
-                style={{ minWidth: "1rem" }}
-            />
-            {loadColumns}
+                <Column
+                    header="ردیف"
+                    body={(data, props) => <div>{props.rowIndex + 1}</div>}
+                    style={{ minWidth: "1rem" }}
+                />
+                {loadColumns}
             </DataTable>
         </div>
         </div>

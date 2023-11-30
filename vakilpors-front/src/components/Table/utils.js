@@ -1,7 +1,7 @@
 
 
 export const primeFaceDataTablePaginatorTemplate =
-    "FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport";
+    "LastPageLink NextPageLink PageLinks PrevPageLink FirstPageLink CurrentPageReport";
 
 export const convertDateToJalali = (value, dateStyle, timeStyle) => {
     let date = new Date(value);
