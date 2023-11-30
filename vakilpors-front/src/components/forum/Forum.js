@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import Moment from 'moment-jalaali';
 import { styled } from '@mui/material/styles';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
+import ReportRoundedIcon from '@mui/icons-material/ReportRounded';
 import { Typography, 
 	IconButton, 
 	Badge, 
@@ -38,6 +39,8 @@ import Lottie from 'react-lottie';
 import animationData from "../../assests/lotttie-animations/Animation-empty.json";
 import ReactPaginate from 'react-paginate';
 import './Forum.css';
+import Flag from '@mui/icons-material/Flag';
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 // mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
 import { CacheProvider } from '@emotion/react';
@@ -87,6 +90,7 @@ const Forum = () => {
 	const [threadList, setThreadList, refThreadList] = useStateRef([]);
 	const [userId, setUserId, refUserId] = useStateRef("");
 	const { getAccessToken } = useAuth();
+	const [openReportDialog, setOpenReportDialog] = React.useState(false);
 
 
 	// for table
@@ -186,6 +190,14 @@ const Forum = () => {
 		}
 	};
 
+	const handleReport = () => {
+		setOpenReportDialog(true);
+	  };
+	  
+	  const handleCloseReportDialog = () => {
+		setOpenReportDialog(false);
+	  };
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (thread.trim() != '')
@@ -273,6 +285,32 @@ const Forum = () => {
 												userId={refUserId.current}
 											/>
 										</Badge>
+										<Tooltip title="ثبت تخلف کاربر">
+											<IconButton onClick={handleReport}>
+												<ReportRoundedIcon color="primary" />
+											</IconButton>
+										</Tooltip>
+										<Dialog open={openReportDialog} onClose={handleCloseReportDialog}>
+										<DialogTitle>گزارش تخلف</DialogTitle>
+										<DialogContent>
+											<TextField
+											label="توضیحات تخلف"
+											multiline
+											rows={4}
+											variant="outlined"
+											fullWidth
+											/>
+										</DialogContent>
+										<DialogActions>
+											<Button onClick={handleCloseReportDialog} color="primary">
+											لغو
+											</Button>
+											<Button onClick={handleCloseReportDialog} color="primary">
+											ثبت گزارش
+											</Button>
+										</DialogActions>
+										</Dialog>
+
 										{thread.userId == refUserId.current &&
 										!thread.hasAnswer && (
 										<IconButton
