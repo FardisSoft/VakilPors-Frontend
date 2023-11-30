@@ -9,7 +9,7 @@ import MuiButton from "@mui/material/Button";
 import "./Table.css";
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
-import "primeflex/primeflex.css";
+// import "primeflex/primeflex.css";
 import { Box } from "@mui/system";
 import Tooltip from "@mui/material/Tooltip"
 import axios from "axios";
