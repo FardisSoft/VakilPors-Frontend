@@ -569,6 +569,7 @@ import { AddCircleOutline } from "@mui/icons-material";
 import StyledButton from "../ButtonComponent";
 import ReactLoading from "react-loading";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
 
 // mui rtl
 import rtlPlugin from "stylis-plugin-rtl";
@@ -581,6 +582,9 @@ const cacheRtl = createCache({
   stylisPlugins: [rtlPlugin],
 });
 const theme = createTheme({
+  typography: {
+    fontFamily: "shabnam",
+  },
   direction: "rtl",
 });
 // mui rtl
@@ -620,6 +624,7 @@ const AddNewCase = () => {
             headers: { Authorization: `Bearer ${token}` },
           });
           // console.log("success in Getting Document Data!!! : ",response);
+          console.log(response.data.data);
           setTitle(response.data.data.title);
           setMinimumBadget(response.data.data.minimumBudget);
           setMaximumBadget(response.data.data.maximumBudget);
@@ -821,13 +826,30 @@ const AddNewCase = () => {
       />
     );
   };
-
-  const handleCreateCase = async () => {
-    setloading(true);
+  const Check = () => {
+    if ((Title === "") | (Title === null)) {
+      showErrorMessage("باید حتما انتخاب کنید چه کاری می خواهید انجام دهید");
+      return false;
+    }
     if (MaximumBudget <= MinimumBudget) {
       showErrorMessage("مقدار حداکثر بودجه باید بیشتر از حداقل آن باشد.");
+      return false;
+    }
+    if ((caseName === "") | (caseName === null)) {
+      showErrorMessage("باید حتما نام پرونده خود را انتخاب کنید.");
+      return false;
+    }
+    if ((DocumentCategory === "") | (DocumentCategory === null)) {
+      showErrorMessage("باید زمینه پرونده را حتما انتخاب کنید.");
+      return false;
+    }
+    return true;
+  };
+  const handleCreateCase = async () => {
+    if (Check() === false) {
       return;
     }
+    setloading(true);
     const data = new FormData();
     data.append("MaximumBudget", MaximumBudget);
     data.append("MinimumBudget", MinimumBudget);
@@ -860,11 +882,18 @@ const AddNewCase = () => {
   };
 
   const handleEditCase = async () => {
-    setloading(true);
+    if (Check() === false) {
+      return;
+    }
+    if ((Title === "") | (Title === null)) {
+      showErrorMessage("باید حتما انتخاب کنید چه کاری می خواهید انجام دهید");
+      return;
+    }
     if (MaximumBudget <= MinimumBudget) {
       showErrorMessage("مقدار حداکثر بودجه باید بیشتر از حداقل آن باشد.");
       return;
     }
+    setloading(true);
     const data = new FormData();
     data.append("MaximumBudget", MaximumBudget);
     data.append("MinimumBudget", MinimumBudget);
@@ -1057,13 +1086,35 @@ const AddNewCase = () => {
                       اپلود فایل پرونده
                     </Typography>
                   </Grid>
-                  <MuiFileInput
-                    fullWidth
-                    margin="10px"
-                    value={File}
-                    size="small"
-                    onChange={(File) => setFile(File)}
-                  />
+                  <div style={{ display: "flex" }}>
+                    <MuiFileInput
+                      fullWidth
+                      margin="10px"
+                      value={File}
+                      size="small"
+                      onChange={(File) => setFile(File)}
+                    />
+                    {FileURL && (
+                      <Button
+                        style={{
+                          backgroundColor: "#42f551",
+                          borderRadius: "5px",
+                          height: "25px",
+                          marginRight: "4px",
+                        }}
+                        variant="contained"
+                      >
+                        <a
+                          style={{ color: "white" }}
+                          href={FileURL}
+                          download
+                          target="_blank"
+                        >
+                          دانلود
+                        </a>
+                      </Button>
+                    )}
+                  </div>
                   <br></br>
                   <Grid container direction={"row"} marginBottom={"20px"}>
                     <div
@@ -1184,7 +1235,7 @@ const AddNewCase = () => {
                   flexDirection={"column"}
                   borderRadius={"10px"}
                   width={{ xs: "97%", sm: "90%" }}
-                  paddingY={{ sm: "0px", md: "80px"}}
+                  paddingY={{ sm: "0px", md: "80px" }}
                   paddingX={{ xs: "10px", sm: "10px", md: "5px" }}
                   justifyContent={"center"}
                   alignSelf={"center"}
