@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: 'Vazir, sans-serif', // Use 'Vazir' font
         fontSize: '20px',
         textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)',
-        animation: '$marquee 50s linear infinite', // Adjusted duration to slow down
+        animation: '$marquee 70s linear infinite', // Adjusted duration to slow down
         width: 'fit-content', // Adjust width for better readability
     },
     '@keyframes marquee': {
