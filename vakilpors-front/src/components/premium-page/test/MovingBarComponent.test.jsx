@@ -1,5 +1,5 @@
 import { render, fireEvent } from '@testing-library/react';
-import MovingBarComponent from './MovingBarComponent';
+import MovingBarComponent from '../MovingBarComponent';
 
 describe('MovingBarComponent', () => {
     it('renders without crashing', () => {
