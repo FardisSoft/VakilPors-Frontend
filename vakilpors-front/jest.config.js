@@ -11,7 +11,7 @@ module.exports = {
     "axios":"axios/dist/node/axios.cjs",
     "^.+\\.(css|scss|jpg|jpeg|png)$": "<rootDir>/config/CSSStub.js"
   },
-  transformIgnorePatterns:["node_modules/(?!axios)"],
+  // transformIgnorePatterns:["node_modules/(?!axios)"],
   testEnvironment: "jest-environment-jsdom",
   setupFilesAfterEnv: ["<rootDir>/setupTests.js"],
 };

@@ -5,9 +5,9 @@ import { Grid, Typography } from "@mui/material";
 const Policy = () => {
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <title>قوانین سایت</title>
-      </Helmet>
+      </Helmet> */}
       <Grid
         container
         sx={{

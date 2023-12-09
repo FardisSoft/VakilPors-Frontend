@@ -89,6 +89,7 @@ const Login = () => {
       showErrorMessage("لطفا شماره موبایل و رمز عبور را وارد کنید.");
       return;
     } else {
+      // const { login } = useAuth();
       setloading(true);
       const success = await login(phoneNumber, password);
       if (success === "success") {
@@ -107,9 +108,9 @@ const Login = () => {
 
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <title>ورود</title>
-      </Helmet>
+      </Helmet> */}
       <ThemeProvider theme={theme}>
         <CacheProvider value={cacheRtl}>
           <Grid
@@ -211,6 +212,10 @@ const Login = () => {
                       </InputAdornment>
                     ),
                   }}
+                  inputProps={{
+                    "aria-label": "رمز عبور",
+                    "data-testid": "password-input",
+                  }}
                   InputLabelProps={{
                     align: "right",
                     dir: "rtl",
@@ -240,10 +245,9 @@ const Login = () => {
                   <StyledButton
                     onClick={handleLoginClick}
                     style={{ width: "5rem" }}
+                    role="submit-btn"
                   >
-                    {!loading && (
-                      <span>ورورد</span>
-                    )}
+                    {!loading && <span>ورورد</span>}
                     {loading && (
                       <div
                         style={{
