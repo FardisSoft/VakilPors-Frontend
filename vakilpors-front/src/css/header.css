@@ -1,0 +1,49 @@
+.header_name{
+    font-size: 48px;
+    font-weight: 800;
+    color: white;
+}
+.header_des1{
+    font-size: 24px;
+    color: white;
+}
+
+.home-banner__start-btn{
+    font-family: 'BYekan';
+    height: 56px;
+    width: 256px;
+    color: #fff;
+    padding: 16px;
+    font-size: 18px;
+    font-weight: 800;
+    border-radius: 32px;
+    box-shadow: 0 0 0 6px rgba(30, 47, 151, 0.2);
+    border: none;
+    background-color: #1DA7EC;
+    margin-top: 32px;
+    cursor: pointer;
+    font-family: 'shabnam';
+}
+
+.home-banner__start-btn-highlight{
+    box-shadow: 0 0 0 6px rgba(26, 167, 236, 0.5);
+}
+
+@media (max-width: 768px) {
+    .header_name{
+        font-size: 35px;
+    }
+    .header_des1{
+        font-size: 20px;
+    }
+}
+@media (max-width: 500px) {
+    .header_name{
+        font-size: 30px;
+    }
+    .header_des1{
+        font-size: 18px;
+    }
+
+}
+
