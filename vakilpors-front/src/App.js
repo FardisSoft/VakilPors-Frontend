@@ -441,8 +441,8 @@ import createCache from "@emotion/cache";
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@mui/material/styles";
 import Advertising from "./components/premium-page/Avertising"; // Import the Advertising component
-import landing_page from "./assests/images/default_lawyer_profile_background_picture.jpg";
-// import landing_page from './assests/images/back1.PNG';
+//import landing_page from "./assests/images/default_lawyer_profile_background_picture.jpg";
+import landing_page from "./assests/images/back3.jpg";
 import { Paper } from "@mui/material";
 
 import lawer1 from "./assests/images/lawer1.jpg";
@@ -454,9 +454,9 @@ import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Lawyer_4 from "../src/assests/images/Lawyer_4.jpeg";
-
+import Typical from "react-typical";
 import landing_css from "../src/css/landing.css";
-
+import "../src/css/header.css";
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
@@ -470,6 +470,9 @@ import { Card, Box } from "@mui/material";
 import axios from "axios";
 import { BASE_API_ROUTE } from "./Constants";
 import StyledButton from "./components/ButtonComponent";
+import Header from "./components/Header/Header";
+import Workinfo from "./components/Workinfo/Workinfo";
+
 const cacheRtl = createCache({
   key: "muirtl",
   stylisPlugins: [rtlPlugin],
@@ -564,96 +567,10 @@ const App = () => {
 
   return (
     <>
-      <Helmet>
-        <title>وکیل پرس</title>
-      </Helmet>
       <ThemeProvider theme={theme}>
         <CacheProvider value={cacheRtl}>
-          <Grid
-            sx={{
-              flexGrow: 1,
-              height: "96vh",
-              backgroundImage: `url(${landing_page})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              display: "grid",
-              paddingTop: 12,
-              placeItems: "center",
-              boxShadow: "inset 0 0 0 2000px rgba(3, 144, 252, 0.3)",
-              borderRadius: "0px",
-            }}
-          >
-            <Grid container justifyContent="start" alignItems="start">
-              <Grid item xs={12} sm={8} md={6} sx={{ mx: "10px" }}>
-                <Typography
-                  variant="h2"
-                  align="center"
-                  sx={{
-                    mb: "30px",
-                    fontSize: { xs: "30px", sm: "50px" },
-                    color: "#fff",
-                    textShadow: "2px 2px #000",
-                    fontFamily: "Shabnam",
-                  }}
-                >
-                  از وکیل پرس بپرس!
-                </Typography>
-                <Typography
-                  variant="h5"
-                  align="center"
-                  sx={{
-                    mb: "30px",
-                    fontSize: { xs: "20px", sm: "30px" },
-                    color: "#fff",
-                    textShadow: "2px 2px #000",
-                    fontFamily: "Shabnam",
-                  }}
-                >
-                  گرفتن جواب سوال حقوقی و وکیل برای هر پرونده ای مثل آب خوردن!
-                </Typography>
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <StyledButton onClick={() => navigate("/Lawyer-search-page")}>
-                    جست و جوی وکلا
-                  </StyledButton>
-                  <StyledButton
-                    style={{ marginRight: "2rem" }}
-                    onClick={() => navigate("/Forum")}
-                  >
-                    فروم عمومی
-                  </StyledButton>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              padding: "20px",
-              gap:'10px'
-            }}
-          >
-            <Paper className="square" sx={{ height: "250px", width: "20%" }}>
-              مربع 1
-            </Paper>
-            <Paper className="square" sx={{ height: "250px", width: "20%" }}>
-              مربع 2
-            </Paper>
-            <Paper className="square" sx={{ height: "250px", width: "20%" }}>
-              مربع 3
-            </Paper>
-            <Paper className="square" sx={{ height: "250px", width: "20%" }}>
-              مربع 4
-            </Paper>
-            <Paper className="square" sx={{ height: "250px", width: "20%" }}>
-              مربع 5
-            </Paper>
-          </Box>
+          <Header />
+          <Workinfo/>
         </CacheProvider>
       </ThemeProvider>
     </>
