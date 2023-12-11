@@ -164,6 +164,7 @@ type ApexChart = {
   }
   stacked?: boolean
   stackType?: 'normal' | '100%'
+  stackOnlyBar?: boolean;
   toolbar?: {
     show?: boolean
     offsetX?: number
@@ -742,6 +743,16 @@ type ApexPlotOptions = {
         formatter?(opts: any): string
       }
     }
+    barLabels?: {
+      enabled?: boolean
+      margin?: number
+      useSeriesColors?: boolean
+      fontFamily?: string
+      fontWeight?: string | number
+      fontSize?: string
+      formatter?: (barName: string, opts?: any) => string
+      onClick?: (barName: string, opts?: any) => void
+    }
   }
 }
 
@@ -941,6 +952,7 @@ type ApexTooltip = {
   fillSeriesColor?: boolean
   theme?: string
   cssClass?: string
+  hideEmptySeries?: boolean
   style?: {
     fontSize?: string
     fontFamily?: string

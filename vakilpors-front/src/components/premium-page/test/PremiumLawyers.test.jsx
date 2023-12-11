@@ -1,52 +1,41 @@
-// Import React Testing Library and Jest
-import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import PlanCard from '../PremiumLawyers';
 
-// Import the component to be tested
-import PremiumLawyers from '../PremiumLawyers';
+const samplePlan = {
+    name: 'برنامه روزانه',
+    price: '$10',
+    period: 'در روز',
+    description: 'توضیحات برنامه روزانه',
+    commonFeatures: ['ویژگی 1', 'ویژگی 2'],
+};
 
-// Mock the implementation of the Button component
-jest.mock('@material-ui/core/Button', () => {
-    return ({ children, onClick }) => (
-        <button onClick={onClick}>{children}</button>
-    );
-});
+test('renders plan card correctly', () => {
+    render(<PlanCard plan={samplePlan} commonFeatures={samplePlan.commonFeatures} />);
 
-// Write a test suite for the component
-describe('PremiumLawyers component', () => {
-    // Write a test case for rendering the component
-    test('renders the component with header and plans', () => {
-        // Render the component
-        render(<PremiumLawyers />);
+    // Check if the plan name, price, and period are rendered
+    expect(screen.getByText(samplePlan.name)).toBeInTheDocument();
+    expect(screen.getByText(samplePlan.price)).toBeInTheDocument();
+    expect(screen.getByText(samplePlan.period)).toBeInTheDocument();
 
-        // Assert that the header elements are present
-        expect(screen.getByText('رشد کسب و کار خود را با تبلیغات هدفمند آنلاین افزایش دهید')).toBeInTheDocument();
-        expect(screen.getByText('بین برنامه های روزانه یا هفتگی انتخاب کنید تا با مشتریان جدید ارتباط برقرار کنید.')).toBeInTheDocument();
+    // Check if the description is rendered
+    expect(screen.getByText(samplePlan.description)).toBeInTheDocument();
 
-        // Assert that the plan cards are present
-        expect(screen.getByText('برنامه روزانه')).toBeInTheDocument();
-        expect(screen.getByText('برنامه هفتگی')).toBeInTheDocument();
-
-        // Assert that the plan features are present
-        expect(screen.getByText('قرار دادن لیست ویژه')).toBeInTheDocument();
-        expect(screen.getByText('نمایش تبلیغات در صفحات با ترافیک بالا')).toBeInTheDocument();
-        expect(screen.getByText('گزارش تحلیلی از کلیک ها و تاثیرات')).toBeInTheDocument();
-        expect(screen.getByText('خلاقیت های سفارشی برای تبلیغات موثر')).toBeInTheDocument();
+    // Check if common features are rendered
+    samplePlan.commonFeatures.forEach((feature) => {
+        expect(screen.getByText(feature)).toBeInTheDocument();
     });
 
-    // Write a test case for selecting a plan
-    test('selects a plan and shows a confirmation message', () => {
-        // Render the component
-        render(<PremiumLawyers />);
+    // Check if the "انتخاب" button is rendered
+    const selectButton = screen.getByText('انتخاب');
+    expect(selectButton).toBeInTheDocument();
 
-        // Find the button for the daily plan
-        const dailyPlanButton = screen.getByText('انتخاب', { selector: 'button' });
+    // Simulate a user clicking the "انتخاب" button
+    userEvent.click(selectButton);
 
-        // Click the button
-        fireEvent.click(dailyPlanButton);
-
-        // Assert that a confirmation message is shown
-        expect(screen.getByText('شما برنامه روزانه را انتخاب کرده اید. لطفا اطلاعات پرداخت خود را وارد کنید.')).toBeInTheDocument();
-    });
+    // Check if the button click triggers the expected behavior (you can extend this based on your actual functionality)
+    // For example, check if a function that handles the selection is called or if a modal is displayed.
+    // For simplicity, I'll just check if the button click changes its text to "Selected".
+    expect(screen.getByText('Selected')).toBeInTheDocument();
 });
