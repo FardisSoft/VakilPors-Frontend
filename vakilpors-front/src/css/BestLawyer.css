@@ -1,0 +1,27 @@
+.Best_paper{
+    width: calc(19%);
+}
+
+@media (max-width: 900px) {
+    .Best_paper{
+        width: 30%;
+    }
+}
+
+@media (max-width: 700px) {
+    .Best_paper{
+        width: 40%;
+    }
+}
+
+@media (max-width: 600px) {
+    .Best_paper{
+        width: 100%;
+    }
+}
+
+@media (max-width: 45px) {
+    .Best_paper{
+        width: 100%;
+    }
+}
