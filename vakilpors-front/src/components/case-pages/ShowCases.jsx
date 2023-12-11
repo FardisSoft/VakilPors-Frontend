@@ -99,25 +99,6 @@ const ShowCases = () => {
   const handleCloseDescription = () => {
     setOpenDescription(false);
   };
-
-  const getLawyersThatHaveAccessToDoc = async (docId) => {
-    const token = await getAccessToken();
-    if (token) {
-      const url =
-        BASE_API_ROUTE +
-        `Document/GetLawyersThatHaveAccessToDocument?documentId=${docId}`;
-      try {
-        const response = await axios.get(url, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        // console.log('response in getLawyersThatHaveAccessToDoc : ',response);
-        return response.data.data;
-      } catch (error) {
-        console.log("error in getLawyersThatHaveAccessToDoc : ", error);
-      }
-    }
-  };
-
   const getCases = async () => {
     const token = await getAccessToken();
     if (token) {
@@ -140,6 +121,7 @@ const ShowCases = () => {
           : axios.get(url, { headers: { Authorization: `Bearer ${token}` } }));
         setloading(false);
         setCases(response.data.data);
+        console.log(response.data)
         // response.data.data.map(async (casei) => {
         //   const lawyers = await getLawyersThatHaveAccessToDoc(casei.id);
         //   // setCases

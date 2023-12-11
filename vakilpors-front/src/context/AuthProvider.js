@@ -1,3 +1,4 @@
+import React from "react";
 import { createContext, useContext, useEffect } from 'react';
 import useStateRef from 'react-usestateref';
 import axios from 'axios';
@@ -41,6 +42,7 @@ const AuthProvider = ({ children }) => {
         }
         try{
             const response = await axios.post(url,data);
+            console.log(response )
             const { token, refreshToken } = response.data.data;
             const tokenData = jwt(token);
             setAccessToken(token);

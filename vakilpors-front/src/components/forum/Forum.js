@@ -40,14 +40,24 @@ import animationData from "../../assests/lotttie-animations/Animation-empty.json
 import ReactPaginate from 'react-paginate';
 import './Forum.css';
 import Flag from '@mui/icons-material/Flag';
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Dialog, 
+	DialogTitle,
+	DialogContent,
+	DialogActions,
+	InputBase
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
+import DirectionsIcon from '@mui/icons-material/Directions';
+
+
 // mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@mui/material/styles';
-import backgroundbb from "../../assests/images/back.png";
+
 
 const cacheRtl = createCache({
 	key: 'muirtl',
@@ -91,7 +101,16 @@ const Forum = () => {
 	const [userId, setUserId, refUserId] = useStateRef("");
 	const { getAccessToken } = useAuth();
 	const [openReportDialog, setOpenReportDialog] = React.useState(false);
+	const [title, setTitle] = useState("");
 
+	// handling pagination and sort with this state
+	// const [lazyParams, setLazyParams] = useState({
+	// 	first: 0,
+	// 	rows: 10,
+	// 	page: 1,
+	// 	sortField: sortField,
+	// 	sortOrder: sortOrder,
+	// });
 
 	// for table
 	const [currentPage, setCurrentPage] = useState(0);
@@ -127,6 +146,62 @@ const Forum = () => {
 		};
 		getThreadList();
 	}, []);
+
+	const threadSearchHandler = async () => {
+		console.log(`---------------------------- IN SEARCH HANDLER -------------------------`);
+
+		let URL = BASE_API_ROUTE + "Thread/SearchThread";
+	
+		let params = {
+			title: title,
+			PageSize: 2,
+			PageNumber: 1,
+			Sort: null,
+			IsAscending: null
+		};
+		// console.log(`The params are: ${params.roleId.code}`);
+	
+		const token = await getAccessToken();
+		axios({
+			method: "get",
+			url: URL,
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			params: params,
+			})
+			.then((res) => {
+				let search_results = res.data.data.results;
+				console.log(`Hereeeeeee`)
+				for (let i = 0; i < search_results.length; i++)
+				{
+					search_results[i].user = {
+								"userId": 1,
+								"name": "Admin",
+								"isLawyer": false,
+								"isPremium": false
+								}
+				}
+				setThreadList(res.data.data.results);
+			})
+			.catch((err) => {
+				toast.error(
+				"مشکلی در دریافت اطلاعات فروم‌ها وجود دارد. لطفا دوباره تلاش کنید.", {
+					position: "bottom-right",
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "light",
+					rtl: true,
+				}
+				);
+			});
+	};
 	const showErrorMessage = (message) => {
 		toast.error(message, {
 			position: "bottom-right",
@@ -243,6 +318,23 @@ const Forum = () => {
 							<Grid container direction={'column'} width={'70%'} display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{ boxShadow: 3, padding: 4, border: '5px solid #082640',
 							backgroundColor: '#FCF2F1',
 							borderRadius: '25px', }}>
+								<Paper
+									component="form"
+									sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400, marginBottom: "2rem" }}
+									>
+									<InputBase
+										sx={{ ml: 1, flex: 1 }}
+										placeholder="جست‌وجو در بین فرم‌ها"
+										inputProps={{ 'aria-label': 'search google maps' }}
+										value={title}
+										onChange={(title) => {
+											setTitle(title.target.value);
+										}}
+									/>
+									<IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={threadSearchHandler}>
+										<SearchIcon />
+									</IconButton>
+								</Paper>
 								<Grid>
 									{currentThreads.map((thread) => (
 									<Grid

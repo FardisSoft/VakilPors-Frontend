@@ -1,0 +1,26 @@
+.Adver_paper{
+    width: 60%;
+}
+
+.Adver_about{
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    .Adver_paper{
+        width: 80%;
+    }
+    .Adver_about{
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 500px) {
+    .Adver_paper{
+        width: 95%;
+    }
+    .Adver_about{
+        font-size: 12px;
+    }
+}
+

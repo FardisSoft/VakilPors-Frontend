@@ -2,35 +2,42 @@
   background: linear-gradient(to bottom, #8e44ad, #d2b4de);
   padding: 30px;
   text-align: center;
-  
-}
-.custom-header{
-  /* background: linear-gradient(to bottom, #8e44ad, #6a0dad); */
-  margin-top: 0px;
-  padding-top:0px;
-}
-.custom-styles .custom-title {
-  margin-top: 0px;
-  padding-top:0px;
   color: white;
+}
+
+.custom-header {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.custom-title {
+  margin-top: 0;
+  padding-top: 0;
   font-size: 2.5em;
   margin-bottom: 10px;
+  color: black; /* Updated color to black */
 }
 
 .custom-subtitle {
-  vmargin-top: 0px;
-  padding-top:0px;
+  margin-top: 0;
+  padding-top: 0;
   font-style: italic;
   font-size: 1.2em;
   line-height: 1.5;
 }
 
+.custom-description {
+  color: black; /* Updated color to black */
+  margin-top: 20px;
+  line-height: 1.6;
+}
+
 .custom-container {
-  margin-top: 0px;
+  margin-top: 0;
   max-width: 1000px;
   margin: 40px auto;
-  background:#d2b4de;
-  padding-top:0px;
+  background: #d2b4de;
+  padding-top: 0;
 }
 
 .custom-plans {
@@ -39,14 +46,15 @@
 }
 
 .custom-plan-card {
-  background: white; /* White background for the body */
+  background: white;
   padding: 30px;
-  border: 1px solid #d2b4de; /* Lighter Purple */
+  border: 1px solid #d2b4de;
   border-radius: 10px;
+  text-align: justify;
 }
 
-.custom-plan-card .custom-price {
-  background: #8e44ad; /* Purple for the heading */
+.custom-price {
+  background: #8e44ad;
   border-radius: 10px;
   display: flex;
   justify-content: space-between;
@@ -54,31 +62,31 @@
   padding: 10px 15px;
 }
 
-.custom-plan-card .custom-price .amount {
+.amount {
   font-size: 24px;
   font-weight: bold;
   color: white;
 }
 
-.custom-plan-card .custom-price .period {
+.period {
   font-size: 16px;
   color: white;
 }
 
-.custom-plan-card .custom-description {
-  color: #753240; /* Text color for the body */
+.custom-description {
+  color: black; /* Updated color to black */
   margin-top: 20px;
   line-height: 1.6;
 }
 
-.custom-plan-card .custom-features {
+.custom-features {
   list-style-type: disc;
   margin-left: 20px;
-  color: #753240; /* Text color for the body */
+  color: #753240;
 }
 
 .custom-button {
-  background: #8e44ad; /* Purple */
+  background: #8e44ad;
   color: white;
   border: none;
   border-radius: 5px;
@@ -88,7 +96,7 @@
 }
 
 .custom-button:hover {
-  background: #a569bd; /* Lighten Purple */
+  background: #a569bd;
 }
 
 .custom-plan-card:hover {

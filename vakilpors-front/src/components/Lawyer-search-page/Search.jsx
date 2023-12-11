@@ -1,6 +1,6 @@
 import '../../css/Search.css';
 import { FaEye, FaSearch } from 'react-icons/fa';
-import MovingBarComponent from '../premium-page/MovingBarComponent;';
+import MovingBarComponent from '../premium-page/MovingBarComponent';
 
 
 

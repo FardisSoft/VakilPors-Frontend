@@ -48,10 +48,15 @@ export default function PremiumLawyers() {
             <header className="custom-header">
                 <h1 className="custom-title">رشد کسب و کار خود را با تبلیغات هدفمند آنلاین افزایش دهید</h1>
                 <p className="custom-subtitle">بین برنامه های روزانه یا هفتگی انتخاب کنید تا با مشتریان جدید ارتباط برقرار کنید.</p>
+                <p className="custom-description">
+                    <strong>
+                        هر روز با مشتریان محلی در تماس باشید. لیست کسب و کار شما و تبلیغات شما برای 24 ساعت در سایت ما به صورت برجسته نمایش داده می شود، تا حداکثر دیده شدن را تضمین کند. از فرصت های روزانه برای جذب مشتریان جدید از دست ندهید.
+                    </strong>
+                </p>
             </header>
 
             <div className="custom-container">
-            <div className="custom-plans">
+                <div className="custom-plans">
                     {plans.map((plan, index) => (
                         <PlanCard key={index} plan={plan} commonFeatures={commonFeatures} />
                     ))}
@@ -60,6 +65,7 @@ export default function PremiumLawyers() {
         </div>
     );
 }
+
 function PlanCard({ plan, commonFeatures }) {
     return (
         <Card className="custom-plan-card">
@@ -69,14 +75,13 @@ function PlanCard({ plan, commonFeatures }) {
                     <span className="amount">{plan.price}</span>
                     <span className="period">{plan.period}</span>
                 </div>
-                <p><strong>{plan.description}</strong></p>
+                <p className="custom-description"><strong>{plan.description}</strong></p>
                 <ul className="custom-features">
-                    {plan
-                        .commonFeatures.map((feature, index) => (
-                            <li key={index}>
-                                <span className="custom-bullet">&#8226;</span> {feature}
-                            </li>
-                        ))}
+                    {plan.commonFeatures.map((feature, index) => (
+                        <li key={index}>
+                            <span className="custom-bullet">&#8226;</span> {feature}
+                        </li>
+                    ))}
                 </ul>
             </CardContent>
             <CardActions>

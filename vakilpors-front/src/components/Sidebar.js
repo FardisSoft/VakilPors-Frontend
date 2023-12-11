@@ -21,7 +21,9 @@ import {
   PaidOutlined,
   ArrowDropDown,
   WorkspacePremium,
+  GroupIcon
 } from "@mui/icons-material";
+import PeopleIcon from '@mui/icons-material/People';
 import MenuIcon from "@mui/icons-material/Menu";
 import React, { useState, useEffect } from "react";
 import useStateRef from "react-usestateref";
@@ -278,18 +280,50 @@ const Sidebar = (props) => {
 
     case "Admin":
       tempLinks = [
-        {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
-        {name:'ویرایش اطلاعات', icon:ManageAccountsOutlined, url:'/edit-user'},
-        {name:'جست و جوی وکلا', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
-        {name:'فروم', icon:ForumOutlined, url:'/Forum'},
-        {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
-        {name:'تایید مدارک وکلا', icon:AssignmentTurnedInOutlined, url:'/VerifyLawyers'},
-        {name:'آمار سایت', icon:AssessmentOutlined, url:'/Statistics'},
-        {name:'تراکنش های مالی', icon:PaidOutlined, url:'/HandleTransactions'},
-        {name:'بررسی تخلفات وکلا', icon:ReportOutlinedIcon, url:'/ReportValidation'},
-        {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
-        {name:'قانون اساسی', icon:Gavel, url:'/AsasiLaw'},
-        {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
+        // {name:'صفحه اصلی', icon:HomeOutlined, url:'/'},
+        // {name:'ویرایش اطلاعات', icon:ManageAccountsOutlined, url:'/edit-user'},
+        // {name:'جست و جوی وکلا', icon:PersonSearchOutlined, url:'/Lawyer-search-page'},
+        // {name:'فروم', icon:ForumOutlined, url:'/Forum'},
+        // {name:'چت انلاین', icon:ChatOutlined, url:'/chatPage'},
+        // {name:'تایید مدارک وکلا', icon:AssignmentTurnedInOutlined, url:'/VerifyLawyers'},
+        // {name:'آمار سایت', icon:AssessmentOutlined, url:'/Statistics'},
+        // {name:'تراکنش های مالی', icon:PaidOutlined, url:'/HandleTransactions'},
+        // {name:'بررسی تخلفات وکلا', icon:ReportOutlinedIcon, url:'/ReportValidation'},
+        // {name:'شرایط سایت', icon:PolicyOutlined, url:'/Policy'},
+        // {name:'قانون اساسی', icon:Gavel, url:'/AsasiLaw'},
+        // {name:'تماس با ما', icon:CallOutlined, url:'/contactUs'},
+        { name: "صفحه اصلی", icon: HomeOutlined, url: "/" },
+        {
+          name: "ویرایش اطلاعات",
+          icon: ManageAccountsOutlined,
+          url: "/edit-user",
+        },
+        {
+          name: "مدیریت کاربران",
+          icon: PeopleIcon,
+          url: "/AllUsers",
+        },
+        {
+          name: "جست و جوی وکلا",
+          icon: PersonSearchOutlined,
+          url: "/Lawyer-search-page",
+        },
+        { name: "فروم", icon: ForumOutlined, url: "/Forum" },
+        { name: "چت انلاین", icon: ChatOutlined, url: "/chatPage" },
+        {
+          name: "تایید مدارک وکلا",
+          icon: AssignmentTurnedInOutlined,
+          url: "/VerifyLawyers",
+        },
+        { name: "آمار سایت", icon: AssessmentOutlined, url: "/Statistics" },
+        {
+          name: "تراکنش های مالی",
+          icon: PaidOutlined,
+          url: "/HandleTransactions",
+        },
+        { name: "شرایط سایت", icon: PolicyOutlined, url: "/Policy" },
+        { name: "قانون اساسی", icon: Gavel, url: "/AsasiLaw" },
+        { name: "تماس با ما", icon: CallOutlined, url: "/contactUs" },
       ];
       break;
 
