@@ -17,6 +17,7 @@ import {
   CardContent,
   IconButton,
   styled,
+  Avatar,
 } from "@mui/material";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import {
@@ -48,6 +49,8 @@ import { createTheme } from "@mui/material/styles";
 import rtlPlugin from "stylis-plugin-rtl";
 import { ThemeProvider } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
+import { Modal } from "@mui/material";
+import ReactLoading from "react-loading";
 
 const cacheRtl = createCache({
   key: "muirtl",
@@ -74,7 +77,9 @@ const HtmlTooltip = styled(({ className, ...props }) => (
 }));
 
 const ShowCases = () => {
-  const [Cases, setCases, refCases] = useStateRef([]);
+  const [Cases, setCases] = useState([]);
+
+  const [access, setaccess] = useState([]);
   const [openDescription, setOpenDescription] = useState(false);
   const [description, setDescription] = useState("");
   const { getAccessToken } = useAuth();
@@ -82,6 +87,16 @@ const ShowCases = () => {
   const [loading, setloading] = useState(false);
   const { isLawyer } = useParams();
   const [openDialog, setOpenDialog] = useState(false);
+
+  const [opencon, setOpencon] = useState(false);
+
+  const handleOpencon = () => {
+    setOpencon(true);
+  };
+
+  const handleClosecon = () => {
+    setOpencon(false);
+  };
 
   const handleClickDelete = () => {
     setOpenDialog(true);
@@ -121,7 +136,9 @@ const ShowCases = () => {
           : axios.get(url, { headers: { Authorization: `Bearer ${token}` } }));
         setloading(false);
         setCases(response.data.data);
-        console.log(response.data)
+        console.log(response.data.data);
+        setaccess(response.data.data.accesses);
+        // console.log(response.data.data[0].accesses)
         // response.data.data.map(async (casei) => {
         //   const lawyers = await getLawyersThatHaveAccessToDoc(casei.id);
         //   // setCases
@@ -166,7 +183,9 @@ const ShowCases = () => {
     });
   };
 
+  const [loadingsend, setloadingsend] = useState(false);
   const handleChooseCase = async (docId) => {
+    setloadingsend(true);
     const token = await getAccessToken();
     if (token) {
       const url = BASE_API_ROUTE + "Document/GrantAccessToLawyer";
@@ -178,13 +197,15 @@ const ShowCases = () => {
         const response = await axios.post(url, data, {
           headers: { Authorization: `Bearer ${token}` },
         });
+        setloadingsend(false);
         // console.log('response in GrantAccessToLawyer : ',response);
         showSuccesMessage(
           "پرونده مورد نظر با موفقیت برای وکیل مورد نظر ارسال شد."
         );
       } catch (error) {
+        setloadingsend(false);
         console.log("error in GrantAccessToLawyer : ", error);
-        showErrorMessage("خطا در ارسال پرونده");
+        showErrorMessage("برای این وکیل قبلا پرونده ارسال کرده اید.");
       }
     }
   };
@@ -206,7 +227,7 @@ const ShowCases = () => {
         showErrorMessage("خطا در حذف پرونده");
       }
     }
-    setOpenDialog(false)
+    setOpenDialog(false);
   };
 
   const showLawyersThatHaveAccessToDoc = (docId) => {
@@ -265,26 +286,6 @@ const ShowCases = () => {
             <br />
             حداکثر بودجه : {casei.maximumBudget} تومان
           </Typography>
-          {/* <Grid
-            item
-            xs={12}
-            sx={{ overflow: "hidden", cursor: "pointer" }}
-            onClick={() => handleOpenDescription(casei.description)}
-          >
-            <Typography
-              fontFamily="shabnam"
-              fontSize="13px"
-              sx={{
-                whiteSpace: "nowrap",
-                padding: "2px",
-                borderRadius: "7px",
-                textOverflow: "ellipsis",
-                overflow: "hidden",
-              }}
-            >
-              توضیحات : {casei.description}
-            </Typography>
-          </Grid> */}
           {isLawyer !== "false" && (
             <Box
               style={{ marginTop: "10px" }}
@@ -315,8 +316,20 @@ const ShowCases = () => {
             }}
           >
             <Button
+              variant="contained"
+              sx={{
+                fontFamily: "shabnam",
+                fontSize: "12px",
+                background: "#19c222",
+              }}
+              onClick={handleOpencon}
+              size="small"
+            >
+              مشاهده وضعیت
+            </Button>
+            <Button
               onClick={() => navigate(`/new-case/edit_${casei.id}`)}
-              sx={{ fontFamily: "shabnam" }}
+              sx={{ fontFamily: "shabnam", marginRight: "10px" }}
               size="small"
               variant="contained"
             >
@@ -330,17 +343,22 @@ const ShowCases = () => {
             >
               حذف
             </Button>
+            <div>{showcasecon(casei)}</div>
             <ThemeProvider theme={theme}>
               <Dialog open={openDialog} onClose={handleCloseDialog}>
                 <DialogTitle>
                   <div>آیا از حذف کردن مطمئنید؟</div>
-                   </DialogTitle>
+                  <div>{casei.caseName}</div>
+                </DialogTitle>
                 <DialogActions>
-                  <div style={{display:'flex',justifyContent:'center'}}>
-                  <Button onClick={handleCloseDialog}>لغو</Button>
-                  <Button onClick={() => handleDeleteCase(casei.id)} autoFocus>
-                    حذف
-                  </Button>
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <Button onClick={handleCloseDialog}>لغو</Button>
+                    <Button
+                      onClick={() => handleDeleteCase(casei.id)}
+                      autoFocus
+                    >
+                      حذف
+                    </Button>
                   </div>
                 </DialogActions>
               </Dialog>
@@ -349,14 +367,56 @@ const ShowCases = () => {
         )}
         {isLawyer.split("_")[0] == "choose" && (
           <CardActions>
-            <Button
-              variant="contained"
-              onClick={() => handleChooseCase(casei.id)}
-              sx={{ fontFamily: "shabnam", mb: 1, width: "100%" }}
-              size="large"
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                width: "100%",
+                height: "40px",
+              }}
             >
-              ارسال
-            </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  fontFamily: "shabnam",
+                  mb: 1,
+                  width: "50%",
+                  fontSize: "12px",
+                  background: "#19c222",
+                }}
+                size="large"
+                onClick={handleOpencon}
+              >
+                مشاهده وضعیت
+              </Button>
+              <div>{showcasecon(casei)}</div>
+              <div>{casei.accesses.length}</div>
+              <Button
+                variant="contained"
+                onClick={() => handleChooseCase(casei.id)}
+                sx={{
+                  fontFamily: "shabnam",
+                  mb: 1,
+                  width: "50%",
+                  marginRight: "3px",
+                }}
+                size="large"
+              >
+                {!loadingsend && <span>ارسال</span>}
+                {loadingsend && (
+                  <div
+                    style={{
+                      height: "30px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <ReactLoading type="bubbles" color="#fff" />
+                  </div>
+                )}
+              </Button>
+            </div>
           </CardActions>
         )}
       </React.Fragment>
@@ -365,6 +425,119 @@ const ShowCases = () => {
 
   const ClickNewCase = () => {
     navigate("/new-case/add");
+  };
+
+  const showcasecon = (casei) => {
+    return (
+      <>
+        <ThemeProvider theme={theme}>
+          <Dialog
+            open={opencon}
+            onClose={handleClosecon}
+            sx={{ width: "100%" }}
+          >
+            <DialogTitle>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  fontWeight: "600",
+                  color: "#0388fc",
+                }}
+              >
+                لیست وکلایی که برای انها پرونده ارسال کردید
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  marginTop: "5px",
+                }}
+              >
+                {casei.accesses.length === 0 ? (
+                  <Typography sx={{ fontSize: 24 }}>
+                    پرونده ای برای وکیلی ارسال نکردید.
+                  </Typography>
+                ) : (
+                  casei.accesses.map((info, index) => (
+                    <>
+                      <div
+                        style={{
+                          marginTop: "30px",
+                          display: "flex",
+                        }}
+                      >
+                        <Avatar src={info.lawyer.profileImageUrl} />
+                        <div
+                          style={{
+                            fontSize: "12px",
+                            display: "flex",
+                            alignItems: "center",
+                            marginRight: "10px",
+                            fontWeight: "600",
+                          }}
+                        >
+                          فاطمه عسکری
+                        </div>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            marginRight: "30px",
+                            fontSize: "13px",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              marginRight: "100px",
+                              fontSize: "13px",
+                              color:
+                                info.documentStatus === 0
+                                  ? "gray"
+                                  : info.documentStatus === 1
+                                  ? "green"
+                                  : "red",
+                            }}
+                          >
+                            {info.documentStatus === 0 && "در انتظار..."}
+                            {info.documentStatus === 1 && "قبول"}
+                            {info.documentStatus === 2 && "نپذیرفته"}
+                          </div>
+                          <Button
+                            variant="contained"
+                            sx={{
+                              fontSize: "12px",
+                              borderRadius: "50px",
+                              marginRight: "20px",
+                            }}
+                            onClick={() =>
+                              navigate(`/LawyerPage/${info.lawyerId}`)
+                            }
+                          >
+                            مشاهده پروفایل
+                          </Button>
+                        </div>
+                      </div>
+                      <hr style={{ width: "90%" }} />
+                    </>
+                  ))
+                )}
+              </div>
+            </DialogTitle>
+            <DialogActions>
+              <Button onClick={handleClosecon} color="primary">
+                بستن
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </ThemeProvider>
+      </>
+    );
   };
 
   return (
@@ -383,9 +556,6 @@ const ShowCases = () => {
       )}
       {!loading && (
         <>
-          <Helmet>
-            <title>پرونده های من</title>
-          </Helmet>
           <Grid
             display={"flex"}
             minHeight={"100vh"}
@@ -434,17 +604,17 @@ const ShowCases = () => {
                   <hr></hr>
                 </div>
                 <Grid container direction={"row"} justifyContent={"right"}>
-                  {refCases.current.length == 0 ? (
+                  {Cases.length == 0 ? (
                     <Typography sx={{ fontFamily: "shabnam", fontSize: 24 }}>
                       {isLawyer.split("_")[0] == "true"
                         ? "هنوز پرونده ای برای شما ارسال نشده است."
                         : "شما هنوز پرونده‌ ای ایجاد نکرده اید."}
                     </Typography>
                   ) : (
-                    refCases.current.map((casei) => (
-                      <Grid item xs={12} sm={6} md={4} lg={4}>
+                    Cases.map((casei, index) => (
+                      <Grid key={index} item xs={12} sm={6} md={4} lg={4}>
                         <Card sx={{ m: "10px" }} variant="outlined">
-                          {card(casei)}
+                          {card(Cases[index])}
                         </Card>
                       </Grid>
                     ))
