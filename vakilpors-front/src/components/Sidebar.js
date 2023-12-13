@@ -23,8 +23,10 @@ import {
   WorkspacePremium,
   GroupIcon
 } from "@mui/icons-material";
+import MovingBar from "../components/premium-page/MovingBar";
 import PeopleIcon from '@mui/icons-material/People';
 import MenuIcon from "@mui/icons-material/Menu";
+// import { WorkspacePremium } from "@mui/icons-material";
 import React, { useState, useEffect } from "react";
 import useStateRef from "react-usestateref";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
@@ -321,6 +323,7 @@ const Sidebar = (props) => {
           icon: PaidOutlined,
           url: "/HandleTransactions",
         },
+        { name: "پریمیوم", icon: WorkspacePremium, url: "/VerifyLawyers", color: "purple" },
         { name: "شرایط سایت", icon: PolicyOutlined, url: "/Policy" },
         { name: "قانون اساسی", icon: Gavel, url: "/AsasiLaw" },
         { name: "تماس با ما", icon: CallOutlined, url: "/contactUs" },
@@ -406,6 +409,7 @@ const Sidebar = (props) => {
   }));
 
   return (
+    <>
     <ThemeProvider theme={theme}>
       <div>
         <Box sx={{ display: "flex" }}>
@@ -744,7 +748,7 @@ const Sidebar = (props) => {
               )}
             </List>
           </Drawer>
-
+          
           <Main
             onClick={handleDrawerClose}
             open={open}
@@ -753,12 +757,23 @@ const Sidebar = (props) => {
             <DrawerHeader />
             <props.component />
             <Footer />
+            <Box sx={{ flexGrow: 1, padding: "20px" }}>
+            {/* Add the MovingBar component at the bottom of the content */}
+            <MovingBar />
+          </Box>
           </Main>
-
+          
           <ToastContainer />
+          
         </Box>
+        
       </div>
+      
     </ThemeProvider>
+    
+    
+  </>
+
   );
 };
 
