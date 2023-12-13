@@ -121,7 +121,7 @@ const ShowCases = () => {
       const tokenData = jwt(token);
       const url =
         BASE_API_ROUTE +
-        (isLawyer.split("_")[0] == "true"
+        (isLawyer.split("_")[0] === "true"
           ? `Document/GetDocumentsThatLawyerHasAccessToByUserId`
           : `Document/GetDocumentsByUserId?userId=${tokenData.uid}`);
       const Data = {
@@ -129,7 +129,7 @@ const ShowCases = () => {
         lawyerId: isLawyer.split("_")[2],
       };
       try {
-        const response = await (isLawyer.split("_")[0] == "true"
+        const response = await (isLawyer.split("_")[0] === "true"
           ? axios.post(url, Data, {
               headers: { Authorization: `Bearer ${token}` },
             })

@@ -8,9 +8,11 @@ import {
   Avatar,
   CardContent,
   Rating,
+  CircularProgress,
 } from "@mui/material";
 import dlpbp from "../../assests/images/default_lawyer_profile_background_picture.jpg";
 import "../../css/BestLawyer.css";
+import useLawyerShowSearch from "../Lawyer-search-page/useLawyerShowSearch";
 
 const BestLawyer = () => {
   const [activeSlide, setActiveSlide] = useState(0);
@@ -18,6 +20,14 @@ const BestLawyer = () => {
   const handleSlideChange = (newIndex) => {
     setActiveSlide(newIndex);
   };
+
+  const { lawyerdetail1, loading, error, hasMore } = useLawyerShowSearch(
+    1,
+    5,
+    "Rating",
+    false
+  );
+  console.log(lawyerdetail1);
 
   return (
     <div>
@@ -32,6 +42,17 @@ const BestLawyer = () => {
       >
         پر امتیازترین وکیل ها
       </div>
+      {loading && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress style={{ color: "blue" }} />
+        </div>
+      )}
       <div
         style={{
           marginTop: "30px",
@@ -43,7 +64,7 @@ const BestLawyer = () => {
           padding: "10px",
         }}
       >
-        {[...Array(5)].map((_, i) => (
+        {lawyerdetail1.map((Lawyer, index) => (
           <Paper
             style={{
               height: "300px",
@@ -55,7 +76,11 @@ const BestLawyer = () => {
           >
             <Grid
               sx={{
-                backgroundImage: `url(${dlpbp})`,
+                backgroundImage: `url(${
+                  Lawyer.profileBackgroundPictureUrl
+                    ? Lawyer.profileBackgroundPictureUrl
+                    : dlpbp
+                })`,
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
@@ -67,35 +92,40 @@ const BestLawyer = () => {
               justifyContent="center"
             >
               <CardContent>
-                <Avatar alt="lawyer profile" sx={{ width: 80, height: 80 }} />
+                <Avatar
+                  srcSet={Lawyer.user.profileImageUrl}
+                  sx={{ width: 80, height: 80 }}
+                />
               </CardContent>
             </Grid>
-            <Typography
-              style={{
-                marginTop: "10px",
-                marginRight: "10px",
-                fontWeight: "600",
-              }}
-            >
-              فاطمه عسکری
-            </Typography>
-            <div
-              style={{
-                marginTop: "10px",
-                marginRight: "10px",
-                fontWeight: "400",
-              }}
-            >
-              وکیل دادگستری
-            </div>
-            <Rating
-              dir="rtl"
-              name="lawyer rating"
-              value={3}
-              precision={0.05}
-              readOnly
-              style={{marginTop:"10px",marginRight:'10px'}}
-            />
+            <Link to={`/LawyerPage/${Lawyer.id}`}>
+              <Typography
+                style={{
+                  marginTop: "10px",
+                  marginRight: "10px",
+                  fontWeight: "600",
+                }}
+              >
+                {Lawyer.user.name}
+              </Typography>
+              <div
+                style={{
+                  marginTop: "10px",
+                  marginRight: "10px",
+                  fontWeight: "400",
+                }}
+              >
+                {Lawyer.title ? Lawyer.title : "وکیل"}{" "}
+              </div>
+              <Rating
+                dir="rtl"
+                name="lawyer rating"
+                value={Lawyer.rating}
+                precision={0.05}
+                readOnly
+                style={{ marginTop: "10px", marginRight: "10px" }}
+              />
+            </Link>
           </Paper>
         ))}
       </div>
