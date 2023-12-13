@@ -323,7 +323,7 @@ const Sidebar = (props) => {
           icon: PaidOutlined,
           url: "/HandleTransactions",
         },
-        { name: "پریمیوم", icon: WorkspacePremium, url: "/VerifyLawyers", color: "purple" },
+        { name: "پریمیوم", icon: WorkspacePremium, url: "/PremiumLawyers", color: "purple" },
         { name: "شرایط سایت", icon: PolicyOutlined, url: "/Policy" },
         { name: "قانون اساسی", icon: Gavel, url: "/AsasiLaw" },
         { name: "تماس با ما", icon: CallOutlined, url: "/contactUs" },
