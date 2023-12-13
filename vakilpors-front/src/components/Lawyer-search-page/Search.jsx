@@ -13,7 +13,7 @@ const Search = ({ LawyerSearch, LawyerQuery }) => {
 
     return (
         <>
-                        <MovingBar />
+                        {/* <MovingBar /> */}
             {/* <MovingBar style={}/> */}
             <div class="landing-layer home-page ">
             {/* <MovingBar /> */}

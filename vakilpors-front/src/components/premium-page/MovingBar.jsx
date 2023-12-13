@@ -43,6 +43,7 @@ function MovingTextComponent() {
     const text = 'استفاده از برنامه پریمیوم هفتگی به شما این امکان را می‌دهد که به طور مداوم با مشتریان جدید ارتباط برقرار کنید. با قیمت مقرون به صرفه و امکانات منحصر به فرد، کسب و کار شما در نتایج جستجو و بخش‌های پیشنهادی به چشم می‌خورد.';
 
     return (
+        <Link to="/PremiumLawyers">
         <AppBar position="static" className={classes.bar} style={{ backgroundColor: bgColor }}>
             <Toolbar className={classes.content}>
                 <Typography variant="h6" className={classes.text}>
@@ -50,6 +51,7 @@ function MovingTextComponent() {
                 </Typography>
             </Toolbar>
         </AppBar>
+        </Link>
     );
 }
 

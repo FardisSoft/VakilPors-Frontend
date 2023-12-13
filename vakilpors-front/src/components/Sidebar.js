@@ -755,12 +755,13 @@ const Sidebar = (props) => {
             sx={{ padding: "0 !important" }}
           >
             <DrawerHeader />
-            <props.component />
-            <Footer />
-            <Box sx={{ flexGrow: 1, padding: "20px" }}>
+            <Box >
             {/* Add the MovingBar component at the bottom of the content */}
             <MovingBar />
           </Box>
+            <props.component />
+            <Footer />
+            
           </Main>
           
           <ToastContainer />
