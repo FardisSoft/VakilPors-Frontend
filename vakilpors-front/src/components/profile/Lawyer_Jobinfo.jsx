@@ -67,6 +67,7 @@ const Lawyer_Jobinfo = () => {
   const [open, setOpen] = useState(false);
   const [loadingocr, setloadingocr] = useState(false);
   const [code, setcode] = useState("");
+  const [send, setsend] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -310,8 +311,26 @@ const Lawyer_Jobinfo = () => {
                   </div>
                 )}
               </StyledButton>
-              <div style={{marginTop:'5px'}}>کد ملی شما:</div>
+              <div style={{ marginTop: "5px" }}>کد ملی شما:</div>
               <div>{code}</div>
+
+              {send && (
+                <div style={{marginTop:'10px'}}>
+                  <TextField
+                    id="outlined-basic"
+                    label="کد ملی"
+                    variant="outlined"
+                    size="small"
+                    name="licenseNumber"
+                    value={code}
+                    onChange={(event)=>{setcode(event.target.value)}}
+                    fullWidth
+                    autoComplete="licenseNumber"
+                    autoFocus
+                    InputLabelProps={{ shrink: true }}
+                  />
+                </div>
+              )}
             </div>
           </DialogContentText>
         </DialogContent>
@@ -392,7 +411,7 @@ const Lawyer_Jobinfo = () => {
           refdetail.current[key] == null ? "" : refdetail.current[key]
         );
       }
-      if (key == "user")
+      if (key === "user")
         for (const keyUser in refdetail.current["user"]) {
           formData.append(
             "user." + keyUser,
@@ -401,6 +420,11 @@ const Lawyer_Jobinfo = () => {
               : refdetail.current["user"][keyUser]
           );
         }
+    }
+    if(code!==""){
+      formData.append("NationalCode",code)
+      console.log(code)
+      console.log(formData["NationalCode"])
     }
     let specialtiesString = "";
     specialties.map((takh) => {
@@ -442,7 +466,7 @@ const Lawyer_Jobinfo = () => {
     }
   }
   const HandleOcr = async (event) => {
-    setcode("")
+    setcode("");
     console.log(refdetail.current.nationalCardImage);
     const img1 = await convertImageUrlToFile(
       refdetail.current.nationalCardImageUrl,
@@ -473,10 +497,12 @@ const Lawyer_Jobinfo = () => {
         setcode(response.data.data.nationalCode);
         console.log(response.data.data.nationalCode);
         setloadingocr(false);
+        setsend(true);
       })
       .catch((error) => {
         console.log(error);
         setloadingocr(false);
+        setsend(true);
       });
   };
 
