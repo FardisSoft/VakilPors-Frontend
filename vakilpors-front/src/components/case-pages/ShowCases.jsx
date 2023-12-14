@@ -86,16 +86,27 @@ const ShowCases = () => {
   const navigate = useNavigate();
   const [loading, setloading] = useState(false);
   const { isLawyer } = useParams();
+
   const [openDialog, setOpenDialog] = useState(false);
 
-  const [opencon, setOpencon] = useState(false);
+  const [opencon, setOpencon] = useState(
+    Array.from({ length: Cases.length }, () => false)
+  );
 
-  const handleOpencon = () => {
-    setOpencon(true);
+  const handleOpencon = (index) => {
+    setOpencon((prevState) => {
+      const newArray = [...prevState];
+      newArray[index] = true;
+      return newArray;
+    });
   };
 
-  const handleClosecon = () => {
-    setOpencon(false);
+  const handleClosecon = (index) => {
+    setOpencon((prevState) => {
+      const newArray = [...prevState];
+      newArray[index] = false;
+      return newArray;
+    });
   };
 
   const handleClickDelete = () => {
@@ -136,6 +147,7 @@ const ShowCases = () => {
           : axios.get(url, { headers: { Authorization: `Bearer ${token}` } }));
         setloading(false);
         setCases(response.data.data);
+        // setOpencon(Array.from({ length: Cases.length }, () => false));
         console.log(response.data.data);
         setaccess(response.data.data.accesses);
         // console.log(response.data.data[0].accesses)
@@ -234,7 +246,7 @@ const ShowCases = () => {
     return null;
   };
 
-  const card = (casei) => {
+  const card = ({ casei, index }) => {
     return (
       <React.Fragment>
         <CardContent sx={{ borderRadius: "5px 5px 5px 5px" }}>
@@ -322,7 +334,7 @@ const ShowCases = () => {
                 fontSize: "12px",
                 background: "#19c222",
               }}
-              onClick={handleOpencon}
+              onClick={() => handleOpencon(index)}
               size="small"
             >
               مشاهده وضعیت
@@ -343,7 +355,7 @@ const ShowCases = () => {
             >
               حذف
             </Button>
-            <div>{showcasecon(casei)}</div>
+            <div>{showcasecon({ casei, index })}</div>
             <ThemeProvider theme={theme}>
               <Dialog open={openDialog} onClose={handleCloseDialog}>
                 <DialogTitle>
@@ -385,11 +397,11 @@ const ShowCases = () => {
                   background: "#19c222",
                 }}
                 size="large"
-                onClick={handleOpencon}
+                onClick={() => handleOpencon(index)}
               >
                 مشاهده وضعیت
               </Button>
-              <div>{showcasecon(casei)}</div>
+              <div>{showcasecon({ casei, index })}</div>
               <div>{casei.accesses.length}</div>
               <Button
                 variant="contained"
@@ -427,13 +439,13 @@ const ShowCases = () => {
     navigate("/new-case/add");
   };
 
-  const showcasecon = (casei) => {
+  const showcasecon = ({ casei, index }) => {
     return (
       <>
         <ThemeProvider theme={theme}>
           <Dialog
-            open={opencon}
-            onClose={handleClosecon}
+            open={opencon[index]}
+            onClose={()=>handleClosecon(index)}
             sx={{ width: "100%" }}
           >
             <DialogTitle>
@@ -530,7 +542,7 @@ const ShowCases = () => {
               </div>
             </DialogTitle>
             <DialogActions>
-              <Button onClick={handleClosecon} color="primary">
+              <Button onClick={()=>handleClosecon(index)} color="primary">
                 بستن
               </Button>
             </DialogActions>
@@ -614,32 +626,13 @@ const ShowCases = () => {
                     Cases.map((casei, index) => (
                       <Grid key={index} item xs={12} sm={6} md={4} lg={4}>
                         <Card sx={{ m: "10px" }} variant="outlined">
-                          {card(Cases[index])}
+                          {card({ casei, index })}
                         </Card>
                       </Grid>
                     ))
                   )}
                 </Grid>
               </Grid>
-              {/* {isLawyer == "false" && (
-                <Grid
-                  item
-                  xs={12}
-                  lg={1}
-                  display={"flex"}
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                  p={"10px"}
-                >
-                  <Button
-                    onClick={ClickNewCase}
-                    sx={{ width: "90%", height: "100%", fontFamily: "shabnam" }}
-                    variant="contained"
-                  >
-                    افزودن پرونده
-                  </Button>
-                </Grid>
-              )} */}
             </Grid>
           </Grid>
           <Dialog
