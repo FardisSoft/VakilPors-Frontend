@@ -31,9 +31,7 @@ const NotFound = () => {
 
   return (
     <>
-    <Helmet>
-      <title>404</title>
-    </Helmet>
+
     <Grid container 
     sx={{
     display: "flex",
@@ -41,9 +39,6 @@ const NotFound = () => {
     alignItems: "center",
     justifyContent: "center",
     height: "100vh",
-    // backgroundImage:`url(${lawOnline})`,
-    // backgroundRepeat:'no-repeat',
-    // backgroundSize:'cover',
     backgroundPosition:'center',
         }}>
         <Grid 
@@ -57,11 +52,6 @@ const NotFound = () => {
             width: {xs:'90%',sm:'60%',md:'40%'}}}>
             <Slide in={show} direction="left">
                 <Grid justifyContent={'center'}>
-                {/* <section class="error-container">
-                    <span>4</span>
-                    <span><span class="screen-reader-text">0</span></span>
-                    <span>4</span>
-                </section> */}
                 <Lottie options={defaultOptions}
                   height={400}
                   width={400}
