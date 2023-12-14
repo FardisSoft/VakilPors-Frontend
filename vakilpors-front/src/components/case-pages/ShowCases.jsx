@@ -99,6 +99,8 @@ const ShowCases = () => {
     Array.from({ length: Cases.length }, () => false)
   );
 
+  const [concase, setconcase] = useState([]);
+
   const handleOpencon = (index) => {
     setOpencon((prevState) => {
       const newArray = [...prevState];
@@ -154,18 +156,34 @@ const ShowCases = () => {
               headers: { Authorization: `Bearer ${token}` },
             })
           : axios.get(url, { headers: { Authorization: `Bearer ${token}` } }));
-        setloading(false);
         setCases(response.data.data);
-        // setOpencon(Array.from({ length: Cases.length }, () => false));
         console.log(response.data.data);
         setaccess(response.data.data.accesses);
-        // console.log(response.data.data[0].accesses)
-        // response.data.data.map(async (casei) => {
-        //   const lawyers = await getLawyersThatHaveAccessToDoc(casei.id);
-        //   // setCases
-        //   console.log(casei.id, lawyers);
-        // });
-        // console.log('response in getDocument : ',response);
+
+        if (isLawyer.split("_")[0] === "true") {          
+          setconcase(Array.from({ length: response.data.data.length }, () => 1));
+          const Idlawyer = Data["lawyerId"];
+          for (let cases in response.data.data) {
+            for (let acc in response.data.data[cases].accesses) {
+              if (
+                response.data.data[cases].accesses[acc].lawyerId.toString() ===
+                Idlawyer
+              ) {
+                console.log(
+                  'cds',response.data.data[cases].accesses[acc].documentStatus
+                );
+                setconcase((prevState) => {
+                  const newArray = [...prevState];
+                  newArray[cases] =
+                    response.data.data[cases].accesses[acc].documentStatus;
+                  return newArray;
+                });
+                break;
+              }
+            }
+          }
+        }
+        setloading(false);
       } catch (error) {
         setloading(false);
         console.log("error in getDocument : ", error);
@@ -241,7 +259,7 @@ const ShowCases = () => {
     }
   };
 
-  const handleDeleteCase = async (docId,index) => {
+  const handleDeleteCase = async (docId, index) => {
     const token = await getAccessToken();
     if (token) {
       const url =
@@ -322,23 +340,26 @@ const ShowCases = () => {
             حداکثر بودجه : {casei.maximumBudget} تومان
           </Typography>
           {isLawyer !== "false" && (
-            <Box
-              style={{ marginTop: "10px" }}
-              backgroundColor={"lightblue"}
-              borderRadius={2}
-            >
-              <IconButton size="small">
-                <a
-                  href={casei.fileUrl == "null" ? null : casei.fileUrl}
-                  download={"download"}
-                >
-                  <DownloadForOfflineOutlined />
-                  <span style={{ marginLeft: "10px", fontSize: "15px" }}>
-                    {"دانلود فایل"}
-                  </span>
-                </a>
-              </IconButton>
-            </Box>
+            <>
+              <>{concase[index]}</>
+              <Box
+                style={{ marginTop: "10px" }}
+                backgroundColor={"lightblue"}
+                borderRadius={2}
+              >
+                <IconButton size="small">
+                  <a
+                    href={casei.fileUrl == "null" ? null : casei.fileUrl}
+                    download={"download"}
+                  >
+                    <DownloadForOfflineOutlined />
+                    <span style={{ marginLeft: "10px", fontSize: "15px" }}>
+                      {"دانلود فایل"}
+                    </span>
+                  </a>
+                </IconButton>
+              </Box>
+            </>
           )}
           {showLawyersThatHaveAccessToDoc(casei.id)}
         </CardContent>
@@ -371,7 +392,7 @@ const ShowCases = () => {
               ویرایش
             </Button>
             <Button
-              onClick={()=>handleClickDelete(index)}
+              onClick={() => handleClickDelete(index)}
               sx={{ fontFamily: "shabnam" }}
               size="small"
               color="error"
@@ -380,7 +401,10 @@ const ShowCases = () => {
             </Button>
             <div>{showcasecon({ casei, index })}</div>
             <ThemeProvider theme={theme}>
-              <Dialog open={openDialog[index]} onClose={()=>handleCloseDialog(index)}>
+              <Dialog
+                open={openDialog[index]}
+                onClose={() => handleCloseDialog(index)}
+              >
                 <DialogTitle>
                   <div>آیا از حذف کردن مطمئنید؟</div>
                   <div>{casei.caseName}</div>
@@ -389,7 +413,7 @@ const ShowCases = () => {
                   <div style={{ display: "flex", justifyContent: "center" }}>
                     <Button onClick={handleCloseDialog}>لغو</Button>
                     <Button
-                      onClick={() => handleDeleteCase(casei.id,index)}
+                      onClick={() => handleDeleteCase(casei.id, index)}
                       autoFocus
                     >
                       حذف
