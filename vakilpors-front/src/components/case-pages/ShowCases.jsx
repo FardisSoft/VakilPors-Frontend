@@ -502,7 +502,7 @@ const ShowCases = () => {
                           display: "flex",
                         }}
                       >
-                        <Avatar src={info.lawyer.profileImageUrl} />
+                        <Avatar src={info.lawyer.user.profileImageUrl} />
                         <div
                           style={{
                             fontSize: "12px",
@@ -512,7 +512,7 @@ const ShowCases = () => {
                             fontWeight: "600",
                           }}
                         >
-                          فاطمه عسکری
+                          {info.lawyer.user.name}
                         </div>
                         <div
                           style={{
