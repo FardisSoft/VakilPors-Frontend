@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import useStateRef from "react-usestateref";
 import { useAuth } from "../../context/AuthProvider";
 import { BASE_API_ROUTE } from "../../Constants";
 import axios from "axios";
@@ -28,34 +26,28 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { DownloadForOfflineOutlined } from "@mui/icons-material";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { toast } from "react-toastify";
-import {
-  Audio,
-  BallTriangle,
-  Bars,
-  Circles,
-  Hearts,
-  Oval,
-  Puff,
-  Rings,
-  SpinningCircles,
-  TailSpin,
-  ThreeDots,
-} from "@agney/react-loading";
+import { Oval } from "@agney/react-loading";
 import backgroun from "../../images/background.jpg";
-import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { createTheme } from "@mui/material/styles";
 import rtlPlugin from "stylis-plugin-rtl";
 import { ThemeProvider } from "@mui/material/styles";
-import AddIcon from "@mui/icons-material/Add";
-import { Modal } from "@mui/material";
 import ReactLoading from "react-loading";
+import { CacheProvider } from "@emotion/react";
 
 const cacheRtl = createCache({
   key: "muirtl",
   stylisPlugins: [rtlPlugin],
+  typography: {
+    fontFamily: "shabnam",
+  },
 });
+
 const theme = createTheme({
   typography: {
     fontFamily: "shabnam",
@@ -160,8 +152,10 @@ const ShowCases = () => {
         console.log(response.data.data);
         setaccess(response.data.data.accesses);
 
-        if (isLawyer.split("_")[0] === "true") {          
-          setconcase(Array.from({ length: response.data.data.length }, () => 1));
+        if (isLawyer.split("_")[0] === "true") {
+          setconcase(
+            Array.from({ length: response.data.data.length }, () => 1)
+          );
           const Idlawyer = Data["lawyerId"];
           for (let cases in response.data.data) {
             for (let acc in response.data.data[cases].accesses) {
@@ -170,7 +164,8 @@ const ShowCases = () => {
                 Idlawyer
               ) {
                 console.log(
-                  'cds',response.data.data[cases].accesses[acc].documentStatus
+                  "cds",
+                  response.data.data[cases].accesses[acc].documentStatus
                 );
                 setconcase((prevState) => {
                   const newArray = [...prevState];
@@ -187,6 +182,30 @@ const ShowCases = () => {
       } catch (error) {
         setloading(false);
         console.log("error in getDocument : ", error);
+      }
+    }
+  };
+
+  const handlesendstatus = async (id, index) => {
+    const token = await getAccessToken();
+    console.log("sdsf", token);
+    if (token) {
+      try {
+        const response = await axios.patch(
+          BASE_API_ROUTE + `Document/UpdateDocumentStatus`,
+          {
+            documentId: id,
+            documentStatus: concase[index],
+          },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        console.log(response.data);
+        showSuccesMessage("وضعیت با موفقیت اپدیت شد");
+      } catch (error) {
+        console.error(error);
+        showErrorMessage("خطایی پیش امده است");
       }
     }
   };
@@ -258,6 +277,13 @@ const ShowCases = () => {
       }
     }
   };
+  const setcaseon = (event, index) => {
+    setconcase((prevState) => {
+      const newArray = [...prevState];
+      newArray[index] = event.target.value;
+      return newArray;
+    });
+  };
 
   const handleDeleteCase = async (docId, index) => {
     const token = await getAccessToken();
@@ -290,193 +316,245 @@ const ShowCases = () => {
   const card = ({ casei, index }) => {
     return (
       <React.Fragment>
-        <CardContent sx={{ borderRadius: "5px 5px 5px 5px" }}>
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              paddingBottom: "50%",
-              width: "100%",
-            }}
-          >
-            <img
-              alt="img"
-              src={backgroun}
-              style={{
-                position: "absolute",
-                objectFit: "cover",
-                width: "100%",
-                height: "100%",
-                borderRadius: "5px 5px 0px 0px",
-              }}
-            />
-          </div>
-          <Typography
-            sx={{ fontFamily: "shabnam", fontSize: 14, marginTop: "10px" }}
-            color="text.secondary"
-            gutterBottom
-          >
-            عنوان : {casei.title}
-          </Typography>
-          <Typography
-            sx={{ fontFamily: "shabnam", mb: 1 }}
-            variant="h5"
-            component="div"
-          >
-            نام : {casei.caseName}
-          </Typography>
-          <Typography
-            sx={{ fontFamily: "shabnam", marginTop: "5px" }}
-            color="text.secondary"
-          >
-            گروه : {casei.documentCategory}
-          </Typography>
-          <Typography
-            sx={{ fontFamily: "shabnam", marginTop: "5px" }}
-            variant="body2"
-          >
-            حداقل بودجه : {casei.minimumBudget} تومان
-            <br />
-            حداکثر بودجه : {casei.maximumBudget} تومان
-          </Typography>
-          {isLawyer !== "false" && (
-            <>
-              <>{concase[index]}</>
-              <Box
-                style={{ marginTop: "10px" }}
-                backgroundColor={"lightblue"}
-                borderRadius={2}
-              >
-                <IconButton size="small">
-                  <a
-                    href={casei.fileUrl == "null" ? null : casei.fileUrl}
-                    download={"download"}
-                  >
-                    <DownloadForOfflineOutlined />
-                    <span style={{ marginLeft: "10px", fontSize: "15px" }}>
-                      {"دانلود فایل"}
-                    </span>
-                  </a>
-                </IconButton>
-              </Box>
-            </>
-          )}
-          {showLawyersThatHaveAccessToDoc(casei.id)}
-        </CardContent>
-        {isLawyer === "false" && (
-          <div
-            style={{
-              marginTop: "-6px",
-              marginBottom: "10px",
-              marginRight: "15px",
-            }}
-          >
-            <Button
-              variant="contained"
-              sx={{
-                fontFamily: "shabnam",
-                fontSize: "12px",
-                background: "#19c222",
-              }}
-              onClick={() => handleOpencon(index)}
-              size="small"
-            >
-              مشاهده وضعیت
-            </Button>
-            <Button
-              onClick={() => navigate(`/new-case/edit_${casei.id}`)}
-              sx={{ fontFamily: "shabnam", marginRight: "10px" }}
-              size="small"
-              variant="contained"
-            >
-              ویرایش
-            </Button>
-            <Button
-              onClick={() => handleClickDelete(index)}
-              sx={{ fontFamily: "shabnam" }}
-              size="small"
-              color="error"
-            >
-              حذف
-            </Button>
-            <div>{showcasecon({ casei, index })}</div>
-            <ThemeProvider theme={theme}>
-              <Dialog
-                open={openDialog[index]}
-                onClose={() => handleCloseDialog(index)}
-              >
-                <DialogTitle>
-                  <div>آیا از حذف کردن مطمئنید؟</div>
-                  <div>{casei.caseName}</div>
-                </DialogTitle>
-                <DialogActions>
-                  <div style={{ display: "flex", justifyContent: "center" }}>
-                    <Button onClick={handleCloseDialog}>لغو</Button>
-                    <Button
-                      onClick={() => handleDeleteCase(casei.id, index)}
-                      autoFocus
-                    >
-                      حذف
-                    </Button>
-                  </div>
-                </DialogActions>
-              </Dialog>
-            </ThemeProvider>
-          </div>
-        )}
-        {isLawyer.split("_")[0] == "choose" && (
-          <CardActions>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                width: "100%",
-                height: "40px",
-              }}
-            >
-              <Button
-                variant="contained"
-                sx={{
-                  fontFamily: "shabnam",
-                  mb: 1,
-                  width: "50%",
-                  fontSize: "12px",
-                  background: "#19c222",
+        <ThemeProvider theme={theme}>
+          <CacheProvider value={cacheRtl}>
+            <CardContent sx={{ borderRadius: "5px 5px 5px 5px" }}>
+              <div
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  paddingBottom: "50%",
+                  width: "100%",
                 }}
-                size="large"
-                onClick={() => handleOpencon(index)}
               >
-                مشاهده وضعیت
-              </Button>
-              <div>{showcasecon({ casei, index })}</div>
-              <Button
-                variant="contained"
-                onClick={() => handleChooseCase(casei.id, index)}
-                sx={{
-                  fontFamily: "shabnam",
-                  mb: 1,
-                  width: "50%",
-                  marginRight: "3px",
-                }}
-                size="large"
+                <img
+                  alt="img"
+                  src={backgroun}
+                  style={{
+                    position: "absolute",
+                    objectFit: "cover",
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: "5px 5px 0px 0px",
+                  }}
+                />
+              </div>
+              <Typography
+                sx={{ fontFamily: "shabnam", fontSize: 14, marginTop: "10px" }}
+                color="text.secondary"
+                gutterBottom
               >
-                {!loadingsend[index] && <span>ارسال</span>}
-                {loadingsend[index] && (
+                عنوان : {casei.title}
+              </Typography>
+              <Typography
+                sx={{ fontFamily: "shabnam", mb: 1 }}
+                variant="h5"
+                component="div"
+              >
+                نام : {casei.caseName}
+              </Typography>
+              <Typography
+                sx={{ fontFamily: "shabnam", marginTop: "5px" }}
+                color="text.secondary"
+              >
+                گروه : {casei.documentCategory}
+              </Typography>
+              <Typography
+                sx={{ fontFamily: "shabnam", marginTop: "5px" }}
+                variant="body2"
+              >
+                حداقل بودجه : {casei.minimumBudget} تومان
+                <br />
+                حداکثر بودجه : {casei.maximumBudget} تومان
+              </Typography>
+              {isLawyer !== "false" && (
+                <>
                   <div
                     style={{
-                      height: "30px",
                       display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      marginTop: "15px",
+                      marginBottom: "10px",
                     }}
                   >
-                    <ReactLoading type="bubbles" color="#fff" />
+                    <FormControl
+                      fullWidth
+                      size="small"
+                      sx={{ marginRight: "10px" }}
+                    >
+                      <InputLabel id="demo-simple-select-label">
+                        وضعیت پرونده
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={concase[index]}
+                        label="وضعیت پرونده"
+                        onChange={(e) => setcaseon(e, index)}
+                      >
+                        <MenuItem value={0}>در انتظار</MenuItem>
+                        <MenuItem value={1}>پذیرفته</MenuItem>
+                        <MenuItem value={2}>رد</MenuItem>
+                      </Select>
+                    </FormControl>
+                    <div
+                      style={{
+                        height: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Button
+                        style={{ backgroundColor: "orange" }}
+                        variant="contained"
+                        size="small"
+                        sx={{
+                          width: "100%",
+                        }}
+                        onClick={() => handlesendstatus(casei.id, index)}
+                      >
+                        اعمال
+                      </Button>
+                    </div>
                   </div>
-                )}
-              </Button>
-            </div>
-          </CardActions>
-        )}
+                  <Box
+                    style={{ marginTop: "15px" }}
+                    backgroundColor={"lightblue"}
+                    borderRadius={2}
+                  >
+                    <IconButton size="small">
+                      <a
+                        href={casei.fileUrl === "null" ? null : casei.fileUrl}
+                        download={"download"}
+                      >
+                        <DownloadForOfflineOutlined />
+                        <span style={{ marginLeft: "10px", fontSize: "15px" }}>
+                          {"دانلود فایل"}
+                        </span>
+                      </a>
+                    </IconButton>
+                  </Box>
+                </>
+              )}
+              {showLawyersThatHaveAccessToDoc(casei.id)}
+            </CardContent>
+            {isLawyer === "false" && (
+              <div
+                style={{
+                  marginTop: "-6px",
+                  marginBottom: "10px",
+                  marginRight: "15px",
+                }}
+              >
+                <Button
+                  variant="contained"
+                  sx={{
+                    fontFamily: "shabnam",
+                    fontSize: "12px",
+                    background: "#19c222",
+                  }}
+                  onClick={() => handleOpencon(index)}
+                  size="small"
+                >
+                  مشاهده وضعیت
+                </Button>
+                <Button
+                  onClick={() => navigate(`/new-case/edit_${casei.id}`)}
+                  sx={{ fontFamily: "shabnam", marginRight: "10px" }}
+                  size="small"
+                  variant="contained"
+                >
+                  ویرایش
+                </Button>
+                <Button
+                  onClick={() => handleClickDelete(index)}
+                  sx={{ fontFamily: "shabnam" }}
+                  size="small"
+                  color="error"
+                >
+                  حذف
+                </Button>
+                <div>{showcasecon({ casei, index })}</div>
+                <ThemeProvider theme={theme}>
+                  <Dialog
+                    open={openDialog[index]}
+                    onClose={() => handleCloseDialog(index)}
+                  >
+                    <DialogTitle>
+                      <div>آیا از حذف کردن مطمئنید؟</div>
+                      <div>{casei.caseName}</div>
+                    </DialogTitle>
+                    <DialogActions>
+                      <div
+                        style={{ display: "flex", justifyContent: "center" }}
+                      >
+                        <Button onClick={handleCloseDialog}>لغو</Button>
+                        <Button
+                          onClick={() => handleDeleteCase(casei.id, index)}
+                          autoFocus
+                        >
+                          حذف
+                        </Button>
+                      </div>
+                    </DialogActions>
+                  </Dialog>
+                </ThemeProvider>
+              </div>
+            )}
+            {isLawyer.split("_")[0] === "choose" && (
+              <CardActions>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    width: "100%",
+                    height: "40px",
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    sx={{
+                      fontFamily: "shabnam",
+                      mb: 1,
+                      width: "50%",
+                      fontSize: "12px",
+                      background: "#19c222",
+                    }}
+                    size="large"
+                    onClick={() => handleOpencon(index)}
+                  >
+                    مشاهده وضعیت
+                  </Button>
+                  <div>{showcasecon({ casei, index })}</div>
+                  <Button
+                    variant="contained"
+                    onClick={() => handleChooseCase(casei.id, index)}
+                    sx={{
+                      fontFamily: "shabnam",
+                      mb: 1,
+                      width: "50%",
+                      marginRight: "3px",
+                    }}
+                    size="large"
+                  >
+                    {!loadingsend[index] && <span>ارسال</span>}
+                    {loadingsend[index] && (
+                      <div
+                        style={{
+                          height: "30px",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <ReactLoading type="bubbles" color="#fff" />
+                      </div>
+                    )}
+                  </Button>
+                </div>
+              </CardActions>
+            )}
+          </CacheProvider>
+        </ThemeProvider>
       </React.Fragment>
     );
   };
