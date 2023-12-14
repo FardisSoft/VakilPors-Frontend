@@ -87,9 +87,15 @@ const ShowCases = () => {
   const [loading, setloading] = useState(false);
   const { isLawyer } = useParams();
 
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState(
+    Array.from({ length: Cases.length }, () => false)
+  );
 
   const [opencon, setOpencon] = useState(
+    Array.from({ length: Cases.length }, () => false)
+  );
+
+  const [loadingsend, setloadingsend] = useState(
     Array.from({ length: Cases.length }, () => false)
   );
 
@@ -109,17 +115,20 @@ const ShowCases = () => {
     });
   };
 
-  const handleClickDelete = () => {
-    setOpenDialog(true);
+  const handleClickDelete = (index) => {
+    setOpenDialog((prevState) => {
+      const newArray = [...prevState];
+      newArray[index] = true;
+      return newArray;
+    });
   };
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-
-  const handleOpenDescription = (des) => {
-    setOpenDescription(true);
-    setDescription(des);
+  const handleCloseDialog = (index) => {
+    setOpenDialog((prevState) => {
+      const newArray = [...prevState];
+      newArray[index] = false;
+      return newArray;
+    });
   };
 
   const handleCloseDescription = () => {
@@ -194,10 +203,12 @@ const ShowCases = () => {
       rtl: true,
     });
   };
-
-  const [loadingsend, setloadingsend] = useState(false);
-  const handleChooseCase = async (docId) => {
-    setloadingsend(true);
+  const handleChooseCase = async (docId, index) => {
+    setloadingsend((prevState) => {
+      const newArray = [...prevState];
+      newArray[index] = true;
+      return newArray;
+    });
     const token = await getAccessToken();
     if (token) {
       const url = BASE_API_ROUTE + "Document/GrantAccessToLawyer";
@@ -209,20 +220,28 @@ const ShowCases = () => {
         const response = await axios.post(url, data, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setloadingsend(false);
+        setloadingsend((prevState) => {
+          const newArray = [...prevState];
+          newArray[index] = false;
+          return newArray;
+        });
         // console.log('response in GrantAccessToLawyer : ',response);
         showSuccesMessage(
           "پرونده مورد نظر با موفقیت برای وکیل مورد نظر ارسال شد."
         );
       } catch (error) {
-        setloadingsend(false);
+        setloadingsend((prevState) => {
+          const newArray = [...prevState];
+          newArray[index] = false;
+          return newArray;
+        });
         console.log("error in GrantAccessToLawyer : ", error);
         showErrorMessage("برای این وکیل قبلا پرونده ارسال کرده اید.");
       }
     }
   };
 
-  const handleDeleteCase = async (docId) => {
+  const handleDeleteCase = async (docId,index) => {
     const token = await getAccessToken();
     if (token) {
       const url =
@@ -239,7 +258,11 @@ const ShowCases = () => {
         showErrorMessage("خطا در حذف پرونده");
       }
     }
-    setOpenDialog(false);
+    setOpenDialog((prevState) => {
+      const newArray = [...prevState];
+      newArray[index] = false;
+      return newArray;
+    });
   };
 
   const showLawyersThatHaveAccessToDoc = (docId) => {
@@ -348,7 +371,7 @@ const ShowCases = () => {
               ویرایش
             </Button>
             <Button
-              onClick={handleClickDelete}
+              onClick={()=>handleClickDelete(index)}
               sx={{ fontFamily: "shabnam" }}
               size="small"
               color="error"
@@ -357,7 +380,7 @@ const ShowCases = () => {
             </Button>
             <div>{showcasecon({ casei, index })}</div>
             <ThemeProvider theme={theme}>
-              <Dialog open={openDialog} onClose={handleCloseDialog}>
+              <Dialog open={openDialog[index]} onClose={()=>handleCloseDialog(index)}>
                 <DialogTitle>
                   <div>آیا از حذف کردن مطمئنید؟</div>
                   <div>{casei.caseName}</div>
@@ -366,7 +389,7 @@ const ShowCases = () => {
                   <div style={{ display: "flex", justifyContent: "center" }}>
                     <Button onClick={handleCloseDialog}>لغو</Button>
                     <Button
-                      onClick={() => handleDeleteCase(casei.id)}
+                      onClick={() => handleDeleteCase(casei.id,index)}
                       autoFocus
                     >
                       حذف
@@ -402,10 +425,9 @@ const ShowCases = () => {
                 مشاهده وضعیت
               </Button>
               <div>{showcasecon({ casei, index })}</div>
-              <div>{casei.accesses.length}</div>
               <Button
                 variant="contained"
-                onClick={() => handleChooseCase(casei.id)}
+                onClick={() => handleChooseCase(casei.id, index)}
                 sx={{
                   fontFamily: "shabnam",
                   mb: 1,
@@ -414,8 +436,8 @@ const ShowCases = () => {
                 }}
                 size="large"
               >
-                {!loadingsend && <span>ارسال</span>}
-                {loadingsend && (
+                {!loadingsend[index] && <span>ارسال</span>}
+                {loadingsend[index] && (
                   <div
                     style={{
                       height: "30px",
@@ -445,7 +467,7 @@ const ShowCases = () => {
         <ThemeProvider theme={theme}>
           <Dialog
             open={opencon[index]}
-            onClose={()=>handleClosecon(index)}
+            onClose={() => handleClosecon(index)}
             sx={{ width: "100%" }}
           >
             <DialogTitle>
@@ -542,7 +564,7 @@ const ShowCases = () => {
               </div>
             </DialogTitle>
             <DialogActions>
-              <Button onClick={()=>handleClosecon(index)} color="primary">
+              <Button onClick={() => handleClosecon(index)} color="primary">
                 بستن
               </Button>
             </DialogActions>
