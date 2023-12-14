@@ -1,5 +1,3 @@
-// MovingTextComponent.jsx
-
 import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, makeStyles, Paper } from "@material-ui/core";
 import { Link } from "react-router-dom";
@@ -7,10 +5,8 @@ import { Fullscreen } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
     bar: {
-        // backgroundColor: ,
         height: "70px",
-        width:'100%', // Fixed height for the bar
-        
+        width: '100%',
     },
     content: {
         display: "flex",
@@ -22,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     textContainer: {
         background: "#394240",
         padding: theme.spacing(2),
-        borderRadius: "20px", // Adjust the border radius to create different shapes
+        borderRadius: "20px",
     },
     text: {
         color: "white",
