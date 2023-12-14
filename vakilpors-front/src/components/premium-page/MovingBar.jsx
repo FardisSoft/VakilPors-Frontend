@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, makeStyles } from "@material-ui/core";
 import { Link } from "react-router-dom";
+
 const useStyles = makeStyles((theme) => ({
     bar: {
         backgroundColor: "gray",
@@ -11,7 +12,8 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         justifyContent: "center",
         padding: theme.spacing(2),
-        animation: "$scroll 15s linear infinite",
+        animation: "$scrollX 15s linear infinite", // Updated animation name
+        overflow: "hidden", // Prevent vertical overflow
     },
     text: {
         color: "white",
@@ -19,8 +21,8 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
         whiteSpace: "nowrap",
     },
-    "@keyframes scroll": {
-        "0%": { transform: "translateX(100%)" },
+    "@keyframes scrollX": {
+        "0%": { transform: "translateX(100%)" }, // Only translate along the x-axis
         "100%": { transform: "translateX(-100%)" },
     },
 }));
@@ -44,13 +46,13 @@ function MovingTextComponent() {
 
     return (
         <Link to="/PremiumLawyers">
-        <AppBar position="static" className={classes.bar} style={{ backgroundColor: bgColor }}>
-            <Toolbar className={classes.content}>
-                <Typography variant="h6" className={classes.text}>
-                    {text}
-                </Typography>
-            </Toolbar>
-        </AppBar>
+            <AppBar position="static" className={classes.bar} style={{ backgroundColor: bgColor }}>
+                <Toolbar className={classes.content}>
+                    <Typography variant="h6" className={classes.text}>
+                        {text}
+                    </Typography>
+                </Toolbar>
+            </AppBar>
         </Link>
     );
 }
