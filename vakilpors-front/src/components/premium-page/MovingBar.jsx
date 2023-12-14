@@ -5,7 +5,6 @@ const useStyles = makeStyles((theme) => ({
     bar: {
         backgroundColor: "gray",
         height: "auto",
-        overflow: 'hidden', // Add this line
     },
     content: {
         display: "flex",

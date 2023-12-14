@@ -55,7 +55,7 @@ import Lawyer_Jobinfo from './components/profile/Lawyer_Jobinfo';
 
 
 import AllUsersTable from './components/admin-pages/AllUsers';
-import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
