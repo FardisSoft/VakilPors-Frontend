@@ -242,6 +242,7 @@ const Sidebar = (props) => {
           url: `/show-cases/${false}`,
         },
         { name: "کیف پول", icon: WalletOutlined, url: `/wallet` },
+        { name: "پریمیوم", icon: WorkspacePremium, url: "/PremiumLawyers", color: "purple" },
         { name: "شرایط سایت", icon: PolicyOutlined, url: "/Policy" },
         { name: "قانون اساسی", icon: Gavel, url: "/AsasiLaw" },
         { name: "تماس با ما", icon: CallOutlined, url: "/contactUs" },
@@ -274,6 +275,7 @@ const Sidebar = (props) => {
           url: `/user-send-cases/${refLawyerID.current}`,
         },
         { name: "کیف پول", icon: WalletOutlined, url: "/wallet" },
+        { name: "پریمیوم", icon: WorkspacePremium, url: "/PremiumLawyers", color: "purple" },
         { name: "شرایط سایت", icon: PolicyOutlined, url: "/Policy" },
         { name: "قانون اساسی", icon: Gavel, url: "/AsasiLaw" },
         { name: "تماس با ما", icon: CallOutlined, url: "/contactUs" },
@@ -755,10 +757,9 @@ const Sidebar = (props) => {
             sx={{ padding: "0 !important" }}
           >
             <DrawerHeader />
-            <Box >
-            {/* Add the MovingBar component at the bottom of the content */}
+            {/* <Box >
             <MovingBar />
-          </Box>
+          </Box> */}
             <props.component />
             <Footer />
             
