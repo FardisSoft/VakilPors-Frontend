@@ -13,5 +13,5 @@ module.exports = {
   },
   // transformIgnorePatterns:["node_modules/(?!axios)"],
   testEnvironment: "jest-environment-jsdom",
-  setupFilesAfterEnv: ["<rootDir>/setupTests.js"],
+  "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"]
 };

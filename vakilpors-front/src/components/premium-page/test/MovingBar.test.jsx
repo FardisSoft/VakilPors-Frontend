@@ -1,45 +1,26 @@
-import React from "react";
-import { render, screen, act } from "@testing-library/react";
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import MovingTextComponent from "../MovingBar";
 
-jest.useFakeTimers();
+describe('MovingTextComponent', () => {
+    it('renders without crashing', () => {
+        render(<Router><MovingTextComponent /></Router>);
+        expect(screen.getByText('استفاده از برنامه هفتگی پریمیوم به شما این امکان را می‌دهد که به طور مداوم با مشتریان جدید ارتباط برقرار کنید. با قیمت مقرون به صرفه ، کسب و کار شما در نتایج جستجو و بخش‌های پیشنهادی بیشتر به چشم می‌خورد.')).toBeInTheDocument();
+    });
 
-test("renders MovingTextComponent with correct text", () => {
-    render(<MovingTextComponent />);
+    it('contains a link to /PremiumLawyers', () => {
+        render(<Router><MovingTextComponent /></Router>);
+        expect(screen.getByRole('link')).toHaveAttribute('href', '/PremiumLawyers');
+    });
 
-    const expectedText = 'استفاده از برنامه هفتگی پریمیوم...';
-    const textElement = screen.getByText(expectedText);
-
-    expect(textElement).toBeInTheDocument();
-});
-
-test("changes background color over time", () => {
-    render(<MovingTextComponent />);
-
-    const getBackgroundColor = () =>
-        screen.getByTestId("text-container").style.backgroundColor;
-
-    const initialColor = getBackgroundColor();
-
-    act(() => {
+    it('changes background color over time', () => {
+        jest.useFakeTimers();
+        render(<Router><MovingTextComponent /></Router>);
+        const initialColor = screen.getByRole('link').parentElement.style.backgroundColor;
         jest.advanceTimersByTime(2000);
+        const newColor = screen.getByRole('link').parentElement.style.backgroundColor;
+        expect(initialColor).not.toEqual(newColor);
+        jest.useRealTimers();
     });
-
-    const colorAfterInterval = getBackgroundColor();
-
-    expect(initialColor).not.toBe(colorAfterInterval);
-});
-
-test("navigates to /PremiumLawyers on click", () => {
-    const { container } = render(<MovingTextComponent />);
-
-    act(() => {
-        container.querySelector("a").click();
-    });
-
-    expect(window.location.pathname).toBe("/PremiumLawyers");
-});
-
-afterEach(() => {
-    jest.clearAllTimers();
 });

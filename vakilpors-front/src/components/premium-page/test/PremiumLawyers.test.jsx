@@ -1,103 +1,44 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import axios from 'axios';
 import PremiumLawyers from '../PremiumLawyers';
 
-// Mocking axios post method for activating a subscription
 jest.mock('axios');
+jest.mock('../../../context/AuthProvider', () => ({
+    useAuth: () => ({
+        refUserRole: { current: 'lawyer' },
+        getAccessToken: () => 'fake_token',
+    }),
+}));
 
-describe('PremiumLawyers Component', () => {
-    // Mocking useAuth hook
-    jest.mock('../../context/AuthProvider', () => ({
-        useAuth: () => ({
-            refUserRole: { current: 'User' },
-            getAccessToken: jest.fn(() => 'mockedAccessToken'),
-        }),
-    }));
-
-    // Mocking toast.success and toast.error functions from react-toastify
-    jest.mock('react-toastify', () => ({
-        toast: {
-            success: jest.fn(),
-            error: jest.fn(),
-        },
-    }));
+describe('PremiumLawyers', () => {
+    beforeEach(() => {
+        axios.post.mockResolvedValue({ data: {} });
+    });
 
     it('renders without crashing', () => {
-        render(<PremiumLawyers />);
+        render(<Router><PremiumLawyers /></Router>);
+        expect(screen.getByText('برنامه روزانه')).toBeInTheDocument();
+        expect(screen.getByText('برنامه هفتگی')).toBeInTheDocument();
     });
 
-    it('displays header text', () => {
-        const { getByText } = render(<PremiumLawyers />);
-        expect(getByText('رشد کسب و کار خود را با تبلیغات هدفمند آنلاین افزایش دهید')).toBeInTheDocument();
-        expect(getByText('بین برنامه های روزانه یا هفتگی انتخاب کنید تا با مشتریان جدید ارتباط برقرار کنید.')).toBeInTheDocument();
-        expect(getByText('هر روز با مشتریان محلی در تماس باشید.')).toBeInTheDocument();
+    it('activates a subscription when a plan is selected', async () => {
+        render(<Router><PremiumLawyers /></Router>);
+        fireEvent.click(screen.getAllByText('انتخاب')[0]);
+        await waitFor(() => expect(axios.post).toHaveBeenCalled());
     });
 
-    // Add more tests for different parts of the PremiumLawyers component
+    it('displays a loading spinner while activating a subscription', () => {
+        render(<Router><PremiumLawyers /></Router>);
+        fireEvent.click(screen.getAllByText('انتخاب')[0]);
+        expect(screen.getByRole('progressbar')).toBeInTheDocument();
+    });
 
-    describe('PlanCard Component', () => {
-        it('renders without crashing', () => {
-            const plan = {
-                name: 'برنامه روزانه',
-                price: '$10',
-                period: 'در روز',
-                description: 'Description of the plan.',
-                commonFeatures: ['Feature 1', 'Feature 2'],
-                planType: 'silver',
-            };
-            render(<PlanCard plan={plan} onSelectPlan={() => { }} loading={false} />);
-        });
-
-        it('displays plan details correctly', () => {
-            const plan = {
-                name: 'برنامه روزانه',
-                price: '$10',
-                period: 'در روز',
-                description: 'Description of the plan.',
-                commonFeatures: ['Feature 1', 'Feature 2'],
-                planType: 'silver',
-            };
-            const { getByText } = render(<PlanCard plan={plan} onSelectPlan={() => { }} loading={false} />);
-
-            expect(getByText('برنامه روزانه')).toBeInTheDocument();
-            expect(getByText('$10')).toBeInTheDocument();
-            expect(getByText('در روز')).toBeInTheDocument();
-            expect(getByText('Description of the plan.')).toBeInTheDocument();
-            expect(getByText('Feature 1')).toBeInTheDocument();
-            expect(getByText('Feature 2')).toBeInTheDocument();
-        });
-
-        it('calls onSelectPlan when the button is clicked', () => {
-            const plan = {
-                name: 'برنامه روزانه',
-                price: '$10',
-                period: 'در روز',
-                description: 'Description of the plan.',
-                commonFeatures: ['Feature 1', 'Feature 2'],
-                planType: 'silver',
-            };
-            const onSelectPlanMock = jest.fn();
-            const { getByText } = render(<PlanCard plan={plan} onSelectPlan={onSelectPlanMock} loading={false} />);
-
-            fireEvent.click(getByText('انتخاب'));
-
-            expect(onSelectPlanMock).toHaveBeenCalledTimes(1);
-        });
-
-        it('disables the button when loading is true', () => {
-            const plan = {
-                name: 'برنامه روزانه',
-                price: '$10',
-                period: 'در روز',
-                description: 'Description of the plan.',
-                commonFeatures: ['Feature 1', 'Feature 2'],
-                planType: 'silver',
-            };
-            const { getByText } = render(<PlanCard plan={plan} onSelectPlan={() => { }} loading={true} />);
-
-            const button = getByText('انتخاب');
-            expect(button).toBeDisabled();
-        });
+    it('displays an error message if activating a subscription fails', async () => {
+        axios.post.mockRejectedValue(new Error('Network error'));
+        render(<Router><PremiumLawyers /></Router>);
+        fireEvent.click(screen.getAllByText('انتخاب')[0]);
+        await waitFor(() => expect(screen.getByText('خطا در فعال سازی اشتراک')).toBeInTheDocument());
     });
 });
