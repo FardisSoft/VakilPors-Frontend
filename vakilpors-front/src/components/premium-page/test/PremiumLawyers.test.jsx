@@ -1,41 +1,44 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import PlanCard from '../PremiumLawyers';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import axios from 'axios';
+import PremiumLawyers from '../PremiumLawyers';
 
-const samplePlan = {
-    name: 'برنامه روزانه',
-    price: '$10',
-    period: 'در روز',
-    description: 'توضیحات برنامه روزانه',
-    commonFeatures: ['ویژگی 1', 'ویژگی 2'],
-};
+jest.mock('axios');
+jest.mock('../../../context/AuthProvider', () => ({
+    useAuth: () => ({
+        refUserRole: { current: 'lawyer' },
+        getAccessToken: () => 'fake_token',
+    }),
+}));
 
-test('renders plan card correctly', () => {
-    render(<PlanCard plan={samplePlan} commonFeatures={samplePlan.commonFeatures} />);
-
-    // Check if the plan name, price, and period are rendered
-    expect(screen.getByText(samplePlan.name)).toBeInTheDocument();
-    expect(screen.getByText(samplePlan.price)).toBeInTheDocument();
-    expect(screen.getByText(samplePlan.period)).toBeInTheDocument();
-
-    // Check if the description is rendered
-    expect(screen.getByText(samplePlan.description)).toBeInTheDocument();
-
-    // Check if common features are rendered
-    samplePlan.commonFeatures.forEach((feature) => {
-        expect(screen.getByText(feature)).toBeInTheDocument();
+describe('PremiumLawyers', () => {
+    beforeEach(() => {
+        axios.post.mockResolvedValue({ data: {} });
     });
 
-    // Check if the "انتخاب" button is rendered
-    const selectButton = screen.getByText('انتخاب');
-    expect(selectButton).toBeInTheDocument();
+    it('renders without crashing', () => {
+        render(<Router><PremiumLawyers /></Router>);
+        expect(screen.getByText('برنامه روزانه')).toBeInTheDocument();
+        expect(screen.getByText('برنامه هفتگی')).toBeInTheDocument();
+    });
 
-    // Simulate a user clicking the "انتخاب" button
-    userEvent.click(selectButton);
+    it('activates a subscription when a plan is selected', async () => {
+        render(<Router><PremiumLawyers /></Router>);
+        fireEvent.click(screen.getAllByText('انتخاب')[0]);
+        await waitFor(() => expect(axios.post).toHaveBeenCalled());
+    });
 
-    // Check if the button click triggers the expected behavior (you can extend this based on your actual functionality)
-    // For example, check if a function that handles the selection is called or if a modal is displayed.
-    // For simplicity, I'll just check if the button click changes its text to "Selected".
-    expect(screen.getByText('Selected')).toBeInTheDocument();
+    it('displays a loading spinner while activating a subscription', () => {
+        render(<Router><PremiumLawyers /></Router>);
+        fireEvent.click(screen.getAllByText('انتخاب')[0]);
+        expect(screen.getByRole('progressbar')).toBeInTheDocument();
+    });
+
+    it('displays an error message if activating a subscription fails', async () => {
+        axios.post.mockRejectedValue(new Error('Network error'));
+        render(<Router><PremiumLawyers /></Router>);
+        fireEvent.click(screen.getAllByText('انتخاب')[0]);
+        await waitFor(() => expect(screen.getByText('خطا در فعال سازی اشتراک')).toBeInTheDocument());
+    });
 });
