@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Advertising from '../Avertising';
+import Advertising from '../Advertising';
 // Mock the useNavigate hook
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

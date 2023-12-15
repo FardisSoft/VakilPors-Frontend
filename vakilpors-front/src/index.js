@@ -49,7 +49,7 @@ import VideoCall from './components/video-call/VideoCall';
 import VerifyLawyers from './components/admin-pages/VerifyLawyers';
 import VisitPannelStatistics from './components/admin-pages/Statistics-v2';
 import HandleTransactions from './components/admin-pages/HandleTransactions';
-import AdvertisingPage from './components/premium-page/Avertising';
+import AdvertisingPage from './components/premium-page/Advertising';
 import ReportSideAdmin from './components/admin-pages/reportSideAdmin';
 import Lawyer_Jobinfo from './components/profile/Lawyer_Jobinfo';
 
