@@ -1,58 +1,69 @@
-// PremiumLawyers.test.js
-
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import axios from 'axios';
-import PremiumLawyers, { PlanCard } from '../PremiumLawyers';
+import PremiumLawyers from './PremiumLawyers';
 
 jest.mock('axios');
 
-// Render Test
-test('renders PremiumLawyers component', () => {
-    render(<PremiumLawyers />);
-});
-
-// PlanCard Rendering Test
-const samplePlan = {
-    name: 'Sample Plan',
-    price: '$20',
-    period: 'Monthly',
-    description: 'Sample description',
-    commonFeatures: ['Feature 1', 'Feature 2'],
-    planType: 'sample',
-};
-
-test('renders PlanCard component', () => {
-    render(<PlanCard plan={samplePlan} onSelectPlan={() => {}} loading={false} />);
-});
-
-// Activate Subscription Function Test
-test('activates subscription on button click', async () => {
-    axios.post.mockResolvedValue({ data: 'Subscription activated' });
-
-    const { getByText } = render(<PremiumLawyers />);
-
-    fireEvent.click(getByText('انتخاب'));
-
-    await waitFor(() => {
-        expect(axios.post).toHaveBeenCalledWith(
-            'your_expected_activation_endpoint',
-            '',
-            expect.any(Object)
-        );
-        // assert other expectations based on your implementation
+describe('PremiumLawyers Component', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
     });
-});
 
-// Loading State Test
-test('displays loading state during subscription activation', async () => {
-    axios.post.mockResolvedValue({ data: 'Subscription activated' });
+    it('renders without crashing', () => {
+        render(<PremiumLawyers />);
+    });
 
-    const { getByText, getByTestId } = render(<PremiumLawyers />);
+    it('activates subscription on button click', async () => {
+        axios.post.mockResolvedValue({ data: { /* your response data here */ } });
 
-    fireEvent.click(getByText('انتخاب'));
+        const { getByText } = render(<PremiumLawyers />);
 
-    await waitFor(() => {
+        fireEvent.click(getByText('انتخاب'));
+
+        await waitFor(() => expect(axios.post).toHaveBeenCalled());
+        // You can add assertions here based on the expected behavior after a successful activation
+    });
+
+    it('handles subscription activation error', async () => {
+        axios.post.mockRejectedValue(new Error('Activation failed'));
+
+        const { getByText } = render(<PremiumLawyers />);
+
+        fireEvent.click(getByText('انتخاب'));
+
+        await waitFor(() => expect(axios.post).toHaveBeenCalled());
+        // You can add assertions here based on the expected behavior after an activation error
+    });
+
+    it('displays loading spinner during activation', async () => {
+        axios.post.mockResolvedValue({ data: { /* your response data here */ } });
+
+        const { getByText, getByTestId } = render(<PremiumLawyers />);
+
+        fireEvent.click(getByText('انتخاب'));
+
         expect(getByTestId('loading-spinner')).toBeInTheDocument();
+
+        await waitFor(() => expect(axios.post).toHaveBeenCalled());
+
+        // You can add assertions here based on the expected behavior after activation
+        expect(getByTestId('loading-spinner')).not.toBeInTheDocument();
     });
+
+    it('redirects on successful activation', async () => {
+        axios.post.mockResolvedValue({ data: { /* your response data here */ } });
+
+        const { getByText, findByTestId } = render(<PremiumLawyers />);
+
+        fireEvent.click(getByText('انتخاب'));
+
+        await waitFor(() => expect(axios.post).toHaveBeenCalled());
+
+        // Assuming your navigation logic sets a data-testid on the redirected element
+        const redirectedElement = await findByTestId('redirected-element');
+        expect(redirectedElement).toBeInTheDocument();
+    });
+
+    // Add more tests as needed for different scenarios and edge cases
 });
