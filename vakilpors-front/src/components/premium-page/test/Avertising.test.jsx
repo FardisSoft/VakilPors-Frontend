@@ -1,79 +1,60 @@
 import React from 'react';
-import { render, screen, fireEvent, act } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import Advertising from '../Avertising';
+// Mock the useNavigate hook
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: jest.fn(),
+}));
 
-const mockLawyers = [
-    {
-        id: 1,
-        user: { name: 'John Doe' },
-        title: 'Senior Lawyer',
-        licenseNumber: 'ABC123',
-        aboutMe: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        profileImageUrl: 'mock_image_url',
-        rating: 4,
-    },
-    // Add more mock lawyers as needed
-];
+describe('Advertising Component', () => {
+    // Mock data for testing
+    const mockLawyers = [
+        {
+            id: 1,
+            user: {
+                name: 'John Doe',
+            },
+            title: 'Lawyer',
+            aboutMe: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            profileImageUrl: 'url/to/image',
+        },
+        // Add more lawyer objects as needed
+    ];
 
-describe('Advertising component', () => {
-    it('displays loading state initially', async () => {
-        render(
-            <Router>
-                <Advertising lawyers={[]} />
-            </Router>
-        );
-
-        expect(screen.getByRole('progressbar')).toBeInTheDocument();
-        expect(screen.queryByRole('button', { name: /بیشتر/i })).not.toBeInTheDocument();
+    it('renders without crashing', () => {
+        render(<Advertising lawyers={mockLawyers} />);
+        // Check if the component renders without crashing
+        expect(screen.getByText('وکیل های کار درست ما')).toBeInTheDocument();
     });
 
-    it('displays lawyer information when data is loaded', async () => {
-        render(
-            <Router>
-                <Advertising lawyers={mockLawyers} />
-            </Router>
-        );
-
-        await screen.findByText(mockLawyers[0].user.name); // Wait for the data to be loaded
-
-        // Assertions for LawyerCard component
-        expect(screen.getByAltText(mockLawyers[0].user.name)).toBeInTheDocument();
-        expect(screen.getByText(mockLawyers[0].user.name)).toBeInTheDocument();
-        expect(screen.getByText(`عنوان: ${mockLawyers[0].title}`)).toBeInTheDocument();
-        expect(screen.getByText(`شماره پرونده وکالت: ${mockLawyers[0].licenseNumber}`)).toBeInTheDocument();
-        expect(screen.getByText(`توضیحات: ${mockLawyers[0].aboutMe.split(' ').slice(0, 30).join(' ')}...`)).toBeInTheDocument();
-        expect(screen.getByRole('link', { name: /بیشتر/i })).toHaveAttribute('href', `/LawyerPage/${mockLawyers[0].id}`);
-        expect(screen.getByLabelText('Rated')).toHaveValue(mockLawyers[0].rating);
+    it('displays loading spinner when data is loading', () => {
+        render(<Advertising lawyers={[]} />);
+        // Check if the loading spinner is displayed
+        expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
     });
 
-    it('cycles through lawyers with button clicks', async () => {
-        render(
-            <Router>
-                <Advertising lawyers={mockLawyers} />
-            </Router>
-        );
-
-        await screen.findByText(mockLawyers[0].user.name); // Wait for the data to be loaded
-
-        // Initial display
-        expect(screen.getByText(mockLawyers[0].user.name)).toBeInTheDocument();
-        expect(screen.getByText(mockLawyers[0].title)).toBeInTheDocument();
-
-        // Click next button
-        fireEvent.click(screen.getByRole('button', { name: /•/ }));
-        await screen.findByText(mockLawyers[1].user.name);
-
-        // Check if the next lawyer is displayed
-        expect(screen.getByText(mockLawyers[1].user.name)).toBeInTheDocument();
-        expect(screen.getByText(mockLawyers[1].title)).toBeInTheDocument();
-
-        // Click previous button
-        fireEvent.click(screen.getByRole('button', { name: /•/ }));
-        await screen.findByText(mockLawyers[0].user.name);
-
-        // Check if it cycles back to the initial lawyer
-        expect(screen.getByText(mockLawyers[0].user.name)).toBeInTheDocument();
-        expect(screen.getByText(mockLawyers[0].title)).toBeInTheDocument();
+    it('displays lawyer information when data is loaded', () => {
+        render(<Advertising lawyers={mockLawyers} />);
+        // Check if the lawyer information is displayed
+        expect(screen.getByText('John Doe')).toBeInTheDocument();
+        expect(screen.getByText('عنوان: Lawyer')).toBeInTheDocument();
+        expect(screen.getByText(/Lorem ipsum dolor/)).toBeInTheDocument();
     });
+
+    it('handles button click to view lawyer profile', () => {
+        render(<Advertising lawyers={mockLawyers} />);
+        // Mock the useNavigate function
+        const mockNavigate = jest.fn();
+        require('react-router-dom').useNavigate.mockImplementation(() => mockNavigate);
+
+        // Click the "مشاهده پروفایل" button
+        userEvent.click(screen.getByText('مشاهده پروفایل'));
+
+        // Check if the useNavigate function is called with the correct path
+        expect(mockNavigate).toHaveBeenCalledWith('/LawyerPage/1'); // Adjust the path and ID accordingly
+    });
+
+    // Add more test cases as needed
 });

@@ -86,36 +86,36 @@ const PremiumLawyers = () => {
     };
 
     // Function to fetch data from various API endpoints
-    const fetchData = async () => {
-        const token = await getAccessToken();
-        if (token) {
-            const tokenData = jwt(token);
-            const headers = {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            };
+    // const fetchData = async () => {
+    //     const token = await getAccessToken();
+    //     if (token) {
+    //         const tokenData = jwt(token);
+    //         const headers = {
+    //             "Content-Type": "application/json",
+    //             Authorization: `Bearer ${token}`,
+    //         };
 
-            try {
-                // const userResponse = await axios.get(`${BASE_API_ROUTE}Customer/GetUserById?userId=${tokenData.uid}`, { headers });
-                // // Process userResponse.data as needed
+    //         try {
+    //             // const userResponse = await axios.get(`${BASE_API_ROUTE}Customer/GetUserById?userId=${tokenData.uid}`, { headers });
+    //             // // Process userResponse.data as needed
 
-                // const balanceResponse = await axios.get(`${BASE_API_ROUTE}Wallet/GetBalance`, { headers });
-                // // Process balanceResponse.data as needed
+    //             // const balanceResponse = await axios.get(`${BASE_API_ROUTE}Wallet/GetBalance`, { headers });
+    //             // // Process balanceResponse.data as needed
 
-                // const subscriptionStatusResponse = await axios.get(`${BASE_API_ROUTE}Premium/GetSubscriptionStatus`, { headers });
-                // // Process subscriptionStatusResponse.data as needed
+    //             // const subscriptionStatusResponse = await axios.get(`${BASE_API_ROUTE}Premium/GetSubscriptionStatus`, { headers });
+    //             // // Process subscriptionStatusResponse.data as needed
 
-                // const transactionsResponse = await axios.get(`${BASE_API_ROUTE}Wallet/GetTransactions?PageNumber=${1}&PageSize=${5}&IsAscending=false`, { headers });
-                // // Process transactionsResponse.data as needed
+    //             // const transactionsResponse = await axios.get(`${BASE_API_ROUTE}Wallet/GetTransactions?PageNumber=${1}&PageSize=${5}&IsAscending=false`, { headers });
+    //             // // Process transactionsResponse.data as needed
 
-                // const monthlyTransactionsResponse = await axios.get(`${BASE_API_ROUTE}Wallet/GetMonthlyTransactionsAmount`, { headers });
-                // // Process monthlyTransactionsResponse.data as needed
+    //             // const monthlyTransactionsResponse = await axios.get(`${BASE_API_ROUTE}Wallet/GetMonthlyTransactionsAmount`, { headers });
+    //             // // Process monthlyTransactionsResponse.data as needed
 
-            } catch (error) {
-                console.error("Error fetching data:", error.message);
-            }
-        }
-    };
+    //         } catch (error) {
+    //             console.error("Error fetching data:", error.message);
+    //         }
+    //     }
+    // };
     // const API_ENDPOINT = `${BASE_API_ROUTE}`;
     // Function to activate a subscription
     const activateSubscription = async (premiumPlan) => {
@@ -139,7 +139,7 @@ const PremiumLawyers = () => {
                 showSuccessMessage(`اشتراک ${premiumPlan} شما با موفقیت فعال شد!`);
 
                 // Fetch updated data from the server
-                fetchData();
+                // fetchData();
             } catch (error) {
                 console.error(`Error activating premium plan ${premiumPlan}:`, error.message);
                 setLoading(false);
@@ -151,9 +151,9 @@ const PremiumLawyers = () => {
         }
     };
 
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
+    // useEffect(() => {
+    //     fetchData();
+    // }, [fetchData]);
 
     return (
         <div className="custom-styles">
