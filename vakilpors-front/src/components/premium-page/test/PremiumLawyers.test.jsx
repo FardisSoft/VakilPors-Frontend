@@ -1,52 +1,44 @@
-// Import React Testing Library and Jest
-import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
-
-// Import the component to be tested
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import axios from 'axios';
 import PremiumLawyers from '../PremiumLawyers';
 
-// Mock the implementation of the Button component
-jest.mock('@material-ui/core/Button', () => {
-    return ({ children, onClick }) => (
-        <button onClick={onClick}>{children}</button>
-    );
-});
+jest.mock('axios');
+jest.mock('../../../context/AuthProvider', () => ({
+    useAuth: () => ({
+        refUserRole: { current: 'lawyer' },
+        getAccessToken: () => 'fake_token',
+    }),
+}));
 
-// Write a test suite for the component
-describe('PremiumLawyers component', () => {
-    // Write a test case for rendering the component
-    test('renders the component with header and plans', () => {
-        // Render the component
-        render(<PremiumLawyers />);
-
-        // Assert that the header elements are present
-        expect(screen.getByText('رشد کسب و کار خود را با تبلیغات هدفمند آنلاین افزایش دهید')).toBeInTheDocument();
-        expect(screen.getByText('بین برنامه های روزانه یا هفتگی انتخاب کنید تا با مشتریان جدید ارتباط برقرار کنید.')).toBeInTheDocument();
-
-        // Assert that the plan cards are present
-        expect(screen.getByText('برنامه روزانه')).toBeInTheDocument();
-        expect(screen.getByText('برنامه هفتگی')).toBeInTheDocument();
-
-        // Assert that the plan features are present
-        expect(screen.getByText('قرار دادن لیست ویژه')).toBeInTheDocument();
-        expect(screen.getByText('نمایش تبلیغات در صفحات با ترافیک بالا')).toBeInTheDocument();
-        expect(screen.getByText('گزارش تحلیلی از کلیک ها و تاثیرات')).toBeInTheDocument();
-        expect(screen.getByText('خلاقیت های سفارشی برای تبلیغات موثر')).toBeInTheDocument();
+describe('PremiumLawyers', () => {
+    beforeEach(() => {
+        axios.post.mockResolvedValue({ data: {} });
     });
 
-    // Write a test case for selecting a plan
-    test('selects a plan and shows a confirmation message', () => {
-        // Render the component
-        render(<PremiumLawyers />);
+    it('renders without crashing', () => {
+        render(<Router><PremiumLawyers /></Router>);
+        expect(screen.getByText('برنامه روزانه')).toBeInTheDocument();
+        expect(screen.getByText('برنامه هفتگی')).toBeInTheDocument();
+    });
 
-        // Find the button for the daily plan
-        const dailyPlanButton = screen.getByText('انتخاب', { selector: 'button' });
+    it('activates a subscription when a plan is selected', async () => {
+        render(<Router><PremiumLawyers /></Router>);
+        fireEvent.click(screen.getAllByText('انتخاب')[0]);
+        await waitFor(() => expect(axios.post).toHaveBeenCalled());
+    });
 
-        // Click the button
-        fireEvent.click(dailyPlanButton);
+    it('displays a loading spinner while activating a subscription', () => {
+        render(<Router><PremiumLawyers /></Router>);
+        fireEvent.click(screen.getAllByText('انتخاب')[0]);
+        expect(screen.getByRole('progressbar')).toBeInTheDocument();
+    });
 
-        // Assert that a confirmation message is shown
-        expect(screen.getByText('شما برنامه روزانه را انتخاب کرده اید. لطفا اطلاعات پرداخت خود را وارد کنید.')).toBeInTheDocument();
+    it('displays an error message if activating a subscription fails', async () => {
+        axios.post.mockRejectedValue(new Error('Network error'));
+        render(<Router><PremiumLawyers /></Router>);
+        fireEvent.click(screen.getAllByText('انتخاب')[0]);
+        await waitFor(() => expect(screen.getByText('خطا در فعال سازی اشتراک')).toBeInTheDocument());
     });
 });

@@ -266,9 +266,6 @@ const Call_Edit_Lawyer_Profile = () => {
 
   return (
     <>
-      <Helmet>
-        <title>ویرایش اطلاعات وکیل</title>
-      </Helmet>
       <ThemeProvider theme={theme}>
         <CacheProvider value={cacheRtl}>
           <div className="page-content2">
@@ -510,57 +507,6 @@ const Call_Edit_Lawyer_Profile = () => {
                     </h3>
                   </div>
                 </div>
-{/* 
-                <div style={{ marginTop: "5px", display: "flex" }}>
-                  <Avatar
-                    style={{
-                      borderRadius: "10px",
-                      width: "150px",
-                      height: "90px",
-                    }}
-                    src={refdetail.current.nationalCardImageUrl}
-                    variant="square"
-                  />
-                  <div
-                    style={{
-                      marginRight: "20px",
-                      display: "flex",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <Button
-                      variant="contained"
-                      component="label"
-                      style={{
-                        backgroundColor: "#1976D2",
-                        borderRadius: "5px",
-                        color: "white",
-                        fontSize: "12px",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                      sx={{
-                        color: "white",
-                        width: "130px",
-                        mt: 1,
-                        height: "40px",
-                      }}
-                    >
-                      کارت ملی
-                      <input
-                        type="file"
-                        onChange={handleMelliCardChange}
-                        hidden
-                        accept=".jpg,.jpeg,.png"
-                      />
-                    </Button>
-                    <h3 style={{ marginTop: "8px", fontSize: "0.7rem" }}>
-                      کارت ملی شما در پروفایل شما نمایش داده نخواهد شد و تنها
-                      جهت احراز هویت شما توسط ادمین مورد بررسی قرار می گیرد
-                    </h3>
-                  </div>
-                </div> */}
                 <div
                   className="form-row-last"
                   style={{ display: "flex", justifyContent: "center" }}

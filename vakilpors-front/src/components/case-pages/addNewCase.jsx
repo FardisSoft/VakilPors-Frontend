@@ -380,9 +380,6 @@ const AddNewCase = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{isEdit ? "ویرایش پرونده" : "افزودن پرونده"}</title>
-      </Helmet>
       <ThemeProvider theme={theme}>
         <CacheProvider value={cacheRtl}>
           <Grid
@@ -549,15 +546,15 @@ const AddNewCase = () => {
                       onChange={(File) => setFile(File)}
                     />
                     {FileURL && (
-                    <Button
-                      style={{
-                        backgroundColor: "#42f551",
-                        borderRadius: "5px",
-                        height: "25px",
-                        marginRight: "4px",
-                      }}
-                      variant="contained"
-                    >
+                      <Button
+                        style={{
+                          backgroundColor: "#42f551",
+                          borderRadius: "5px",
+                          height: "25px",
+                          marginRight: "4px",
+                        }}
+                        variant="contained"
+                      >
                         <a
                           style={{ color: "white" }}
                           href={FileURL}
@@ -566,7 +563,7 @@ const AddNewCase = () => {
                         >
                           دانلود
                         </a>
-                    </Button>
+                      </Button>
                     )}
                   </div>
                   <br></br>

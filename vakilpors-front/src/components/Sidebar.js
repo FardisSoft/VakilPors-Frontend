@@ -23,8 +23,10 @@ import {
   WorkspacePremium,
   GroupIcon
 } from "@mui/icons-material";
+import MovingBar from "../components/premium-page/MovingBar";
 import PeopleIcon from '@mui/icons-material/People';
 import MenuIcon from "@mui/icons-material/Menu";
+// import { WorkspacePremium } from "@mui/icons-material";
 import React, { useState, useEffect } from "react";
 import useStateRef from "react-usestateref";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
@@ -240,6 +242,7 @@ const Sidebar = (props) => {
           url: `/show-cases/${false}`,
         },
         { name: "کیف پول", icon: WalletOutlined, url: `/wallet` },
+        { name: "پریمیوم", icon: WorkspacePremium, url: "/PremiumLawyers", color: "purple" },
         { name: "شرایط سایت", icon: PolicyOutlined, url: "/Policy" },
         { name: "قانون اساسی", icon: Gavel, url: "/AsasiLaw" },
         { name: "تماس با ما", icon: CallOutlined, url: "/contactUs" },
@@ -272,6 +275,7 @@ const Sidebar = (props) => {
           url: `/user-send-cases/${refLawyerID.current}`,
         },
         { name: "کیف پول", icon: WalletOutlined, url: "/wallet" },
+        { name: "پریمیوم", icon: WorkspacePremium, url: "/PremiumLawyers", color: "purple" },
         { name: "شرایط سایت", icon: PolicyOutlined, url: "/Policy" },
         { name: "قانون اساسی", icon: Gavel, url: "/AsasiLaw" },
         { name: "تماس با ما", icon: CallOutlined, url: "/contactUs" },
@@ -321,6 +325,7 @@ const Sidebar = (props) => {
           icon: PaidOutlined,
           url: "/HandleTransactions",
         },
+        { name: "پریمیوم", icon: WorkspacePremium, url: "/PremiumLawyers", color: "purple" },
         { name: "شرایط سایت", icon: PolicyOutlined, url: "/Policy" },
         { name: "قانون اساسی", icon: Gavel, url: "/AsasiLaw" },
         { name: "تماس با ما", icon: CallOutlined, url: "/contactUs" },
@@ -406,6 +411,7 @@ const Sidebar = (props) => {
   }));
 
   return (
+    <>
     <ThemeProvider theme={theme}>
       <div>
         <Box sx={{ display: "flex" }}>
@@ -744,21 +750,32 @@ const Sidebar = (props) => {
               )}
             </List>
           </Drawer>
-
+          
           <Main
             onClick={handleDrawerClose}
             open={open}
             sx={{ padding: "0 !important" }}
           >
             <DrawerHeader />
+            {/* <Box >
+            <MovingBar />
+          </Box> */}
             <props.component />
             <Footer />
+            
           </Main>
-
+          
           <ToastContainer />
+          
         </Box>
+        
       </div>
+      
     </ThemeProvider>
+    
+    
+  </>
+
   );
 };
 

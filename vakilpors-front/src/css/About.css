@@ -1,0 +1,7 @@
+@media (max-width: 600px) {
+    .About_des{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}

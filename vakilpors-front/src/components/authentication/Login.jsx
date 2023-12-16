@@ -239,9 +239,6 @@ const Login = () => {
                   direction={{ xs: "column", sm: "row" }}
                   sx={{ display: "flex", m: 2, justifyContent: "center" }}
                 >
-                  {/* <Button size={'large'} variant="contained" color="primary" sx={{fontsize:"18px",fontFamily:"shabnam"}} onClick={handleLoginClick}>
-                            ورود
-                        </Button> */}
                   <StyledButton
                     onClick={handleLoginClick}
                     style={{ width: "5rem" }}

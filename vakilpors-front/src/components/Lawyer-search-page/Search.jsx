@@ -1,36 +1,34 @@
 import '../../css/Search.css';
 import { FaEye, FaSearch } from 'react-icons/fa';
-import MovingBarComponent from '../premium-page/MovingBarComponent';
-
-
+import MovingBar from '../premium-page/MovingBar';
+import { Box } from "@material-ui/core";
 
 const Search = ({ LawyerSearch, LawyerQuery }) => {
-    const text =
-        'استفاده از برنامه پریمیوم هفتگی به شما این امکان را می‌دهد که به طور مداوم با مشتریان جدید ارتباط برقرار کنید. با قیمت مقرون به صرفه و امکانات منحصر به فرد، کسب و کار شما در نتایج جستجو و بخش‌های پیشنهادی به چشم می‌خورد. این برنامه امکاناتی همچون قرار دادن لیست ویژه، نمایش تبلیغات در صفحات با ترافیک بالا، گزارش تحلیلی از کلیک‌ها و تاثیرات، و خلاقیت‌های سفارشی برای تبلیغات موثر را فراهم می‌کند.' +
-
-        'هر روز با مشتریان محلی در تماس بودن نقش اساسی در رشد کسب و کار شما دارد. با برنامه روزانه، لیست کسب و کار شما به مدت 24 ساعت در سایت ما به صورت برجسته نمایش داده می‌شود، تا به حداکثر دیده شدن برسد. این فرصت را از دست ندهید و از تبلیغات روزانه برای جذب مشتریان جدید بهره مند شوید. این برنامه همچنین از امکاناتی همچون قرار دادن لیست ویژه، نمایش تبلیغات در صفحات با ترافیک بالا، گزارش تحلیلی از کلیک‌ها و تاثیرات، و خلاقیت‌های سفارشی برای تبلیغات موثر بهره می‌برد.';
-    
+    const text = '...'; // Your long text here
 
     return (
         <>
-            <MovingBarComponent
-                
-                fullText= {text}
-            />
-            <div class="landing-layer home-page ">
-                <div class="landing-content">
-                    <div class="landing-header cooperation animated fadeIn" style={{ fontFamily: "shabnam" }}>
-                        <h2>
-                            جست و جوی بهترین وکیل ، بررسی پرونده ، پیروزی در مجامع قضایی!
-                        </h2>
-                        <span>
-                            با بهترین هزینه ، بهترین وکلا رو مال پرونده ات کن!
-                        </span>
-                    </div>
-                    <div class="container">
-                        <div class="landing-content">
-                            <div class="landing-search">
-                                <form >
+            <MovingBar />
+            <div className="landing-layer home-page">
+                <div className="landing-content">
+                    <Box sx={{ flexGrow: 1, padding: "20px" }}>
+                        <div className="landing-header cooperation animated fadeIn" style={{ fontFamily: "shabnam" }}>
+                            <h2>جست و جوی بهترین وکیل ، بررسی پرونده ، پیروزی در مجامع قضایی!</h2>
+                            <span>با بهترین هزینه ، بهترین وکلا رو مال پرونده ات کن!</span>
+                        </div>
+                    </Box>
+
+                    <h2>
+                        جست و جوی بهترین وکیل ، بررسی پرونده ، پیروزی در مجامع قضایی!
+                    </h2>
+                    <span>
+                        با بهترین هزینه ، بهترین وکلا رو مال پرونده ات کن!
+                    </span>
+
+                    <div className="container">
+                        <div className="landing-content">
+                            <div className="landing-search">
+                                <form>
                                     <input
                                         dir="rtl"
                                         type="text"
@@ -44,7 +42,7 @@ const Search = ({ LawyerSearch, LawyerQuery }) => {
                                         aria-describedby="basic-addon1"
                                     />
                                     <button>
-                                        <i class="zmdi zmdi-search" style={{ position: "relative", left: "-10px" }}><FaSearch /></i>
+                                        <i className="zmdi zmdi-search" style={{ position: "relative", left: "-10px" }}><FaSearch /></i>
                                     </button>
                                 </form>
                             </div>
