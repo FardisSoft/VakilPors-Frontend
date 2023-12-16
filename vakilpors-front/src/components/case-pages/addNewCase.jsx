@@ -380,9 +380,6 @@ const AddNewCase = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{isEdit ? "ویرایش پرونده" : "افزودن پرونده"}</title>
-      </Helmet>
       <ThemeProvider theme={theme}>
         <CacheProvider value={cacheRtl}>
           <Grid
