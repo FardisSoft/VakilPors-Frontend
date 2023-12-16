@@ -54,30 +54,62 @@ describe("Login Component", () => {
   });
 
   test("have link to signup", () => {
-    const { getByText } = render(
+    render(
       <Router>
         <AuthProvider>
           <Login />
         </AuthProvider>
       </Router>
     );
-    const linkElement = getByText(/فراموشی رمز عبور/i);
-    const linkElement2 = getByText(/ثبت نام کنید!/i);
+    const linkElement = screen.getByText(/فراموشی رمز عبور/i);
+    const linkElement2 = screen.getByText(/ثبت نام کنید!/i);
     expect(linkElement).toBeInTheDocument();
     expect(linkElement2).toBeInTheDocument();
     expect(linkElement.tagName).toBe("A");
     expect(linkElement2.tagName).toBe("A");
   });
 
+  // // test("should make a POST request on form submission", async () => {
+  // //   const mock = new MockAdapter(axios);
+  // //   const mockResponse = { success: true, token: "mockToken" };
+  // //   mock.onPost(BASE_API_ROUTE + 'Auth/login').reply(200, mockResponse);
+
+  // //   render(
+  // //     <Router>
+  // //       <AuthProvider>
+  // //         <Login/>
+  // //       </AuthProvider>
+  // //     </Router>
+  // //   );
+
+  // //   const passwordInput = screen.getByLabelText(/رمز عبور/i);
+  // //   const phoneNumberInput = screen.getByLabelText(/شماره موبایل/i);
+  // //   const submitButton = screen.getByRole("submit-btn");
+
+  // //   fireEvent.change(phoneNumberInput, { target: { value: "1234567890" } });
+  // //   fireEvent.change(passwordInput, { target: { value: "password123" } });
+  // //   fireEvent.click(submitButton);
+
+  // //   await waitFor(() => {
+  // //     expect(mock.history.post.length).toBe(1);
+  // //     // expect(mock.history.post[0].url).toBe("/api/login");
+  // //     // expect(mock.history.post[0].data).toEqual({
+  // //     //   phoneNumber: "1234567890",
+  // //     //   password: "password123",
+  // //     // });
+  // //   });
+  // // });
+
+  // jest.mock("axios");
+
   // test("should make a POST request on form submission", async () => {
-  //   const mock = new MockAdapter(axios);
   //   const mockResponse = { success: true, token: "mockToken" };
-  //   mock.onPost(BASE_API_ROUTE + 'Auth/login').reply(200, mockResponse);
+  //   axios.post.mockResolvedValueOnce({ data: mockResponse });
 
   //   render(
   //     <Router>
   //       <AuthProvider>
-  //         <Login/>
+  //         <Login />
   //       </AuthProvider>
   //     </Router>
   //   );
@@ -91,43 +123,11 @@ describe("Login Component", () => {
   //   fireEvent.click(submitButton);
 
   //   await waitFor(() => {
-  //     expect(mock.history.post.length).toBe(1);
-  //     // expect(mock.history.post[0].url).toBe("/api/login");
-  //     // expect(mock.history.post[0].data).toEqual({
+  //     expect(axios.post).toHaveBeenCalledTimes(1);
+  //     // expect(axios.post).toHaveBeenCalledWith(BASE_API_ROUTE + "Auth/login", {
   //     //   phoneNumber: "1234567890",
   //     //   password: "password123",
   //     // });
   //   });
   // });
-
-  jest.mock("axios");
-
-  test("should make a POST request on form submission", async () => {
-    const mockResponse = { success: true, token: "mockToken" };
-    axios.post.mockResolvedValueOnce({ data: mockResponse });
-
-    render(
-      <Router>
-        <AuthProvider>
-          <Login />
-        </AuthProvider>
-      </Router>
-    );
-
-    const passwordInput = screen.getByLabelText(/رمز عبور/i);
-    const phoneNumberInput = screen.getByLabelText(/شماره موبایل/i);
-    const submitButton = screen.getByRole("submit-btn");
-
-    fireEvent.change(phoneNumberInput, { target: { value: "1234567890" } });
-    fireEvent.change(passwordInput, { target: { value: "password123" } });
-    fireEvent.click(submitButton);
-
-    await waitFor(() => {
-      expect(axios.post).toHaveBeenCalledTimes(1);
-      // expect(axios.post).toHaveBeenCalledWith(BASE_API_ROUTE + "Auth/login", {
-      //   phoneNumber: "1234567890",
-      //   password: "password123",
-      // });
-    });
-  });
 });

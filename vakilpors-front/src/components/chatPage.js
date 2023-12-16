@@ -370,13 +370,13 @@ const ChatPage = () => {
     const file = event.target.files[0];
     const formData = new FormData();
     formData.append('file', file, file.name);
-    const url = BASE_API_ROUTE + 'File/Upload';
+    const url = BASE_API_ROUTE + 'File/UploadFileMessage';
     try{
       const response = await axios.post(url,formData);
       const newMessage = {
         id: 0,
         sender: null,
-        message: response.data,
+        message: response.data.url,
         sendTime: new Date().toISOString(),
         isDeleted: false,
         isEdited: false,
@@ -389,6 +389,7 @@ const ChatPage = () => {
         chat: null,
         replyId: null,
         replyMessage: null,
+        contentType: response.data.contentType
       };
       sendMessage(newMessage);
     } catch(err) {
@@ -504,6 +505,7 @@ const ChatPage = () => {
     const isDeleted = message.isDeleted;
     const isEdited = message.isEdited;
     const isFile = message.isFile;
+    message.contentType
     const isRead = message.isRead;
     const isCall = message.isCall;
     return (

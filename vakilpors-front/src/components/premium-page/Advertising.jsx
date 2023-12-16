@@ -201,7 +201,7 @@ const Advertising = ({ lawyers }) => {
                       </Slider>
 
                     </div> */}
-                    <LawyerCard lawyer={lawyers[currentLawyerIndex]} />
+                    {lawyers.length > 0 && <LawyerCard lawyer={lawyers[currentLawyerIndex]} />}
                   </div>
                 ) : (
                   <p>No lawyers to display</p>
