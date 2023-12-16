@@ -53,6 +53,8 @@ import AdvertisingPage from './components/premium-page/Avertising';
 import ReportSideAdmin from './components/admin-pages/reportSideAdmin';
 import Lawyer_Jobinfo from './components/profile/Lawyer_Jobinfo';
 
+import MeetingForm from './components/Event/UserSide';
+
 
 import AllUsersTable from './components/admin-pages/AllUsers';
 
@@ -86,6 +88,10 @@ root.render(
               <Route path="/payment/verify" element={<Sidebar component={ResponseTransaction} />}/>
               <Route path="/Rate/:LawyerId" element={<Sidebar component={Rate}/>}/>
               <Route path="/wallet" element={<Sidebar component={Wallet}/>}/>
+              <Route path="/create-meet/:isLawyer" element={<Sidebar component={MeetingForm}/>}/>
+
+
+              
               <Route path="/videoCall/:roomId" element={<Sidebar component={VideoCall}/>}/>
               <Route path="/VerifyLawyers" element={<Sidebar component={VerifyLawyers}/>}/>
               <Route path="/ReportValidation" element={<Sidebar component={ReportSideAdmin}/>}/>

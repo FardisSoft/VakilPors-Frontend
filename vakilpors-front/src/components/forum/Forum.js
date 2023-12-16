@@ -100,8 +100,11 @@ const Forum = () => {
 	const [threadList, setThreadList, refThreadList] = useStateRef([]);
 	const [userId, setUserId, refUserId] = useStateRef("");
 	const { getAccessToken } = useAuth();
-	const [openReportDialog, setOpenReportDialog] = React.useState(false);
+	const [openReportDialog, setOpenReportDialog] = useState({});
 	const [title, setTitle] = useState("");
+	const [descriptionReport, setDescriptionReport] = React.useState('');
+	const [reportDialogStatus, setReportDialogStatus] = useState({});
+
 
 	// handling pagination and sort with this state
 	// const [lazyParams, setLazyParams] = useState({
@@ -265,13 +268,53 @@ const Forum = () => {
 		}
 	};
 
-	const handleReport = () => {
-		setOpenReportDialog(true);
+	const handleOpenReportDialog = (threadId) => {
+		setOpenReportDialog((prevStatus) => ({
+			...prevStatus,
+			[threadId]: true,
+		}));
+	};
+	
+	const handleCloseReportDialog = (threadId) => {
+		setOpenReportDialog((prevStatus) => ({
+			...prevStatus,
+			[threadId]: false,
+		}));
+	};
+
+	const handleReport = (threadId) => {
+		  setOpenReportDialog(true);
 	  };
+	const handleReportClick = (thread) => {
+		handleSubmitReport(thread.id, thread);
+	};
 	  
-	  const handleCloseReportDialog = () => {
-		setOpenReportDialog(false);
-	  };
+
+	  const handleSubmitReport = (threadId, userId) => {
+		const reportData = {
+		  description: descriptionReport,
+		  userId: userId,
+		  commentId: threadId,
+		};
+	
+		axios
+		  .post('https://api.fardissoft.ir/Report/PostReport', reportData, {
+			headers: {
+			  'Content-Type': 'application/json',
+			  'accept': '*/*',
+			},
+		  })
+		  .then((response) => {
+			console.log('Report submitted successfully', response);
+			// Add any additional logic or UI updates upon successful submission
+		  })
+		  .catch((error) => {
+			console.error('Failed to submit report', error);
+			// Handle the error or display an error message to the user
+		  });
+	
+		  handleCloseReportDialog(threadId);
+		};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -377,28 +420,34 @@ const Forum = () => {
 												userId={refUserId.current}
 											/>
 										</Badge>
+
 										<Tooltip title="ثبت تخلف کاربر">
-											<IconButton onClick={handleReport}>
+											<IconButton onClick={() => handleOpenReportDialog(thread.id)}>
 												<ReportRoundedIcon color="primary" />
 											</IconButton>
 										</Tooltip>
-										<Dialog open={openReportDialog} onClose={handleCloseReportDialog}>
+										<Dialog
+											open={openReportDialog[thread.id] || false}
+											onClose={() => handleCloseReportDialog(thread.id)}
+										>										
 										<DialogTitle>گزارش تخلف</DialogTitle>
 										<DialogContent>
-											<TextField
+										<TextField
 											label="توضیحات تخلف"
 											multiline
 											rows={4}
 											variant="outlined"
 											fullWidth
+											value={descriptionReport}
+											onChange={(event) => setDescriptionReport(event.target.value)}
 											/>
 										</DialogContent>
 										<DialogActions>
-											<Button onClick={handleCloseReportDialog} color="primary">
-											لغو
+											<Button onClick={() => handleCloseReportDialog(thread.id)} color="primary">
+												لغو
 											</Button>
-											<Button onClick={handleCloseReportDialog} color="primary">
-											ثبت گزارش
+											<Button onClick={() => handleSubmitReport(thread.id, thread.userId)} color="primary">
+												ثبت گزارش
 											</Button>
 										</DialogActions>
 										</Dialog>

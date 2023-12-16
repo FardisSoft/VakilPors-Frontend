@@ -9,7 +9,8 @@ import {
 } from "@mui/material";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import { Navigate, useNavigate } from "react-router-dom";
-import defaultProfilePhoto from "./defaultProfilePhoto.png"
+import defaultProfilePhoto from "./defaultProfilePhoto.png";
+import visitcardNull from "./visitcardNull.jpg";
 import { BASE_API_ROUTE} from "../../../Constants"
 import axios from 'axios';
 import StyledButton from '../../ButtonComponent';
@@ -27,6 +28,7 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAuth } from "../../../context/AuthProvider";
+
 
 
 
@@ -226,7 +228,7 @@ const UsersCard = (props) => {
         <DialogContent dividers>
           
         <Typography sx={{ fontFamily:"shabnam", fontWeight:"bold" }} color="text.secondary">
-            در این قسمت می‌توانید اطلاعات تکمیل وکیل '{props.name}' را مشاهده بفرمایید : 
+            در این قسمت می‌توانید اطلاعات تکمیلی وکیل '{props.name}' را مشاهده بفرمایید : 
         </Typography>   
 
 
@@ -239,11 +241,11 @@ const UsersCard = (props) => {
             <Grid container direction={'row'} display={'flex'} justifyContent={'flex-start'} alignItems={'flex-start'}>
               <Grid flexDirection={'column'} display={'flex'}>
                 <CardHeader titleTypographyProps={{ m:0, fontFamily:"shabnam", fontWeight:"bold", fontSize:"16px", color:"grayText" }} title="کارت ویزیت "/>
-                <CardMedia image={props.callingCardImageUrl || "https://www.caspianpolicy.org/no-image.png"} sx={{ alignSelf:"flex-start", height: 167, width: 300, mb: '20px', ml: '20px' }} title="کارت ویزیت"/>
+                <CardMedia image={props.callingCardImageUrl || visitcardNull} sx={{ alignSelf:"flex-start", height: 167, width: 300, mb: '20px', ml: '20px' }} title="کارت ویزیت"/>
               </Grid>
               <Grid flexDirection={'column'} display={'flex'}>
                 <CardHeader titleTypographyProps={{ m:0, fontFamily:"shabnam", fontWeight:"bold", fontSize:"16px", color:"grayText" }} title="کارت ملی "/>
-                <CardMedia image={props.nationalCardImageUrl || "https://www.caspianpolicy.org/no-image.png"} sx={{ alignSelf:"flex-start", height: 167, width: 300, mb: '20px' }} title="کارت ملی"/>
+                <CardMedia image={props.nationalCardImageUrl || "https://cdn.etemadonline.com/servev2/NjhjZjI32ifG/5Uwvb7W7Zm0,/NjhjZjI32ifG.jpeg"} sx={{ alignSelf:"flex-start", height: 167, width: 300, mb: '20px' }} title="کارت ملی"/>
               </Grid>
             </Grid>
 

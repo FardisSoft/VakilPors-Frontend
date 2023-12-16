@@ -40,7 +40,7 @@ function MovingTextComponent() {
         return () => clearInterval(colorInterval);
     }, []);
 
-    const text = 'استفاده از برنامه پریمیوم هفتگی به شما این امکان را می‌دهد که به طور مداوم با مشتریان جدید ارتباط برقرار کنید. با قیمت مقرون به صرفه و امکانات منحصر به فرد، کسب و کار شما در نتایج جستجو و بخش‌های پیشنهادی به چشم می‌خورد.';
+    const text = '';
 
     return (
         <Link to="/PremiumLawyers">

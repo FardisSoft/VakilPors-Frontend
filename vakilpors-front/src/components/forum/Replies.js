@@ -12,6 +12,15 @@ import Likes from "./utils/Likes";
 import { Delete, Edit, TaskAlt, WorkspacePremium } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import backgroundbb from "../../assests/images/back.png";
+import ReportRoundedIcon from '@mui/icons-material/ReportRounded';
+import { FormControlLabel, Radio, RadioGroup } from '@mui/material';import {
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	DialogActions,
+	InputBase
+} from '@mui/material';
+
 
 // mui rtl
 import rtlPlugin from 'stylis-plugin-rtl';
@@ -28,18 +37,18 @@ const theme = createTheme({
 });
 // mui rtl
 
-const StyledTooltip = styled (({ className, ...props }) => (
-	<Tooltip {...props} classes={{ popper: className }} arrow/>
-  ))(({ theme }) => ({
+const StyledTooltip = styled(({ className, ...props }) => (
+	<Tooltip {...props} classes={{ popper: className }} arrow />
+))(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
-	  backgroundColor: '#f5f5f9',
-	  color: 'rgba(0, 0, 0, 0.87)',
-	  maxWidth: 300,
-	  fontSize: '15px',
-	  border: '1px solid #dadde9',
-	  fontFamily: 'shabnam',
+		backgroundColor: '#f5f5f9',
+		color: 'rgba(0, 0, 0, 0.87)',
+		maxWidth: 300,
+		fontSize: '15px',
+		border: '1px solid #dadde9',
+		fontFamily: 'shabnam',
 	},
-  }));
+}));
 
 const Replies = () => {
 	const [replyList, setReplyList] = useState([]);
@@ -51,6 +60,40 @@ const Replies = () => {
 	const [editActiveComment, setEditActiveComment] = useState('');
 	const { threadId, userId } = useParams();
 	const { getAccessToken } = useAuth();
+	const [openReportDialog, setOpenReportDialog] = useState({});
+	const [reportDialogStatus, setReportDialogStatus] = useState({});
+	const [descriptionReport, setDescriptionReport] = React.useState('');
+	const [currentStep, setCurrentStep] = useState(1);
+
+	const handleOpenReportDialog = (threadId) => {
+		setCurrentStep(1);
+		setOpenReportDialog((prevStatus) => ({
+		  ...prevStatus,
+		  [threadId]: true,
+		}));
+	  };
+	
+	const handleCloseReportDialog = (threadId) => {
+		setOpenReportDialog((prevStatus) => ({
+			...prevStatus,
+			[threadId]: false,
+		}));
+	};
+	
+	const handleChoiceClick = (choice) => {
+		setDescriptionReport(choice +" "+ descriptionReport);
+		setCurrentStep(2);
+	  };
+	
+	
+	const handleReport = (threadId) => {
+		setOpenReportDialog(true);
+	};
+	const handleReportClick = (thread) => {
+		handleSubmitReport(thread.id, thread);
+	};
+
+
 
 	const fetchReplies = async () => {
 		const token = await getAccessToken();
@@ -62,6 +105,7 @@ const Replies = () => {
 				setTitle(response.data.data.thread.title);
 				setIsSelfThread(response.data.data.thread.user.userId === Number(userId));
 				setReplyList(response.data.data.comments);
+				console.log("replyList :::: ", replyList);
 			} catch (error) {
 				console.log('fetch reply error : ', error);
 			}
@@ -69,8 +113,66 @@ const Replies = () => {
 	}
 
 	useEffect(() => {
+		console.log("replyList :::: ", replyList);
+	}, [replyList]);
+
+	useEffect(() => {
+		const fetchReplies = async () => {
+			const token = await getAccessToken();
+			if (token) {
+				const url = BASE_API_ROUTE + `Thread/GetThreadWithComments?threadId=${threadId}`;
+				try {
+					const response = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
+					// console.log('fetch reply response : ',response);
+					setTitle(response.data.data.thread.title);
+					setIsSelfThread(response.data.data.thread.user.userId === Number(userId));
+					setReplyList(response.data.data.comments.results);
+					console.log("replyList :::: ", replyList);
+				} catch (error) {
+					console.log('fetch reply error : ', error);
+				}
+			}
+		}
+
 		fetchReplies();
+
 	}, [threadId]);
+
+
+
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////
+	const handleSubmitReport = (threadId, userId) => {
+		const reportData = {
+			description: descriptionReport,
+			userId: userId,
+			commentId: threadId,
+		};
+
+		axios
+			.post('https://api.fardissoft.ir/Report/PostReport', reportData, {
+				headers: {
+					'Content-Type': 'application/json',
+					'accept': '*/*',
+				},
+			})
+			.then((response) => {
+				console.log('Report submitted successfully', response);
+				showSuccesMessage("گزارش با موفقیت ثبت شد.");
+				setDescriptionReport(null);
+				// Add any additional logic or UI updates upon successful submission
+			})
+			.catch((error) => {
+				console.error('Failed to submit report', error);
+				showErrorMessage("ارسال گزارش با خطا مواجه شد.")
+				// Handle the error or display an error message to the user
+			});
+
+		handleCloseReportDialog(threadId);
+	};
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 	const showErrorMessage = (message) => {
 		toast.error(message, {
@@ -85,6 +187,22 @@ const Replies = () => {
 			rtl: true,
 		});
 	};
+
+
+	const showSuccesMessage = (payam) => {
+		toast.success(payam, {
+			position: "bottom-right",
+			autoClose: 3000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "light",
+			rtl: true,
+		});
+	};
+
 
 	const addReply = async () => {
 		const token = await getAccessToken();
@@ -137,7 +255,6 @@ const Replies = () => {
 
 	const handleEditReply = async () => {
 		if (reply.trim() == '') {
-			// alert('لطفا متن جدید کامنت را وارد کنید و سپس دکمه ویرایش را بزنید');
 			return;
 		}
 		const token = await getAccessToken();
@@ -193,10 +310,10 @@ const Replies = () => {
 			</Helmet>
 			<ThemeProvider theme={theme}>
 				<CacheProvider value={cacheRtl}>
-					<Grid container width={'100%'} minHeight={'100vh'} paddingY={'30px'} backgroundColor={'#fffbf5'} display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{background : `url(${backgroundbb})`}} >
+					<Grid container width={'100%'} minHeight={'100vh'} paddingY={'30px'} backgroundColor={'#fffbf5'} display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{ background: `url(${backgroundbb})` }} >
 						<Grid container direction={'column'} width={{ xs: '100%', md: '90%', lg: '80%' }} display={'flex'} justifyContent={'center'} alignItems={'center'}>
 							<Typography fontFamily={'shabnam'} fontSize={'18px'} sx={{ mb: '30px' }}>عنوان تاپیک : {title}</Typography>
-							<Grid container direction={{ xs: 'column', md: 'row' }} width={{ xs: '97%', sm: '90%' }} backgroundColor={'#8eb1e5'} display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{ mb: '50px', p: '20px', borderBottomLeftRadius: '20px',borderTopRightRadius : '20px', boxShadow: 4  }}>
+							<Grid container direction={{ xs: 'column', md: 'row' }} width={{ xs: '97%', sm: '90%' }} backgroundColor={'#8eb1e5'} display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{ mb: '50px', p: '20px', borderBottomLeftRadius: '20px', borderTopRightRadius: '20px', boxShadow: 4 }}>
 								<TextField label="نظر خود را بنویسید" multiline rows={4} variant="outlined"
 									ref={inputRef}
 									value={reply}
@@ -209,33 +326,34 @@ const Replies = () => {
 									{isEditActive && <Button variant="contained" sx={{ fontFamily: "shabnam", mt: '10px' }} onClick={handleCancelEdit}>انصراف</Button>}
 								</Grid>
 							</Grid>
+
 							<Grid container direction={'column'} width={'100%'} display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{ boxShadow: 3, padding: 4, borderRadius: 10 }}>
-								{replyList.map((reply) => (
-									<Grid container key={reply.id} direction={{ xs: 'column', sm: 'row' }} width={{ xs: '97%', sm: '90%' }} backgroundColor={'#8eb1e5'} display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{
+								{Array.isArray(replyList) && replyList.map((reply, index) => (
+									<Grid container key={index} direction={{ xs: 'column', sm: 'row' }} width={{ xs: '97%', sm: '90%' }} backgroundColor={'#8eb1e5'} display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{
 										mb: '30px', p: '20px', borderRadius: '25px', boxShadow: 4,
 										...(reply.user.userId == 1 && { backgroundColor: 'lightskyblue', })
 									}}>
 										<Grid display={'flex'} flexDirection={'row'} marginTop={{ xs: '10px', sm: '0' }}>
-											{reply.isSetAsAnswer && 
-											<StyledTooltip title={<React.Fragment>{'تایید شده به عنوان پاسخ توسط نگارنده تاپیک ، این پاسخ یک '}
-											{reply.user.isLawyer ? 'وکیل' : 'کاربر'}{reply.user.isPremium && ' پرمیوم'}{' است.'}</React.Fragment>}>
-												<TaskAlt sx={{
-													color: 'green',
-													backgroundColor: 'lightgreen',
-													borderRadius: '12px',
-													padding: '1px',
-													width: '27px',
-													marginRight: '10px',
-													...(reply.user.isLawyer && {
-														color: 'lightyellow',
-														backgroundColor: 'gold',
-													}),
-													...(reply.user.isPremium && {
-														color: 'purple',
-														backgroundColor: 'gold',
-													}),
-												}} />
-											</StyledTooltip>}
+											{reply.isSetAsAnswer &&
+												<StyledTooltip title={<React.Fragment>{'تایید شده به عنوان پاسخ توسط نگارنده تاپیک ، این پاسخ یک '}
+													{reply.user.isLawyer ? 'وکیل' : 'کاربر'}{reply.user.isPremium && ' پرمیوم'}{' است.'}</React.Fragment>}>
+													<TaskAlt sx={{
+														color: 'green',
+														backgroundColor: 'lightgreen',
+														borderRadius: '12px',
+														padding: '1px',
+														width: '27px',
+														marginRight: '10px',
+														...(reply.user.isLawyer && {
+															color: 'lightyellow',
+															backgroundColor: 'gold',
+														}),
+														...(reply.user.isPremium && {
+															color: 'purple',
+															backgroundColor: 'gold',
+														}),
+													}} />
+												</StyledTooltip>}
 											<Typography sx={{ fontSize: '15px', fontFamily: 'shabnam' }}>{reply.text}</Typography>
 										</Grid>
 										<Grid display={'flex'} flexDirection={'column'} >
@@ -248,27 +366,94 @@ const Replies = () => {
 													<IconButton size="large" onClick={() => handleDeleteClick(reply.id)}>
 														<Delete />
 													</IconButton>
+
+
+													<Tooltip title="ثبت تخلف کاربر">
+														<IconButton onClick={() => handleOpenReportDialog(reply.id)}>
+															<ReportRoundedIcon color="primary" />
+														</IconButton>
+													</Tooltip>
+
+													<Dialog
+													open={openReportDialog[reply.id] || false}
+													onClose={() => handleCloseReportDialog(reply.id)}
+												>
+												{currentStep === 1 && (
+													<>
+													<DialogTitle sx={{fontFamily:"shabnam"}}>گزارش تخلف - مرحله 1</DialogTitle>
+													<DialogContent>
+													<DialogContent>
+													<Typography sx={{fontFamily:"shabnam"}}>لطفاً دسته‌بندی مورد نظر خود را انتخاب کنید:</Typography>
+
+
+													<RadioGroup  >
+														<FormControlLabel onClick={() => handleChoiceClick('محتوا شامل موارد غیراخلاقی است. ')} value="option1" control={<Radio />} label="محتوا شامل کلمات غیراخلاقی است" />
+														<FormControlLabel onClick={() => handleChoiceClick('محتوا شامل موارد خلاف قانون کشور است. ')} value="option2" control={<Radio />} label="محتوا شامل موارد خلاف قانون کشور است" />
+														<FormControlLabel onClick={() => handleChoiceClick('محتوا بی‌ربط است. ')} value="option3" control={<Radio />} label="گزارش نامناسب" />
+														</RadioGroup>
+
+														</DialogContent>
+													</DialogContent>
+													<DialogActions>
+														<Button sx={{fontFamily:"shabnam"}} onClick={() => handleCloseReportDialog(reply.id)} color="primary">
+														لغو
+														</Button>
+													</DialogActions>
+													</>
+												)}
+												{currentStep === 2 && (
+													<>
+													<DialogTitle sx={{fontFamily:"shabnam"}}>گزارش تخلف - مرحله 2</DialogTitle>
+													<DialogContent sx={{fontFamily:"shabnam"}}>
+													<TextField
+														sx={{ fontFamily: "shabnam", width: "100%" }}
+														label="توضیحات تخلف"
+														multiline
+														rows={8}
+														variant="outlined"
+														fullWidth
+														value={descriptionReport}
+														onChange={(event) => setDescriptionReport(event.target.value)}
+														/>
+													</DialogContent>
+													<DialogActions>
+														<Button sx={{fontFamily:"shabnam"}} onClick={() => setCurrentStep(1)} color="primary">
+														مرحله قبل
+														</Button>
+														<Button sx={{fontFamily:"shabnam"}} onClick={() => handleSubmitReport(reply.id, reply.userId)} color="primary">
+														ثبت گزارش
+														</Button>
+													</DialogActions>
+													</>
+												)}
+												</Dialog>
+
+
+
+
+
+
 												</>}
 												{(IsSelfThread && reply.user.userId !== Number(userId) && !reply.isSetAsAnswer) &&
-												<StyledTooltip title={<React.Fragment>{'تایید به عنوان پاسخ مناسب'}</React.Fragment>}>
-													<IconButton size="large" onClick={() => handleSetAsAnswerClick(reply.id)}>
-														<TaskAlt />
-													</IconButton>
-												</StyledTooltip>}
+													<StyledTooltip title={<React.Fragment>{'تایید به عنوان پاسخ مناسب'}</React.Fragment>}>
+														<IconButton size="large" onClick={() => handleSetAsAnswerClick(reply.id)}>
+															<TaskAlt />
+														</IconButton>
+													</StyledTooltip>}
 											</Grid>
 											<Grid display={'flex'} flexDirection={'row'} marginTop={'10px'}>
 												<Typography sx={{ mr: '3px', fontSize: '15px', fontFamily: 'shabnam' }}>توسط {reply.user.name} </Typography>
-												{reply.user.isPremium && 
-												<StyledTooltip title={<React.Fragment>{'کاربر پرمیوم'}</React.Fragment>}>
-													<WorkspacePremium sx={{
-														color: 'purple',
-														backgroundColor: 'gold',
-														borderRadius: '12px',
-														padding: '1px',
-														width: '23px',
-														mr: '10px',
-													}} />
-												</StyledTooltip>}
+												{reply.user.isPremium &&
+													<StyledTooltip title={<React.Fragment>{'کاربر پرمیوم'}</React.Fragment>}>
+														<WorkspacePremium sx={{
+															color: 'purple',
+															backgroundColor: 'gold',
+															borderRadius: '12px',
+															padding: '1px',
+															width: '23px',
+															mr: '10px',
+														}} />
+													</StyledTooltip>}
 												<Typography sx={{ ml: '10px', fontSize: '13px', fontFamily: 'shabnam' }}>{Moment(reply.createDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(reply.createDate).format('HH:mm')}</Typography>
 											</Grid>
 										</Grid>

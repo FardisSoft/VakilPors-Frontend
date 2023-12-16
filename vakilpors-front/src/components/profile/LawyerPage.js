@@ -4,6 +4,9 @@ import axios from "axios";
 import { BASE_API_ROUTE } from "../../Constants";
 import { useAuth } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "@mui/material";
+
+
 import {
   Button,
   Badge,
@@ -12,6 +15,7 @@ import {
   Rating,
   Typography,
   Chip,
+  TextField
 } from "@mui/material";
 import { Stack, Grid } from "@mui/material";
 import { Card, CardContent, CardHeader, CardMedia } from "@mui/material";
@@ -82,6 +86,48 @@ const LawyerPage = () => {
   const [watcherUserId, setWatcherUserId] = useState();
   const { getAccessToken, refUserRole } = useAuth();
   const navigate = useNavigate();
+
+
+
+  const [open, setOpen] = useState(false);
+  const [title_modal, setTitle_modal] = useState("");
+  const [description, setDescription] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+
+
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleSubmitEvent = async () => {
+    const token = await getAccessToken();
+    const url = BASE_API_ROUTE + "Event";
+    const requestData = {
+      title: title_modal,
+      description: description,
+      startTime: startTime,
+      endTime: endTime,
+      lawyerId: LawyerId,
+    };
+    try {
+      const response = await axios.post(url, requestData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      // بقیه کد‌ها
+    } catch (error) {
+      console.log("error in fetching data: ", error);
+    }
+
+    handleClose();
+  };
 
   const handleInitializerWithAPI = (data) => {
     setAboutMe(data.aboutMe);
@@ -291,10 +337,79 @@ const LawyerPage = () => {
                       }
                       variant="contained"
                       onClick={handleSendCase}
-                      sx={{ fontFamily: "shabnam" }}
+                      sx={{ fontFamily: "shabnam" , mb: "10px"}}
                     >
                       ارسال پرونده
                     </Button>
+                    <Button
+                      disabled={
+                        !(
+                          refUserRole.current == "User" &&
+                          watcherUserId != lawyerUserId
+                        )
+                      }
+                      variant="contained"
+                      onClick={handleOpen}
+                      sx={{ fontFamily: "shabnam" }}
+                    >
+                      درخواست مشاوره آنلاین
+                    </Button> 
+                    <Modal open={open} onClose={handleClose} style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+
+                      <div style={{
+                        backgroundColor: 'white',
+                        padding: '20px',
+                        borderRadius: '20px',
+                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+                        marginBottom: '10px',
+                        width: '300px', // تعیین عرض مودال
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'stretch',
+                      }}>
+                        <h2 style={{ marginBottom: '10px' }}>فرم درخواست مشاوره آنلاین</h2>
+                        <TextField
+                          label="عنوان جلسه"
+                          value={title_modal}
+                          onChange={(e) => setTitle_modal(e.target.value)}
+                          style={{ marginBottom: '10px', fontFamily:"shabnam" }}
+                        />
+                        <TextField
+                          label="توضیحات"
+                          multiline
+                          rows={4}
+                          value={description}
+                          onChange={(e) => setDescription(e.target.value)}
+                          style={{ marginBottom: '10px', fontFamily:"shabnam" }}
+                        />
+                        <TextField
+                          label="تاریخ شروع"
+                          type="datetime-local"
+                          value={startTime}
+                          onChange={(e) => setStartTime(e.target.value)}
+                          style={{ marginBottom: '10px', fontFamily:"shabnam" }}
+                        />
+                        <TextField
+                          label="تاریخ پایان"
+                          type="datetime-local"
+                          value={endTime}
+                          onChange={(e) => setEndTime(e.target.value)}
+                          style={{ marginBottom: '10px', fontFamily:"shabnam" }}
+                        />
+                        <Button
+                          style={{ marginBottom: '10px', borderRadius: '10px', alignSelf: 'flex-start', fontFamily:"shabnam" }}
+                          variant="contained"
+                          onClick={handleSubmitEvent}
+                        >
+                          ارسال درخواست
+                        </Button>
+                      </div>
+                    </Modal>               
+
                   </Grid>
                 </CardContent>
               </Grid>
