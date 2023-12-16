@@ -40,7 +40,7 @@ import ResponseTransaction from './components/premium-page/ResponseTransaction';
 import Wallet from './components/premium-page/Wallet';
 import PremiumLawyers from './components/premium-page/PremiumLawyers';
 
-import AddNewCase from './components/case-pages/AddNewCase';
+import AddNewCase from './components/case-pages/addNewCase';
 import ShowCases from './components/case-pages/ShowCases';
 import UserSendCases from './components/case-pages/UserSendCases';
 

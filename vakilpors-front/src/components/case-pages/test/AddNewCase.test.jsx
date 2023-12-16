@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import AddNewCase from "../AddNewCase";
+import AddNewCase from "../addNewCase";
 
 import { BrowserRouter as Router } from "react-router-dom";
 import { AuthProvider } from "../../../context/AuthProvider";
