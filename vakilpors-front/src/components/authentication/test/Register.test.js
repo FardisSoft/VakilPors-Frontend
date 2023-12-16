@@ -75,7 +75,7 @@ test("displays error message for password mismatch", () => {
   );
 
   const passwordInput = screen.getByLabelText(/رمز/i);
-  const confirmPasswordInput = screen.getByLabelText(/تکرار رمز/i);
+  const confirmPasswordInput = screen.getByLabelText(/تکراررمز/i);
   const submitButton = screen.getByRole("button", { name: /بریم/i });
 
   fireEvent.change(passwordInput, { target: { value: "password123" } });

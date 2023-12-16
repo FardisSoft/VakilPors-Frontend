@@ -265,7 +265,7 @@ const Register = () => {
                 />
               </div>
               <div className="form-row form-row-1">
-                <label htmlFor="confirm-password">تکرار رمز</label>
+                <label htmlFor="confirm-password">تکراررمز</label>
                 <input
                   type={isRevealPwd ? "text" : "password"}
                   name="confirm_password"
