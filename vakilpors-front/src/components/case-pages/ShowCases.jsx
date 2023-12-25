@@ -133,11 +133,14 @@ const ShowCases = () => {
     if (token) {
       setloading(true);
       const tokenData = jwt(token);
+      console.log(tokenData.uid, "fdggf");
       const url =
         BASE_API_ROUTE +
         (isLawyer.split("_")[0] === "true"
           ? `Document/GetDocumentsThatLawyerHasAccessToByUserId`
-          : `Document/GetDocumentsByUserId?userId=${tokenData.uid}`);
+          : `Document/GetDocumentsByUserId?userId=${
+              tokenData.uid
+            }&PageNumber=${1}&PageSize=${5}`);
       const Data = {
         userId: isLawyer.split("_")[1],
         lawyerId: isLawyer.split("_")[2],
@@ -148,7 +151,12 @@ const ShowCases = () => {
               headers: { Authorization: `Bearer ${token}` },
             })
           : axios.get(url, { headers: { Authorization: `Bearer ${token}` } }));
-        setCases(response.data.data);
+        if (isLawyer.split("_")[0] === "true") {
+          setCases(response.data.data);
+        }
+        else{
+          setCases(response.data.data.results);
+        }
         console.log(response.data.data);
         setaccess(response.data.data.accesses);
 
@@ -612,7 +620,7 @@ const ShowCases = () => {
                             alignItems: "center",
                             marginRight: "10px",
                             fontWeight: "600",
-                            width:'80px'
+                            width: "80px",
                           }}
                         >
                           {info.lawyer.user.name}
@@ -629,7 +637,7 @@ const ShowCases = () => {
                           <div
                             style={{
                               display: "flex",
-                              width:'80px',
+                              width: "80px",
                               justifyContent: "center",
                               alignItems: "center",
                               marginRight: "100px",
