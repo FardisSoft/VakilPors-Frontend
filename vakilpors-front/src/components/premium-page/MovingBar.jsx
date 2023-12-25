@@ -44,8 +44,8 @@ function MovingTextComponent() {
         return () => clearInterval(colorInterval);
     }, []);
 
-    const text = 'استفاده از برنامه هفتگی پریمیوم به شما این امکان را می‌دهد که به طور مداوم با مشتریان جدید ارتباط برقرار کنید. با قیمت مقرون به صرفه ، کسب و کار شما در نتایج جستجو و بخش‌های پیشنهادی بیشتر به چشم می‌خورد.';
-
+    // const text = 'استفاده از برنامه هفتگی پریمیوم به شما این امکان را می‌دهد که به طور مداوم با مشتریان جدید ارتباط برقرار کنید. با قیمت مقرون به صرفه ، کسب و کار شما در نتایج جستجو و بخش‌های پیشنهادی بیشتر به چشم می‌خورد.';
+    const text = '';
     return (
         <Link to="/PremiumLawyers">
             <AppBar position="static" className={classes.bar} style={{ backgroundColor: bgColor }}>
