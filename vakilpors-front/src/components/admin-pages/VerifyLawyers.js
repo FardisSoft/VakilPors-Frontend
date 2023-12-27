@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
+// import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { Typography,Box, Grid, Avatar, Card, CardContent, CardHeader, CardMedia, Button, Link } from "@mui/material";
 import LinkMUI from '@mui/material/Link';
@@ -93,9 +93,9 @@ const VerifyLawyers = () => {
 
   return (
     <>
-    <Helmet>
+    {/* <Helmet> */}
       <title>تایید مدارک وکلا</title>
-    </Helmet>
+    {/* </Helmet> */}
     <Grid container minHeight={'100vh'} direction='column'>
       <Grid display="flex" alignItems="flex-start" justifyContent="flex-start" item>
         <Typography fontFamily={'shabnam'} fontSize={'18px'} sx={{ mb: '2rem', mt: '2rem', mr: '2.5rem' }} >

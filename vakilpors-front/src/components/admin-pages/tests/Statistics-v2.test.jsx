@@ -79,5 +79,53 @@ describe("VisitPannelStatistics component", () => {
     });
 });
 
+// test('Statistics component renders correctly', () => {
+//     const { container } = render(<Statistics />);
+//     expect(container).toMatchSnapshot();
+//   });
+  
+//   // Import React here
+//   import React from 'react';
+  
+// import { render, screen, waitFor } from '@testing-library/react';
+// import VisitPannelStatistics from '../Statistics-v2';
+// import axios from 'axios';
 
+// jest.mock('../../../context/AuthProvider', () => ({
+//     useAuth: () => ({
+//         getAccessToken: jest.fn().mockResolvedValue('fake_token'),
+//     }),
+// }));
 
+// jest.mock('axios');
+
+// describe('VisitPannelStatistics', () => {
+//     it('fetches and displays statistics', async () => {
+//         // Mock the API response
+//         axios.get.mockResolvedValue({
+//             data: {
+//                 dailyVisits: 100,
+//                 monthlyVisits: 2000,
+//                 yearlyVisits: 24000,
+//                 usersCount: 500,
+//                 lawyersCount: 100,
+//                 casesCount: 200,
+//                 messagesCount: 1000,
+//                 weekVisits: [],
+//                 lawyerCityCount: [],
+//                 lawyerTitleCount: [],
+//                 transactionMonthlyCount: [],
+//             },
+//         });
+
+//         // Render the component
+//         render(<VisitPannelStatistics />);
+
+//         // Wait for the async actions to complete
+//         await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
+
+//         // Check that the component renders the provided icons
+//         expect(screen.getByAltText('AiOutlineAreaChart')).toBeInTheDocument();
+//         expect(screen.getByAltText('AiFillCheckSquare')).toBeInTheDocument();
+//     });
+// });

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
+// import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Grid, Card, CardContent, CardHeader, Button } from "@mui/material";
 import { useAuth } from "../../context/AuthProvider";
@@ -84,9 +84,9 @@ const HandleTransactions = () => {
 
   return (
     <>
-    <Helmet>
+    {/* <Helmet> */}
       <title>تراکنش های مالی</title>
-    </Helmet>
+    {/* </Helmet> */}
     <Grid minHeight={'100vh'} width={'100%'} display="flex" justifyContent={'center'}>
       <Grid container width={{xs:'100%',sm:'90%',md:'70%'}} direction='column' display="flex" alignItems={'center'}>
         <Grid item component={Card} marginBottom={'20px'}>
