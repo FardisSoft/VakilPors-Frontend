@@ -49,6 +49,7 @@ import { Dialog,
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import DirectionsIcon from '@mui/icons-material/Directions';
+import { AiOutlineDownload, AiOutlineCheckCircle } from "react-icons/ai";
 
 
 // mui rtl
@@ -94,6 +95,14 @@ const defaultOptions = {
 	}
 };
 
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+	'& .MuiDialogContent-root': {
+		padding: theme.spacing(2),
+	},
+	'& .MuiDialogActions-root': {
+		padding: theme.spacing(1),
+	},
+}));
 
 const Forum = () => {
 	const [thread, setThread] = useState("");
@@ -102,6 +111,7 @@ const Forum = () => {
 	const { getAccessToken } = useAuth();
 	const [openReportDialog, setOpenReportDialog] = React.useState(false);
 	const [title, setTitle] = useState("");
+	const [open, setOpen] = useState(false); // false means the dialog is initially closed
 
 	// handling pagination and sort with this state
 	// const [lazyParams, setLazyParams] = useState({
@@ -280,7 +290,13 @@ const Forum = () => {
 		setThread("");
 	};
 
-	console.log("--------------------- The threads are: ", threadList);
+	const handleOpenDialog = () => {
+		setOpen(true);
+	};
+
+	const handleClose = () => {
+		setOpen(false);
+	};
 
 	return (
 		<>
@@ -355,9 +371,13 @@ const Forum = () => {
 											height: '8rem',
 											...(thread.userId == '1' && { backgroundColor: 'lightskyblue' }),
 										}}
+										{...thread}
+										open={open} 
+										handleOpenDialog={handleOpenDialog} 
 									>
 									<Typography
 										sx={{ fontSize: '20px', fontFamily: 'shabnam', fontWeight: 'bold', mt: '-4.5rem' }}
+										onClick={handleOpenDialog}
 										>
 										{thread.title}
 									</Typography>
@@ -402,7 +422,39 @@ const Forum = () => {
 											</Button>
 										</DialogActions>
 										</Dialog>
+										<BootstrapDialog
+											onClose={handleClose}
+											aria-labelledby="customized-dialog-title"
+											open={open}
+										>
+											<DialogTitle fontFamily={"shabnam"} sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+											جزئیات  فروم
+											</DialogTitle>
+											<IconButton
+											aria-label="close"
+											// onClick={handleClose}
+											sx={{
+												position: 'absolute',
+												right: 8,
+												top: 8,
+												// color: (theme) => theme.palette.grey[500],
+											}}
+											>
+											</IconButton>
+											<DialogContent dividers>
+											
+											<Typography sx={{ fontFamily:"shabnam", fontWeight:"bold" }} color="text.secondary">
+												
+											</Typography>   
 
+
+												<CardContent>
+													<Typography sx={{fontFamily:"shabnam", fontWeight:"bold"}}>{'عنوان : '}</Typography>
+													<Typography sx={{fontFamily:"shabnam", fontWeight:"bold"}}>{'تاریخ ایجاد: '}</Typography>
+													<Typography sx={{fontFamily:"shabnam", fontWeight:"bold"}}>{'متن : '}</Typography>
+												</CardContent>
+											</DialogContent>
+										</BootstrapDialog>
 										{thread.userId == refUserId.current &&
 										!thread.hasAnswer && (
 										<IconButton

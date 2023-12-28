@@ -45,7 +45,7 @@ export default function useComment(Pagenumber, Pagesize,LawyerId) {
       }
     };
     fetchData();
-    return () => cancel();
+    return () => cancel;
   }, [Pagenumber]);
   return { Commentdetail1, loading, error, hasMore };
 }

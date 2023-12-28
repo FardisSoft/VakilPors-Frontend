@@ -101,14 +101,15 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.23.5",
-    "@babel/preset-env": "^7.23.5",
+    "@babel/core": "^7.23.6",
+    "@babel/preset-env": "^7.23.6",
     "@babel/preset-react": "^7.23.3",
-    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/jest-dom": "^6.1.6",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.8.0",
     "axios-mock-adapter": "^1.22.0",
     "babel-jest": "^29.7.0",
     "babel-loader": "^9.1.3",
+    "cross-env": "^7.0.3",
     "jest": "^27.5.1",
     "jest-canvas-mock": "^2.5.2",
     "react-router-dom": "^6.9.0",
