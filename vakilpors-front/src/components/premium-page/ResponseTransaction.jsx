@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import { Helmet } from 'react-helmet-async';
+// import { Helmet } from 'react-helmet-async';
 import { useNavigate } from "react-router-dom";
 import { CheckCircleOutline, Clear } from '@mui/icons-material';
 import { Grid, Button, Typography } from '@mui/material';
@@ -62,9 +62,9 @@ function ResponseTransaction() {
 
   return (
     <>
-      <Helmet>
+      {/* <Helmet> */}
         <title>نتیجه تراکنش</title>
-      </Helmet>
+      {/* </Helmet> */}
       <Grid display={"flex"} flexDirection={"column"} margin={"auto"} alignItems={"center"} justifyContent={"center"} width={"100%"} height={"100vh"} backgroundColor={'#ABC0C0'}>
         <Grid alignItems={"center"} margin={"auto"} height={"100%"} width={"60%"} flexDirection={'column'} borderRadius={"10px"} padding={"5px"} paddingTop={"5px"} paddingX={"5px"} paddingBottom={"5px"} display={"flex"} position={"relative"} m={"3%"} justifyContent={"center"} item xs={4} spacing={5} alignSelf={"center"} backgroundColor={'white'}>
           {success ? <CheckCircleOutline sx={{width:'50px',height:'50px',color:'#28a745'}}/> : <Clear sx={{width:'50px',height:'50px',color:'#dc3545'}}/> }
