@@ -429,7 +429,7 @@ const AddNewCase = () => {
                     <div
                       display="inline"
                       style={{ marginLeft: "10px", backgroundColor: "#1f61d1" }}
-                      class="circle-icon big bgc tc-white text-bold flip"
+                      className="circle-icon big bgc tc-white text-bold flip"
                     >
                       1
                     </div>
@@ -449,7 +449,7 @@ const AddNewCase = () => {
                     <div
                       display="inline"
                       style={{ marginLeft: "10px", backgroundColor: "#1f61d1" }}
-                      class="circle-icon big bgc tc-white text-bold flip"
+                      className="circle-icon big bgc tc-white text-bold flip"
                     >
                       2
                     </div>
@@ -469,7 +469,7 @@ const AddNewCase = () => {
                     <div
                       display="inline"
                       style={{ marginLeft: "10px", backgroundColor: "#1f61d1" }}
-                      class="circle-icon big bgc tc-white text-bold flip"
+                      className="circle-icon big bgc tc-white text-bold flip"
                     >
                       3
                     </div>
@@ -496,7 +496,7 @@ const AddNewCase = () => {
                     <div
                       display="inline"
                       style={{ marginLeft: "10px", backgroundColor: "#1f61d1" }}
-                      class="circle-icon big bgc tc-white text-bold flip"
+                      className="circle-icon big bgc tc-white text-bold flip"
                     >
                       4
                     </div>
@@ -523,7 +523,7 @@ const AddNewCase = () => {
                     <div
                       display="inline"
                       style={{ marginLeft: "10px", backgroundColor: "#1f61d1" }}
-                      class="circle-icon big bgc tc-white text-bold flip"
+                      className="circle-icon big bgc tc-white text-bold flip"
                     >
                       5
                     </div>
@@ -571,7 +571,7 @@ const AddNewCase = () => {
                     <div
                       display="inline"
                       style={{ marginLeft: "10px", backgroundColor: "#1f61d1" }}
-                      class="circle-icon big bgc tc-white text-bold flip"
+                      className="circle-icon big bgc tc-white text-bold flip"
                     >
                       6
                     </div>
