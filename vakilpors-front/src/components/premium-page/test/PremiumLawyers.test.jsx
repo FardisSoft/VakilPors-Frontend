@@ -1,41 +1,44 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import axios from 'axios';
-import VerifyLawyers from '../VerifyLawyers';
+import PremiumLawyers from '../PremiumLawyers';
 
 jest.mock('axios');
 jest.mock('../../../context/AuthProvider', () => ({
     useAuth: () => ({
-        refUserRole: { current: 'Admin' },
-        getAccessToken: () => Promise.resolve('fake_token'),
+        refUserRole: { current: 'lawyer' },
+        getAccessToken: () => 'fake_token',
     }),
 }));
 
-describe('VerifyLawyers', () => {
-    it('renders UsersCard for each unverified lawyer', async () => {
-        // Mock the axios.get function
-        axios.get.mockResolvedValue({
-            data: {
-                data: [
-                    { isVerified: false, user: { name: 'Lawyer1' } },
-                    { isVerified: true, user: { name: 'Lawyer2' } },
-                    { isVerified: false, user: { name: 'Lawyer3' } },
-                ]
-            }
-        });
+describe('PremiumLawyers', () => {
+    beforeEach(() => {
+        axios.post.mockResolvedValue({ data: {} });
+    });
 
-        render(
-            <Router>
-                <VerifyLawyers />
-            </Router>
-        );
+    it('renders without crashing', () => {
+        render(<Router><PremiumLawyers /></Router>);
+        expect(screen.getByText('برنامه روزانه')).toBeInTheDocument();
+        expect(screen.getByText('برنامه هفتگی')).toBeInTheDocument();
+    });
 
-        // Wait for effects to run
-        await waitFor(() => {
-            expect(screen.getByText('Lawyer1')).toBeInTheDocument();
-            expect(screen.queryByText('Lawyer2')).not.toBeInTheDocument();
-            expect(screen.getByText('Lawyer3')).toBeInTheDocument();
-        });
+    it('activates a subscription when a plan is selected', async () => {
+        render(<Router><PremiumLawyers /></Router>);
+        fireEvent.click(screen.getAllByText('انتخاب')[0]);
+        await waitFor(() => expect(axios.post).toHaveBeenCalled());
+    });
+
+    it('displays a loading spinner while activating a subscription', () => {
+        render(<Router><PremiumLawyers /></Router>);
+        fireEvent.click(screen.getAllByText('انتخاب')[0]);
+        expect(screen.getByRole('progressbar')).toBeInTheDocument();
+    });
+
+    it('displays an error message if activating a subscription fails', async () => {
+        axios.post.mockRejectedValue(new Error('Network error'));
+        render(<Router><PremiumLawyers /></Router>);
+        fireEvent.click(screen.getAllByText('انتخاب')[0]);
+        await waitFor(() => expect(screen.getByText('خطا در فعال سازی اشتراک')).toBeInTheDocument());
     });
 });
