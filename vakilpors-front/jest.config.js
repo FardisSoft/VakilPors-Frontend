@@ -1,3 +1,4 @@
+
 module.exports = {
   transform: {
     "^.+\\.(ts|tsx)?$": "ts-jest",
@@ -11,7 +12,7 @@ module.exports = {
     "axios":"axios/dist/node/axios.cjs",
     "^.+\\.(css|scss|jpg|jpeg|png)$": "<rootDir>/config/CSSStub.js"
   },
-  transformIgnorePatterns:["/node_modules/(?!d3-scale).+\\.js$"],
+  // transformIgnorePatterns:["node_modules/(?!axios)"],
   testEnvironment: "jest-environment-jsdom",
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"]
+  "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"]
 };
