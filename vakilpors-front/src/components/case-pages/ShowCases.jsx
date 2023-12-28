@@ -749,6 +749,7 @@ const ShowCases = () => {
                             variant="contained"
                             onClick={ClickNewCase}
                             // startIcon={<AddIcon />}
+                            role="submit-btn"
                           >
                             پرونده جدید
                           </Button>
@@ -761,7 +762,7 @@ const ShowCases = () => {
                 <Grid container direction={"row"} justifyContent={"right"}>
                   {Cases.length === 0 ? (
                     <Typography sx={{ fontFamily: "shabnam", fontSize: 24 }}>
-                      {isLawyer.split("_")[0] == "true"
+                      {isLawyer.split("_")[0] === "true"
                         ? "هنوز پرونده ای برای شما ارسال نشده است."
                         : "شما هنوز پرونده‌ ای ایجاد نکرده اید."}
                     </Typography>
