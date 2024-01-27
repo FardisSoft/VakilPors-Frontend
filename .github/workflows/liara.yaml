@@ -1,61 +1,52 @@
-# name: CICD
-# on:
-#   push:
-#     branches:
-#       - main
-#   pull_request:
-#     branches:
-#       - main
-# jobs:
-#   ci:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v3
-#       - name: Setup Node.js
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: "18" 
-#       - name: Install dependencies
-#         run: npm install --force
-#         working-directory: ./vakilpors-front
-#       # - name: Build
-#       #   run: npm run build
-#       #   working-directory: ./vakilpors-front
-#       # - name: Test
-#       #   run: npm test
-#       #   working-directory: ./vakilpors-front
-#   cd:
-#     needs: ci
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v3
-#       - uses: actions/setup-node@v3
-#         with:
-#           node-version: "18" 
-#       - name: Install Liara CLI
-#         run: npm install -g @liara/cli@5
-#       - name: Deploy to Liara
-#         env:
-#           LIARA_TOKEN: ${{ secrets.LIARA_API_TOKEN }}
-#         run: liara deploy --api-token="$LIARA_TOKEN" --detach
+name: CICD
 
-
-
-
-
-name: CD-Liara
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
-  deploy:
+  ci:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: "18"
-      - name: update-liara
+
+      - name: Install dependencies
+        run: npm install --force
+        working-directory: ./vakilpors-front
+
+      # - name: Build
+      #   run: npm run build
+      #   working-directory: ./vakilpors-front
+
+      # - name: Test
+      #   run: npm test
+      #   working-directory: ./vakilpors-front
+
+  cd:
+    needs: ci
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Update Liara
         env:
           LIARA_TOKEN: ${{ secrets.LIARA_API_TOKEN }}
         run: |
@@ -63,3 +54,25 @@ jobs:
           liara deploy --api-token="$LIARA_TOKEN" --detach
           npm i -g @liara/cli@5
           liara deploy --api-token="$LIARA_TOKEN" --detach
+
+
+# name: CD-Liara
+# on:
+#   push:
+#     branches: [main]
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#       - uses: actions/setup-node@v3
+#         with:
+#           node-version: "18"
+#       - name: update-liara
+#         env:
+#           LIARA_TOKEN: ${{ secrets.LIARA_API_TOKEN }}
+#         run: |
+#           npm i -g @liara/cli@3
+#           liara deploy --api-token="$LIARA_TOKEN" --detach
+#           npm i -g @liara/cli@5
+#           liara deploy --api-token="$LIARA_TOKEN" --detach
