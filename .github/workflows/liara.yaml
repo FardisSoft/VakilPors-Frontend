@@ -16,11 +16,14 @@ jobs:
         with:
           node-version: "18" 
       - name: Install dependencies
-        run: npm install
+        run: npm install --force
+        working-directory: ./vakilpors-front
       - name: Build
         run: npm run build
+        working-directory: ./vakilpors-front
       - name: Test
-        run: npm  test
+        run: npm test
+        working-directory: ./vakilpors-front
   cd:
     needs: ci
     runs-on: ubuntu-latest
