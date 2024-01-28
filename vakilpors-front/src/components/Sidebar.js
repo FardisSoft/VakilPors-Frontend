@@ -241,6 +241,11 @@ const Sidebar = (props) => {
           icon: AssignmentOutlined,
           url: `/show-cases/${false}`,
         },
+        {
+          name: "لیست جلسات با وکلا",
+          icon: PersonSearchOutlined,
+          url: `/create-meet/${false}`,
+        },
         { name: "کیف پول", icon: WalletOutlined, url: `/wallet` },
         { name: "پریمیوم", icon: WorkspacePremium, url: "/PremiumLawyers", color: "purple" },
         { name: "شرایط سایت", icon: PolicyOutlined, url: "/Policy" },
@@ -261,6 +266,11 @@ const Sidebar = (props) => {
           name: "مشاهده پروفایل",
           icon: AccountCircleOutlined,
           url: `/LawyerPage/${refLawyerID.current}`,
+        },
+        {
+          name: "لیست جلسات موکلان",
+          icon: PersonSearchOutlined,
+          url: `/create-meet/${true}`,
         },
         {
           name: "جست و جوی وکلا",
@@ -319,6 +329,14 @@ const Sidebar = (props) => {
           icon: AssignmentTurnedInOutlined,
           url: "/VerifyLawyers",
         },
+
+        {
+          name:'بررسی تخلفات وکلا',
+          icon:ReportOutlinedIcon,
+          url:'/ReportValidation'
+        },
+
+
         { name: "آمار سایت", icon: AssessmentOutlined, url: "/Statistics" },
         {
           name: "تراکنش های مالی",

@@ -6,25 +6,69 @@ import UserStyle from './style';
 import StyledButton from '../ButtonComponent';
 import ThumbDownAltOutlinedIcon from '@mui/icons-material/ThumbDownAltOutlined';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
+import Moment from 'moment-jalaali';
+import axios from 'axios'; // import axios library
 
 const ReportSideAdmin = () => {
   const { refUserRole, getAccessToken } = useAuth();
   const classes = UserStyle();
+  const [reports, setReports] = useState([]); 
 
-  // مجموعه داده ریپورت‌ها
-  const reports = [
-    {
-      offenderName: 'نام متخلف ۱',
-      reporterName: 'نام گزارش دهنده ۱',
-      description: 'توضیحات گزارش دهنده ۱',
-    },
-    {
-      offenderName: 'نام متخلف ۲',
-      reporterName: 'نام گزارش دهنده ۲',
-      description: 'توضیحات گزارش دهنده ۲',
-    },
-    // ... ادامه لیست ریپورت‌ها
-  ];
+  
+  const fetchReports = async () => {
+    try {
+      const response = await axios.get('https://api.fardissoft.ir/Report/GetAll', {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}` 
+        }
+      });
+
+      if (response.data.isSuccess) {
+        setReports(response.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        const response = await axios.get('https://api.fardissoft.ir/Report/GetAll', {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}` 
+          }
+        });
+
+        if (response.data.isSuccess) {
+          setReports(response.data.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchReports(); 
+  }, []); 
+
+  const handleDeleteReport = async (reportId) => {
+    try {
+      const response = await axios.delete(`https://api.fardissoft.ir/Report/DeleteReport?report_id=${reportId}`, {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}` 
+        }
+      });
+
+      if (response.data.isSuccess) {
+        fetchReports();
+
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    
+  };
 
   return (
     <>
@@ -32,26 +76,19 @@ const ReportSideAdmin = () => {
         <title>بررسی تخلفات وکلا</title>
       {/* </Helmet> */}
 
-      <Grid container minHeight={'100vh'} direction='column'>
+      <Grid container direction='column'>
         <Grid
-          display="flex"
-          alignItems="flex-start"
-          justifyContent="flex-start"
+          container
           item
+          justifyContent="flex-start"
+          alignItems="center"
+          sx={{ mb: '2rem', mt: '2rem', mr: '2.5rem' }}
         >
-          <Typography
-            fontFamily={'shabnam'}
-            fontSize={'18px'}
-            sx={{ mb: '2rem', mt: '2rem', mr: '2.5rem' }}
-          >
-            لیست تخلفات ثبت شده :
+          <Typography fontFamily={'shabnam'} fontSize={'18px'}>
+            لیست تخلفات ثبت شده:
           </Typography>
 
-          <Typography
-            fontFamily={'shabnam'}
-            fontSize={'18px'}
-            sx={{ mb: '2rem', mt: '2rem', mr: '2.5rem' }}
-          >
+          <Typography fontFamily={'shabnam'} fontSize={'18px'} sx={{ ml: '2rem' }}>
             {reports.length}
           </Typography>
         </Grid>
@@ -81,8 +118,7 @@ const ReportSideAdmin = () => {
                       fontFamily={'shabnam'}
                       fontSize={'18px'}
                       fontWeight={'bold'}
-                    >
-                      {report.offenderName}
+                    > {report.user.name}
                     </Typography>
                     <Box
                       sx={{
@@ -102,8 +138,8 @@ const ReportSideAdmin = () => {
                     fontFamily={'shabnam'}
                     fontSize={'16px'}
                     my={2}
-                  >
-                    {report.reporterName}
+                  > تاریخ کامنت : 
+                    {Moment(report.threadComment.createDate).locale("fa").format('jYYYY/jM/jD') + ' ساعت ' + Moment(report.threadComment.createDate).format('HH:mm')}
                   </Typography>
                   <Box
                     sx={{
@@ -114,22 +150,29 @@ const ReportSideAdmin = () => {
                   >
                     <Typography
                       fontFamily={'shabnam'}
-                      fontSize={'14px'}
+                      fontSize={'15px'}
                       color={'#555555'}
                     >
-                      {report.description}
+                      توضیحات:  {report.description}
                     </Typography>
+                    <Typography
+                      mt={1}
+                      fontFamily={'shabnam'}
+                      fontSize={'20px'}
+                      color={'#555555'}
+                    >
+                      متن کامنت:  {report.threadComment.text}
+                    </Typography>                    
                   </Box>
                   <Box sx={{ mt: '20px', display: 'flex', gap: '8px' }}>
-                  <StyledButton style={{fontFamily:"shabnam", maxHeight:'30px', width: '8rem', marginBottom: '1rem', fontSize: '1rem', color:"primary" }}>
-                        <ThumbUpOutlinedIcon style={{ marginLeft: '0.25rem'}}/>
-                        تایید گزارش
+                    <StyledButton style={{ fontFamily: 'shabnam', maxHeight: '30px', width: '8rem', marginBottom: '1rem', fontSize: '1rem', color: "primary" }}>
+                      <ThumbUpOutlinedIcon style={{ marginLeft: '0.25rem' }} />
+                      تایید گزارش
                     </StyledButton>
-                    <StyledButton style={{fontFamily:"shabnam", maxHeight:'30px', width: '8rem', marginBottom: '1rem', fontSize: '1rem', color:"primary" }}>
-                        <ThumbDownAltOutlinedIcon style={{ marginLeft: '0.25rem'}}/>
-                        رد گزارش
+                    <StyledButton onClick={() => handleDeleteReport(report.id)} style={{ fontFamily: 'shabnam', maxHeight: '30px', width: '8rem', marginBottom: '1rem', fontSize: '1rem', color: "primary" }}>
+                      <ThumbDownAltOutlinedIcon style={{ marginLeft: '0.25rem' }} />
+                      رد گزارش
                     </StyledButton>
-
                   </Box>
                 </Box>
               </Grid>
