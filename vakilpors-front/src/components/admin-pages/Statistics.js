@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import useStateRef from "react-usestateref";
-import { Helmet } from 'react-helmet-async';
+// import { Helmet } from 'react-helmet-async';
 import { BASE_API_ROUTE } from "../../Constants";
 import { useAuth } from "../../context/AuthProvider";
 import axios from "axios";
@@ -124,9 +124,9 @@ const Statistics = () => {
 
 	return (
 		<>
-		<Helmet>
+		{/* <Helmet> */}
 			<title>آمار سایت</title>
-		</Helmet>
+		{/* </Helmet> */}
 		<div style={{display: 'flex',
 					flexDirection: 'column',
 					alignItems: 'center',

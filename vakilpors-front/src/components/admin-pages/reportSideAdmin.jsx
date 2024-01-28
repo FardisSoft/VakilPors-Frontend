@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from "../../context/AuthProvider";
-import { Helmet } from 'react-helmet-async';
+// import { Helmet } from 'react-helmet-async';
 import { Grid, Typography, Box, Button } from '@mui/material';
 import UserStyle from './style';
 import StyledButton from '../ButtonComponent';
@@ -72,9 +72,9 @@ const ReportSideAdmin = () => {
 
   return (
     <>
-      <Helmet>
+      {/* <Helmet> */}
         <title>بررسی تخلفات وکلا</title>
-      </Helmet>
+      {/* </Helmet> */}
 
       <Grid container direction='column'>
         <Grid

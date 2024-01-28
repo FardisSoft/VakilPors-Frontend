@@ -1,21 +1,16 @@
 import React, {useState, useEffect} from "react";
-import { render } from "react-dom";
 import useStateRef from "react-usestateref";
-import { Helmet } from 'react-helmet-async';
 import { BASE_API_ROUTE } from "../../Constants";
 import { useAuth } from "../../context/AuthProvider";
 import axios from "axios";
 import Paper from '@mui/material/Paper';
-import { Chart,BarSeries,ArgumentAxis,ValueAxis, } from '@devexpress/dx-react-chart-material-ui';
-import { Animation } from '@devexpress/dx-react-chart';
+import { Chart } from '@devexpress/dx-react-chart-material-ui';
 import Moment from 'moment-jalaali';
 import { AiOutlineAreaChart, AiFillCheckSquare } from "react-icons/ai";
 import AnimatedCounter from "./AnimatedCounter";
 import { Column, Line, Pie, Area, Rose } from '@ant-design/plots';
-import { Grid, Typography, Slide, Card } from '@mui/material';
-import { Download, Info } from '@material-ui/icons';
-import DownloadIcon from '@mui/icons-material/Download';
-import InfoIcon from '@mui/icons-material/Info';
+import { Grid, Card } from '@mui/material';
+
 
 
 const VisitPannelStatistics = () => {
@@ -275,9 +270,6 @@ const VisitPannelStatistics = () => {
 
 	return (
 		<>
-			<Helmet>
-				<title>آمار سایت</title>
-			</Helmet>
 			<div style={{display: 'flex',
 						flexDirection: 'column',
 						alignItems: 'center',

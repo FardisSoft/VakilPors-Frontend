@@ -49,7 +49,7 @@ import VideoCall from './components/video-call/VideoCall';
 import VerifyLawyers from './components/admin-pages/VerifyLawyers';
 import VisitPannelStatistics from './components/admin-pages/Statistics-v2';
 import HandleTransactions from './components/admin-pages/HandleTransactions';
-import AdvertisingPage from './components/premium-page/Avertising';
+import Advertising from './components/premium-page/Advertising';
 import ReportSideAdmin from './components/admin-pages/reportSideAdmin';
 import Lawyer_Jobinfo from './components/profile/Lawyer_Jobinfo';
 
@@ -100,7 +100,7 @@ root.render(
               <Route path="/AllUsers" element={<Sidebar component={AllUsersTable}/>}/>
               <Route path="/AsasiLaw" element={<Sidebar component={AsasiLaw}/>}/>
               <Route path="/HandleTransactions" element={<Sidebar component={HandleTransactions}/>}/>
-              <Route path="/AdvertisingPage" element={<Sidebar component={AdvertisingPage}/>}/>
+              <Route path="/AdvertisingPage" element={<Sidebar component={Advertising}/>}/>
               <Route path="/PremiumLawyers" element={<Sidebar component={PremiumLawyers}/>}/>
               <Route path="/editjob_lawyer" element={<Sidebar component={Lawyer_Jobinfo}/>}/>
               <Route path="*" element={<_404page/>}/>

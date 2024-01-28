@@ -64,11 +64,11 @@ const AddNewCase = () => {
 
   useEffect(() => {
     const getDocData = async () => {
-      if (func.split("_")[0] == "edit") {
+      if (func.split("_")[0] === "edit") {
         setisEdit(true);
       }
       setDocumentId(func.split("_")[1]);
-      if (func.split("_")[0] == "edit") {
+      if (func.split("_")[0] === "edit") {
         const url =
           BASE_API_ROUTE +
           `Document/GetDocumentById?documentId=${func.split("_")[1]}`;
@@ -380,9 +380,6 @@ const AddNewCase = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{isEdit ? "ویرایش پرونده" : "افزودن پرونده"}</title>
-      </Helmet>
       <ThemeProvider theme={theme}>
         <CacheProvider value={cacheRtl}>
           <Grid
@@ -428,7 +425,7 @@ const AddNewCase = () => {
                     {isEdit ? "ویرایش پرونده" : "افزودن پرونده جدید"}
                   </Typography>
                   <hr></hr>
-                  <Grid container direction={"row"} marginY={"10px"}>
+                  <Grid container direction={"row"} sx={{marginY:'10px'}}>
                     <div
                       display="inline"
                       style={{ marginLeft: "10px", backgroundColor: "#1f61d1" }}
@@ -549,15 +546,15 @@ const AddNewCase = () => {
                       onChange={(File) => setFile(File)}
                     />
                     {FileURL && (
-                    <Button
-                      style={{
-                        backgroundColor: "#42f551",
-                        borderRadius: "5px",
-                        height: "25px",
-                        marginRight: "4px",
-                      }}
-                      variant="contained"
-                    >
+                      <Button
+                        style={{
+                          backgroundColor: "#42f551",
+                          borderRadius: "5px",
+                          height: "25px",
+                          marginRight: "4px",
+                        }}
+                        variant="contained"
+                      >
                         <a
                           style={{ color: "white" }}
                           href={FileURL}
@@ -566,7 +563,7 @@ const AddNewCase = () => {
                         >
                           دانلود
                         </a>
-                    </Button>
+                      </Button>
                     )}
                   </div>
                   <br></br>

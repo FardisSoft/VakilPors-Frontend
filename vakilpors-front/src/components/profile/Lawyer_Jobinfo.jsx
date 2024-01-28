@@ -523,9 +523,6 @@ const Lawyer_Jobinfo = () => {
 
   return (
     <>
-      <Helmet>
-        <title>ویرایش اطلاعات وکیل</title>
-      </Helmet>
       <ThemeProvider theme={theme}>
         <CacheProvider value={cacheRtl}>
           <div className="page-content2">

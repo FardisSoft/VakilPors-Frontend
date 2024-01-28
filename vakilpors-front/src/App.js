@@ -1,4 +1,4 @@
-import { Helmet } from "react-helmet-async";
+// import { Helmet } from "react-helmet-async";
 import { Grid, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import rtlPlugin from "stylis-plugin-rtl";
@@ -6,7 +6,7 @@ import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@mui/material/styles";
-import Advertising from "./components/premium-page/Avertising"; // Import the Advertising component
+import Advertising from "./components/premium-page/Advertising"; // Import the Advertising component
 //import landing_page from "./assests/images/default_lawyer_profile_background_picture.jpg";
 import landing_page from "./assests/images/back3.jpg";
 import { Paper } from "@mui/material";

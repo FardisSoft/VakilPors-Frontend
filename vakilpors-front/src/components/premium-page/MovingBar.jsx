@@ -1,27 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { AppBar, Toolbar, Typography, makeStyles } from "@material-ui/core";
+import { AppBar, Toolbar, Typography, makeStyles, Paper } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { Fullscreen } from "@mui/icons-material";
+
 const useStyles = makeStyles((theme) => ({
     bar: {
-        backgroundColor: "gray",
-        height: "auto",
+        height: "70px",
+        width: '100%',
     },
     content: {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         padding: theme.spacing(2),
-        animation: "$scroll 15s linear infinite",
+        overflow: "hidden",
+    },
+    textContainer: {
+        background: "#394240",
+        padding: theme.spacing(2),
+        borderRadius: "20px",
     },
     text: {
         color: "white",
         fontSize: "20px",
-        margin: theme.spacing(1),
-        whiteSpace: "nowrap",
-    },
-    "@keyframes scroll": {
-        "0%": { transform: "translateX(100%)" },
-        "100%": { transform: "translateX(-100%)" },
+        textAlign: 'center',
+        fontWeight: 'bold',
+        marginRight: '9px',
     },
 }));
 
@@ -35,22 +39,24 @@ function MovingTextComponent() {
         const colorInterval = setInterval(() => {
             setBgColor(colors[i]);
             i = (i + 1) % colors.length;
-        }, 2000); // Change color every 2 seconds
+        }, 2000);
 
         return () => clearInterval(colorInterval);
     }, []);
 
+    // const text = 'استفاده از برنامه هفتگی پریمیوم به شما این امکان را می‌دهد که به طور مداوم با مشتریان جدید ارتباط برقرار کنید. با قیمت مقرون به صرفه ، کسب و کار شما در نتایج جستجو و بخش‌های پیشنهادی بیشتر به چشم می‌خورد.';
     const text = '';
-
     return (
         <Link to="/PremiumLawyers">
-        <AppBar position="static" className={classes.bar} style={{ backgroundColor: bgColor }}>
-            <Toolbar className={classes.content}>
-                <Typography variant="h6" className={classes.text}>
-                    {text}
-                </Typography>
-            </Toolbar>
-        </AppBar>
+            <AppBar position="static" className={classes.bar} style={{ backgroundColor: bgColor }}>
+                <Toolbar className={classes.content}>
+                    <Paper className={classes.textContainer} style={{ backgroundColor: bgColor }}>
+                        <Typography variant="h6" className={classes.text}>
+                            {text}
+                        </Typography>
+                    </Paper>
+                </Toolbar>
+            </AppBar>
         </Link>
     );
 }

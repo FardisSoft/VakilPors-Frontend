@@ -247,9 +247,6 @@ const AllUsersTable = () => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Helmet>
-          <title>مدیریت کاربران</title>
-        </Helmet>
         <div style={{display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',

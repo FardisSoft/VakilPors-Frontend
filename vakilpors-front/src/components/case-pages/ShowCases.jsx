@@ -39,6 +39,7 @@ import rtlPlugin from "stylis-plugin-rtl";
 import { ThemeProvider } from "@mui/material/styles";
 import ReactLoading from "react-loading";
 import { CacheProvider } from "@emotion/react";
+import Pagination from "@mui/material/Pagination";
 
 const cacheRtl = createCache({
   key: "muirtl",
@@ -93,6 +94,10 @@ const ShowCases = () => {
 
   const [concase, setconcase] = useState([]);
 
+  const [totalpage, settotalpage] = useState(0);
+  const [pagenum, setpagenum] = useState(1);
+  let pagesize = 5;
+
   const handleOpencon = (index) => {
     setOpencon((prevState) => {
       const newArray = [...prevState];
@@ -133,11 +138,14 @@ const ShowCases = () => {
     if (token) {
       setloading(true);
       const tokenData = jwt(token);
+      console.log(tokenData.uid, "fdggf");
       const url =
         BASE_API_ROUTE +
         (isLawyer.split("_")[0] === "true"
           ? `Document/GetDocumentsThatLawyerHasAccessToByUserId`
-          : `Document/GetDocumentsByUserId?userId=${tokenData.uid}`);
+          : `Document/GetDocumentsByUserId?userId=${
+              tokenData.uid
+            }&PageNumber=${pagenum}&PageSize=${pagesize}`);
       const Data = {
         userId: isLawyer.split("_")[1],
         lawyerId: isLawyer.split("_")[2],
@@ -148,7 +156,12 @@ const ShowCases = () => {
               headers: { Authorization: `Bearer ${token}` },
             })
           : axios.get(url, { headers: { Authorization: `Bearer ${token}` } }));
-        setCases(response.data.data);
+        if (isLawyer.split("_")[0] === "true") {
+          setCases(response.data.data);
+        } else {
+          setCases(response.data.data.results);
+          settotalpage(response.data.data.totalPages);
+        }
         console.log(response.data.data);
         setaccess(response.data.data.accesses);
 
@@ -212,7 +225,11 @@ const ShowCases = () => {
 
   useEffect(() => {
     getCases();
-  }, []);
+  }, [pagenum]);
+  const handlePagination = (e, p) => {
+    setpagenum(p);
+    console.log(p);
+  };
 
   const showErrorMessage = (errorMessage) => {
     toast.error(errorMessage, {
@@ -612,7 +629,7 @@ const ShowCases = () => {
                             alignItems: "center",
                             marginRight: "10px",
                             fontWeight: "600",
-                            width:'80px'
+                            width: "80px",
                           }}
                         >
                           {info.lawyer.user.name}
@@ -629,7 +646,7 @@ const ShowCases = () => {
                           <div
                             style={{
                               display: "flex",
-                              width:'80px',
+                              width: "80px",
                               justifyContent: "center",
                               alignItems: "center",
                               marginRight: "100px",
@@ -732,6 +749,7 @@ const ShowCases = () => {
                             variant="contained"
                             onClick={ClickNewCase}
                             // startIcon={<AddIcon />}
+                            role="submit-btn"
                           >
                             پرونده جدید
                           </Button>
@@ -742,9 +760,9 @@ const ShowCases = () => {
                   <hr></hr>
                 </div>
                 <Grid container direction={"row"} justifyContent={"right"}>
-                  {Cases.length == 0 ? (
+                  {Cases.length === 0 ? (
                     <Typography sx={{ fontFamily: "shabnam", fontSize: 24 }}>
-                      {isLawyer.split("_")[0] == "true"
+                      {isLawyer.split("_")[0] === "true"
                         ? "هنوز پرونده ای برای شما ارسال نشده است."
                         : "شما هنوز پرونده‌ ای ایجاد نکرده اید."}
                     </Typography>
@@ -761,6 +779,21 @@ const ShowCases = () => {
               </Grid>
             </Grid>
           </Grid>
+          {totalpage > 0 && (
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Pagination
+                count={totalpage}
+                style={{
+                  marginBottom:'20px',
+                  padding: "10px 80px",
+                }}
+                page={pagenum}
+                variant="outlined"
+                color="primary"
+                onChange={handlePagination}
+              />
+            </div>
+          )}
           <Dialog
             open={openDescription}
             onClose={handleCloseDescription}
