@@ -714,6 +714,7 @@ const Lawyer_search_page = () => {
                       }
                     })}
                   </>
+                  
                 )}
                 {lawyerdetail1.length === 0 && (
                   <div className="text-center py-5"></div>
