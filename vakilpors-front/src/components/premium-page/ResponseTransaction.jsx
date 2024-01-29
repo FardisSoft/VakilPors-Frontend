@@ -86,7 +86,7 @@ function ResponseTransaction() {
           justifyContent={"center"}
           item
           xs={4}
-          spacing={5}
+          // spacing={5}
           alignSelf={"center"}
           backgroundColor={"white"}
         >

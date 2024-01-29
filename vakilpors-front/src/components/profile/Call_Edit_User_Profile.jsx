@@ -164,9 +164,6 @@ const Call_Edit_User_Profile = () => {
 
   return (
     <>
-      <Helmet>
-        <title>ویرایش اطلاعات کاربر</title>
-      </Helmet>
       <ThemeProvider theme={theme}>
         <CacheProvider value={cacheRtl}>
           <div className="page-content1">

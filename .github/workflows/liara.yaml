@@ -29,9 +29,9 @@ jobs:
       #   run: npm run build
       #   working-directory: ./vakilpors-front
 
-      # - name: Test
-      #   run: npm test
-      #   working-directory: ./vakilpors-front
+      - name: Test
+        run: npm test
+        working-directory: ./vakilpors-front
 
   cd:
     needs: ci
