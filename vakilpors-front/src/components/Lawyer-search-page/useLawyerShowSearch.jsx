@@ -2,7 +2,7 @@ import {useEffect,useState} from 'react'
 import axios from 'axios'
 import  {BASE_API_ROUTE}  from '../../Constants';
 
-export default function useLawyerShowSearch(Pagenumber,Pagesize,sort,click) {
+export default function useLawyerShowSearch(Pagenumber,Pagesize,sort,click, filters, LawyerQuery) {
   const[loading,setloading]=useState(true);
   const[error,seterror]=useState(false);
   const[lawyerdetail1, setlawyerdetail]=useState([]);
@@ -20,7 +20,10 @@ export default function useLawyerShowSearch(Pagenumber,Pagesize,sort,click) {
   
     const fetchData = async () => {
       try {
-        const response = await axios.get(BASE_API_ROUTE + `Lawyer/GetAllPaged?PageNumber=${Pagenumber}&PageSize=${Pagesize}&sort=${sort}&IsAscending=false`, {
+        if(LawyerQuery != ""){
+          filters.Name = LawyerQuery;
+        }
+        const response = await axios.get(BASE_API_ROUTE + `Lawyer/GetAllPaged?PageNumber=${Pagenumber}&PageSize=${Pagesize}&sort=${sort}&IsAscending=false`, {params: filters},  {
           cancelToken: new axios.CancelToken(c => (cancel = c))
         });
         const data = response.data;  
